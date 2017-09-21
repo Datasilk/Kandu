@@ -1,0 +1,6 @@
+[submodule "App/Scripts/selector"]
+	path = App/Scripts/selector
+	url = http://www.github.com/websilk/selector
+[submodule "App/CSS/tapestry"]
+	path = App/CSS/tapestry
+	url = http://www.github.com/websilk/tapestry
