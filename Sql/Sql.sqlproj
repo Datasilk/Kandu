@@ -57,5 +57,67 @@
   <Import Condition="'$(SQLDBExtensionsRefPath)' == ''" Project="$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v$(VisualStudioVersion)\SSDT\Microsoft.Data.Tools.Schema.SqlTasks.targets" />
   <ItemGroup>
     <Folder Include="Properties" />
+    <Folder Include="dbo" />
+    <Folder Include="utility" />
+    <Folder Include="dbo\Tables" />
+    <Folder Include="dbo\Sequences" />
+    <Folder Include="dbo\Stored Procedures" />
+    <Folder Include="dbo\Views" />
+    <Folder Include="dbo\Functions" />
+    <Folder Include="dbo\Stored Procedures\Users" />
+    <Folder Include="dbo\Stored Procedures\Teams" />
+    <Folder Include="dbo\Stored Procedures\Cards" />
+    <Folder Include="dbo\Stored Procedures\Boards" />
+    <Folder Include="dbo\Stored Procedures\Lists" />
+  </ItemGroup>
+  <ItemGroup>
+    <Build Include="dbo\Tables\Users.sql" />
+    <Build Include="dbo\Tables\Teams.sql" />
+    <Build Include="dbo\Tables\TeamMembers.sql" />
+    <Build Include="dbo\Tables\Boards.sql" />
+    <Build Include="dbo\Tables\Cards.sql" />
+    <Build Include="dbo\Tables\LogBoard.sql" />
+    <Build Include="dbo\Tables\CardComments.sql" />
+    <Build Include="dbo\Tables\CardMembers.sql" />
+    <Build Include="dbo\Sequences\SequenceUsers.sql" />
+    <Build Include="dbo\Stored Procedures\Users\User_Create.sql" />
+    <Build Include="dbo\Stored Procedures\Users\User_GetEmail.sql" />
+    <Build Include="dbo\Stored Procedures\Users\User_GetPassword.sql" />
+    <Build Include="dbo\Stored Procedures\Users\User_UpdatePassword.sql" />
+    <Build Include="dbo\Stored Procedures\Users\User_UpdateEmail.sql" />
+    <Build Include="dbo\Stored Procedures\Users\Users_GetList.sql" />
+    <Build Include="dbo\Stored Procedures\Users\Users_HasPasswords.sql" />
+    <Build Include="dbo\Stored Procedures\Teams\Team_Create.sql" />
+    <Build Include="dbo\Sequences\SequenceTeams.sql" />
+    <Build Include="dbo\Stored Procedures\Teams\Team_Update.sql" />
+    <Build Include="dbo\Stored Procedures\Teams\Teams_GetList.sql" />
+    <Build Include="dbo\Stored Procedures\Users\User_Authenticate.sql" />
+    <Build Include="dbo\Stored Procedures\Teams\Team_Get.sql" />
+    <Build Include="dbo\Stored Procedures\Cards\Card_Create.sql" />
+    <Build Include="dbo\Sequences\SequenceCards.sql" />
+    <Build Include="dbo\Stored Procedures\Cards\Card_GetDetails.sql" />
+    <Build Include="dbo\Views\View_CardMembers.sql" />
+    <Build Include="dbo\Views\View_CardComments.sql" />
+    <Build Include="dbo\Views\View_LogBoard.sql" />
+    <Build Include="dbo\Stored Procedures\Cards\Card_Archive.sql" />
+    <Build Include="dbo\Stored Procedures\Cards\Card_Restore.sql" />
+    <Build Include="dbo\Stored Procedures\Cards\Cards_GetList.sql" />
+    <Build Include="dbo\Tables\Lists.sql" />
+    <Build Include="dbo\Stored Procedures\Lists\List_Create.sql" />
+    <Build Include="dbo\Sequences\SequenceLists.sql" />
+    <Build Include="dbo\Stored Procedures\Lists\Lists_GetList.sql" />
+    <Build Include="dbo\Stored Procedures\Boards\Board_Create.sql" />
+    <Build Include="dbo\Sequences\SequenceBoards.sql" />
+    <Build Include="dbo\Stored Procedures\Boards\Board_Archive.sql" />
+    <Build Include="dbo\Stored Procedures\Boards\Board_Restore.sql" />
+    <Build Include="dbo\Stored Procedures\Boards\Board_GetDetails.sql" />
+    <Build Include="dbo\Tables\BoardMembers.sql" />
+    <Build Include="dbo\Views\View_BoardMembers.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <RefactorLog Include="Sql.refactorlog" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Sql.publish.xml" />
   </ItemGroup>
 </Project>

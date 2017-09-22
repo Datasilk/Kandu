@@ -1,0 +1,36 @@
+﻿
+@{
+    ViewData["Title"] = "Log In";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style type="text/css">
+    .section.login {
+        max-width: 320px; margin:0 auto;
+    }
+</style>
+<div class="row pad-top-xl">
+    <div class="section login pad center">
+        <form method="post">
+            <div class="row pad-bottom text-center">
+                <img src="~/images/logo-xs.png" />
+            </div>
+            <div class="row hover">
+                <div class="col field">email</div>
+                <div class="col input">
+                    <input type="text" id="email" />
+                </div>
+            </div>
+            <div class="row hover">
+                <div class="col field">password</div>
+                <div class="col input">
+                    <input type="password" id="password" />
+                </div>
+            </div>
+            <div class="row align-right pad-top">
+                <input type="submit" class="button" value="Log In" />
+            </div>
+        </form>
+    </div>
+</div>
+
