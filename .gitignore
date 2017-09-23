@@ -6,7 +6,6 @@
 *.user
 *.sln.docstates
 
-/App/config.json
 /App/wwwroot/css/
 /App/wwwroot/js/
 /App/wwwroot/content/themes/default/

@@ -6,11 +6,11 @@
 
 <style type="text/css">
     .section.login {
-        max-width: 320px; margin:0 auto;
+        padding:70px 100px; max-width:320px; margin:0 auto;
     }
 </style>
 <div class="row pad-top-xl">
-    <div class="section login pad center">
+    <div class="section login center">
         <form method="post">
             <div class="row pad-bottom text-center">
                 <img src="~/images/logo-xs.png" />
@@ -33,4 +33,6 @@
         </form>
     </div>
 </div>
-
+@section scripts{ 
+    <script language="javascript" src="~/js/views/login/login.js"></script>
+}

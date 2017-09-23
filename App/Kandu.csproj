@@ -27,7 +27,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Scripts\core\" />
     <Folder Include="Scripts\platform\" />
   </ItemGroup>
 

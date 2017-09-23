@@ -1,0 +1,38 @@
+﻿
+@{
+    ViewData["Title"] = "ResetPass";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style type="text/css">
+    .section.login {
+        max-width: 330px;
+    }
+</style>
+<div class="row pad-top-xl">
+    <div class="section login pad center">
+        <form method="post">
+            <div class="row">
+                <div class="col title pad-bottom">Reset Password</div>
+            </div>
+            <div class="row message hide"><span></span></div>
+            <div class="row">
+                <div class="col field long">New Password</div>
+                <div class="col input">
+                    <input type="password" id="password" />
+                </div>
+            </div>
+            <div class="row">
+                <div class="col field long">Confirm Password</div>
+                <div class="col input">
+                    <input type="password" id="password2" />
+                </div>
+            </div>
+            <div class="row pad-top">
+                <div class="col right buttons">
+                    <input type="submit" class="button apply" value="Save Password" />
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
