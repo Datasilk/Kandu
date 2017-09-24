@@ -79,7 +79,7 @@ namespace Kandu.Query
 
         public bool HasPasswords()
         {
-            return Sql.ExecuteScalar<bool>("Users_HasPasswords");
+            return Sql.ExecuteScalar<int>("Users_HasPasswords") == 1;
         }
     }
 }

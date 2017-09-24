@@ -7,7 +7,13 @@ namespace Kandu.Controllers
     {
         public IActionResult Index()
         {
-            return View();
+            var S = new Core(null, HttpContext);
+
+            if (S.Server.environment == Server.enumEnvironment.development && S.Server.resetPass == true)
+            {
+
+            }
+                return View();
         }
     }
 }
