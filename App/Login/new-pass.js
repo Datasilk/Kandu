@@ -1,6 +1,6 @@
 ﻿S.login = {
     watchPass: function (e) {
-
+        
     },
 
     savePass: function () {
@@ -15,7 +15,7 @@
             return;
         }
         if (pass != pass2) {
-            S.message.show(msg, 'error', 'Your passwords do not match');
+            S.message.show(msg, 'error', 'Your passwords do not match'); 
             return;
         }
         if (pass.length < 8) {
@@ -29,7 +29,7 @@
         //send new password to server
         S.ajax.post('User/SaveAdminPassword', { password: pass }, function (data) {
             //callback, replace form with message
-            if (data == 'success') {
+            if (data == 'success') { 
                 //show success message
                 window.location.reload();
             } else {
@@ -40,7 +40,7 @@
     },
 
     validatePass: function (pass, pass2) {
-
+        
     }
 }
 

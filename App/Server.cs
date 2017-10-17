@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.IO;
 
 namespace Kandu
@@ -30,7 +31,8 @@ namespace Kandu
         public string sqlActive = "";
         public string sqlConnection = "";
         public Random Random = new Random();
-        public bool resetPass = false;
+        public bool resetPass = false; //empty or comprimised database?
+        public bool hasAdmin = false; //admin account exists in database?
         public int bcrypt_workfactor = 10;
         private string _path = "";
 
@@ -52,11 +54,8 @@ namespace Kandu
         public void Up()
         {
             var query = new Query.Users(sqlConnection);
-            var haspass = query.HasPasswords();
-            if(haspass == true)
-            {
-                resetPass = true;
-            }
+            resetPass = !query.HasPasswords();
+            hasAdmin = query.HasAdmin();
         }
 
         #region "System.UI.Web.Page.Server methods"

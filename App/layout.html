@@ -1,24 +1,22 @@
 ﻿<!DOCTYPE html>
 <html xmlns="http:/www.w3.org/1999/xhtml">
 <head>
-    <title>@ViewData["Title"] - Kandu</title>
-    <meta name="description" content="@ViewData["Description"]" />
+    <title>{{title}}</title>
+    <meta name="description" content="{{description}}"/>
 
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,width=device-width,height=device-height,user-scalable=yes" />
 
     <link type="text/css" rel="stylesheet" href="/css/platform.css" />
-    <link type="text/css" rel="stylesheet" href="/css/themes/default.css" id="colorsCss" />
-    <link rel="icon" type="image/ico" href="favion.ico" />
-    @RenderSection("Head", required: false)
+    {{head-css}}
+    <link type="text/css" rel="stylesheet" href="{{colors-css}}" id="colorsCss" />
+    <link rel="icon" type="image/ico" href="{{favicon}}" />
 </head>
-<body class="box">
-    <div class="svgicons">@ViewData["SvgIcons"]</div>
+<body class="box"> 
+    <div class="svgicons">{{svg-icons}}</div>
     <div class="bg for-popup hide"></div>
-
-    @RenderBody()
-
+    {{body}}
     <script type="text/html" id="template_popup_close">
         <div class="col icon small btn-close">
             <a href="javascript:">
@@ -28,8 +26,7 @@
             </a>
         </div>
     </script>
-
     <script src="/js/platform.js"></script>
-    @RenderSection("Scripts", required: false)
+    {{scripts}}
 </body>
 </html>

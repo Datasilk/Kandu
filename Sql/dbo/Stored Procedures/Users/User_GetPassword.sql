@@ -1,4 +1,4 @@
 ﻿CREATE PROCEDURE [dbo].[User_GetPassword]
-	@userId int
+	@email nvarchar(100)
 AS
-	SELECT [password] FROM Users WHERE userId=@userId
+	SELECT [password] FROM Users WHERE email=@email

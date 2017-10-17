@@ -113,6 +113,9 @@
     <Build Include="dbo\Stored Procedures\Boards\Board_GetDetails.sql" />
     <Build Include="dbo\Tables\BoardMembers.sql" />
     <Build Include="dbo\Views\View_BoardMembers.sql" />
+    <Build Include="dbo\Stored Procedures\Users\Users_HasAdmin.sql" />
+    <None Include="utility\resetdb.sql" />
+    <Build Include="dbo\Stored Procedures\Users\User_UpdateLastBoard.sql" />
   </ItemGroup>
   <ItemGroup>
     <RefactorLog Include="Sql.refactorlog" />

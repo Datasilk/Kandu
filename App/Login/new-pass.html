@@ -1,29 +1,28 @@
-﻿
-@{
-    ViewData["Title"] = "ResetPass";
-    Layout = "~/Views/Shared/_Layout.cshtml";
-}
-
-<style type="text/css">
+﻿<style type="text/css">
     .section.login {
-        max-width: 330px;
+        max-width: 350px;
     }
+    .login .col.title{font-size:22px;}
 </style>
 <div class="row pad-top-xl">
     <div class="section login pad center">
         <form method="post">
-            <div class="row">
-                <div class="col title pad-bottom">Reset Password</div>
+            <div class="row text-center pad-height">
+                <img src="/images/logo-xs.png" />
+            </div>
+
+            <div class="row pad-top">
+                <div class="col title pad-bottom">{{title}}</div>
             </div>
             <div class="row message hide"><span></span></div>
-            <div class="row">
+            <div class="row hover">
                 <div class="col field long">New Password</div>
                 <div class="col input">
                     <input type="password" id="password" />
                 </div>
             </div>
-            <div class="row">
-                <div class="col field long">Confirm Password</div>
+            <div class="row hover">
+                <div class="col field long">Confirm</div>
                 <div class="col input">
                     <input type="password" id="password2" />
                 </div>

@@ -81,5 +81,10 @@ namespace Kandu.Query
         {
             return Sql.ExecuteScalar<int>("Users_HasPasswords") == 1;
         }
+
+        public bool HasAdmin()
+        {
+            return Sql.ExecuteScalar<int>("Users_HasAdmin") == 1;
+        }
     }
 }

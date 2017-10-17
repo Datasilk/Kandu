@@ -1,20 +1,13 @@
-﻿
-@{
-    ViewData["Title"] = "Log In";
-    Layout = "~/Views/Shared/_Layout.cshtml";
-}
-
-<style type="text/css">
-    .section.login {
-        padding:70px 100px; max-width:320px; margin:0 auto;
-    }
+﻿<style type="text/css">
+    .section.login{max-width:320px;}
 </style>
 <div class="row pad-top-xl">
-    <div class="section login center">
+    <div class="section login pad center">
         <form method="post">
-            <div class="row pad-bottom text-center">
-                <img src="~/images/logo-xs.png" />
+            <div class="row pad-height">
+                <img src="/images/logo-xs.png" />
             </div>
+            <div class="row message hide"><span></span></div>
             <div class="row hover">
                 <div class="col field">email</div>
                 <div class="col input">
@@ -33,6 +26,3 @@
         </form>
     </div>
 </div>
-@section scripts{ 
-    <script language="javascript" src="~/js/views/login/login.js"></script>
-}
