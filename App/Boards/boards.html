@@ -1,0 +1,70 @@
+﻿<div class="boards">
+    {{list}}
+    <div class="board create-new">
+        <div class="title">Create A New Board</div>
+        <div class="add-icon">+</div>
+    </div>
+</div>
+
+<script type="text/html" id="template_newboard">
+    <div class="board-form">
+        <div class="row message hide"><span></span></div>
+        <div class="row hover">
+            <div class="col field long">Board Name</div>
+            <div class="col input"><input type="text" id="boardname" placeholder="Weekend Project" /></div>
+            <div class="col input pad-left-sm">
+                <div class="color-input" title="Board Color" style="background-color:#color#" onclick="S.boards.colorPicker.show()"></div>
+            </div>
+        </div>
+        <div class="row hover">
+            <div class="col field long">Team</div>
+            <div class="col input">
+                <select id="boardteam">#team-options#</select>
+            </div>
+            <div class="col right icon btn-add pad-top-sm pad-right">
+                <a href="javascript:" onclick="S.teams.add.show()" title="Create a new Team">
+                    <svg viewBox="0 0 32 32">
+                        <use xlink:href="#icon-addsmall" x="0" y="0" width="32" height="32"></use>
+                    </svg>
+                </a>
+            </div>
+        </div>
+        <div class="row pad-top text-center">
+            <a href="#" class="button apply" onclick="S.boards.add.submit()">Create Board</a>
+            <a href="#" class="button cancel" onclick="S.teams.add.hide()">Cancel</a>
+        </div>
+    </div>
+    <div class="color-picker" style="display:none;">
+        <div class="row pad-left pad-bottom"><h5>Select a color for your new board</h5></div>
+        <div class="color" style="background-color:#f8ba3d"></div>
+        <div class="color" style="background-color:#ffee03"></div>
+        <div class="color" style="background-color:#41e255"></div>
+        <div class="color" style="background-color:#1bdbc0"></div>
+        <div class="color" style="background-color:#33CCFF"></div>
+        <div class="color" style="background-color:#3399FF"></div>
+        <div class="color" style="background-color:#fe6133"></div>
+        <div class="color" style="background-color:#FF99FF"></div>
+        <div class="color" style="background-color:#b25ff3"></div>
+        <div class="color" style="background-color:#6c57f3"></div>
+        <div class="color" style="background-color:#9f9f9f"></div>
+        <div class="color" style="background-color:#272727"></div>
+        <div class="row text-center pad-top clear">
+            <a href="#" class="button cancel" onclick="S.boards.colorPicker.hide()">Cancel</a>
+        </div>
+    </div>
+    <div class="team-form" style="display:none;">
+        <div class="row message hide"><span></span></div>
+        <div class="row margin-bottom">
+            <div class="row field long">Team Name</div>
+            <div class="row hover input"><input type="text" id="teamname" placeholder="Team Alpha" /></div>
+        </div>
+        <div class="row">
+            <div class="row field long">Description</div>
+            <div class="row hover input long"><textarea id="description" placeholder="describe your team" cols="3"></textarea></div>
+        </div>
+        <div class="row pad-top text-center">
+            <a href="#" class="button apply" onclick="S.teams.add.submit()">Create Team</a>
+            <a href="#" class="button cancel" onclick="S.boards.add.show()">Cancel</a>
+        </div>
+    </div>
+</script>

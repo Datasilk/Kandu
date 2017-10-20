@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Kandu.Query
 {
-    class Teams : QuerySql
+    public class Teams : QuerySql
     {
         public Teams(string connectionString) : base(connectionString)
         {

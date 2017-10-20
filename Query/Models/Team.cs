@@ -2,7 +2,7 @@
 
 namespace Kandu.Query.Models
 {
-    class Team
+    public class Team
     {
         public int teamId { get; set; }
         public int ownerId { get; set; }

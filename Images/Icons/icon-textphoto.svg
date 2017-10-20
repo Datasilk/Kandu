@@ -1,0 +1,32 @@
+
+<svg xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" preserveAspectRatio="none" x="0px" y="0px" width="32px" height="32px" viewBox="0 0 32 32">
+<defs>
+<g id="iconTextPhoto_0_Layer1_0_FILL">
+<path fill="#FFFFFF" fill-opacity="0" stroke="none" d="
+M 32 0
+L 0 0 0 32 32 32 32 0 Z"/>
+</g>
+
+<g id="iconTextPhoto_0_Layer0_0_FILL">
+<path fill="#FFFFFF" stroke="none" d="
+M 30 4.6
+L 28.4 2.95 3.85 2.95 2 4.7 2 27.25 3.85 28.95 28.4 28.95 30 27.35 30 4.6
+M 27 26
+L 5 26 5 6 27 6 27 26
+M 25 22.1
+L 21.4 18.55 19 21 12 15 7 20 7 24 25 24 25 22.1
+M 20.45 15.35
+Q 21 14.8 21 13.95 21 13.15 20.45 12.6 19.85 12 19.05 12 18.25 12 17.65 12.6 17 13.15 17 13.95 17 14.8 17.65 15.35 18.25 16 19.05 16 19.85 16 20.45 15.35 Z"/>
+</g>
+</defs>
+
+<g transform="matrix( 1, 0, 0, 1, 0,0) ">
+<g transform="matrix( 1, 0, 0, 1, 0,0) ">
+<use xlink:href="#iconTextPhoto_0_Layer1_0_FILL"/>
+</g>
+
+<g transform="matrix( 1, 0, 0, 1, 0,0) ">
+<use xlink:href="#iconTextPhoto_0_Layer0_0_FILL"/>
+</g>
+</g>
+</svg>

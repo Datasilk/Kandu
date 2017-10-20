@@ -19,5 +19,5 @@
             }
         });
     }
-}
+};
 $('.login form').on('submit', function (e) { S.login.submit(); e.preventDefault(); return false; });

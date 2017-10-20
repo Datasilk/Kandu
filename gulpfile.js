@@ -52,6 +52,7 @@ paths.working = {
 
     less:{
         platform: paths.css + 'platform.less',
+        board: paths.css + 'board.less',
         app: [
             paths.app + '**/*.less'
         ],
@@ -171,6 +172,13 @@ gulp.task('less:platform', function () {
     return p.pipe(gulp.dest(paths.compiled.css, { overwrite: true }));
 });
 
+gulp.task('less:board', function () {
+    var p = gulp.src(paths.working.less.board)
+        .pipe(less());
+    if (prod == true) { p = p.pipe(cleancss({ compatibility: 'ie8' })); }
+    return p.pipe(gulp.dest(paths.compiled.css, { overwrite: true }));
+});
+
 gulp.task('less:themes', function () {
     var p = gulp.src(paths.working.less.themes)
         .pipe(less());
@@ -206,6 +214,7 @@ gulp.task('less', function () {
     gulp.start('less:platform');
     gulp.start('less:app');
     gulp.start('less:themes');
+    gulp.start('less:board');
 });
 
 gulp.task('css', function () {
@@ -236,12 +245,6 @@ gulp.task('watch', function () {
     pathjs.unshift(paths.working.js.app);
     gulp.watch(pathjs, ['js:app']);
 
-    //watch platform LESS
-    gulp.watch([
-        paths.working.less.platform,
-        paths.working.less.tapestry
-    ], ['less:platform']);
-
     //watch app LESS
     var pathless = paths.working.exclude.app.slice(0);
     for (var x = 0; x < pathless.length; x++) {
@@ -251,6 +254,17 @@ gulp.task('watch', function () {
         pathless.unshift(paths.working.less.app[x]);
     }
     gulp.watch(pathless, ['less:app']);
+
+    //watch platform LESS
+    gulp.watch([
+        paths.working.less.platform,
+        paths.working.less.tapestry
+    ], ['less:platform']);
+
+    //watch board LESS
+    gulp.watch([
+        paths.working.less.board
+    ], ['less:board']);
 
     //watch themes LESS
     gulp.watch([

@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Kandu.Query
 {
-    class Cards : QuerySql
+    public class Cards : QuerySql
     {
         public Cards(string connectionString) : base(connectionString)
         {

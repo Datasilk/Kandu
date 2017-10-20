@@ -10,3 +10,5 @@ AS
 
 	INSERT INTO Cards (cardId, listId, boardId, color, [name], datecreated, datedue, [description])
 	VALUES (@id, @listId, @boardId, @color, @name, GETDATE(), @datedue, @description)
+
+	EXEC Board_Modified @boardId=@boardId

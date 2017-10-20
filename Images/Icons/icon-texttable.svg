@@ -1,0 +1,40 @@
+
+<svg xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" preserveAspectRatio="none" x="0px" y="0px" width="32px" height="32px" viewBox="0 0 32 32">
+<defs>
+<g id="iconTextTable_0_Layer2_0_FILL">
+<path fill="#FFFFFF" fill-opacity="0" stroke="none" d="
+M 0 0
+L 0 32 32 32 32 0 0 0 Z"/>
+</g>
+
+<g id="iconTextTable_0_Layer1_0_FILL">
+<path fill="#FFFFFF" stroke="none" d="
+M 30 4.6
+L 28.4 2.95 3.85 2.95 2 4.7 2 27.25 3.85 28.95 28.4 28.95 30 27.35 30 4.6
+M 5 6
+L 27 6 27 26 5 26 5 6 Z"/>
+</g>
+
+<g id="iconTextTable_0_Layer0_0_FILL">
+<path fill="#FFFFFF" stroke="none" d="
+M 27 11
+L 21 11 21 6 19 6 19 11 13 11 13 6 11 6 11 11 5 11 5 13 11 13 11 19 5 19 5 21 11 21 11 27 13 27 13 21 19 21 19 26 21 26 21 21 27 21 27 19 21 19 21 13 27 13 27 11
+M 13 13
+L 19 13 19 19 13 19 13 13 Z"/>
+</g>
+</defs>
+
+<g transform="matrix( 1, 0, 0, 1, 0,0) ">
+<g transform="matrix( 1, 0, 0, 1, 0,0) ">
+<use xlink:href="#iconTextTable_0_Layer2_0_FILL"/>
+</g>
+
+<g transform="matrix( 1, 0, 0, 1, 0,0) ">
+<use xlink:href="#iconTextTable_0_Layer1_0_FILL"/>
+</g>
+
+<g transform="matrix( 1, 0, 0, 1, 0,0) ">
+<use xlink:href="#iconTextTable_0_Layer0_0_FILL"/>
+</g>
+</g>
+</svg>

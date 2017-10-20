@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Kandu.Query.Models
 {
-    class Card
+    public class Card
     {
         public int cardId { get; set; }
         public int listId { get; set; }

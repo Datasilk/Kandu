@@ -1,0 +1,30 @@
+
+<svg xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" preserveAspectRatio="none" x="0px" y="0px" width="32px" height="32px" viewBox="0 0 32 32">
+<defs>
+<g id="iconHistory_0_Layer1_0_FILL">
+<path fill="#FFFFFF" stroke="none" d="
+M 28 14
+Q 28 8.2 23.9 4.1 19.8 0 14 0 8.2 0 4.1 4.1 0 8.2 0 14 0 19.8 4.1 23.9 8.2 28 14 28 19.8 28 23.9 23.9 28 19.8 28 14
+M 26 14
+Q 26 18.95 22.45 22.45 18.95 26 14 26 9.05 26 5.5 22.45 2 18.95 2 14 2 9.05 5.5 5.5 9.05 2 14 2 18.95 2 22.45 5.5 26 9.05 26 14
+M 15 5
+L 13 5 13 14 17.75 18.75 18.75 17.75 15 14 15 5 Z"/>
+</g>
+
+<g id="iconHistory_0_Layer0_0_FILL">
+<path fill="#FFFFFF" fill-opacity="0" stroke="none" d="
+M 30 -2
+L -2 -2 -2 30 30 30 30 -2 Z"/>
+</g>
+</defs>
+
+<g transform="matrix( 1, 0, 0, 1, 2,2) ">
+<g transform="matrix( 1, 0, 0, 1, 0,0) ">
+<use xlink:href="#iconHistory_0_Layer1_0_FILL"/>
+</g>
+
+<g transform="matrix( 1, 0, 0, 1, 0,0) ">
+<use xlink:href="#iconHistory_0_Layer0_0_FILL"/>
+</g>
+</g>
+</svg>

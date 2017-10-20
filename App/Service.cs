@@ -13,5 +13,19 @@ namespace Kandu
             S = KanduCore;
         }
 
+        public string AccessDenied()
+        {
+            return "access denied";
+        }
+
+        public string Success()
+        {
+            return "success";
+        }
+
+        public string Error()
+        {
+            return "error";
+        }
     }
 }

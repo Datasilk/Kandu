@@ -18,5 +18,9 @@
             el.css({ opacity: 1, height:'auto' }).show();
         }
         
+    },
+
+    error: {
+        generic:'An error has occurred. Please contact support.'
     }
 }

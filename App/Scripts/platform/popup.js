@@ -39,7 +39,7 @@
         var htm = '<div class="row">';
 
         if (title != '') {
-            htm += '<div class="col pad"><h6>' + title + '</h6></div>';
+            htm += '<div class="col pad"><h4>' + title + '</h4></div>';
         }
         if (opts.close == true) {
             //add close button to top of page

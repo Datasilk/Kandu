@@ -9,4 +9,6 @@ AS
 	INSERT INTO Teams (teamId, ownerId, [security], [name], datecreated, website, [description])
 	VALUES (@id, @ownerId, @security, @name, GETDATE(), @website, @description)
 
+	INSERT INTO TeamMembers (userId, teamId) VALUES (@ownerId, @id)
+
 	SELECT @id

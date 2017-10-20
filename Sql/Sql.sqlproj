@@ -116,6 +116,8 @@
     <Build Include="dbo\Stored Procedures\Users\Users_HasAdmin.sql" />
     <None Include="utility\resetdb.sql" />
     <Build Include="dbo\Stored Procedures\Users\User_UpdateLastBoard.sql" />
+    <Build Include="dbo\Stored Procedures\Boards\Boards_GetList.sql" />
+    <Build Include="dbo\Stored Procedures\Boards\Board_Modified.sql" />
   </ItemGroup>
   <ItemGroup>
     <RefactorLog Include="Sql.refactorlog" />

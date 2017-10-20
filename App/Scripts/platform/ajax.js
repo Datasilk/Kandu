@@ -2,7 +2,7 @@
     //class used to make simple web service posts to the server
     expire: new Date(), queue: [],
 
-    post: function (url, data, callback, error) {
+    post: function (url, data, callback, error, json) {
         this.expire = new Date();
         S.events.ajax.start();
         var d = data;
@@ -19,6 +19,7 @@
                 S.ajax.runQueue();
             }
         }
+        if (json == true) { options.dataType = 'json'; }
         S.ajax.queue.push(options);
         if (S.ajax.queue.length == 1) {
             $.ajax(options);

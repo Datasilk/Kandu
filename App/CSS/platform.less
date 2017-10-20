@@ -5,24 +5,16 @@ body{display:flex; width:100%; position:relative; overflow-x:hidden;}
 body > .bg{background-color:rgba(0,0,0,0.5); position:absolute; top:0; right:0; bottom:0; left:0; z-index:7777;}
 .for-popup{
     & > .popup{
-        position:relative; min-width:200px; z-index:5000; max-height:100%; overflow-y:auto; overflow-x:hidden;
+        position:relative; min-width:200px; z-index:5000; max-height:100%; overflow-y:auto; overflow-x:hidden; padding:20px 50px 30px 50px;
         &.center{margin:0 auto;}
         &.right{right:0;}
-        .btn-close{position:absolute; right:15px; top:15px; z-index:5010;}
+        .btn-close{position:absolute; right:-25px; top:10px; z-index:5010;}
     }
 }
+.input.long{width:100%;}
 .svgicons{display:none;}
 .loader{margin:0 auto; width:48px; height:48px; box-sizing:border-box;}
-.hide-submit{position:absolute; left:-10000px;}
-
-/* text styling */
-.linethru{text-decoration:line-through;}
-.number-list{list-style-type:decimal;}
-.c-textbox pre{display:inline; font-family: inherit;}
-.outdent{text-indent:-10px;}
-.indent > div{text-indent:0}
-.indent > div:nth-child(1){text-indent:15px}
-.indent{text-indent:15px}
 .align-left{text-align:left; display:inline-block;}
 .align-center{text-align:center; display:inline-block;}
 .align-right{text-align:right; display:inline-block;}
+.clear{clear:both;}

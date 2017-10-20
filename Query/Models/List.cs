@@ -2,7 +2,7 @@
 
 namespace Kandu.Query.Models
 {
-    class List
+    public class List
     {
         public int listId { get; set; }
         public int boardId { get; set; }
