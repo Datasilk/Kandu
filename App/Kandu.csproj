@@ -27,4 +27,8 @@
     <ProjectReference Include="..\Query\Query.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Lists\Gallery\" />
+  </ItemGroup>
+
 </Project>

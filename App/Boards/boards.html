@@ -2,7 +2,11 @@
     {{list}}
     <div class="board create-new">
         <div class="title">Create A New Board</div>
-        <div class="add-icon">+</div>
+        <div class="add-icon">
+            <svg viewBox="0 0 32 32">
+                <use xlink:href="#icon-addsmall" x="0" y="0" width="32" height="32"></use>
+            </svg>
+        </div>
     </div>
 </div>
 
@@ -30,8 +34,8 @@
             </div>
         </div>
         <div class="row pad-top text-center">
-            <a href="#" class="button apply" onclick="S.boards.add.submit()">Create Board</a>
-            <a href="#" class="button cancel" onclick="S.teams.add.hide()">Cancel</a>
+            <a href="#" class="button apply" onclick="#submit-click#">#submit-label#</a>
+            <a href="#" class="button cancel" onclick="S.popup.hide()">Cancel</a>
         </div>
     </div>
     <div class="color-picker" style="display:none;">

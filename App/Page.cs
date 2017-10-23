@@ -1,4 +1,8 @@
-﻿namespace Kandu
+﻿using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+
+namespace Kandu
 {
     public class Page
     {
@@ -18,7 +22,7 @@
             svgIcons = S.Server.LoadFileFromCache("/content/themes/default/icons.svg");
         }
 
-        public virtual string Render(string[] path, string body = "")
+        public virtual string Render(string[] path, string body = "", object metadata = null)
         {
             //renders HTML layout
             var scaffold = new Scaffold(S, "/layout.html");

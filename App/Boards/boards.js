@@ -1,8 +1,10 @@
 ﻿S.boards = {
     add: {
         data:{name:'',teamId:0, color:'FFCC66'},
-        show: function () {
+        show: function (e, id) {
             //get team list
+            var hasid = false;
+            if (id > 0) { hasid = true;}
             S.ajax.post('Teams/List', {}, function (data) {
                 var scaffold = new S.scaffold(
                     $('#template_newboard').html()
@@ -11,21 +13,38 @@
                             return '<option value="' + a.teamId + '">' + a.name + '</option>';
                         }).join(''))
                         .replace('#color#', '#0094ff')
+                        .replace('#submit-label#', !hasid ? 'Create Board' : 'Update Board')
+                        .replace('#submit-click#', !hasid ? 'S.boards.add.submit()' : 'S.boards.add.submit(\'' + id + '\')')
                     , {});
-                S.popup.show('Create A New Board', scaffold.render(), { width: 380 });
+                S.popup.show(!hasid ? 'Create A New Board' : 'Edit Board Settings', scaffold.render(), { width: 380 });
+
+                //load board details if id is supplied
+                if (hasid) {
+                    S.ajax.post('Boards/Details', { boardId: id }, function (data) {
+                        $('#boardname').val(data.board.name);
+                        $('.popup .color-input').css({ 'background-color': data.board.color });
+                        $('#boardteam').val(data.board.teamId);
+                    }, null, true);
+                }
             }, null, true);
+            if (e) { e.cancelBubble = true;}
+            return false;
         },
 
-        submit: function () {
+        submit: function (id) {
+            var hasid = false;
             var name = $('#boardname').val();
             var color = S.util.color.rgbToHex($('.popup .color-input').css('background-color')).replace('#','');
             var team = $('#boardteam').val();
             var msg = $('.popup .message');
+            if (id > 0) { hasid = true;}
             if (name == '' || name == null) {
                 S.message.show(msg, 'error', 'Please specify a board name');
                 return;
             }
-            S.ajax.post('Boards/Create', { name: name, color: color, teamId: team },
+            var form = { name: name, color: color, teamId: team };
+            if (hasid) { form.boardId = id;}
+            S.ajax.post(hasid ? 'Boards/Update' : 'Boards/Create', form,
                 function (data) {
                     if (data == 'success') {
                         window.location.reload();

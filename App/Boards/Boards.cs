@@ -8,7 +8,7 @@ namespace Kandu.Pages
         {
         }
 
-        public override string Render(string[] path, string body = "")
+        public override string Render(string[] path, string body = "", object metadata = null)
         {
             if(S.User.userId == 0)
             {
@@ -18,7 +18,6 @@ namespace Kandu.Pages
             }
             //load boards list
             var scaffold = new Scaffold(S, "/Boards/boards.html");
-            scripts += "<script src=\"/js/boards/boards.js\"></script>";
 
             var query = new Query.Boards(S.Server.sqlConnection);
             var boards = query.GetList(S.User.userId);
@@ -29,6 +28,9 @@ namespace Kandu.Pages
                 item.Data["name"] = b.name;
                 item.Data["color"] = "#" + b.color;
                 item.Data["extra"] = b.favorite ? "fav" : "";
+                item.Data["id"] = b.boardId.ToString();
+                item.Data["type"] = b.type.ToString();
+                item.Data["url"] = S.Util.Str.UrlEncode("/board/" + b.boardId + "/" + b.name.Replace(" ", "-").ToLower());
                 html.Append(item.Render());
             });
             scaffold.Data["list"] = html.ToString();
@@ -43,8 +45,11 @@ namespace Kandu.Pages
             });
             scaffold.Data["team-options"] = html.ToString();
 
-            headCss += "<link type=\"text/css\" rel=\"stylesheet\" href=\"/css/board.css\">";
+            //load page resources
+            scripts += "<script src=\"/js/boards/boards.js\"></script>";
+            headCss += "<link type=\"text/css\" rel=\"stylesheet\" href=\"/css/boards/boards.css\">";
             
+            //render page
             return base.Render(path, scaffold.Render());
         }
     }

@@ -6,7 +6,7 @@
         {
         }
 
-        public override string Render(string[] path, string body = "")
+        public override string Render(string[] path, string body = "", object metadata = null)
         {
             if(S.User.userId > 0)
             {
