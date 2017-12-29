@@ -216,6 +216,7 @@ gulp.task('less:platform', function () {
 
 gulp.task('less:themes', function () {
     var p = gulp.src(paths.working.less.themes)
+<<<<<<< HEAD
         .pipe(less());
     if (prod == true) { p = p.pipe(cleancss({ compatibility: 'ie8' })); }
     return p.pipe(gulp.dest(paths.compiled.css + 'themes', { overwrite: true }));
@@ -223,6 +224,8 @@ gulp.task('less:themes', function () {
 
 gulp.task('less:utility', function () {
     var p = gulp.src(paths.working.less.utility)
+=======
+>>>>>>> f74fc86663b2d9edd7b58c4d62417a8ccf3f290b
         .pipe(less());
     if (prod == true) { p = p.pipe(cleancss({ compatibility: 'ie8' })); }
     return p.pipe(gulp.dest(paths.compiled.css + 'themes', { overwrite: true }));
@@ -275,8 +278,11 @@ gulp.task('less', function () {
     gulp.start('less:platform');
     gulp.start('less:app');
     gulp.start('less:themes');
+<<<<<<< HEAD
     gulp.start('less:utility');
     gulp.start('less:dashboard');
+=======
+>>>>>>> f74fc86663b2d9edd7b58c4d62417a8ccf3f290b
 });
 
 gulp.task('css', function () {

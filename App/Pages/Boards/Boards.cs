@@ -48,7 +48,6 @@ namespace Kandu.Pages
             //load page resources
             scripts += "<script src=\"/js/pages/boards/boards.js\"></script>";
             headCss += "<link type=\"text/css\" rel=\"stylesheet\" href=\"/css/pages/boards/boards.css\">";
-            
             //render page
             return base.Render(path, scaffold.Render());
         }
