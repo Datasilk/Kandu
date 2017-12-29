@@ -1,0 +1,14 @@
+﻿<div class="board {{extra}}" onclick="window.location.href='{{url}}'" style="background-color:{{color}}">
+    {{favorite}}
+    <div class="favorite"></div>
+    {{/favorite}}
+    <div class="label" style="background-color:{{color}}"></div>
+    <a href="{{url}}" class="title">{{name}}</a>
+    <div class="options icon hover-only">
+        <a href="javascript:" onclick="S.boards.add.show(event, {{id}});" title="Board Options">
+            <svg viewBox="0 0 32 32">
+                <use xlink:href="#icon-options" x="0" y="0" width="32" height="32"></use>
+            </svg>
+        </a>
+    </div>
+</div>

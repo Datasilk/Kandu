@@ -1,14 +1,18 @@
 ﻿@import "tapestry/tapestry.less";
+@import "themes/default.less";
 
 html{display:flex; min-height:100%;}
-body{display:flex; width:100%; position:relative; overflow-x:hidden;}
+body{width:100%; position:relative; overflow-x:hidden;}
+
+*{box-sizing:border-box;}
+
 body > .bg{background-color:rgba(0,0,0,0.5); position:absolute; top:0; right:0; bottom:0; left:0; z-index:7777;}
 .for-popup{
     & > .popup{
-        position:relative; min-width:200px; z-index:5000; max-height:100%; overflow-y:auto; overflow-x:hidden; padding:20px 50px 30px 50px;
+        position:relative; min-width:200px; z-index:5000; max-height:100%; overflow-y:auto; overflow-x:hidden; padding:20px 20px 30px 20px;
         &.center{margin:0 auto;}
         &.right{right:0;}
-        .btn-close{position:absolute; right:-25px; top:10px; z-index:5010;}
+        .btn-close{position:absolute; right:0px; top:10px; z-index:5010;}
     }
 }
 .input.long{width:100%;}
@@ -18,3 +22,42 @@ body > .bg{background-color:rgba(0,0,0,0.5); position:absolute; top:0; right:0; 
 .align-center{text-align:center; display:inline-block;}
 .align-right{text-align:right; display:inline-block;}
 .clear{clear:both;}
+.content{display:block; max-width:1024px; margin:0 auto; padding:0 20px;}
+
+/* accordion */
+.accordion{padding-bottom:30px;
+    & > .title{padding:11px 15px; background-color:#dbdbdb; border-bottom:1px solid #cfcfcf; border-left: 4px solid #75bad4; font-size:17px; font-weight:bold; line-height:1; cursor:pointer; overflow:hidden; transition: max-height 0.3s, padding 0.3s;}
+    & > .title:hover{background-color:#acdae4; color:#0066a9; }
+    & > .title.expanded{background-color:#75bad4; color:#004476;}
+    & > .title.expanded:hover{background-color:#00b1ca;}
+    & > .title.hide{max-height:0; border-bottom-width:0; padding:0 15px;}
+    & > .box{background-color:#222; color:#aaa; max-height:0px; transition: max-height 0.3s, padding 0.3s; box-sizing:border-box; overflow:hidden;}
+    & > .white{background-color:#fff; color:#111;}
+    & > .box.expanded{padding:20px; max-height:800px; overflow:hidden;}
+    & > .box > .content{white-space:nowrap;}
+    & > .box a:link{color:#d83a8d;}
+    & > .box a:visited{color:#d83a8d;}
+    & > .box a:hover{color:#ff49a9;}
+    & > .box a:active{color:#ff49a9;}
+    & > .box .button{background-color:#9a9a9a !important; color:#fff !important; border-color:#9a9a9a !important; 
+                   background-image:-webkit-linear-gradient(#9a9a9a, #727272); background-image:linear-gradient(#9a9a9a, #727272);}
+    & > .box .button:hover{background-color:#b9b9b9 !important; color:#fff !important; border-color:#b9b9b9 !important; 
+                   background-image:-webkit-linear-gradient(#b9b9b9, #8d8d8d); background-image:linear-gradient(#b9b9b9, #8d8d8d);}
+    
+    & > .box .button.blue{background-color:#66abc8 !important; color:#fff !important; border-color:#66abc8 !important; 
+                   background-image:-webkit-linear-gradient(#66abc8, #3380a1); background-image:linear-gradient(#66abc8, #3380a1);}
+    & > .box .button.blue:hover{background-color:#79c4e4 !important; color:#fff !important; border-color:#79c4e4 !important; 
+                   background-image:-webkit-linear-gradient(#79c4e4, #138bbf); background-image:linear-gradient(#79c4e4, #138bbf);}
+    
+    & > .box .button.green{background-color:#29a091 !important; color:#fff !important; border-color:#30b7a6 !important; 
+                   background-image:-webkit-linear-gradient(#30b7a6, #198376); background-image:linear-gradient(#30b7a6, #198376);}
+    & > .box .button.green:hover{background-color:#29a091 !important; color:#fff !important; border-color:#05d8bd !important; 
+                   background-image:-webkit-linear-gradient(#05d8bd, #0c9c8a); background-image:linear-gradient(#05d8bd, #0c9c8a);}
+    
+    & > .box .button.outline{border:2px solid rgba(255,255,255,0.15) !important; color:rgba(255,255,255,0.25) !important; background-color:transparent !important; 
+                           background-image:none !important; font-size:24px; font-weight:300; padding:10px 50px;}
+    & > .box .button.outline:hover{border:2px solid rgba(255,255,255,0.3) !important; color:rgba(255,255,255,0.5) !important;}
+    
+    & > .menu{width:100%; max-height:0px; overflow:hidden; transition: max-height 0.3s;}
+    & > .menu.expanded{max-height:500px; overflow:hidden;}
+}

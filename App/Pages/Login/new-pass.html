@@ -1,0 +1,37 @@
+﻿<style type="text/css">
+    .section.login {
+        max-width: 350px;
+    }
+    .login .col.title{font-size:22px;}
+</style>
+<div class="row pad-top-xl">
+    <div class="section login pad-lg pad-width-xl center">
+        <form method="post">
+            <div class="row text-center pad-top pad-bottom-lg">
+                <img src="/images/logo-xs.png" />
+            </div>
+
+            <div class="row pad-top">
+                <div class="col title pad-bottom">{{title}}</div>
+            </div>
+            <div class="row message hide"><span></span></div>
+            <div class="row hover">
+                <div class="col field long">New Password</div>
+                <div class="col input">
+                    <input type="password" id="password" />
+                </div>
+            </div>
+            <div class="row hover">
+                <div class="col field long">Confirm</div>
+                <div class="col input">
+                    <input type="password" id="password2" />
+                </div>
+            </div>
+            <div class="row pad-top">
+                <div class="col right buttons">
+                    <input type="submit" class="button apply" value="Save Password" />
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

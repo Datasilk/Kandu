@@ -7,18 +7,16 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,width=device-width,height=device-height,user-scalable=yes" />
-
     <link type="text/css" rel="stylesheet" href="/css/platform.css" />
     {{head-css}}
-    <link type="text/css" rel="stylesheet" href="{{colors-css}}" id="colorsCss" />
     <link rel="icon" type="image/ico" href="{{favicon}}" />
 </head>
 <body class="box"> 
     <div class="svgicons">{{svg-icons}}</div>
-    <div class="bg for-popup hide"></div>
+    <div class="bg for-popup hide" onclick="S.popup.bg(event)"></div>
     {{body}}
     <script type="text/html" id="template_popup_close">
-        <div class="col icon btn-close">
+        <div class="col icon small btn-close">
             <a href="javascript:">
                 <svg viewBox="0 0 32 32">
                     <use xlink:href="#icon-close" x="0" y="0" width="32" height="32"></use>

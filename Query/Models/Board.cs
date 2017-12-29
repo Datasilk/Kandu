@@ -6,6 +6,7 @@ namespace Kandu.Query.Models
     {
         public int boardId { get; set; }
         public int teamId { get; set; }
+        public int type { get; set; }
         public bool favorite { get; set; }
         public bool archived { get; set; }
         public string name { get; set; }

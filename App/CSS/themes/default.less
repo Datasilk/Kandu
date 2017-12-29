@@ -1,22 +1,70 @@
 ﻿/* fonts */
-@import (css) url(https://fonts.googleapis.com/css?family=Jaldi:400,700);
+
+@font-face {
+  font-family: 'Open Sans';
+  font-style: italic;
+  font-weight: 300;
+  src: local('Open Sans Light Italic'), local('OpenSans-LightItalic'), url(/fonts/opensans/opensans-lightitalic.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2212, U+2215;
+}
+
+@font-face {
+  font-family: 'Open Sans';
+  font-style: italic;
+  font-weight: 400;
+  src: local('Open Sans Italic'), local('OpenSans-Italic'), url(/fonts/opensans/opensans-italic.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2212, U+2215;
+}
+
+@font-face {
+  font-family: 'Open Sans';
+  font-style: italic;
+  font-weight: 700;
+  src: local('Open Sans Bold Italic'), local('OpenSans-BoldItalic'), url(/fonts/opensans/opensans-bolditalic.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2212, U+2215;
+}
+
+@font-face {
+  font-family: 'Open Sans';
+  font-style: normal;
+  font-weight: 300;
+  src: local('Open Sans Light'), local('OpenSans-Light'), url(/fonts/opensans/opensans-light.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2212, U+2215;
+}
+
+@font-face {
+  font-family: 'Open Sans';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Open Sans Regular'), local('OpenSans-Regular'), url(/fonts/opensans/opensans-regular.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2212, U+2215;
+}
+
+@font-face {
+  font-family: 'Open Sans';
+  font-style: normal;
+  font-weight: 700;
+  src: local('Open Sans Bold'), local('OpenSans-Bold'), url(/fonts/opensans/opensans-bold.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2212, U+2215;
+}
+
+/* tapestry theme engine */
 @import "../tapestry/less/theme.less"; 
 
-body{font-family: Jaldi, Arial, Helvetica, sans-serif;}
+body{font-family: Open Sans, Arial, Helvetica, sans; font-weight:lighter;}
 
 
 .box{
-    .box(#eee, transparent, #444);
-    .links(#009B87, #00C5C7, #00C5C7, #009B87);
-    .icons(#555, #009B87, #00A46C, #555);
+    .box(#eee, transparent, #555);
+    .links(#00a8a3, #009bbe, #00abc3, #00a8a3);
+    .icons(#555, #009bbe, #00abc3, #555);
     .row(transparent, #ccefe7, #5EC7CE, #444, #006a78, #13474F, #009B87, #006fe8, #006fe8, #006fe8, #00B4FF, #555, #009B87, #00A46C, #185A64);
     .row-alt(#d0d0d0, #d1ecec, #43B9C1, #444, #314747, #1C4646, #009B87, #00C5C7, #00C5C7, #009B87, #00B4FF, #555, #009B87, #00A46C, #185A64);
     .fonts(#222, fade(#222, 30%), #009B87, #4DA400, #FF2222, #376EB2);
     .input(#fff, #444, #cccccc, #aaa, #ffffff, #444, #77c8b6, #fff, #444, #b1dcdc, #8c8c8c, #009875 );
     .line(#e6e6e6); 
-    .button(default,  #00bfb9, #1aa992, #1aa992, #1aa992, transparent, transparent, transparent, transparent, transparent, transparent, transparent, transparent, #fff, #fff, #fff, #fff);
-    .button(apply,    #00bfb9, #00c4fe, #00a890, #00a890, transparent, transparent, transparent, transparent, transparent, transparent, transparent, transparent, #fff, #fff, #fff, #fff);
-    .button(special,  #9b56ab, #7900b4, #7900b4, #7900b4, transparent, transparent, transparent, transparent, transparent, transparent, transparent, transparent, #fff, #fff, #fff, #fff);
+    .button(default,  #2ca038, #17b45d, #17b45d, #17b45d, transparent, transparent, transparent, transparent, transparent, transparent, transparent, transparent, #fff, #fff, #fff, #fff);
+    .button(apply,    #2ca038, #17b45d, #17b45d, #17b45d, transparent, transparent, transparent, transparent, transparent, transparent, transparent, transparent, #fff, #fff, #fff, #fff);
     .button(cancel,   #b5b4b4, #00a6e7, #00a6e7, #00a6e7, transparent, transparent, transparent, transparent, transparent, transparent, transparent, transparent, #fff, #fff, #fff, #fff);
     .button(disabled, #a9d7ec, #a9d7ec, #a9d7ec, #a9d7ec, transparent, transparent, transparent, transparent, transparent, transparent, transparent, transparent, #fff, #fff, #fff, #fff);
     .button(delete,   #d07d7d, #c95454, #c95454, #c95454, transparent, transparent, transparent, transparent, transparent, transparent, transparent, transparent, #fff, #fff, #fff, #fff);
@@ -36,7 +84,28 @@ body{font-family: Jaldi, Arial, Helvetica, sans-serif;}
     );
 }
 
-.box .section, .popup{
+.box header{
+    .box(#2ca038, transparent, #fff);
+    .links(#fff, #fff, #fff, #fff);
+    .icons(#fff, #fff, #fff, #fff);
+} 
+
+.box .sidebar{
+    .box(#2d2d2d, transparent, #fff);
+    .links(#fff, #fff, #fff, #fff);
+    .icons(#fff, #fff, #fff, #fff);
+    .row(transparent, #0d4b55, #0c645f, #eee, #fff, #fff, #eee, #fff, #fff, #eee, #fff, #eee, #fff, #fff, #fff);
+    .row .icon.small{
+        .icons(#fff, #b6ff00, #fff, #fff);
+    }
+}
+
+.box .subbar{
+    .box(#ddd, transparent, #555);
+    .entry{border-bottom-color:#ccc;}
+}
+
+.popup{
     .box(#fafafa, #dadada, #444); 
 }
 

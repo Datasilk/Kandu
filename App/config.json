@@ -1,11 +1,14 @@
 {
+  "namespace":  "Kandu",
   "environment": "development",
   "port": "80",
   "data": {
     "active": "SqlServerTrusted",
     "SqlServerTrusted": "server=.\\SQL2016; database=Kandu; Trusted_Connection=true"
   },
+
   "encryption": {
+    "salt": "?",
     "bcrypt_work_factor": "10"
   }
 }

@@ -23,6 +23,20 @@ namespace Kandu.Query
             );
         }
 
+        public void UpdateBoard(Models.Board board)
+        {
+            Sql.ExecuteNonQuery(
+                "Board_Update",
+                new Dictionary<string, object>()
+                {
+                    {"boardId", board.boardId },
+                    {"teamId", board.teamId },
+                    {"name", board.name },
+                    {"color", board.color }
+                }
+            );
+        }
+
         public Models.Board GetBoardDetails(int boardId)
         {
             var list = Sql.Populate<Models.Board>(
@@ -45,6 +59,18 @@ namespace Kandu.Query
                     {"userId", userId }
                 }
             );
+        }
+
+        public bool MemberExists(int userId, int boardId)
+        {
+            return Sql.ExecuteScalar<int>(
+                "Board_MemberExists",
+                new Dictionary<string, object>()
+                {
+                    {"userId", userId },
+                    {"boardId", boardId }
+                }
+            ) == 1;
         }
     }
 }

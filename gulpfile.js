@@ -37,7 +37,8 @@ var paths = {
 paths.working = {
     js: {
         platform: [
-            paths.webroot + 'js/selector.js',
+            // paths.webroot + 'js/selector.js',
+            paths.webroot + '/js/core/jquery-2.1.4.min.js',
             paths.scripts + 'utility/velocity.min.js',
             paths.scripts + 'core/platform.js',
             paths.scripts + 'platform/[^_]*.js',
@@ -47,17 +48,21 @@ paths.working = {
         utility: [
             paths.scripts + 'utility/*.js',
             paths.scripts + 'utility/**/*.js'
-            ]
+        ],
+        core: [
+            '!' + paths.scripts + 'core/platform.js',
+            paths.scripts + 'core/*.js'
+        ]
     },
 
     less:{
         platform: paths.css + 'platform.less',
-        board: paths.css + 'board.less',
         app: [
             paths.app + '**/*.less'
         ],
         themes: paths.css + 'themes/*.less',
         tapestry: paths.css + 'tapestry/tapestry.less',
+        utility: paths.css + 'utility/*.less'
     },
 
     css: {
@@ -79,6 +84,21 @@ paths.working = {
             '!' + paths.app + 'CSS/**/',
             '!' + paths.app + 'CSS/',
             '!' + paths.app + 'Scripts/**/'
+        ]
+    },
+
+    dashboard: {
+        js: [
+            paths.scripts + 'utility/simplemde.min.js',
+            paths.scripts + 'utility/highlight.min.js',
+            paths.scripts + 'utility/remarkable.min.js',
+            paths.app + 'pages/dashboard/dashboard.js'
+        ],
+        css: [
+            paths.css + 'utility/font-awesome.css',
+            paths.css + 'utility/simplemde.min.css',
+            paths.css + 'utility/highlight/atelier-forest-light.css', // <-- code syntax highlighting color scheme
+            paths.webroot + 'css/pages/dashboard/dashboard.css'
         ]
     }
 };
@@ -142,10 +162,32 @@ gulp.task('js:utility', function () {
     return p.pipe(gulp.dest(paths.compiled.js + 'utility', { overwrite: true }));
 });
 
+gulp.task('js:core', function () {
+    var p = gulp.src(paths.working.js.core)
+        .pipe(rename(function (path) {
+            path.dirname = path.dirname.toLowerCase();
+            path.basename = path.basename.toLowerCase();
+            path.extname = path.extname.toLowerCase();
+        }));
+
+    if (prod == true) { p = p.pipe(uglify()); }
+    return p.pipe(gulp.dest(paths.compiled.js + 'core', { overwrite: true }));
+});
+
+/* custom js compiling */
+gulp.task('js:dashboard', function () {
+    var p = gulp.src(paths.working.dashboard.js, { base: '.' })
+        .pipe(concat(paths.compiled.js + 'dashboard.js'));
+    if (prod == true) { p = p.pipe(uglify()); }
+    return p.pipe(gulp.dest('.', { overwrite: true }));
+});
+
 gulp.task('js', function () {
     gulp.start('js:app');
     gulp.start('js:platform');
     gulp.start('js:utility');
+    gulp.start('js:core');
+    gulp.start('js:dashboard');
 });
 
 //tasks for compiling LESS & CSS /////////////////////////////////////////////////////////////////////
@@ -172,15 +214,15 @@ gulp.task('less:platform', function () {
     return p.pipe(gulp.dest(paths.compiled.css, { overwrite: true }));
 });
 
-gulp.task('less:board', function () {
-    var p = gulp.src(paths.working.less.board)
-        .pipe(less());
-    if (prod == true) { p = p.pipe(cleancss({ compatibility: 'ie8' })); }
-    return p.pipe(gulp.dest(paths.compiled.css, { overwrite: true }));
-});
-
 gulp.task('less:themes', function () {
     var p = gulp.src(paths.working.less.themes)
+        .pipe(less());
+    if (prod == true) { p = p.pipe(cleancss({ compatibility: 'ie8' })); }
+    return p.pipe(gulp.dest(paths.compiled.css + 'themes', { overwrite: true }));
+});
+
+gulp.task('less:utility', function () {
+    var p = gulp.src(paths.working.less.utility)
         .pipe(less());
     if (prod == true) { p = p.pipe(cleancss({ compatibility: 'ie8' })); }
     return p.pipe(gulp.dest(paths.compiled.css + 'themes', { overwrite: true }));
@@ -210,16 +252,37 @@ gulp.task('css:app', function () {
     return p.pipe(gulp.dest(paths.compiled.app, { overwrite: true }));
 });
 
+gulp.task('css:utility', function () {
+    var p = gulp.src(paths.working.css.utility)
+        .pipe(rename(function (path) {
+            path.dirname = path.dirname.toLowerCase();
+            path.basename = path.basename.toLowerCase();
+            path.extname = path.extname.toLowerCase();
+        }));
+    if (prod == true) { p = p.pipe(cleancss({ compatibility: 'ie8' })); }
+    return p.pipe(gulp.dest(paths.compiled.css + 'utility', { overwrite: true }));
+});
+
+/* custom css compiling */
+gulp.task('less:dashboard', ['less:app'], function () {
+    var p = gulp.src(paths.working.dashboard.css, { base: '.' })
+        .pipe(concat(paths.compiled.css + 'dashboard.css'));
+    if (prod == true) { p = p.pipe(uglify()); }
+    return p.pipe(gulp.dest('.', { overwrite: true }));
+});
+
 gulp.task('less', function () {
     gulp.start('less:platform');
     gulp.start('less:app');
     gulp.start('less:themes');
-    gulp.start('less:board');
+    gulp.start('less:utility');
+    gulp.start('less:dashboard');
 });
 
 gulp.task('css', function () {
     gulp.start('css:themes');
     gulp.start('css:app');
+    gulp.start('css:utility');
 });
 
 //tasks for compiling vendor app dependencies /////////////////////////////////////////////////
@@ -237,6 +300,9 @@ gulp.task('watch', function () {
         paths.scripts + 'platform/*.js'
     ], ['js:platform']);
 
+    //watch core JS
+    gulp.watch(paths.working.js.core, ['js:core']);
+
     //watch app JS
     var pathjs = paths.working.exclude.app.slice(0);
     for (var x = 0; x < pathjs.length; x++) {
@@ -244,6 +310,9 @@ gulp.task('watch', function () {
     }
     pathjs.unshift(paths.working.js.app);
     gulp.watch(pathjs, ['js:app']);
+
+    //watch dashboard JS
+    gulp.watch(paths.working.dashboard.js, ['js:dashboard']);
 
     //watch app LESS
     var pathless = paths.working.exclude.app.slice(0);
@@ -261,15 +330,15 @@ gulp.task('watch', function () {
         paths.working.less.tapestry
     ], ['less:platform']);
 
-    //watch board LESS
-    gulp.watch([
-        paths.working.less.board
-    ], ['less:board']);
-
     //watch themes LESS
     gulp.watch([
         paths.working.less.themes
     ], ['less:themes']);
+
+    //watch utility LESS
+    gulp.watch([
+        paths.working.less.utility
+    ], ['less:utility']);
 
     //watch app CSS
     var pathcss = paths.working.exclude.app.slice(0);
@@ -284,4 +353,11 @@ gulp.task('watch', function () {
         paths.working.css.themes
     ], ['css:themes']);
 
+    //watch utility CSS
+    gulp.watch([
+        paths.working.css.utility
+    ], ['css:utility']);
+
+    //watch dashboard CSS
+    gulp.watch(paths.working.dashboard.css, ['css:dashboard']);
 });

@@ -18,6 +18,7 @@
 *.bak
 *.jfm
 *.sh
+/.vs/
 
 # Build results
 [Dd]ebug/

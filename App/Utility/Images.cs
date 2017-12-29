@@ -1,10 +1,7 @@
-﻿using System;
-using System.IO;
-//using Nine.Imaging;
-//using Nine.Imaging.Filtering;
-//using Nine.Imaging.Encoding;
+﻿using System.IO;
+using ImageSharp;
 
-namespace Kandu.Utility
+namespace Utility
 {
     public struct structImage
     {
@@ -12,7 +9,7 @@ namespace Kandu.Utility
         public string filename;
         public int width;
         public int height;
-        //public Image bitmap;
+        public Image<Rgba32> bitmap;
     }
         
 
@@ -20,37 +17,45 @@ namespace Kandu.Utility
     {
         private Core S;
 
-        public Images(Core KanduCore)
+        public Images(Core LegendaryCore)
         {
-            S = KanduCore;
+            S = LegendaryCore;
         }
 
-        /*
+        
         public structImage Load(string path, string filename)
         {
-            Image image = new Image(File.OpenRead(S.Server.MapPath(path + filename)));
             structImage newImg = new structImage();
-            newImg.bitmap = image;
-            newImg.filename = filename;
-            newImg.path = path;
-            newImg.width = image.PixelWidth;
-            newImg.height = image.PixelHeight;
+            using (var fs = File.OpenRead(S.Server.MapPath(path + filename)))
+            {
+                var image = Image.Load(fs);
+                newImg.bitmap = image;
+                newImg.filename = filename;
+                newImg.path = path;
+                newImg.width = image.Width;
+                newImg.height = image.Height;
+            }
             return newImg;
         }
-
+        
         public void Shrink(string filename, string outfile, int width)
         {
-            FileStream fs = File.OpenRead(S.Server.MapPath(filename));
-            Image image = new Image(fs);
-            
-            if (image.PixelWidth > width)
+            using (var fs = File.OpenRead(filename))
             {
-                image = image.Resize(width);
-            }
-            Save(outfile, image);
-            fs.Dispose();
-        }
+                var image = Image.Load(fs);
 
+                if (image.Width > width)
+                {
+                    image = image.Resize(new ImageSharp.Processing.ResizeOptions()
+                    {
+                        Size = new SixLabors.Primitives.Size(width, 0)
+                    });
+                }
+                image.Save(outfile);
+                fs.Dispose();
+            }
+        }
+        /*
         public void Save(string filename, Image image)
         {
             using (MemoryStream ms = new MemoryStream())
