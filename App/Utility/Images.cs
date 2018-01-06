@@ -17,9 +17,9 @@ namespace Utility
     {
         private Core S;
 
-        public Images(Core LegendaryCore)
+        public Images(Core DatasilkCore)
         {
-            S = LegendaryCore;
+            S = DatasilkCore;
         }
 
         

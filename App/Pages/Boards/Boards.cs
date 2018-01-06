@@ -17,12 +17,12 @@ namespace Kandu.Pages
                 return page.Render(path);
             }
             //load boards list
-            var scaffold = new Scaffold(S, "/Pages/Boards/boards.html");
+            var scaffold = new Scaffold(S.Server.MapPath("/Pages/Boards/boards.html"), S.Server.Scaffold);
 
             var query = new Query.Boards(S.Server.sqlConnectionString);
             var boards = query.GetList(S.User.userId);
             var html = new StringBuilder();
-            var item = new Scaffold(S, "/Pages/Boards/list-item.html");
+            var item = new Scaffold(S.Server.MapPath("/Pages/Boards/list-item.html"), S.Server.Scaffold);
             boards.ForEach((Query.Models.Board b) => {
                 item.Data["favorite"] = b.favorite ? "1" : "";
                 item.Data["name"] = b.name;

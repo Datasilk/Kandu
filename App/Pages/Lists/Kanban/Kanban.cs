@@ -20,7 +20,7 @@ namespace Kandu.Pages
                 var boardId = int.Parse(path[1]);
                 var boards = new Query.Boards(S.Server.sqlConnectionString);
                 var board = boards.GetBoardDetails(boardId);
-                var scaffold = new Scaffold(S, "Pages/Lists/Kanban/kanban.html");
+                var scaffold = new Scaffold(S.Server.MapPath("Pages/Lists/Kanban/kanban.html"), S.Server.Scaffold);
                 scaffold.Data["color"] = "#" + board.color;
                 scaffold.Data["name"] = board.name;
                 html.Append(scaffold.Render());

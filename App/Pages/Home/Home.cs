@@ -5,7 +5,7 @@ namespace Kandu.Pages
 {
     public class Home : Page
     {
-        public Home(Core LegendaryCore) : base(LegendaryCore)
+        public Home(Core DatasilkCore) : base(DatasilkCore)
         {
         }
 

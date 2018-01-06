@@ -8,7 +8,7 @@ namespace Kandu.Pages
 {
     public class Logout : Page
     {
-        public Logout(Core LegendaryCore) : base(LegendaryCore)
+        public Logout(Core DatasilkCore) : base(DatasilkCore)
         {
         }
 

@@ -2,7 +2,7 @@
 {
     public class User : Service
     {
-        public User(Core LegendaryCore) : base(LegendaryCore)
+        public User(Core DatasilkCore) : base(DatasilkCore)
         {
         }
 
