@@ -11,7 +11,7 @@ namespace Kandu.Services
 
         public string Create(string name, string description = "")
         {
-            if(S.User.userId == 0) { return AccessDenied(); } //check security
+            if (!CheckSecurity()) { return AccessDenied(); } //check security
             try
             {
                 var query = new Query.Teams(S.Server.sqlConnectionString);
@@ -31,12 +31,9 @@ namespace Kandu.Services
             return Success();
         }
 
-        /// <summary>
-        /// Get a simple list of teams
-        /// </summary>
-        /// <returns>JSON list of team objects</returns>
         public string List()
         {
+            if (!CheckSecurity()) { return AccessDenied(); } //check security
             var query = new Query.Teams(S.Server.sqlConnectionString);
             var list = query.GetList(S.User.userId);
             var html = new StringBuilder("{\"teams\":[");

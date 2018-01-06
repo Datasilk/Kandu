@@ -1,4 +1,5 @@
 ﻿CREATE PROCEDURE [dbo].[Board_Create]
+	@userId int,
 	@teamId int,
 	@name nvarchar(64),
 	@favorite bit = 0,
@@ -8,5 +9,7 @@ AS
 	DECLARE @id int = NEXT VALUE FOR SequenceBoards
 	INSERT INTO Boards (boardId, teamId, [name], favorite, [security], color)
 	VALUES (@id, @teamId, @name, @favorite, @security, @color)
+
+	INSERT INTO BoardMembers (boardId, userId) VALUES (@id, @userId)
 
 	SELECT @id

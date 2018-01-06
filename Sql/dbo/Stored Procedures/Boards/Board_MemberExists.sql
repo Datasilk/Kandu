@@ -10,5 +10,7 @@ AS
 			AND userId=@userId) = 1 
 		BEGIN
 			SELECT 1
+		END ELSE BEGIN
+			SELECT 0
 		END
 	END

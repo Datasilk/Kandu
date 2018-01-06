@@ -10,7 +10,7 @@ namespace Kandu.Services
 
         public string Create(string name, string color, int teamId)
         {
-            if (S.User.userId == 0) { return AccessDenied(); } //check security
+            if (!CheckSecurity()) { return AccessDenied(); } //check security
             var query = new Query.Boards(S.Server.sqlConnectionString);
             query.CreateBoard(new Query.Models.Board()
             {
@@ -18,12 +18,13 @@ namespace Kandu.Services
                 security = 1,
                 color = color,
                 teamId = teamId
-            });
+            }, S.User.userId);
             return Success();
         }
 
         public string Details(int boardId)
         {
+            if (!CheckSecurity()) { return AccessDenied(); } //check security
             var query = new Query.Boards(S.Server.sqlConnectionString);
             var board = query.GetBoardDetails(boardId);
             return S.Util.Serializer.WriteObjectToString( 
@@ -41,7 +42,7 @@ namespace Kandu.Services
 
         public string Update(int boardId, string name, string color, int teamId)
         {
-            if (S.User.userId == 0) { return AccessDenied(); } //check security
+            if (!CheckSecurity()) { return AccessDenied(); } //check security
             var query = new Query.Boards(S.Server.sqlConnectionString);
 
             //check if user has access to board

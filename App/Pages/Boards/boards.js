@@ -16,7 +16,7 @@
                         .replace('#submit-label#', !hasid ? 'Create Board' : 'Update Board')
                         .replace('#submit-click#', !hasid ? 'S.boards.add.submit()' : 'S.boards.add.submit(\'' + id + '\')')
                     , {});
-                S.popup.show(!hasid ? 'Create A New Board' : 'Edit Board Settings', scaffold.render(), { width: 380 });
+                S.popup.show(!hasid ? 'Create A New Board' : 'Edit Board Settings', scaffold.render(), { width: 430 });
 
                 //load board details if id is supplied
                 if (hasid) {
@@ -87,7 +87,8 @@
         },
 
         select: function (e) {
-            var elem = e.path[0];
+            console.log(e);
+            var elem = e.target;
             var color = S.util.color.rgbToHex($(elem).css('background-color'));
             $('.color-input').css({ 'background-color': color });
             S.boards.colorPicker.hide();

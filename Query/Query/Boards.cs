@@ -8,12 +8,13 @@ namespace Kandu.Query
         {
         }
 
-        public int CreateBoard(Models.Board board)
+        public int CreateBoard(Models.Board board, int userId)
         {
             return Sql.ExecuteScalar<int>(
                 "Board_Create",
                 new Dictionary<string, object>()
                 {
+                    {"userId", userId },
                     {"teamId", board.teamId },
                     {"favorite", board.favorite },
                     {"name", board.name },

@@ -8,8 +8,6 @@
 
         public string Authenticate(string email, string password)
         {
-
-            //var sqlUser = new SqlQueries.User(S);
             var query = new Query.Users(S.Server.sqlConnectionString);
             var encrypted = query.GetPassword(email);
             if (!DecryptPassword(email, password, encrypted)) { return Error(); }
