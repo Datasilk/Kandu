@@ -1,7 +1,7 @@
 ﻿CREATE PROCEDURE [dbo].[Boards_GetList]
 	@userId int
 AS
-	SELECT * FROM Boards b
+	SELECT * FROM View_Boards b
 	WHERE b.boardId IN (
 		SELECT boardId 
 		FROM BoardMembers bm

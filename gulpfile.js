@@ -89,16 +89,12 @@ paths.working = {
 
     dashboard: {
         js: [
-            paths.scripts + 'utility/simplemde.min.js',
-            paths.scripts + 'utility/highlight.min.js',
-            paths.scripts + 'utility/remarkable.min.js',
-            paths.app + 'pages/dashboard/dashboard.js'
+            paths.app + 'pages/boards/boards.js',
+            paths.app + 'partials/ui/header.js'
         ],
         css: [
-            paths.css + 'utility/font-awesome.css',
-            paths.css + 'utility/simplemde.min.css',
-            paths.css + 'utility/highlight/atelier-forest-light.css', // <-- code syntax highlighting color scheme
-            paths.webroot + 'css/pages/dashboard/dashboard.css'
+            paths.webroot + 'css/pages/boards/boards.css',
+            paths.webroot + 'css/partials/ui/header.css'
         ]
     }
 };
@@ -333,12 +329,15 @@ gulp.task('watch', function () {
     //watch themes LESS
     gulp.watch([
         paths.working.less.themes
-    ], ['less:themes']);
+    ], ['less:themes', 'less:platform']);
 
     //watch utility LESS
     gulp.watch([
         paths.working.less.utility
     ], ['less:utility']);
+
+    //watch dashboard LESS
+    gulp.watch(paths.working.dashboard.css, ['less:dashboard']);
 
     //watch app CSS
     var pathcss = paths.working.exclude.app.slice(0);
@@ -357,7 +356,4 @@ gulp.task('watch', function () {
     gulp.watch([
         paths.working.css.utility
     ], ['css:utility']);
-
-    //watch dashboard CSS
-    gulp.watch(paths.working.dashboard.css, ['css:dashboard']);
 });

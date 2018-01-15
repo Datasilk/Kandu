@@ -55,23 +55,3 @@ gulp.task('inline-svg', function () {
     .pipe(gulp.dest('test/compiled'))
 
 })
-
-
-
-gulp.task('test', ['svg', 'inline-svg'], function () {
-
-  var app = connect().use(serveStatic('test'))
-  var server = http.createServer(app)
-
-  server.listen(process.env.PORT || 8888)
-
-  function serverClose () {
-    server.close()
-  }
-
-  return gulp
-    .src('test.js', { read: false })
-    .pipe(mocha())
-    .on('end', serverClose)
-
-})

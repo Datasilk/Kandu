@@ -1,0 +1,30 @@
+﻿<header class="row pad-sm text-center">
+    {{boards}}
+    <div class="absolute">
+        <a href="javascript:" class="button btn-boards">
+            <img src="/images/boards.png" />
+            <span>Boards</span>
+        </a>
+    </div>
+    {{/boards}}
+    <div class="col logo">
+        <img src="/images/logo-xs-black.png" />
+    </div>
+</header>
+
+{{boards}}
+<div class="bg-for-boards-menu hide">&nbsp;</div>
+<div class="boards-menu bg hide">
+    <div class="scroller">
+        <div class="items">
+            {{boards-menu}}
+        </div>
+        <div class="row hover pad">
+            <a href="javascript:" class="btn-create-board">Create a new board</a>
+        </div>
+        <div class="row hover pad">
+            <a href="javascript:" class="btn-always-show">Always keep this menu open</a>
+        </div>
+    </div>
+</div>
+{{/boards}}

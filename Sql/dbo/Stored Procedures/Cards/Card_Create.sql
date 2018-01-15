@@ -1,14 +1,15 @@
 ﻿CREATE PROCEDURE [dbo].[Card_Create]
 	@listId int,
 	@boardId int,
-	@color int,
+	@type int = 0,
+	@colors nvarchar(128),
 	@name nvarchar(64),
 	@datedue datetime = NULL,
 	@description nvarchar(MAX) = ''
 AS
 	DECLARE @id int = NEXT VALUE FOR SequenceCards
 
-	INSERT INTO Cards (cardId, listId, boardId, color, [name], datecreated, datedue, [description])
-	VALUES (@id, @listId, @boardId, @color, @name, GETDATE(), @datedue, @description)
+	INSERT INTO Cards (cardId, listId, boardId, [type], colors, [name], datecreated, datedue, [description])
+	VALUES (@id, @listId, @boardId, @type, @colors, @name, GETDATE(), @datedue, @description)
 
 	EXEC Board_Modified @boardId=@boardId

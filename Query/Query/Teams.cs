@@ -24,13 +24,14 @@ namespace Kandu.Query
             );
         }
 
-        public Models.Team GetTeam(int teamId)
+        public Models.Team GetTeam(int teamId, int ownerId)
         {
             var list = Sql.Populate<Models.Team>(
                 "Team_Get",
                 new Dictionary<string, object>()
                 {
-                    { "teamId", teamId }
+                    { "teamId", teamId },
+                    { "ownerId", ownerId }
                 }
             );
             if(list.Count > 0) { return list[0]; }

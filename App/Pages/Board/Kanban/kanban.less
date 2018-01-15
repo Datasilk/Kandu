@@ -1,0 +1,86 @@
+﻿@shadow:2px 2px 5px rgba(0,0,0,0.3);
+@shadow-sm:1px 1px 2px rgba(0, 0, 0, 0.2);
+
+.kanban .lists {
+    overflow-y:auto;
+    & > div{white-space:nowrap;
+        & > .col{width:250px; border-radius:4px; margin-right:12px; height:auto;
+            &.bg{box-shadow:@shadow;}
+        }
+        & > .add-list{
+            a{width:100%; box-sizing:border-box; font-weight:400;}
+        }
+    }
+    
+}
+
+/* new list ///////////////////////////////////// */
+@newlist-height:84px;
+
+.form-new-list{ 
+    z-index:10; box-shadow: @shadow; border-radius:4px; overflow:hidden; position:absolute;
+    &.hide{height:45px;}
+    &.cancel{opacity:0; animation:cancelnewlist 0.3s ease-in-out; -webkit-animation:cancelnewlist 0.3s ease-in-out; height:45px;}
+    &.show{animation:newlist 0.3s ease-in-out; -webkit-animation:newlist 0.3s ease-in-out; height:@newlist-height;}
+}
+
+@keyframes newlist {
+    from { height: 45px; opacity:0 }
+    to { height: @newlist-height; opacity:1 }
+}
+@-moz-keyframes newlist {
+    from { height: 45px; opacity:0 }
+    to { height: @newlist-height; opacity:1 }
+}
+@-webkit-keyframes newlist {
+    from { height: 45px; opacity:0 }
+    to { height: @newlist-height; opacity:1 }
+}
+
+@keyframes cancelnewlist {
+}
+@-moz-keyframes cancelnewlist {
+    from { height: @newlist-height; opacity:1;}
+    to { height: 45px; opacity:0; }
+}
+@-webkit-keyframes cancelnewlist {
+    from { height: @newlist-height; opacity:1;}
+    to { height: 45px; opacity:0; }
+}
+
+/* new card ///////////////////////////////////// */
+@newcard-height:105px;
+
+.box .form-new-card{ 
+    z-index:10; overflow:hidden; padding:4px;
+    .text-field input{border:0 transparent !important; box-shadow:@shadow-sm !important; border-radius:4px !important; background-color:#fffff; padding:7px 7px 25px 7px !important;
+                &:focus{border:0 transparent !important; outline:0 transparent !important;}
+    }
+    &.hide{height:45px;}
+    &.cancel{opacity:0; animation:cancelnewcard 0.3s ease-in-out; -webkit-animation:cancelnewcard 0.3s ease-in-out; height:0px;}
+    &.show{animation:newcard 0.3s ease-in-out; -webkit-animation:newcard 0.3s ease-in-out; height:@newcard-height;}
+}
+
+@keyframes newcard {
+    from { height: 0px; opacity:0 }
+    to { height: @newcard-height; opacity:1 }
+}
+@-moz-keyframes newcard {
+    from { height: 0px; opacity:0 }
+    to { height: @newcard-height; opacity:1 }
+}
+@-webkit-keyframes newcard {
+    from { height: 0px; opacity:0 }
+    to { height: @newcard-height; opacity:1 }
+}
+
+@keyframes cancelnewcard {
+}
+@-moz-keyframes cancelnewcard {
+    from { height: @newcard-height; opacity:1;}
+    to { height: 0px; opacity:0; }
+}
+@-webkit-keyframes cancelnewcard {
+    from { height: @newcard-height; opacity:1;}
+    to { height: 0px; opacity:0; }
+}

@@ -17,12 +17,12 @@ namespace Kandu.Pages
                 return page.Render(path);
             }
             //load boards list
-            var scaffold = new Scaffold(S.Server.MapPath("/Pages/Boards/boards.html"), S.Server.Scaffold);
+            var scaffold = new Scaffold("/Pages/Boards/boards.html", S.Server.Scaffold);
 
             var query = new Query.Boards(S.Server.sqlConnectionString);
             var boards = query.GetList(S.User.userId);
             var html = new StringBuilder();
-            var item = new Scaffold(S.Server.MapPath("/Pages/Boards/list-item.html"), S.Server.Scaffold);
+            var item = new Scaffold("/Pages/Boards/list-item.html", S.Server.Scaffold);
             boards.ForEach((Query.Models.Board b) => {
                 item.Data["favorite"] = b.favorite ? "1" : "";
                 item.Data["name"] = b.name;
@@ -46,8 +46,9 @@ namespace Kandu.Pages
             scaffold.Data["team-options"] = html.ToString();
 
             //load page resources
-            scripts += "<script src=\"/js/pages/boards/boards.js\"></script>";
-            headCss += "<link type=\"text/css\" rel=\"stylesheet\" href=\"/css/pages/boards/boards.css\">";
+            AddScript("/js/dashboard.js");
+            AddCSS("/css/dashboard.css");
+
             //render page
             return base.Render(path, scaffold.Render());
         }

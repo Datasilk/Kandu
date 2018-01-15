@@ -51,19 +51,33 @@
 /* tapestry theme engine */
 @import "../tapestry/less/theme.less"; 
 
-body{font-family: Open Sans, Arial, Helvetica, sans; font-weight:lighter;}
+body{font-weight:lighter;}
+body, h1, h2, h3, h4, h5, h6, span, input, select, textarea{font-family: Open Sans, Arial, Helvetica, sans;}
 
+.box .board header.row{
+    .box(rgba(0,0,0,0.1), transparent, #fff); 
+    .links(#fff, #fff, #fff, #fff); 
+    .icons(#fff, #fff, #fff, #fff);
+} 
 
-.box{
+.box .board{
+    .fonts(#fff, fade(#fff, 30%), #fff, #fff, #fff, #fff);
+    .row(transparent, rgba(0,0,0,@opacity1), rgba(0,0,0,@opacity2), #fff, #fff, #fff, #fff, #fff, #fff, #fff, #fff, #fff, #fff, #fff, #fff);
+    @opacity1:0.15;
+    @opacity2:0.25;
+    .button(default,  rgba(0,0,0,@opacity1), rgba(0,0,0,@opacity2), rgba(0,0,0,@opacity2), rgba(0,0,0,@opacity2), transparent, transparent, transparent, transparent, transparent, transparent, transparent, transparent, #fff, #fff, #fff, #fff);
+}
+
+.box, .box .bg{
     .box(#eee, transparent, #555);
     .links(#00a8a3, #009bbe, #00abc3, #00a8a3);
-    .icons(#555, #009bbe, #00abc3, #555);
-    .row(transparent, #ccefe7, #5EC7CE, #444, #006a78, #13474F, #009B87, #006fe8, #006fe8, #006fe8, #00B4FF, #555, #009B87, #00A46C, #185A64);
-    .row-alt(#d0d0d0, #d1ecec, #43B9C1, #444, #314747, #1C4646, #009B87, #00C5C7, #00C5C7, #009B87, #00B4FF, #555, #009B87, #00A46C, #185A64);
+    .icons(#555, #666, #666, #555);
+    .row(transparent, #dfdfdf, #5eceb6, #444, #333, #333, #444, #111, #111, #444, #333, #555, #444, #444, #444);
+    .row-alt(transparent, #dfdfdf, #5eceb6, #444, #333, #333, #333, #005ec4, #005ec4, #333, #333, #555, #444, #444, #444);
     .fonts(#222, fade(#222, 30%), #009B87, #4DA400, #FF2222, #376EB2);
     .input(#fff, #444, #cccccc, #aaa, #ffffff, #444, #77c8b6, #fff, #444, #b1dcdc, #8c8c8c, #009875 );
     .line(#e6e6e6); 
-    .button(default,  #2ca038, #17b45d, #17b45d, #17b45d, transparent, transparent, transparent, transparent, transparent, transparent, transparent, transparent, #fff, #fff, #fff, #fff);
+    .button(default,  #00a0c4, #00cce1, #00cce1, #00cce1, transparent, transparent, transparent, transparent, transparent, transparent, transparent, transparent, #fff, #fff, #fff, #fff);
     .button(apply,    #2ca038, #17b45d, #17b45d, #17b45d, transparent, transparent, transparent, transparent, transparent, transparent, transparent, transparent, #fff, #fff, #fff, #fff);
     .button(cancel,   #b5b4b4, #00a6e7, #00a6e7, #00a6e7, transparent, transparent, transparent, transparent, transparent, transparent, transparent, transparent, #fff, #fff, #fff, #fff);
     .button(disabled, #a9d7ec, #a9d7ec, #a9d7ec, #a9d7ec, transparent, transparent, transparent, transparent, transparent, transparent, transparent, transparent, #fff, #fff, #fff, #fff);
@@ -84,29 +98,22 @@ body{font-family: Open Sans, Arial, Helvetica, sans; font-weight:lighter;}
     );
 }
 
-.box header{
-    .box(#2ca038, transparent, #fff);
-    .links(#fff, #fff, #fff, #fff);
-    .icons(#fff, #fff, #fff, #fff);
-} 
-
-.box .sidebar{
-    .box(#2d2d2d, transparent, #fff);
-    .links(#fff, #fff, #fff, #fff);
-    .icons(#fff, #fff, #fff, #fff);
-    .row(transparent, #0d4b55, #0c645f, #eee, #fff, #fff, #eee, #fff, #fff, #eee, #fff, #eee, #fff, #fff, #fff);
-    .row .icon.small{
-        .icons(#fff, #b6ff00, #fff, #fff);
-    }
-}
-
-.box .subbar{
-    .box(#ddd, transparent, #555);
-    .entry{border-bottom-color:#ccc;}
-}
-
 .popup{
-    .box(#fafafa, #dadada, #444); 
+    .box(#fafafa, #dadada, #444);
+}
+
+.box .row a:link .icon-star, .box .row a:visited .icon-star{
+    .svg(#ffb400, true);
+}
+
+.box .row a:hover .icon-star:hover, .box .row a:active .icon-star:hover{
+    .svg(#ff7d00, true);
+}
+.box .row.hover:hover a:link .icon-star, .box .row.hover:hover a:visited .icon-star{
+    .svg(#ff7d00, true);
+}
+.box .row.hover:hover a:hover .icon-star:hover, .box .row.hover:hover a:active .icon-star:hover{
+    .svg(#ff5600, true);
 }
 
 .box .row .btn-close a:hover use{fill:#cc0000 !important; color:#cc0000 !important;}

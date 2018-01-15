@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 
 namespace Kandu.Query
 {
@@ -62,6 +63,32 @@ namespace Kandu.Query
             );
         }
 
+        public Models.Board GetBoardAndLists(int boardId)
+        {
+            var readers = Sql.PopulateMultiple(
+                "Board_GetLists",
+                new Dictionary<string, object>()
+                {
+                    {"boardId", boardId }
+                }
+            );
+
+            var boards = readers.Read<Models.Board>().ToList();
+            var lists = readers.Read<Models.List>().ToList();
+            var cards = readers.Read<Models.Card>().ToList();
+
+            for(var x = 0; x < boards.Count; x++)
+            {
+                boards[x].lists = new List<Models.List>();
+                for (var y = 0; y < lists.Count; y++)
+                {
+                    lists[y].cards = cards.Where((a) => { return a.listId == lists[y].listId; }).ToList();
+                    boards[x].lists.Add(lists[y]);
+                }
+            }
+            return boards[0];
+        }
+
         public bool MemberExists(int userId, int boardId)
         {
             return Sql.ExecuteScalar<int>(
@@ -72,6 +99,17 @@ namespace Kandu.Query
                     {"boardId", boardId }
                 }
             ) == 1;
+        }
+
+        public List<int> GetBoardsForMember(int userId)
+        {
+            return Sql.Populate<int>(
+                "BoardMember_GetBoards",
+                new Dictionary<string, object>()
+                {
+                    {"userId", userId }
+                }
+            );
         }
     }
 }

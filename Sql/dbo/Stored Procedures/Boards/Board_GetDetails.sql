@@ -2,7 +2,7 @@
 	@boardId int
 AS
 	/* [0] Board Info */
-	SELECT * FROM Boards WHERE boardId=@boardId
+	SELECT * FROM View_Boards WHERE boardId=@boardId
 
 	/* [1] Board Members */
 	SELECT * FROM View_BoardMembers WHERE boardId=@boardId

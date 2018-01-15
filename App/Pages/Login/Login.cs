@@ -18,19 +18,19 @@ namespace Kandu.Pages
             }
 
             //check for database reset
-            var scaffold = new Scaffold(S.Server.MapPath("/Pages/Login/login.html"), S.Server.Scaffold);
+            var scaffold = new Scaffold("/Pages/Login/login.html", S.Server.Scaffold);
 
             if(S.Server.environment == Server.enumEnvironment.development && S.Server.hasAdmin == false)
             {
                 //load new administrator form
-                scaffold = new Scaffold(S.Server.MapPath("/Pages/Login/new-admin.html"), S.Server.Scaffold);
+                scaffold = new Scaffold("/Pages/Login/new-admin.html", S.Server.Scaffold);
                 scaffold.Data["title"] = "Create an administrator account";
                 scripts += "<script src=\"/js/pages/login/new-admin.js\"></script>";
             }
             else if (S.Server.environment == Server.enumEnvironment.development && S.User.resetPass == true)
             {
                 //load new password form (for admin only)
-                scaffold = new Scaffold(S.Server.MapPath("/Pages/Login/new-pass.html"), S.Server.Scaffold);
+                scaffold = new Scaffold("/Pages/Login/new-pass.html", S.Server.Scaffold);
                 scaffold.Data["title"] = "Create an administrator password";
                 scripts += "<script src=\"/js/pages/login/new-pass.js\"></script>";
             }

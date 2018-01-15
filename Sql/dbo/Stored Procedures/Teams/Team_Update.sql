@@ -7,9 +7,8 @@
 	@description nvarchar(MAX)
 AS
 	UPDATE Teams SET
-	ownerId=@ownerId,
 	[security]=@security,
 	[name]=@name,
 	website=@website,
 	[description]=@description
-	WHERE teamId=@teamId
+	WHERE teamId=@teamId AND ownerId=@ownerId

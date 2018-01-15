@@ -1,0 +1,32 @@
+
+<svg xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" preserveAspectRatio="none" x="0px" y="0px" width="32px" height="32px" viewBox="0 0 32 32">
+<defs>
+<g id="star_0_Layer1_0_FILL">
+<path fill="#FFFFFF" fill-opacity="0" stroke="none" d="
+M 32 0
+L 0 0 0 32 32 32 32 0 Z"/>
+</g>
+
+<g id="star_0_Layer0_0_FILL">
+<path fill="#FFFFFF" stroke="none" d="
+M 22.05 19.45
+L 30.95 12.65 19.75 12.35 16.05 1.8 12.3 12.35 1.1 12.65 10 19.45 6.8 30.25 16.05 23.85 25.25 30.25 22.05 19.45 Z"/>
+</g>
+
+<path id="star_0_Layer0_0_1_STROKES" stroke="#FFFFFF" stroke-width="2" stroke-linejoin="round" stroke-linecap="round" fill="none" d="
+M 16.05 1.8
+L 19.75 12.35 30.95 12.65 22.05 19.45 25.25 30.25 16.05 23.85 6.8 30.25 10 19.45 1.1 12.65 12.3 12.35 16.05 1.8 Z"/>
+</defs>
+
+<g transform="matrix( 1, 0, 0, 1, 0,0) ">
+<g transform="matrix( 1, 0, 0, 1, 0,0) ">
+<use xlink:href="#star_0_Layer1_0_FILL"/>
+</g>
+
+<g transform="matrix( 1, 0, 0, 1, 0,0) ">
+<use xlink:href="#star_0_Layer0_0_FILL"/>
+
+<use xlink:href="#star_0_Layer0_0_1_STROKES"/>
+</g>
+</g>
+</svg>

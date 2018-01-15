@@ -21,12 +21,12 @@ L 11 7 4 7 4 8 11 8 Z"/>
 </defs>
 
 <g transform="matrix( 1, 0, 0, 1, 0,0) ">
-<g transform="matrix( 1, 0, 0, 1, 0,0) ">
-<use xlink:href="#icon_collapse_0_Layer1_0_FILL"/>
-</g>
+	<g transform="matrix( 1, 0, 0, 1, 0,0) ">
+		<use xlink:href="#icon_collapse_0_Layer1_0_FILL"/>
+	</g>
 
-<g transform="matrix( 1, 0, 0, 1, 0,0) ">
-<use xlink:href="#icon_collapse_0_Layer0_0_FILL"/>
-</g>
+	<g transform="matrix( 1, 0, 0, 1, 0,0) ">
+		<use xlink:href="#icon_collapse_0_Layer0_0_FILL"/>
+	</g>
 </g>
 </svg>

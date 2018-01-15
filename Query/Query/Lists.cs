@@ -32,5 +32,18 @@ namespace Kandu.Query
                 }
             );
         }
+
+        public Models.List GetDetails(int listId)
+        {
+            var lists = Sql.Populate<Models.List>(
+                "Lists_GetDetails",
+                new Dictionary<string, object>()
+                {
+                    {"listId", listId }
+                }
+            );
+            if(lists.Count > 0) { return lists[0]; }
+            return null;
+        }
     }
 }

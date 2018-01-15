@@ -1,0 +1,59 @@
+﻿<div class="kanban body">
+    <div class="row toolbar pad">
+        <div class="col title pad-right">
+            <h5>{{name}}</h5>
+        </div>
+        <div class="col fav">
+
+        </div>
+    </div>
+    
+    <div class="row lists">
+        <div class="row pad text">
+            {{lists}}
+            <div class="col add-list">
+                <div class="form-new-list bg pad-sm hide">
+                    <form method="post">
+                        <div class="row"><input type="text" id="newlist_name" placeholder="Add a list..." /></div>
+                        <div class="row pad-top-sm">
+                            <div class="col">
+                                <button type="submit" class="button btn-save-newlist">Save</button>
+                            </div>
+                            <div class="col pad-left">
+                                <a href="javascript:" class="icon small btn-close margin-top-sm">
+                                    <svg viewBox="0 0 32 32">
+                                        <use xlink:href="#icon-close" x="0" y="0" width="32" height="32"></use>
+                                    </svg>
+                                </a>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="row btn">
+                    <a href="javascript:" class="button btn-add-list pad-height pad-width">Add a list...</a>
+                </div>
+            </div>
+            <div class="col pad-right">&nbsp;</div>
+        </div>
+    </div>
+</div>
+
+<script type="text/html" id="template_newcard">
+    <form>
+        <div class="row text-field">
+            <input type="text" class="new-card-label" />
+        </div>
+        <div class="row pad-top-sm">
+            <div class="col">
+                <button type="submit" class="button btn-save-newcard">Save</button>
+            </div>
+            <div class="col pad-left">
+                <a href="javascript:" class="icon small btn-close margin-top-sm">
+                    <svg viewBox="0 0 32 32">
+                        <use xlink:href="#icon-close" x="0" y="0" width="32" height="32"></use>
+                    </svg>
+                </a>
+            </div>
+        </div>
+    </form>
+</script>

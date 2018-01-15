@@ -18,7 +18,7 @@ namespace Kandu.Query
                 {
                     {"listId", card.listId },
                     {"boardId", card.boardId },
-                    {"color", card.color },
+                    {"colors", card.colors },
                     {"name", card.name },
                     {"datedue", card.datedue },
                     {"description", card.description }
@@ -69,6 +69,17 @@ namespace Kandu.Query
                     {"listId", listId },
                     {"start", start },
                     {"length", length }
+                }
+            );
+        }
+
+        public void Sort(int listId, int[] cardIds)
+        {
+            Sql.ExecuteNonQuery("Cards_Sort",
+                new Dictionary<string, object>()
+                {
+                    {"listId", listId },
+                    {"ids", string.Join(",", cardIds) }
                 }
             );
         }

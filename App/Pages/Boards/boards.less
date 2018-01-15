@@ -1,12 +1,15 @@
-﻿
+﻿@shadow:2px 2px 5px rgba(0,0,0,0.3);
+
 .boards{text-align:center; width:100%;padding:20px;}
 .boards::after, .board::after{content:" ";display:block;font-size:0;height:0;clear:both;}
 .boards .board{display:inline-block; position:relative; text-align:left; height:120px; width:250px; 
                padding:15px 25px; margin:5px 7px; border-radius:6px; background-color:#fafafa; color:#fff; overflow:hidden;}
-.boards .board.create-new{color:#444; text-align:center}
+.boards .board.create-new{color:#444; text-align:center;
+    .title{font-size:20px;}
+}
 .boards .board.create-new:hover{color:#009774}
 .boards .label{border-radius:5px;}
-.boards .title{font-size:22px; overflow:hidden; white-space:nowrap; text-overflow:ellipsis;}
+.boards .title{font-size:22px; font-weight:400; overflow:hidden; white-space:nowrap; text-overflow:ellipsis;}
 .boards a.title:link, .boards a.title:visited{color:#fff; text-decoration:none;}
 .boards a.title:hover, .boards a.title:active{color:#fff;}
 .boards .small{background:transparent !important;}
@@ -14,7 +17,7 @@
 .boards .small .label{display:inline-block;}
 .boards .add-icon{width:100%; padding-top:20px; cursor:default; }
 .board .hover-only{display:none;}
-.board:hover .hover-only{display:block;}
+.board:hover .hover-only{display:block;opacity:1;}
 
 .color-input{border-radius:4px; width:40px; height:30px;}
 .color-picker .color{float:left; border-radius:4px; width:40px; height:30px; margin:10px;}
@@ -22,3 +25,18 @@
 .popup textarea{width:100%; box-sizing:border-box;}
 .board .options{position:absolute; right:20px; bottom:20px;}
 .box .board .icon a:link use{color:#fff !important; fill:#fff !important}
+.board.create-new{color:#444;}
+
+.boards-menu{position:absolute; margin:10px 0 0 7px; max-width:250px; z-index:100; max-height:~"calc(100% - 85px)"; border-radius:5px; box-shadow:@shadow; overflow:hidden;
+    & > .scroller{overflow-y:auto; max-height:100%;}
+}
+.boards-menu.always-show{top:44px; left:0px; max-height:~"calc(100% - 44px)" !important; margin:0; border-radius:0;}
+.bg-for-boards-menu{top:0; left:0; position:absolute; z-index:99; background:rgba(0,0,0,0.3)}
+.menu-section {
+    .item{ cursor:pointer;
+        &.row{width:~"calc(100% - 12px)"; margin:4px 6px;font-weight:400;}
+        .title{font-size:14px; font-weight:bold;}
+        .owner{font-size:13px; opacity:0.5; display:inline-block; padding-top:3px;}
+    }
+    .color-box{width:32px; height:45px;border-radius:4px;}
+}
