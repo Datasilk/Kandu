@@ -5,6 +5,7 @@
         if (options == null) { options = {}; }
         var opts = {
             width: options.width != null ? options.width : 300,
+            maxWidth: options.maxWidth != null ? options.maxWidth : null,
             padding: options.padding != null ? options.padding : 0,
             offsetHeight: options.offsetHeight != null ? options.offsetHeight : 0,
             offsetTop: options.offsetTop != null ? options.offsetTop : 0,
@@ -21,6 +22,7 @@
         div.className = 'popup box ' + opts.className;
 
         popup.css({ width: opts.width });
+        if (opts.maxWidth != null) { popup.css({ maxWidth: opts.maxWidth });}
         popup.addClass(opts.position);
         if (opts.offsetHeight > 0) {
             popup.css({ Marginbottom: opts.offsetHeight });

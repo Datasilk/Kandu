@@ -36,12 +36,13 @@ namespace Kandu.Query
             );
         }
 
-        public Models.Card GetCardDetails(int cardId)
+        public Models.Card GetCardDetails(int boardId, int cardId)
         {
             var list = Sql.Populate<Models.Card>(
                 "Card_GetDetails",
                 new Dictionary<string, object>()
                 {
+                    {"boardId", boardId },
                     {"cardId", cardId }
                 }
             );

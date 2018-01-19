@@ -33,7 +33,7 @@
                 .html('Don\'t keep this menu open')
                 .off('click', S.head.boards.alwaysShow)
                 .on('click', S.head.boards.cancelAlwaysShow);
-            $('.body').css({ marginLeft: 250 });
+            $('.body').css({ marginLeft: 250 });c   
             $('.bg-for-boards-menu').hide();
         },
 

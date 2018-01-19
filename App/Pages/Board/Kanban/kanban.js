@@ -8,6 +8,9 @@
         //resize list height to fit window
         $(window).on('resize', S.kanban.list.resize);
         S.kanban.list.resize();
+
+        //init cards events
+        S.kanban.cards.init();
     },
 
     list: {
@@ -75,8 +78,8 @@
                 var data = {
                     boardId: S.board.id,
                     listId: listid,
-                    name: text.val() 
-                }
+                    name: text.val()
+                };
                 text.val('');
                 S.ajax.post('Cards/Create', data,
                     function (d) {
@@ -95,11 +98,40 @@
                             });
 
                         }
-                    }, function () {
+                        S.kanban.cards.init();
+                    },
+                    function () {
                         S.message.show('.board .message', "error", S.message.error.generic);
                     }
                 );
             }
+        },
+
+        details: function (e) {
+            var elem = $(e.target);
+            if (!elem.hasClass('item')) { elem = elem.parents('.item').first(); }
+            var id = elem[0].className.split('id-')[1].split(' ')[0];
+            var data = {
+                boardId: S.board.id,
+                cardId: id
+            };
+            S.popup.show("", S.loader(), { width: 350 });
+            S.ajax.post('Card/Kanban/Details', data,
+                function (d) {
+                    var card = d.split('|');
+                    S.popup.show(card[0], card[1], { width: '90%', maxWidth: 750 });
+                },
+                function () {
+                    S.message.show('.board .message', "error", S.message.error.generic);
+                }
+            );
+
+        }
+    },
+
+    cards: {
+        init: function () {
+            $('.board .lists .item').off('click').on('click', S.kanban.card.details);
         }
     }
 };

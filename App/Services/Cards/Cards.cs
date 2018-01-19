@@ -41,5 +41,6 @@ namespace Kandu.Services
             }
             
             return Success() + "|" + html;
-        }    }
+        }
+    }
 }
