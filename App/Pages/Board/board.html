@@ -4,11 +4,13 @@
     .box .body .bg .row a:hover,
     .box .body .bg .row a:active,
     .box .body .bg .row a:visited {color:{{color}}; font-weight:500;}
+    .board .message{margin:10px 30px;}
 </style>
 
 <div class="board">
     {{header "/Partials/UI/header.html"}}
 
+    <div class="row message hide"><span></span></div>
     {{content}}
 </div>
 

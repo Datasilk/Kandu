@@ -20,7 +20,7 @@ namespace Kandu.Query
                     {"boardId", card.boardId },
                     {"colors", card.colors },
                     {"name", card.name },
-                    {"datedue", card.datedue },
+                    {"datedue", card.datedue == null ? DateTime.Now.AddYears(-100) : card.datedue },
                     {"description", card.description }
                 }
             );

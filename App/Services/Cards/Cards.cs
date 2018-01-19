@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace Kandu.Services
 {
@@ -11,7 +10,7 @@ namespace Kandu.Services
         {
         }
 
-        public string Create(int boardId, int listId, string name, string description, DateTime dateDue, string colors = "")
+        public string Create(int boardId, int listId, string name, string description = "", DateTime? dateDue = null, string colors = "")
         {
             if (!UserInfo.CheckSecurity(boardId)) { return AccessDenied(); }
 

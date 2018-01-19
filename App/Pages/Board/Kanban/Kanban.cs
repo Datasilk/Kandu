@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using System;
+using System.Text;
 
 namespace Kandu.Pages
 {
@@ -27,7 +28,16 @@ namespace Kandu.Pages
                     htmlists.Append(kanban.LoadListHtml(list, list.cards) + "\n");
                 }
 
+                var colors = new Utility.Colors();
+
                 scaffold.Data["name"] = board.name;
+                try
+                {
+                    scaffold.Data["color-hover"] = colors.FromHexToRgba("#" + board.color, 1);
+                }
+                catch (Exception ex)
+                {
+                }
                 scaffold.Data["lists"] = htmlists.ToString();
                 html.Append(scaffold.Render());
             }

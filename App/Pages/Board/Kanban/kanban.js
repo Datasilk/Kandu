@@ -70,10 +70,35 @@
             },
 
             submit: function (listid) {
+                var list = $('.list.id-' + listid);
+                var text = list.find('.new-card-label');
                 var data = {
+                    boardId: S.board.id,
                     listId: listid,
-
+                    name: text.val() 
                 }
+                text.val('');
+                S.ajax.post('Cards/Create', data,
+                    function (d) {
+                        if(d.indexOf('success|') == 0) {
+                            var items = list.find('.items')
+                            items.append(d.split('|', 2)[1]);
+                            var item = items.children().last();
+                            var h = item.height();
+                            item.css({ height: 0 });
+                            item.animate({ height: h }, {
+                                duration: 1000,
+                                easing: 'ease-in-out',
+                                complete: function () {
+                                    item.css({ height:'auto'});
+                                }
+                            });
+
+                        }
+                    }, function () {
+                        S.message.show('.board .message', "error", S.message.error.generic);
+                    }
+                );
             }
         }
     }

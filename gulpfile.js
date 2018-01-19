@@ -37,8 +37,8 @@ var paths = {
 paths.working = {
     js: {
         platform: [
-            // paths.webroot + 'js/selector.js',
-            paths.webroot + '/js/core/jquery-2.1.4.min.js',
+            paths.webroot + 'js/selector.js',
+            //paths.webroot + '/js/core/jquery-2.1.4.min.js',
             paths.scripts + 'utility/velocity.min.js',
             paths.scripts + 'core/platform.js',
             paths.scripts + 'platform/[^_]*.js',
