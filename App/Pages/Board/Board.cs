@@ -30,7 +30,6 @@ namespace Kandu.Pages
 
                 //choose which Lists Type to render
                 var board = query.GetBoardAndLists(boardId);
-                var service = new Services.Boards(S);
                 BoardPage page;
                 scripts += "<script language=\"javascript\">S.board.id=" + board.boardId + ";</script>";
                 switch (board.type)
@@ -46,10 +45,6 @@ namespace Kandu.Pages
 
                 //set background color of board
                 scaffold.Data["color"] = "#" + board.color;
-
-                //set up header
-                scaffold.Child("header").Data["boards"] = "1";
-                scaffold.Child("header").Data["boards-menu"] = service.BoardsMenu();
 
                 //transfer resources from page
                 scripts += page.scripts;

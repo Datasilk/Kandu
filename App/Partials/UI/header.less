@@ -1,9 +1,12 @@
 ﻿@shadow:2px 2px 5px rgba(0,0,0,0.3);
 
 .boards-menu{position:absolute; margin:10px 0 0 7px; max-width:250px; z-index:100; max-height:~"calc(100% - 85px)"; border-radius:5px; box-shadow:@shadow; overflow:hidden;
-    & > .scroller{overflow-y:auto; max-height:100%;}
+    & > .scroller{overflow-y:auto; max-height:100%; position:relative;
+        &.no-scroll{overflow-y:visible;max-height:unset !important;}
+    }
 }
-.boards-menu.always-show{top:44px; left:0px; max-height:~"calc(100% - 44px)" !important; margin:0; border-radius:0;}
+.boards-menu.always-show{top:44px; left:0px; min-height:~"calc(100% - 44px)"; margin:0; border-radius:0;}
+.boards-menu .section-bar.locked{position:relative; z-index:105; background-color:#eee;}
 .bg-for-boards-menu{top:0; left:0; position:absolute; z-index:99; background:rgba(0,0,0,0.3)}
 .menu-section {
     .item{ cursor:pointer;

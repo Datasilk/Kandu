@@ -7,10 +7,14 @@
         });
         //resize list height to fit window
         $(window).on('resize', S.kanban.list.resize);
+        $(window).on('scroll', S.kanban.list.resize);
         S.kanban.list.resize();
 
         //init cards events
         S.kanban.cards.init();
+
+        //add callback for header boards popup
+        S.head.boards.callback.add('kanban', S.kanban.list.resize);
     },
 
     list: {
@@ -43,7 +47,14 @@
             var lists = $('.kanban .lists');
             var pos = lists.position();
             var win = S.window.pos();
-            lists.css({ height: win.h - pos.top });
+            var h = lists.children().first().height();
+            lists.css({ height: win.h - pos.top + win.scrolly });
+            if (h + pos.top >= win.h && (S.head.boards.boardsMenuBg.hasClass('hide') || (!S.head.boards.boardsMenuBg.hasClass('hide') && $('.boards-menu').hasClass('always-show')))) {
+                lists.css({ marginBottom: h - win.h + pos.top - win.scrolly });
+            } else {
+                lists.css({ marginBottom: '' });
+            }
+            
         }
     },
 
@@ -61,6 +72,7 @@
                     e.preventDefault();
                     return false;
                 });
+                list.find('.new-card-label')[0].focus();
             },
 
             hide: function (listid) {

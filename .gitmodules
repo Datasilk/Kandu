@@ -7,3 +7,6 @@
 [submodule "App/Core"]
 	path = App/Core
 	url = http://github.com/datasilk/Core
+[submodule "App/Scripts/platform"]
+	path = App/Scripts/platform
+	url = http://github.com/datasilk/corejs

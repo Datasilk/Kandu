@@ -23,8 +23,13 @@
 
         public void LoadHeader(ref Scaffold scaffold)
         {
+            var service = new Services.Boards(S);
+
             scaffold.Child("header").Data["user"] = "1";
-            if(S.User.photo == true)
+            scaffold.Child("header").Data["boards"] = "1";
+            scaffold.Child("header").Data["boards-menu"] = service.BoardsMenu();
+
+            if (S.User.photo == true)
             {
                 scaffold.Child("header").Data["user-photo"] = "/users/" + S.Util.Str.DateFolders(S.User.datecreated) + "/photo.jpg";
             }

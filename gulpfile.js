@@ -40,9 +40,17 @@ paths.working = {
             paths.webroot + 'js/selector.js',
             //paths.webroot + '/js/core/jquery-2.1.4.min.js',
             paths.scripts + 'utility/velocity.min.js',
-            paths.scripts + 'core/platform.js',
-            paths.scripts + 'platform/[^_]*.js',
-            paths.scripts + 'platform/_init.js'
+            paths.scripts + "platform/_super.js",
+            paths.scripts + "platform/ajax.js",
+            paths.scripts + "platform/loader.js",
+            paths.scripts + "platform/message.js",
+            paths.scripts + "platform/polyfill.js",
+            paths.scripts + "platform/popup.js",
+            paths.scripts + "platform/scaffold.js",
+            paths.scripts + "platform/util.js",
+            //paths.scripts + "platform/util.color.js",
+            paths.scripts + "platform/validate.js",
+            paths.scripts + "platform/window.js"
         ],
         app: paths.app + '**/*.js',
         utility: [
@@ -107,6 +115,11 @@ paths.compiled = {
     app: paths.webroot + 'css/',
     themes: paths.webroot + 'css/themes/'
 };
+
+//Core JS platform modules (http://github.com/datasilk/corejs)
+var modules = [
+    
+];
 
 //tasks for compiling javascript //////////////////////////////////////////////////////////////
 gulp.task('js:app', function () {

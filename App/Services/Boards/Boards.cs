@@ -104,10 +104,13 @@ namespace Kandu.Services
                 {
                     if(team.teamId != teamId)
                     {
+                        if (teamId > 0)
+                        {
+                            section.Data["items"] = htm.ToString();
+                            html.Append(section.Render());
+                        }
                         isnewTeam = true;
                         teamId = team.teamId;
-                        section.Data["items"] = htm.ToString();
-                        html.Append(section.Render());
                     }
                     if(isnewTeam == true)
                     {
