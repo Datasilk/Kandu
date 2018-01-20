@@ -98,6 +98,17 @@ namespace Kandu.Query
             );
         }
 
+        public void AllColor(int userId, bool allColor)
+        {
+            Sql.ExecuteNonQuery("User_AllColor",
+                new Dictionary<string, object>()
+                {
+                    {"userId", userId },
+                    {"allcolor", allColor }
+                }
+            );
+        }
+
         public Models.User GetInfo(int userId)
         {
             var list = Sql.Populate<Models.User>("User_GetInfo",

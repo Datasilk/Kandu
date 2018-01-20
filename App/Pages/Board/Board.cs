@@ -29,9 +29,13 @@ namespace Kandu.Pages
             {
 
                 //choose which Lists Type to render
+                var colors = new Utility.Colors();
                 var board = query.GetBoardAndLists(boardId);
                 BoardPage page;
-                scripts += "<script language=\"javascript\">S.board.id=" + board.boardId + ";</script>";
+                scripts += "<script language=\"javascript\">" + 
+                    "S.board.id=" + board.boardId + ";" + 
+                    (UserInfo.Settings.allColor ? "S.head.allColor();" : "") + 
+                    "</script>";
                 switch (board.type)
                 {
                     default: 
@@ -45,6 +49,7 @@ namespace Kandu.Pages
 
                 //set background color of board
                 scaffold.Data["color"] = "#" + board.color;
+                scaffold.Data["color-dark"] = colors.ChangeHexBrightness(board.color, (float)-0.3);
 
                 //transfer resources from page
                 scripts += page.scripts;
@@ -56,9 +61,7 @@ namespace Kandu.Pages
                 //load header
                 LoadHeader(ref scaffold);
             }
-            catch(Exception ex)
-            {
-            }
+            catch(Exception) { }
            
 
             return base.Render(path, scaffold.Render());

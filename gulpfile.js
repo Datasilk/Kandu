@@ -47,6 +47,7 @@ paths.working = {
             paths.scripts + "platform/polyfill.js",
             paths.scripts + "platform/popup.js",
             paths.scripts + "platform/scaffold.js",
+            paths.scripts + "platform/svg.js",
             paths.scripts + "platform/util.js",
             //paths.scripts + "platform/util.color.js",
             paths.scripts + "platform/validate.js",
@@ -303,11 +304,7 @@ gulp.task('default', ['js', 'less', 'css']);
 //watch task
 gulp.task('watch', function () {
     //watch platform JS
-    gulp.watch([
-        paths.scripts + 'selector/selector.js',
-        paths.scripts + 'core/platform.js',
-        paths.scripts + 'platform/*.js'
-    ], ['js:platform']);
+    gulp.watch(paths.working.js.platform, ['js:platform']);
 
     //watch core JS
     gulp.watch(paths.working.js.core, ['js:core']);

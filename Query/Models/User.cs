@@ -14,5 +14,6 @@ namespace Kandu.Query.Models
         public int lastboard { get; set; }
         public string lastboardName { get; set; }
         public bool keepmenu { get; set; }
+        public bool allcolor { get; set; }
     }
 }

@@ -33,7 +33,7 @@ namespace Kandu.Services
                     case 0: //Kanban
                         var kanban = new List.Kanban(S);
                         html = kanban.LoadListHtml(
-                            new Query.Models.List() { boardId = boardId, name = name, sort = sort }, 
+                            new Query.Models.List() { boardId = boardId, name = name, sort = sort, listId = id }, 
                             new List<Query.Models.Card>()
                         );
                         break;

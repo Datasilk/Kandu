@@ -1,10 +1,11 @@
 ﻿S.head = {
     init: function () {
         $('.boards-menu .btn-new-board').on('click', S.boards.add.show);
+        $('.boards-menu .btn-always-show').on('click', S.head.boards.alwaysShow);
+        $('.boards-menu .btn-all-color').on('click', S.head.allColor);
+        $('.boards-menu .scroller').on('scroll', S.head.scroller.scrolling);
         $('.btn-boards').on('click', S.head.boards.show);
         $('.bg-for-boards-menu').on('click', S.head.boards.hide);
-        $('.btn-always-show').on('click', S.head.boards.alwaysShow);
-        $('.boards-menu .scroller').on('scroll', S.head.scroller.scrolling);
     },
 
     boards: {
@@ -137,6 +138,20 @@
                 }
             }
         }
+    },
+
+    allColor: function () {
+        var all = true;
+        if ($('.board').hasClass('all-color')) {
+            all = false;
+            $('.btn-all-color').html('Colorize Lists');
+            $('.board').removeClass('all-color');
+        } else {
+            $('.btn-all-color').html('Grey Lists');
+            $('.board').addClass('all-color');
+            S.util.css.load('/css/pages/board/all-color.css', 'css_allcolor');
+        }
+        S.ajax.post('Boards/AllColor', { allColor: all });
     }
 }
 

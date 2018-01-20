@@ -19,6 +19,16 @@
         public Page(global::Core DatasilkCore) : base(DatasilkCore) {
             title = "Kandu";
             description = "You can do everything you ever wanted";
+            
+        }
+
+        public override string Render(string[] path, string body = "", object metadata = null)
+        {
+            if (scripts.IndexOf("S.svg.load") < 0)
+            {
+                scripts += "<script language=\"javascript\">S.svg.load('/themes/default/icons.svg');</script>";
+            }
+            return base.Render(path, body, metadata);
         }
 
         public void LoadHeader(ref Scaffold scaffold)

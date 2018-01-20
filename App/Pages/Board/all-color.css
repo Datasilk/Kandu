@@ -1,0 +1,60 @@
+﻿/* all-color scheme (no grey boxes) */
+    .board.all-color .body .bg{
+        color:#fff;
+        background-color:rgba(0,0,0,0.1) !important;
+    }
+
+    .board.all-color .body .lists .item {
+        color: #fff;
+        background-color: rgba(0,0,0,0.2) !important;
+        box-shadow:none !important;
+    }
+
+    .board.all-color .body .lists .item:hover{
+        background-color: rgba(0,0,0,0.4) !important;
+    }
+
+    .board.all-color .body .bg span,
+    .board.all-color .body .bg div{color:#fff;}
+
+
+    .board.all-color .body .bg .row h1,
+    .board.all-color .body .bg .row h2,
+    .board.all-color .body .bg .row h3,
+    .board.all-color .body .bg .row h4,
+    .board.all-color .body .bg .row h5,
+    .board.all-color .body .bg .row h6 {
+        color: #fff !important;
+    }
+
+    .board.all-color .body .bg .row a:link,
+    .board.all-color .body .bg .row a:hover,
+    .board.all-color .body .bg .row a:active,
+    .board.all-color .body .bg .row a:visited {
+        color: #fff !important;
+    }
+
+    .board.all-color .body .bg input[type]:not([type=button]):not([type=submit]):not([type=radio]) {
+        color: #fff !important;
+        background-color: rgba(0,0,0,0.2) !important;
+        box-shadow: none !important;
+    }
+
+    .board.all-color .body .bg .button{
+        background:rgba(0,0,0,0.3) !important;
+    }
+    .board.all-color .body .bg .button:hover {
+        background: rgba(0,0,0,0.5) !important;
+    }
+
+    .board.all-color .body .bg a:link use,
+    .board.all-color .body .bg a:visited use {
+        color: rgba(0,0,0,0.7) !important;
+        fill: rgba(0,0,0,0.7) !important;
+    }
+
+    .board.all-color .body .bg a:hover use,
+    .board.all-color .body .bg a:active use {
+        color: rgba(0,0,0,1) !important;
+        fill: rgba(0,0,0,1) !important;
+    }

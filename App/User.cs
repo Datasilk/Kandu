@@ -12,6 +12,7 @@ namespace Kandu
         public struct structSettings
         {
             public bool keepMenuOpen;
+            public bool allColor;
         }
 
         protected List<int> boards;
@@ -48,6 +49,7 @@ namespace Kandu
                     var query = new Query.Users(S.Server.sqlConnectionString);
                     var user = query.GetInfo(S.User.userId);
                     Settings.keepMenuOpen = user.keepmenu;
+                    Settings.allColor = user.allcolor;
                     S.User.Data["settings"] = S.Util.Serializer.WriteObjectToString(Settings);
                     S.User.saveSession = true;
                 }

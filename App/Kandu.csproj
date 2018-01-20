@@ -31,4 +31,8 @@
     <Folder Include="Content\users\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Include="wwwroot\themes\default\icons.svg" />
+  </ItemGroup>
+
 </Project>

@@ -8,5 +8,6 @@
     [active] BIT NOT NULL DEFAULT 1, 
     [datecreated] DATETIME NOT NULL DEFAULT GETDATE(), 
     [lastboard] INT NOT NULL DEFAULT 0, 
-    [keepmenu] BIT NOT NULL DEFAULT 0
+    [keepmenu] BIT NOT NULL DEFAULT 0, 
+    [allcolor] BIT NOT NULL DEFAULT 0
 )

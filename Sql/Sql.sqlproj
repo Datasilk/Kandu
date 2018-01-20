@@ -129,6 +129,7 @@
     <Build Include="dbo\Functions\SplitArray.sql" />
     <Build Include="dbo\Stored Procedures\Users\User_KeepMenuOpen.sql" />
     <Build Include="dbo\Stored Procedures\Users\User_GetInfo.sql" />
+    <Build Include="dbo\Stored Procedures\Users\User_AllColor.sql" />
   </ItemGroup>
   <ItemGroup>
     <RefactorLog Include="Sql.refactorlog" />

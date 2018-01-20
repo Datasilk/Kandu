@@ -146,5 +146,15 @@ namespace Kandu.Services
             return "";
         }
 
+        public string AllColor(bool allColor)
+        {
+            if (!CheckSecurity()) { return AccessDenied(); } //check security
+            var query = new Query.Users(S.Server.sqlConnectionString);
+            query.AllColor(S.User.userId, allColor);
+            UserInfo.Settings.allColor = allColor;
+            UserInfo.SaveSettings();
+            return "";
+        }
+
     }
 }
