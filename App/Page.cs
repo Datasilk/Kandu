@@ -20,5 +20,18 @@
             title = "Kandu";
             description = "You can do everything you ever wanted";
         }
+
+        public void LoadHeader(ref Scaffold scaffold)
+        {
+            scaffold.Child("header").Data["user"] = "1";
+            if(S.User.photo == true)
+            {
+                scaffold.Child("header").Data["user-photo"] = "/users/" + S.Util.Str.DateFolders(S.User.datecreated) + "/photo.jpg";
+            }
+            else
+            {
+                scaffold.Child("header").Data["no-user"] = "1";
+            }
+        }
     }
 }

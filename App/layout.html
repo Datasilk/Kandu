@@ -14,15 +14,19 @@
 <body class="box">
     <div class="bg for-popup hide" onclick="S.popup.bg(event)"></div>
     {{body}}
-    <script type="text/html" id="template_popup_close">
-        <div class="col icon small btn-close">
-            <a href="javascript:">
-                <svg viewBox="0 0 32 32">
-                    <use xlink:href="#icon-close" x="0" y="0" width="32" height="32"></use>
-                </svg>
-            </a>
+    <script type="text/html" id="template_popup">
+        <div class="row pad-bottom">
+            <div class="col title"><h4>#title#</h4></div>
+            <div class="col icon small btn-close">
+                <a href="javascript:">
+                    <svg viewBox="0 0 32 32">
+                        <use xlink:href="#icon-close" x="0" y="0" width="32" height="32"></use>
+                    </svg>
+                </a>
+            </div>
         </div>
-    </script>
+        #body#
+</script>
     <div class="svgicons">{{svg-icons}}</div>
     <script src="/js/platform.js"></script>
     {{scripts}}

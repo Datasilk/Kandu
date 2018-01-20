@@ -1,0 +1,46 @@
+
+<svg xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" preserveAspectRatio="none" x="0px" y="0px" width="64px" height="64px" viewBox="0 0 64 64">
+<defs>
+<g id="chat_single_left_0_Layer1_0_FILL">
+<path fill="#FFFFFF" stroke="none" d="
+M 60.3 12.65
+Q 60.3 3.7 51.35 3.7
+L 12.65 3.7
+Q 3.7 3.7 3.7 12.65
+L 3.7 35.2
+Q 3.7 44.15 12.65 44.15
+L 19.25 44.15
+Q 18.15 46.4 16.4 49.15 15.9 49.9 16.05 50.85 16.15 51.7 16.8 52.35 17.45 52.95 18.4 53 35.3 53.9 39.3 44.05
+L 51.35 44.15
+Q 60.3 44.15 60.3 35.2
+L 60.3 12.65
+M 55.3 35.2
+Q 55.3 39.1 51.35 39.15
+L 37.55 39
+Q 36.7 39 36.05 39.5 35.35 40 35.1 40.8 32.8 47.4 22.9 48 24.55 44.85 25.35 42.4 25.6 41.65 25.35 40.9 25.05 40.1 24.4 39.65 23.75 39.15 22.95 39.15
+L 12.65 39.15
+Q 8.7 39.15 8.7 35.2
+L 8.7 12.65
+Q 8.7 8.7 12.65 8.7
+L 51.35 8.7
+Q 55.3 8.7 55.3 12.65
+L 55.3 35.2 Z"/>
+</g>
+
+<g id="chat_single_left_0_Layer0_0_FILL">
+<path fill="#FFFFFF" fill-opacity="0" stroke="none" d="
+M 0 0
+L 0 64 64 64 64 0 0 0 Z"/>
+</g>
+</defs>
+
+<g transform="matrix( 1, 0, 0, 1, 0,0) ">
+<g transform="matrix( 1, 0, 0, 1, 0,0) ">
+<use xlink:href="#chat_single_left_0_Layer1_0_FILL"/>
+</g>
+
+<g transform="matrix( 1, 0, 0, 1, 0,0) ">
+<use xlink:href="#chat_single_left_0_Layer0_0_FILL"/>
+</g>
+</g>
+</svg>

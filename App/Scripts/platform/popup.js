@@ -38,18 +38,11 @@
             forpopup.css({ padding: opts.padding });
         }
 
-        var htm = '<div class="row">';
-
-        if (title != '') {
-            htm += '<div class="col pad-sm"><h4>' + title + '</h4></div>';
-        }
-        if (opts.close == true) {
-            //add close button to top of page
-            htm += $('#template_popup_close').html();
-        }
-        htm += '</div>';
-
-        popup.html(htm + html);
+        var scaffold = new S.scaffold($('#template_popup').html(), {
+            title: title,
+            body: html
+        });
+        popup.html(scaffold.render());
         this.elem = popup;
 
         $('body > .for-popup .popup').remove();

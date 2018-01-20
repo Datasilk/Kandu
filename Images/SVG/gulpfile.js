@@ -12,7 +12,7 @@ var replace = require('gulp-replace');
 gulp.task('svg', function () {
 
   return gulp
-    .src('../icons/*.svg')
+    .src('../Icons/*.svg')
     .pipe(cheerio({
       run: function ($) {
         $('[fill="none"]').removeAttr('fill')
@@ -28,9 +28,9 @@ gulp.task('svg', function () {
     '    use:not(.svg-nocolor):active{color:currentColor}\n' +
     '</style>\n\n\n' + 
     '<defs>'))
-    .pipe(gulp.dest('test/compiled'))
-
-})
+    //.pipe(gulp.dest('test/compiled'))
+	.pipe(gulp.dest('../../App/content/themes/default'));
+});
 
 
 gulp.task('inline-svg', function () {
@@ -54,4 +54,11 @@ gulp.task('inline-svg', function () {
     .pipe(inject(svgs, { transform: fileContents }))
     .pipe(gulp.dest('test/compiled'))
 
-})
+});
+
+
+//watch task
+gulp.task('watch', function () {
+    //watch icons folder for SVG file changes from Flash (Animate CC)
+    gulp.watch('../Icons/*.svg', ['svg']);
+});

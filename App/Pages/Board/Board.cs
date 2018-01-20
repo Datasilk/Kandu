@@ -24,6 +24,7 @@ namespace Kandu.Pages
 
             var scaffold = new Scaffold("/Pages/Board/board.html", S.Server.Scaffold);
             var query = new Query.Boards(S.Server.sqlConnectionString);
+            
             try
             {
 
@@ -56,7 +57,9 @@ namespace Kandu.Pages
 
                 //render board lists
                 scaffold.Data["content"] = page.Render(path);
-                
+
+                //load header
+                LoadHeader(ref scaffold);
             }
             catch(Exception) { }
            

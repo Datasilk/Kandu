@@ -10,6 +10,17 @@
     <div class="col logo">
         <img src="/images/logo-xs-black.png" />
     </div>
+    {{user}}
+    <div class="col right pad-right-sm">
+        <div class="col profile {{no-user}}no-user{{/no-user}}">
+            {{no-user}}
+            <svg viewBox="0 0 32 32">
+                <use xlink:href="#icon-user" x="0" y="0" width="32" height="32"></use>
+            </svg>
+            {{/no-user}}
+        </div>
+    </div>
+    {{/user}}
 </header>
 
 {{boards}}

@@ -27,4 +27,8 @@
     <ProjectReference Include="..\Query\Query.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Content\users\" />
+  </ItemGroup>
+
 </Project>
