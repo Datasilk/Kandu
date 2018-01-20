@@ -13,5 +13,6 @@ namespace Kandu.Query.Models
         public DateTime datecreated { get; set; }
         public int lastboard { get; set; }
         public string lastboardName { get; set; }
+        public bool keepmenu { get; set; }
     }
 }

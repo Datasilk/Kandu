@@ -23,6 +23,7 @@
 
         public void LoadHeader(ref Scaffold scaffold)
         {
+            UserInfo.Start();
             var service = new Services.Boards(S);
 
             scaffold.Child("header").Data["user"] = "1";
@@ -36,6 +37,10 @@
             else
             {
                 scaffold.Child("header").Data["no-user"] = "1";
+            }
+            if(UserInfo.Settings.keepMenuOpen == true)
+            {
+                scripts += "<script language=\"javascript\">S.head.boards.show();S.head.boards.alwaysShow();</script>";
             }
         }
     }

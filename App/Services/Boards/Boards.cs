@@ -64,6 +64,7 @@ namespace Kandu.Services
 
         public string BoardsMenu()
         {
+            if (!CheckSecurity()) { return AccessDenied(); } //check security
             var html = new StringBuilder();
             var htm = new StringBuilder();
             var section = new Scaffold("/Services/Boards/menu-section.html", S.Server.Scaffold);
@@ -133,6 +134,16 @@ namespace Kandu.Services
 
             // Team Boards (sort by user owned, then by date created) /////////
             return html.ToString();
+        }
+
+        public string KeepMenuOpen(bool keepOpen)
+        {
+            if (!CheckSecurity()) { return AccessDenied(); } //check security
+            var query = new Query.Users(S.Server.sqlConnectionString);
+            query.KeepMenuOpen(S.User.userId, keepOpen);
+            UserInfo.Settings.keepMenuOpen = keepOpen;
+            UserInfo.SaveSettings();
+            return "";
         }
 
     }

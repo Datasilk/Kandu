@@ -86,6 +86,7 @@ namespace Kandu.Query
                     boards[x].lists.Add(lists[y]);
                 }
             }
+            Sql.EndQuery();
             return boards[0];
         }
 

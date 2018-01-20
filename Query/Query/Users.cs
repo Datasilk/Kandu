@@ -86,5 +86,28 @@ namespace Kandu.Query
         {
             return Sql.ExecuteScalar<int>("Users_HasAdmin") == 1;
         }
+
+        public void KeepMenuOpen(int userId, bool keepOpen)
+        {
+            Sql.ExecuteNonQuery("User_KeepMenuOpen",
+                new Dictionary<string, object>()
+                {
+                    {"userId", userId },
+                    {"keepmenu", keepOpen }
+                }
+            );
+        }
+
+        public Models.User GetInfo(int userId)
+        {
+            var list = Sql.Populate<Models.User>("User_GetInfo",
+                new Dictionary<string, object>()
+                {
+                    {"userId", userId }
+                }
+            );
+            if(list.Count > 0) { return list[0]; }
+            return null;
+        }
     }
 }

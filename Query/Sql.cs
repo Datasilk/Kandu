@@ -30,6 +30,13 @@ namespace Kandu.Query
             }
         }
 
+        public void EndQuery()
+        {
+            if (conn.State != System.Data.ConnectionState.Closed) { 
+                conn.Close();
+            }
+        }
+
         private string GetStoredProc(string storedproc, Dictionary<string, object> parameters = null)
         {
             var sql = new StringBuilder("EXEC " + storedproc);
@@ -63,10 +70,12 @@ namespace Kandu.Query
             try
             {
                 if (parameters != null) { GetSqlParameters(parameters).ForEach(a => cmd.Parameters.Add(a)); }
-                return cmd.ExecuteReader();
+                var reader = cmd.ExecuteReader();
+                return reader;
             }
             catch (Exception ex)
             {
+                EndQuery();
                 throw ex;
             }
         }
@@ -80,9 +89,11 @@ namespace Kandu.Query
             {
                 if (parameters != null) { GetSqlParameters(parameters).ForEach(a => cmd.Parameters.Add(a)); }
                 cmd.ExecuteNonQuery();
+                EndQuery();
             }
             catch (Exception ex)
             {
+                EndQuery();
                 throw ex;
             }
         }
@@ -95,10 +106,13 @@ namespace Kandu.Query
             try
             {
                 if (parameters != null) { cmd.Parameters.AddRange(GetSqlParameters(parameters).ToArray()); }
-                return (T)cmd.ExecuteScalar();
+                var scalar = (T)cmd.ExecuteScalar();
+                EndQuery();
+                return scalar;
             }
             catch (Exception ex)
             {
+                EndQuery();
                 throw ex;
             }
         }
@@ -125,13 +139,17 @@ namespace Kandu.Query
         public List<T> Populate<T>(string storedproc, Dictionary<string, object> parameters = null)
         {
             Start();
-            return conn.Query<T>(GetStoredProc(storedproc, parameters), parameters).AsList<T>();
+            var list = conn.Query<T>(GetStoredProc(storedproc, parameters), parameters).AsList<T>();
+            EndQuery();
+            return list;
+
         }
 
         public SqlMapper.GridReader PopulateMultiple(string storedproc, Dictionary<string, object> parameters = null)
         {
             Start();
-            return conn.QueryMultiple(GetStoredProc(storedproc, parameters), parameters);
+            var list = conn.QueryMultiple(GetStoredProc(storedproc, parameters), parameters);
+            return list;
         }
     }
 }

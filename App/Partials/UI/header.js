@@ -59,8 +59,9 @@
                 .on('click', S.head.boards.cancelAlwaysShow);
             $('.body').css({ marginLeft: 250 });  
             $('.bg-for-boards-menu').addClass('hide');
+            S.ajax.post('Boards/KeepMenuOpen', { keepOpen: true });
             S.head.boards.callback.execute(true, true);
-
+            
         },
 
         cancelAlwaysShow: function () {
@@ -73,6 +74,7 @@
                 .on('click', S.head.boards.alwaysShow);
             $('.body').css({ marginLeft: '' });
             $('.bg-for-boards-menu').removeClass('hide');
+            S.ajax.post('Boards/KeepMenuOpen', { keepOpen: false });
             S.head.boards.callback.execute(true, false);
         },
 

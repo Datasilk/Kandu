@@ -8,14 +8,21 @@ namespace Kandu
         private Core S;
         private bool _loaded = false;
 
+        [Serializable]
+        public struct structSettings
+        {
+            public bool keepMenuOpen;
+        }
+
         protected List<int> boards;
+        public structSettings Settings;
 
         public User(Core DatasilkCore)
         {
             S = DatasilkCore;
         }
 
-        private void Start()
+        public void Start()
         {
             if (_loaded == false)
             {
@@ -23,11 +30,26 @@ namespace Kandu
                 if (S.User.Data.ContainsKey("boards"))
                 {
                     boards = (List<int>)S.Util.Serializer.ReadObject(S.User.Data["boards"], typeof(List<int>));
+                    S.User.Data["boards"] = S.Util.Serializer.WriteObjectToString(boards);
                     if (boards == null) { boards = new List<int>(); }
                 }
                 else
                 {
                     UpdateSecurity();
+                }
+                if (S.User.Data.ContainsKey("settings"))
+                {
+                    //load user settings from cache
+                    Settings = (structSettings)S.Util.Serializer.ReadObject(S.User.Data["settings"], typeof(structSettings));
+                }
+                else
+                {
+                    //load user settings from database
+                    var query = new Query.Users(S.Server.sqlConnectionString);
+                    var user = query.GetInfo(S.User.userId);
+                    Settings.keepMenuOpen = user.keepmenu;
+                    S.User.Data["settings"] = S.Util.Serializer.WriteObjectToString(Settings);
+                    S.User.saveSession = true;
                 }
             }
         }
@@ -50,9 +72,15 @@ namespace Kandu
             Save();
         }
 
-        private void Save()
+        public void Save()
         {
-            S.User.Data["boards"] = S.Util.Serializer.WriteObjectToString(boards);
+            S.User.saveSession = true;
+        }
+
+        public void SaveSettings()
+        {
+            S.User.Data["settings"] = S.Util.Serializer.WriteObjectToString(Settings);
+            S.User.saveSession = true;
         }
     }
 }

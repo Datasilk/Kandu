@@ -7,5 +7,6 @@
     [photo] BIT NOT NULL DEFAULT 0, 
     [active] BIT NOT NULL DEFAULT 1, 
     [datecreated] DATETIME NOT NULL DEFAULT GETDATE(), 
-    [lastboard] INT NOT NULL DEFAULT 0
+    [lastboard] INT NOT NULL DEFAULT 0, 
+    [keepmenu] BIT NOT NULL DEFAULT 0
 )

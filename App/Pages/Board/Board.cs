@@ -56,7 +56,9 @@ namespace Kandu.Pages
                 //load header
                 LoadHeader(ref scaffold);
             }
-            catch(Exception) { }
+            catch(Exception ex)
+            {
+            }
            
 
             return base.Render(path, scaffold.Render());
