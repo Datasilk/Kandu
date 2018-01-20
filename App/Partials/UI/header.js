@@ -11,12 +11,14 @@
         boardsMenuBg: $('.bg-for-boards-menu'),
 
         show: function () {
-            $('.boards-menu').removeClass('hide').addClass('show');
-            $('.bg-for-boards-menu').removeClass('hide');
-            $(window).on('resize', S.head.boards.resize);
-            $(window).on('scroll', S.head.boards.resize);
-            S.head.boards.resize();
-            S.head.boards.callback.execute(true, false);
+            if (!$('.boards-menu').hasClass('always-show')) {
+                $('.boards-menu').removeClass('hide').addClass('show');
+                $('.bg-for-boards-menu').removeClass('hide');
+                $(window).on('resize', S.head.boards.resize);
+                $(window).on('scroll', S.head.boards.resize);
+                S.head.boards.resize();
+                S.head.boards.callback.execute(true, false);
+            }
         },
 
         resize: function () {
@@ -48,6 +50,7 @@
         alwaysShow: function () {
             var bars = S.head.scroller.sectionbars;
             bars.removeClass('locked').css({ top: '' });
+            $('header .btn-boards').hide();
             $('.boards-menu').addClass('always-show');
             $('.boards-menu .scroller').addClass('no-scroll');
             $('.btn-always-show')
@@ -61,6 +64,7 @@
         },
 
         cancelAlwaysShow: function () {
+            $('header .btn-boards').show();
             $('.boards-menu .scroller').removeClass('no-scroll');
             $('.boards-menu').removeClass('always-show');
             $('.btn-always-show')
