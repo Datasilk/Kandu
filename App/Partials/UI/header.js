@@ -27,7 +27,11 @@
             var scroller = $('.boards-menu .scroller');
             bg.css({ width: win.w, height: win.h + win.scrolly });
             if (menu.hasClass('always-show')) {
-                menu[0].style.minHeight = scroller.height() + 'px';
+                if (scroller.height() > win.h - 44) {
+                    menu[0].style.minHeight = scroller.height() + 'px';
+                } else {
+                    menu.css({ minHeight: 'calc(100% - 44px)' });
+                }
             } else {
                 menu.css({ minHeight: '' });
             }
