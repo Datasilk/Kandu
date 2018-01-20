@@ -1,0 +1,60 @@
+﻿/* all-color scheme (no grey boxes) */
+.board.all-color {
+    .body{
+        .bg{
+            color:#fff;
+            background-color:rgba(0,0,0,0.1) !important;
+        }
+
+        .lists{
+            .item {
+                color: #fff;
+                background-color: rgba(0,0,0,0.2) !important;
+                box-shadow:none !important;
+            }
+            .item:hover{
+                background-color: rgba(0,0,0,0.4) !important;
+            }
+            
+            .bg{
+                span, div{color:rgba(255,255,255,0.9);}
+                .row h1,
+                .row h2,
+                .row h3,
+                .row h4,
+                .row h5,
+                .row h6 { color: rgba(255,255,255,0.9) !important;}
+
+                .row a:link,
+                .row a:hover,
+                .row a:active,
+                .row a:visited {color: #fff !important;}
+
+                input[type]:not([type=button]):not([type=submit]):not([type=radio]) {
+                    color: #fff !important;
+                    background-color: rgba(0,0,0,0.2) !important;
+                    box-shadow: none !important;
+                }
+
+                .button{
+                    background:rgba(0,0,0,0.3) !important;
+                }
+                .button:hover {
+                    background: rgba(0,0,0,0.5) !important;
+                }
+
+                a:link use,
+                a:visited use{
+                    color: rgba(0,0,0,0.7) !important;
+                    fill: rgba(0,0,0,0.7) !important;
+                }
+
+                a:hover use,
+                a:active use{
+                    color: rgba(0,0,0,1) !important;
+                    fill: rgba(0,0,0,1) !important;
+                }
+            }
+        }
+    }
+} 

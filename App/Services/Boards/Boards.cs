@@ -141,6 +141,7 @@ namespace Kandu.Services
             if (!CheckSecurity()) { return AccessDenied(); } //check security
             var query = new Query.Users(S.Server.sqlConnectionString);
             query.KeepMenuOpen(S.User.userId, keepOpen);
+            UserInfo.Start();
             UserInfo.Settings.keepMenuOpen = keepOpen;
             UserInfo.SaveSettings();
             return "";
@@ -151,6 +152,7 @@ namespace Kandu.Services
             if (!CheckSecurity()) { return AccessDenied(); } //check security
             var query = new Query.Users(S.Server.sqlConnectionString);
             query.AllColor(S.User.userId, allColor);
+            UserInfo.Start();
             UserInfo.Settings.allColor = allColor;
             UserInfo.SaveSettings();
             return "";

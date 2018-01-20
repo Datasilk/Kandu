@@ -28,14 +28,18 @@ namespace Kandu.Pages
             try
             {
 
-                //choose which Lists Type to render
+                //load board details
                 var colors = new Utility.Colors();
                 var board = query.GetBoardAndLists(boardId);
                 BoardPage page;
+
+                //add custom javascript for User Settings & Board info
                 scripts += "<script language=\"javascript\">" + 
                     "S.board.id=" + board.boardId + ";" + 
                     (UserInfo.Settings.allColor ? "S.head.allColor();" : "") + 
                     "</script>";
+
+                //choose which Lists Type to render
                 switch (board.type)
                 {
                     default: 
