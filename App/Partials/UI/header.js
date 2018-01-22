@@ -3,6 +3,7 @@
         $('.boards-menu .btn-new-board').on('click', S.boards.add.show);
         $('.boards-menu .btn-always-show').on('click', S.head.boards.alwaysShow);
         $('.boards-menu .btn-all-color').on('click', S.head.allColor);
+        $('.boards-menu .btn-import-trello').on('click', S.head.import.trello.show);
         $('.boards-menu .scroller').on('scroll', S.head.scroller.scrolling);
         $('.btn-boards').on('click', S.head.boards.show);
         $('.bg-for-boards-menu').on('click', S.head.boards.hide);
@@ -17,8 +18,8 @@
                 $('.bg-for-boards-menu').removeClass('hide');
                 $(window).on('resize', S.head.boards.resize);
                 $(window).on('scroll', S.head.boards.resize);
-                S.head.boards.resize();
                 S.head.boards.callback.execute(true, false);
+                S.head.boards.resize();
             }
         },
 
@@ -48,7 +49,7 @@
             S.head.boards.callback.execute(false, false);
         },
 
-        alwaysShow: function () {
+        alwaysShow: function (init) {
             var bars = S.head.scroller.sectionbars;
             bars.removeClass('locked').css({ top: '' });
             $('header .btn-boards').hide();
@@ -60,9 +61,9 @@
                 .on('click', S.head.boards.cancelAlwaysShow);
             $('.body').css({ marginLeft: 250 });  
             $('.bg-for-boards-menu').addClass('hide');
-            S.ajax.post('Boards/KeepMenuOpen', { keepOpen: true });
+            if (!init) { S.ajax.post('Boards/KeepMenuOpen', { keepOpen: true }); }
             S.head.boards.callback.execute(true, true);
-            
+            S.head.boards.resize();
         },
 
         cancelAlwaysShow: function () {
@@ -152,6 +153,26 @@
             S.util.css.load('/css/pages/board/all-color.css', 'css_allcolor');
         }
         S.ajax.post('Boards/AllColor', { allColor: all });
+    },
+
+    import: {
+        trello: {
+            file:'',
+            show: function () {
+                S.popup.show('Import from Trello', $('#template_import_trello').html(), { width: 400 });
+                $('.popup .btn-upload').on('click', S.head.import.trello.submit);
+            },
+
+            submit: function () {
+                var iframe = S.iframe('.popup iframe');
+                iframe.document.getElementsByTagName('form')[0].submit();
+                $('.popup .btn-upload').hide();
+            },
+
+            uploaded: function () {
+                location.reload();
+            }
+        }
     }
 }
 

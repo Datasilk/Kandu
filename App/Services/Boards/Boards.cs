@@ -157,6 +157,5 @@ namespace Kandu.Services
             UserInfo.SaveSettings();
             return "";
         }
-
     }
 }

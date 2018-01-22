@@ -50,7 +50,7 @@
             }
             if(UserInfo.Settings.keepMenuOpen == true)
             {
-                scripts += "<script language=\"javascript\">S.head.boards.show();S.head.boards.alwaysShow();</script>";
+                scripts += "<script language=\"javascript\">S.head.boards.show();S.head.boards.alwaysShow(true);</script>";
             }
         }
     }

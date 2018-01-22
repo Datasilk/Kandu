@@ -1,7 +1,7 @@
 ﻿@shadow:2px 2px 5px rgba(0,0,0,0.3);
 
 .boards-menu{position:absolute; margin:10px 0 0 7px; max-width:250px; z-index:100; max-height:~"calc(100% - 85px)"; border-radius:5px; box-shadow:@shadow; overflow:hidden;
-    & > .scroller{overflow-y:auto; max-height:100%; position:relative;
+    & > .scroller{overflow-y:auto; max-height:100%; position:relative; padding-bottom:30px;
         &.no-scroll{overflow-y:visible;max-height:unset !important;}
     }
 }
@@ -24,4 +24,8 @@ header{
             use{fill:rgba(0,0,0,0.3);color:rgba(0,0,0,0.2);}
         }
     }
+}
+
+.popup .upload{ height:50px;
+    iframe{width:100%; height:100%; border:0 none; background:transparent;}
 }
