@@ -61,7 +61,7 @@
                 .on('click', S.head.boards.cancelAlwaysShow);
             $('.body').css({ marginLeft: 250 });  
             $('.bg-for-boards-menu').addClass('hide');
-            if (!init) { S.ajax.post('Boards/KeepMenuOpen', { keepOpen: true }); }
+            if (init !== true) { S.ajax.post('Boards/KeepMenuOpen', { keepOpen: true }); }
             S.head.boards.callback.execute(true, true);
             S.head.boards.resize();
         },
