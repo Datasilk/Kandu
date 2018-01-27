@@ -22,6 +22,20 @@ namespace Kandu.Query
             );
         }
 
+        public int Import(Models.List list, bool merge = false)
+        {
+            return Sql.ExecuteScalar<int>(
+                "List_Import",
+                new Dictionary<string, object>()
+                {
+                    {"boardId", list.boardId },
+                    {"name", list.name },
+                    {"sort", list.sort },
+                    {"merge", merge }
+                }
+            );
+        }
+
         public List<Models.List> GetListsForBoard(int boardId)
         {
             return Sql.Populate<Models.List>(

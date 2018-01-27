@@ -89,6 +89,8 @@
         select: function (e) {
             console.log(e);
             var elem = e.target;
+            console.log('---------------------------------------------------');
+            console.log($(elem).css('background-color'));
             var color = S.util.color.rgbToHex($(elem).css('background-color'));
             $('.color-input').css({ 'background-color': color });
             S.boards.colorPicker.hide();

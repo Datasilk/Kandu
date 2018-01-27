@@ -14,8 +14,3 @@ AS
 	SELECT * FROM View_CardComments
 	WHERE cardId=@cardId
 	ORDER BY datecreated DESC
-
-	/* [3] Card Log */
-	SELECT * FROM View_LogBoard
-	WHERE cardId=@cardId
-	ORDER BY datecreated DESC

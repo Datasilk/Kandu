@@ -53,6 +53,14 @@
 <script type="text/html" id="template_import_trello">
     <div class="row field">Upload JSON file</div>
     <div class="row hover input upload"><iframe src="/Import/Trello" frameborder="0" scrolling="no" allowtransparency="true"></iframe></div>
+    <div class="row hover input margin-top-sm">
+        <select id="trello_board_copytype">
+            <option value="0">Merge Existing Board</option>
+            <option value="0">Replace Existing Board</option>
+        </select>
+    </div>
+
+
     <div class="row text-center">
         <input type="button" class="button apply btn-upload" value="Upload file" />
     </div>

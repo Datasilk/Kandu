@@ -25,47 +25,43 @@ namespace Kandu.Pages
             var scaffold = new Scaffold("/Pages/Board/board.html", S.Server.Scaffold);
             var query = new Query.Boards(S.Server.sqlConnectionString);
             
-            try
+
+            //load board details
+            var colors = new Utility.Colors();
+            var board = query.GetBoardAndLists(boardId);
+            BoardPage page;
+
+            //add custom javascript for User Settings & Board info
+            scripts += "<script language=\"javascript\">" + 
+                "S.board.id=" + board.boardId + ";" + 
+                (UserInfo.Settings.allColor ? "S.head.allColor();" : "") + 
+                "</script>";
+
+            //choose which Lists Type to render
+            switch (board.type)
             {
-
-                //load board details
-                var colors = new Utility.Colors();
-                var board = query.GetBoardAndLists(boardId);
-                BoardPage page;
-
-                //add custom javascript for User Settings & Board info
-                scripts += "<script language=\"javascript\">" + 
-                    "S.board.id=" + board.boardId + ";" + 
-                    (UserInfo.Settings.allColor ? "S.head.allColor();" : "") + 
-                    "</script>";
-
-                //choose which Lists Type to render
-                switch (board.type)
-                {
-                    default: 
-                    case Query.Models.Board.BoardType.kanban: //kanban
-                        page = new Kanban(S);
-                        break;
-                }
-
-                //dependancy injection
-                page.board = board;
-
-                //set background color of board
-                scaffold.Data["color"] = "#" + board.color;
-                scaffold.Data["color-dark"] = colors.ChangeHexBrightness(board.color, (float)-0.3);
-
-                //transfer resources from page
-                scripts += page.scripts;
-                headCss += page.headCss;
-
-                //render board lists
-                scaffold.Data["content"] = page.Render(path);
-
-                //load header
-                LoadHeader(ref scaffold);
+                default: 
+                case Query.Models.Board.BoardType.kanban: //kanban
+                    page = new Kanban(S);
+                    break;
             }
-            catch(Exception) { }
+
+            //dependancy injection
+            page.board = board;
+
+            //set background color of board
+            scaffold.Data["color"] = "#" + board.color;
+            scaffold.Data["color-dark"] = colors.ChangeHexBrightness(board.color, (float)-0.3);
+
+            //transfer resources from page
+            scripts += page.scripts;
+            headCss += page.headCss;
+
+            //render board lists
+            scaffold.Data["content"] = page.Render(path);
+
+            //load header
+            LoadHeader(ref scaffold);
            
 
             return base.Render(path, scaffold.Render());

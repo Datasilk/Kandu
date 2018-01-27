@@ -26,6 +26,23 @@ namespace Kandu.Query
             );
         }
 
+        public int Import(Models.Card card, bool merge = false)
+        {
+            return Sql.ExecuteScalar<int>(
+                "Card_Import",
+                new Dictionary<string, object>()
+                {
+                    {"listId", card.listId },
+                    {"boardId", card.boardId },
+                    {"colors", card.colors },
+                    {"name", card.name },
+                    {"datedue", card.datedue == null ? DateTime.Now.AddYears(-100) : card.datedue },
+                    {"description", card.description },
+                    {"merge", merge }
+                }
+            );
+        }
+
         public void ArchiveCard(int cardId)
         {
             Sql.ExecuteNonQuery("Card_Archive",

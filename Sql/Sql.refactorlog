@@ -105,4 +105,32 @@
     <Property Name="ParentElementType" Value="SqlTable" />
     <Property Name="NewName" Value="colors" />
   </Operation>
+  <Operation Name="Rename Refactor" Key="56f7d4f5-c1b4-4ba9-bb3c-153acebb4f00" ChangeDateTime="01/26/2018 08:40:39">
+    <Property Name="ElementName" Value="[dbo].[CardChecklists].[Id]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[CardChecklists]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="cardId" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="f4420912-4980-42de-ad59-c5894eaa2230" ChangeDateTime="01/26/2018 08:42:35">
+    <Property Name="ElementName" Value="[dbo].[CardChecklistItems].[Id]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[CardChecklistItems]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="itemId" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="d07ddc3d-ba0c-4dd0-abea-5a02a56dd683" ChangeDateTime="01/26/2018 10:43:27">
+    <Property Name="ElementName" Value="[dbo].[BoardActivity].[Id]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[BoardActivity]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="boardId" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="8bb1b682-314a-46a2-8d2f-06c02094abe8" ChangeDateTime="01/26/2018 10:46:53">
+    <Property Name="ElementName" Value="[dbo].[BoardActivity].[old]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[BoardActivity]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="oldId" />
+  </Operation>
 </Operations>

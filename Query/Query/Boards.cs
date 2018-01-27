@@ -112,5 +112,22 @@ namespace Kandu.Query
                 }
             );
         }
+
+        public int Import(Models.Board board, int userId, bool merge = false)
+        {
+            return Sql.ExecuteScalar<int>(
+                "Board_Import",
+                new Dictionary<string, object>()
+                {
+                    {"userId", userId },
+                    {"teamId", board.teamId },
+                    {"favorite", board.favorite },
+                    {"name", board.name },
+                    {"security", board.security },
+                    {"color", board.color },
+                    {"merge", merge }
+                }
+            );
+        }
     }
 }

@@ -35,7 +35,7 @@ namespace Kandu.Pages
                 {
                     scaffold.Data["color-hover"] = colors.FromHexToRgba("#" + board.color, 1);
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
                 }
                 scaffold.Data["lists"] = htmlists.ToString();
