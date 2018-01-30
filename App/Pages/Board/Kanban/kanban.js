@@ -15,6 +15,9 @@
 
         //add callback for header boards popup
         S.head.boards.callback.add('kanban', S.kanban.list.resize);
+
+        //add drag capabilities to cards
+        S.kanban.card.drag.init();
     },
 
     list: {
@@ -119,10 +122,15 @@
             }
         },
 
-        details: function (e) {
-            var elem = $(e.target);
+        getId: function (elem) {
             if (!elem.hasClass('item')) { elem = elem.parents('.item').first(); }
-            var id = elem[0].className.split('id-')[1].split(' ')[0];
+            return elem[0].className.split('id-')[1].split(' ')[0];
+        },
+
+        details: function (e) {
+            if (S.kanban.card.drag.dragging == true) { return;}
+            var elem = $(e.target);
+            var id = S.kanban.card.getId(elem);
             var data = {
                 boardId: S.board.id,
                 cardId: id
@@ -138,6 +146,34 @@
                 }
             );
 
+        },
+
+        drag: {
+            dragging:false,
+            init: function () {
+                $('.lists .item').each(function (item) {
+                    var elem = $(item);
+                    S.drag.add(elem, elem,
+                        function (item) { //onStart
+                            //angle card slightly clockwise
+                            item.elem.addClass('dragging');
+                            S.kanban.card.drag.dragging = true;
+                            $('.board').addClass('dragging');
+                        },
+                        function (item) { //onDrag
+                            //
+                        },
+                        function (item) { //onStop
+                            item.elem.removeClass('dragging');
+                            setTimeout(function () { S.kanban.card.drag.dragging = true; }, 100);
+                            $('.board').removeClass('dragging');
+                            item.elem.css({ top: 0, left: 0 });
+                        },
+                        //options
+                        {hideArea:true, hideAreaOffset:7}
+                    )
+                });
+            }
         }
     },
 

@@ -16,11 +16,21 @@ namespace Kandu.Services.Card
         public string LoadCardHtml(Query.Models.Card card)
         {
             var type = "default";
+            var cardscaff = new Scaffold("/Services/Cards/Kanban/card.html");
+
+            //load card custom design
             var scaffold = LoadCardScaffold(type);
-            scaffold.Data["id"] = card.cardId.ToString();
             scaffold.Data["title"] = card.name;
             scaffold.Data["colors"] = "";
-            return scaffold.Render();
+
+            //load card container
+            cardscaff.Data["id"] = card.cardId.ToString();
+            
+            //render custom design inside card container
+            cardscaff.Data["layout"] = scaffold.Render();
+
+            //render card container
+            return cardscaff.Render();
         }
 
         private Scaffold LoadCardScaffold(string type)

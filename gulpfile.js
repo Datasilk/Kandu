@@ -42,6 +42,7 @@ paths.working = {
             paths.scripts + 'utility/velocity.min.js',
             paths.scripts + "platform/_super.js",
             paths.scripts + "platform/ajax.js",
+            paths.scripts + "platform/drag.js",
             paths.scripts + "platform/loader.js",
             paths.scripts + "platform/message.js",
             paths.scripts + "platform/polyfill.js",

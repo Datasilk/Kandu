@@ -17,9 +17,12 @@
 .board .list-head{line-height:1.5; text-overflow: ellipsis; white-space: nowrap; overflow: hidden; width: 100%; display: inline-block;}
 
 /* cards ///////////////////////////////////////// */
-.board .lists .items{padding:0 4px;}
+.board .lists .items{padding:0 4px;
+    .drag{position:relative;}
+}
 .board .lists .item{box-shadow:@shadow-sm; border-radius:4px; background-color:#ffffff; padding:8px; margin:7px 0; overflow:hidden; cursor:pointer;
     .title{font-size:15px; font-weight:400; line-height:1.5; white-space:normal; /* text-overflow: ellipsis; white-space: nowrap; overflow: hidden; */ width: 100%; display: inline-block;}
+    &.dragging{transform:rotate(7deg); z-index:100;}
 }
 
 /* card details popup /////////////////////////// */
