@@ -91,12 +91,13 @@ namespace Kandu.Query
             );
         }
 
-        public void Sort(int listId, int[] cardIds)
+        public void Move(int listId, int cardId, int[] cardIds)
         {
-            Sql.ExecuteNonQuery("Cards_Sort",
+            Sql.ExecuteNonQuery("Card_Move",
                 new Dictionary<string, object>()
                 {
                     {"listId", listId },
+                    {"cardId", cardId },
                     {"ids", string.Join(",", cardIds) }
                 }
             );

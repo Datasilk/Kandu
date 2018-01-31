@@ -10,13 +10,10 @@
         $(window).on('scroll', S.kanban.list.resize);
         S.kanban.list.resize();
 
-        //init cards events
-        S.kanban.cards.init();
-
         //add callback for header boards popup
         S.head.boards.callback.add('kanban', S.kanban.list.resize);
 
-        //add drag capabilities to cards
+        //add click & drag capabilities to cards
         S.kanban.card.drag.init();
     },
 
@@ -124,12 +121,13 @@
 
         getId: function (elem) {
             if (!elem.hasClass('item')) { elem = elem.parents('.item').first(); }
-            return elem[0].className.split('id-')[1].split(' ')[0];
+            return S.util.element.getClassId(elem, 'id-');
         },
 
         details: function (e) {
-            if (S.kanban.card.drag.dragging == true) { return;}
+            if (S.kanban.card.drag.dragging == true) { return; }
             var elem = $(e.target);
+
             var id = S.kanban.card.getId(elem);
             var data = {
                 boardId: S.board.id,
@@ -149,37 +147,192 @@
         },
 
         drag: {
-            dragging:false,
+            dragging: false, timer: null,
+            geometry: { lists: null },
+            current: { listId: null, list:null, cardId: null, card:null, below: true, special: null },
+
             init: function () {
                 $('.lists .item').each(function (item) {
-                    var elem = $(item);
-                    S.drag.add(elem, elem,
-                        function (item) { //onStart
-                            //angle card slightly clockwise
+                    var cardElem = $(item);
+                    S.drag.add(cardElem, cardElem,
+                        //onStart  /////////////////////////////////////////////////////////////////////////////////
+                        function (item) {
+                            var self = this;
+                            self.dragging = true;
                             item.elem.addClass('dragging');
-                            S.kanban.card.drag.dragging = true;
                             $('.board').addClass('dragging');
+
+                            //reset classes
+                            $('.list .item.hovering').removeClass('hovering').parent().removeClass('hovering upward downward');
+
+                            //update geometry for lists & cards
+                            self.getGeometryForLists();
                         },
-                        function (item) { //onDrag
-                            //
+                        //onDrag /////////////////////////////////////////////////////////////////////////////////
+                        function (item) { 
+                            //detect where to drop the card
+                            if (this.dragging == false) { return;}
+                            var current = this.current;
+                            var geo = this.geometry;
+                            var bounds = { top: item.cursor.y - 5, right: item.cursor.x, bottom: item.cursor.y + 5, left: item.cursor.x };
+
+                            //first, detect which list the cursor is over
+                            var found = false;
+                            var hovering = $('.list .item.hovering, .list .items.hovering');
+                            for (var x = 0; x < geo.lists.length; x++) {
+                                var list = geo.lists[x];
+                                if (S.math.intersect(list, bounds) == true) {
+                                    //next, detect which card in the list that the cursor is over
+                                    var listId = S.util.element.getClassId(list.elem, 'id-');
+                                    var changed = false;
+                                    $('.list:not(.id-' + listId + ')').find('.hovering').removeClass('hovering').parent().removeClass('hovering upward downward');
+                                    if (list.cards.length > 0) {
+                                        for (var y = 0; y < list.cards.length; y++) {
+                                            var card = list.cards[y];
+                                            if (S.math.intersect(card, bounds)) {
+                                                var elem = $(card.elem);
+                                                if ((current.cardId == null || !elem.hasClass('id-' + current.cardId)) && !elem.hasClass('dragging')) {
+                                                    //found list belonging to card
+                                                    $('.list .item.hovering').removeClass('hovering').parent().removeClass('hovering upward downward');
+                                                    current.listId = listId;
+                                                    current.list = list.elem;
+                                                    current.cardId = S.util.element.getClassId(card.elem, 'id-');
+                                                    current.card = elem;
+                                                    elem.addClass('hovering');
+                                                    elem.parent().addClass('hovering');
+                                                    changed = true;
+                                                }
+                                                var pos = elem.offset();
+                                                var parent = elem.parent();
+                                                if (bounds.top - pos.top < elem.height() / 2) {
+                                                    //upward drop
+                                                    if (!parent.hasClass('upward')) {
+                                                        parent.addClass('upward').removeClass('downward');
+                                                        S.drag.alteredDOM();
+                                                        current.below = false;
+                                                    }
+                                                } else {
+                                                    //downward drop
+                                                    if (!parent.hasClass('downward')) {
+                                                        parent.addClass('downward').removeClass('upward');
+                                                        S.drag.alteredDOM();
+                                                        current.below = true;
+                                                    }
+                                                }
+                                                found = true;
+                                            }
+                                        }
+                                    } else {
+                                        //list contains no cards
+                                        if (list.elem.find('.item').length == 0) {
+                                            if (current.listId != listId) {
+                                                current.listId = listId;
+                                                current.list = list.elem;
+                                                current.cardId = null;
+                                                current.card = null;
+                                                changed = true;
+                                                list.elem.find('.items').addClass('hovering');
+                                            }
+                                            found = true;
+                                        }
+                                    }
+
+                                    if (changed == true) {
+                                        this.getGeometryForLists();
+                                    }
+                                    break;
+                                }
+                            }
+                            if (found == false && hovering.length > 0) {
+                                hovering.removeClass('hovering');
+                                hovering.parent().removeClass('hovering upward downward');
+                                this.current = { listId: null, cardId: null, card: null, below: true };
+                                S.drag.alteredDOM();
+                            }
                         },
-                        function (item) { //onStop
+                        //onStop  /////////////////////////////////////////////////////////////////////////////////
+                        function (item) { 
                             item.elem.removeClass('dragging');
-                            setTimeout(function () { S.kanban.card.drag.dragging = true; }, 100);
+                            $('.board .lists .list .item').removeClass('hovering').parent().removeClass('hovering upward downward');
                             $('.board').removeClass('dragging');
                             item.elem.css({ top: 0, left: 0 });
+
+                            //move card in DOM to drop area
+                            if (this.current.listId != null) {
+                                if (this.current.cardId != null) {
+                                    if (this.current.below == true) {
+                                        //append below card
+                                        this.current.card.parent().after(item.elem.parent());
+                                    } else {
+                                        //append above card
+                                        this.current.card.parent().before(item.elem.parent());
+                                    }
+                                } else {
+                                    //drop card into empty list
+                                    this.current.list.find('.items').append(item.elem.parent());
+                                }
+
+                                //send update to server via ajax
+                                var list = item.elem.parents('.list');
+                                var listId = S.util.element.getClassId(list);
+                                var cards = [];
+                                var cardlist = list.find('.item');
+                                cardlist.each(function (card) {
+                                    cards.push(S.util.element.getClassId(card));
+                                });
+
+                                S.ajax.post('Card/Kanban/Move', { boardId: S.board.id, listId: listId, cardId: S.util.element.getClassId(item.elem), cardIds: cards });
+                            }
+                            setTimeout(function () { S.kanban.card.drag.dragging = false; }, 100);
+                        },
+                        //onClick  /////////////////////////////////////////////////////////////////////////////////
+                        function (item) {
+                            S.kanban.card.details({ target: item.elem });
                         },
                         //options
-                        {hideArea:true, hideAreaOffset:7}
+                        { hideArea:true, hideAreaOffset:7, speed:1000 / 30, callee: S.kanban.card.drag }
                     )
                 });
-            }
-        }
-    },
+            },
 
-    cards: {
-        init: function () {
-            $('.board .lists .item').off('click').on('click', S.kanban.card.details);
+            getGeometryForLists: function () {
+                var geo = { lists: [] };
+                var lists = $('.lists .list');
+                var cardelem = S.kanban.card.drag.current.card;
+                if (cardelem != null) { cardelem = cardelem[0]; }
+                lists.each(function (list) {
+                    list = $(list);
+                    var pos = list.offset();
+                    geo.lists.push({
+                        elem: list,
+                        top: pos.top,
+                        left: pos.left,
+                        right: pos.left + list.width(),
+                        bottom: pos.top + list.height(),
+                        width: list.width(),
+                        height: list.height(),
+                        cards: list.find('.item').map(function (index, card) {
+                            if (card == S.drag.item.element[0]) {
+                                return { elem: card, top: 0, left: 0, right: 0, bottom: 0, width: 0, height: 0 };
+                            } else {
+                                card = $(card);
+                                var parent = card.parent();
+                                var cpos = parent.offset();
+                                return {
+                                    elem: card[0],
+                                    top: cpos.top,
+                                    left: cpos.left,
+                                    right: cpos.left + parent.width(),
+                                    bottom: cpos.top + parent.height(),
+                                    width: parent.width(),
+                                    height: parent.height()
+                                }
+                            }
+                        })
+                    });
+                });
+                S.kanban.card.drag.geometry = geo;
+            }
         }
     }
 };

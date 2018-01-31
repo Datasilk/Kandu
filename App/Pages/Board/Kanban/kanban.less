@@ -1,9 +1,16 @@
 ﻿@shadow:2px 2px 5px rgba(0,0,0,0.3);
 @shadow-sm:1px 1px 2px rgba(0, 0, 0, 0.2);
 
+.drag-delete{position:absolute; width:100%; text-align:center;}
+.drag-delete .delete-area{border:2px solid rgba(255,255,255,0.3); padding:7px 100px; display:inline-block; position:relative; top:-5px;
+    span{display:inline-block; font-size:17px; font-weight:400; text-align:center; padding-left:5px; position:relative; top:-5px;}
+}
+.drag-delete.hovering .delete-area{background-color:rgba(255,255,255,0.3);}
+
+/* lists ///////////////////////////////////////// */
 .kanban .lists {
     overflow-x:auto; overflow-y:hidden;
-    & > div{white-space:nowrap;
+    .columns{white-space:nowrap;
         & > .col{width:250px; border-radius:4px; margin-right:12px; margin-bottom:30px; height:auto;
             &.bg{box-shadow:@shadow;}
         }
@@ -19,10 +26,16 @@
 /* cards ///////////////////////////////////////// */
 .board .lists .items{padding:0 4px;
     .drag{position:relative;}
+    &.hovering{height:40px;}
 }
 .board .lists .item{box-shadow:@shadow-sm; border-radius:4px; background-color:#ffffff; padding:8px; margin:7px 0; overflow:hidden; cursor:pointer;
-    .title{font-size:15px; font-weight:400; line-height:1.5; white-space:normal; /* text-overflow: ellipsis; white-space: nowrap; overflow: hidden; */ width: 100%; display: inline-block;}
-    &.dragging{transform:rotate(7deg); z-index:100;}
+    .title{font-size:15px; font-weight:400; line-height:1.5; white-space:normal; width: 100%; display: inline-block;}
+    &.dragging{transform:rotate(7deg); z-index:100; box-shadow:@shadow;}
+    /*&.hovering{background-color:#ddff8a;}*/
+}
+.board .lists .drag{
+    &.hovering.upward{padding-top:50px !important;}
+    &.hovering.downward{padding-bottom:50px !important;}
 }
 
 /* card details popup /////////////////////////// */

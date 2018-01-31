@@ -9,7 +9,7 @@ BEGIN
 	SELECT *
 	FROM (
 		SELECT ROW_NUMBER() 
-		OVER (ORDER BY sort ASC) 
+		OVER (ORDER BY listId, sort ASC) 
 		AS rownum, *
 		FROM Cards
 		WHERE boardId=@boardId

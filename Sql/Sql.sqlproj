@@ -123,7 +123,7 @@
     <Build Include="dbo\Stored Procedures\Boards\Board_GetLists.sql" />
     <Build Include="dbo\Stored Procedures\BoardMembers\BoardMember_GetBoards.sql" />
     <Build Include="dbo\Views\View_Boards.sql" />
-    <Build Include="dbo\Stored Procedures\Cards\Cards_Sort.sql" />
+    <Build Include="dbo\Stored Procedures\Cards\Card_Move.sql" />
     <Build Include="dbo\Functions\SplitArray.sql" />
     <Build Include="dbo\Stored Procedures\Users\User_KeepMenuOpen.sql" />
     <Build Include="dbo\Stored Procedures\Users\User_GetInfo.sql" />

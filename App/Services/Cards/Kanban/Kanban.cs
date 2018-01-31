@@ -15,6 +15,7 @@ namespace Kandu.Services.Card
 
         public string LoadCardHtml(Query.Models.Card card)
         {
+            if (!CheckSecurity()) { return AccessDenied(); }
             var type = "default";
             var cardscaff = new Scaffold("/Services/Cards/Kanban/card.html");
 
@@ -50,6 +51,14 @@ namespace Kandu.Services.Card
             var card = query.GetCardDetails(boardId, cardId);
             var scaffold = new Scaffold("/Services/Cards/Kanban/details.html", S.Server.Scaffold);
             return card.name + "|" + scaffold.Render();
+        }
+
+        public string Move(int boardId, int listId, int cardId, int[] cardIds)
+        {
+            if (!UserInfo.CheckSecurity(boardId)) { return AccessDenied(); }
+            var query = new Query.Cards(S.Server.sqlConnectionString);
+            query.Move(listId, cardId, cardIds);
+            return Success();
         }
     }
 }
