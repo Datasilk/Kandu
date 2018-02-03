@@ -72,6 +72,7 @@ As of February 1st, 2018, there are many basic features that need to be implimen
 * Manage user account/profile settings
 * Export board in JSON or CSV format
 * Background images for boards
+* finger gesture support for drag & drop capabilities on mobile devices
 
 ---
 
