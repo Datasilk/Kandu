@@ -36,22 +36,32 @@
             UserInfo.Start();
             var service = new Services.Boards(S);
 
-            scaffold.Child("header").Data["user"] = "1";
-            scaffold.Child("header").Data["boards"] = "1";
-            scaffold.Child("header").Data["boards-menu"] = service.BoardsMenu();
-
-            if (S.User.photo == true)
+            if(S.User.userId > 0)
             {
-                scaffold.Child("header").Data["user-photo"] = "/users/" + S.Util.Str.DateFolders(S.User.datecreated) + "/photo.jpg";
+                scaffold.Child("header").Data["user"] = "1";
+                scaffold.Child("header").Data["boards"] = "1";
+                scaffold.Child("header").Data["boards-menu"] = service.BoardsMenu();
+
+                if (S.User.photo == true)
+                {
+                    scaffold.Child("header").Data["user-photo"] = "/users/" + S.Util.Str.DateFolders(S.User.datecreated) + "/photo.jpg";
+                }
+                else
+                {
+                    scaffold.Child("header").Data["no-user"] = "1";
+                }
+
+                //apply user settings to UI layout configuration
+                if (UserInfo.Settings.keepMenuOpen == true)
+                {
+                    scripts += "<script language=\"javascript\">S.head.boards.show();S.head.boards.alwaysShow(true);</script>";
+                }
             }
             else
             {
                 scaffold.Child("header").Data["no-user"] = "1";
             }
-            if(UserInfo.Settings.keepMenuOpen == true)
-            {
-                scripts += "<script language=\"javascript\">S.head.boards.show();S.head.boards.alwaysShow(true);</script>";
-            }
+
         }
     }
 }

@@ -28,30 +28,33 @@ namespace Kandu
             if (_loaded == false)
             {
                 _loaded = true;
-                if (S.User.Data.ContainsKey("boards"))
+                if(S.User.userId > 0)
                 {
-                    boards = (List<int>)S.Util.Serializer.ReadObject(S.User.Data["boards"], typeof(List<int>));
-                    S.User.Data["boards"] = S.Util.Serializer.WriteObjectToString(boards);
-                    if (boards == null) { boards = new List<int>(); }
-                }
-                else
-                {
-                    UpdateSecurity();
-                }
-                if (S.User.Data.ContainsKey("settings"))
-                {
-                    //load user settings from cache
-                    Settings = (structSettings)S.Util.Serializer.ReadObject(S.User.Data["settings"], typeof(structSettings));
-                }
-                else
-                {
-                    //load user settings from database
-                    var query = new Query.Users(S.Server.sqlConnectionString);
-                    var user = query.GetInfo(S.User.userId);
-                    Settings.keepMenuOpen = user.keepmenu;
-                    Settings.allColor = user.allcolor;
-                    S.User.Data["settings"] = S.Util.Serializer.WriteObjectToString(Settings);
-                    S.User.saveSession = true;
+                    if (S.User.Data.ContainsKey("boards"))
+                    {
+                        boards = (List<int>)S.Util.Serializer.ReadObject(S.User.Data["boards"], typeof(List<int>));
+                        S.User.Data["boards"] = S.Util.Serializer.WriteObjectToString(boards);
+                        if (boards == null) { boards = new List<int>(); }
+                    }
+                    else
+                    {
+                        UpdateSecurity();
+                    }
+                    if (S.User.Data.ContainsKey("settings"))
+                    {
+                        //load user settings from cache
+                        Settings = (structSettings)S.Util.Serializer.ReadObject(S.User.Data["settings"], typeof(structSettings));
+                    }
+                    else
+                    {
+                        //load user settings from database
+                        var query = new Query.Users(S.Server.sqlConnectionString);
+                        var user = query.GetInfo(S.User.userId);
+                        Settings.keepMenuOpen = user.keepmenu;
+                        Settings.allColor = user.allcolor;
+                        S.User.Data["settings"] = S.Util.Serializer.WriteObjectToString(Settings);
+                        S.User.saveSession = true;
+                    }
                 }
             }
         }

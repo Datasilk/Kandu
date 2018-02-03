@@ -54,10 +54,13 @@
 body{font-weight:lighter;}
 body, h1, h2, h3, h4, h5, h6, span, input, select, textarea{font-family: Open Sans, Arial, Helvetica, sans;}
 
-.box .board header.row{
+.box .ui header.row{
+    @opacity1:0.15;
+    @opacity2:0.25;
     .box(rgba(0,0,0,0.1), transparent, #fff); 
     .links(#fff, #fff, #fff, #fff); 
     .icons(#fff, #fff, #fff, #fff);
+    .button(default,  rgba(0,0,0,@opacity1), rgba(0,0,0,@opacity2), rgba(0,0,0,@opacity2), rgba(0,0,0,@opacity2), transparent, transparent, transparent, transparent, transparent, transparent, transparent, transparent, #fff, #fff, #fff, #fff);
 } 
 
 .box .board{

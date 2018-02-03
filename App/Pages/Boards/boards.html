@@ -1,14 +1,15 @@
-﻿{{header "/Partials/UI/header.html"}}
-<div class="boards">
-    {{list}}
-    <div class="board create-new">
-        <div class="title"><span>Create A New Board</span></div>
-        <div class="add-icon">
-            <svg viewBox="0 0 32 32">
-                <use xlink:href="#icon-addsmall" x="0" y="0" width="32" height="32"></use>
-            </svg>
+﻿<div class="ui">
+    {{header "/Partials/UI/header.html"}}
+    <div class="boards">
+        {{list}}
+        <div class="board create-new">
+            <div class="title"><span>Create A New Board</span></div>
+            <div class="add-icon">
+                <svg viewBox="0 0 32 32">
+                    <use xlink:href="#icon-addsmall" x="0" y="0" width="32" height="32"></use>
+                </svg>
+            </div>
         </div>
     </div>
 </div>
-
 {{newboard "/Partials/Templates/new-board.html"}}
