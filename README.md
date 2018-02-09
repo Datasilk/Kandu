@@ -56,7 +56,7 @@ Toggle a feature to always show the boards menu in a side bar instead of a drop 
 
 ### Future Development
 
-As of February 1st, 2018, there are many basic features that need to be implimented into the application for Kandu to work equivilant to Trello. These features include:
+As of February 1st, 2018, there are many basic features that need to be implemented into the application for Kandu to work equivilant to Trello. These features include:
 
 * Archiving & permanently deleting boards, lists, ~~cards~~, checklists, & attachments
 * Adding & managing team members & board members
@@ -65,15 +65,25 @@ As of February 1st, 2018, there are many basic features that need to be implimen
 * Attaching photos & files to a card
 * Creating checklists for a card
 * Copy a checklist from another card
+* Adding a due date to a card
 * Copy/Move lists or individual cards to other boards
-* Use a custom HTML card layout for individual cards, displaying unique information about a card in a unique way
 * Favorite boards
 * Subscribe to a card or board
 * Email server configuration (ability to send whitelisted emails to users)
+* Server task scheduler for sending email reminders for cards with due dates
 * Manage user account/profile settings
 * Export board in JSON or CSV format
 * Background images for boards
-* finger gesture support for drag & drop capabilities on mobile devices
+* Finger gesture support for drag & drop capabilities on mobile devices
+* Filter cards based on keywords, label, assigned member, due date range
+* View historical activity for boards & cards
+* Create & manage labels for a board
+* Emojis in card comments
+* Mentions in card comments
+
+**Future development of features that are unique to Kandu include:**
+
+* Use a custom HTML card layout for individual cards, displaying unique information about a card in a unique way
 
 ---
 
