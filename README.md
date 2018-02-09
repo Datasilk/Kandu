@@ -80,10 +80,17 @@ As of February 1st, 2018, there are many basic features that need to be implemen
 * Create & manage labels for a board
 * Emojis in card comments
 * Mentions in card comments
+* Custom scrollbars for drop down menus & application body
 
-**Future development of features that are unique to Kandu include:**
+---
 
-* Use a custom HTML card layout for individual cards, displaying unique information about a card in a unique way
+#### Future development of features that are unique to Kandu include:
+
+**Custom HTML Card Layout**
+* Used for individual cards, displaying unique information about a card in a unique way
+* The user can write HTML & CSS to make forms, buttons, anchor links, and a whole UI for a card
+* Multiple cards can utilize the same custom HTML layout, so the user writes once and it affects all cards that use the same layout
+* The user can write custom variables within the HTML (e.g. `{{artist-name}}`), which in turn will create custom form fields within the card details popup for the user to fill out. The variables will then be replaced with the values the user typed into the fields.
 
 ---
 
