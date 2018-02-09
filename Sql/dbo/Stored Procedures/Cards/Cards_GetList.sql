@@ -2,7 +2,8 @@
 	@boardId int = 0,
 	@listId int = 0,
 	@start int = 1,
-	@length int = 20
+	@length int = 20,
+	@archivedOnly bit = 0
 AS
 BEGIN
 	SET NOCOUNT ON;
@@ -14,6 +15,7 @@ BEGIN
 		FROM Cards
 		WHERE boardId=@boardId
 		AND listId = CASE WHEN @listId > 0 THEN @listId ELSE listId END
+		AND archived=@archivedOnly
 	) as myTable
 	WHERE rownum >= @start AND  rownum <= @start + @length
 END

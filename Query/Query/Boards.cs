@@ -39,7 +39,7 @@ namespace Kandu.Query
             );
         }
 
-        public Models.Board GetBoardDetails(int boardId)
+        public Models.Board GetDetails(int boardId)
         {
             var list = Sql.Populate<Models.Board>(
                 "Board_GetDetails",
@@ -49,6 +49,19 @@ namespace Kandu.Query
                 }
             );
             if(list.Count > 0) { return list[0]; }
+            return null;
+        }
+
+        public Models.Board GetInfo(int boardId)
+        {
+            var list = Sql.Populate<Models.Board>(
+                "Board_GetInfo",
+                new Dictionary<string, object>()
+                {
+                    {"boardId", boardId }
+                }
+            );
+            if (list.Count > 0) { return list[0]; }
             return null;
         }
 

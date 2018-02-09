@@ -50,6 +50,7 @@ Toggle a feature to always show the boards menu in a side bar instead of a drop 
 * Choose either grey lists or colored lists to display within your boards
 * Infinite boards, lists, cards, and checklists.
 * Drag & drop cards from one list to another
+* Archive & permanently delete cards from lists
 
 ---
 
@@ -57,7 +58,7 @@ Toggle a feature to always show the boards menu in a side bar instead of a drop 
 
 As of February 1st, 2018, there are many basic features that need to be implimented into the application for Kandu to work equivilant to Trello. These features include:
 
-* Archiving & permanently deleting boards, lists, cards, checklists, & attachments
+* Archiving & permanently deleting boards, lists, ~~cards~~, checklists, & attachments
 * Adding & managing team members & board members
 * Adding comments to cards
 * Updating a card's title & description

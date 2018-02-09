@@ -15,6 +15,9 @@
 
         //add click & drag capabilities to cards
         S.kanban.card.drag.init();
+
+        //add event for detecting message displayed
+        $('.board .message').on('DOMSubtreeModified', S.kanban.list.resize);
     },
 
     list: {
@@ -59,6 +62,8 @@
     },
 
     card: {
+        selected: null,
+
         create: {
             show: function (listid) {
                 var list = $('.list.id-' + listid);
@@ -133,11 +138,20 @@
                 boardId: S.board.id,
                 cardId: id
             };
+            S.kanban.card.selected = {
+                id: id,
+                listId: S.util.element.getClassId(elem.parents('.list'), 'id-'),
+                elem: $('.board .list .item.id-' + id)
+            };
+            console.log(S.kanban.card.selected);
             S.popup.show("", S.loader(), { width: 350 });
             S.ajax.post('Card/Kanban/Details', data,
                 function (d) {
                     var card = d.split('|');
                     S.popup.show(card[0], card[1], { width: '90%', maxWidth: 750 });
+                    $('.popup .btn-archive a').off('click').on('click', S.kanban.card.archive);
+                    $('.popup .btn-restore a').off('click').on('click', S.kanban.card.restore);
+                    $('.popup .btn-delete a').off('click').on('click', S.kanban.card.delete);
                 },
                 function () {
                     S.message.show('.board .message', "error", S.message.error.generic);
@@ -146,7 +160,7 @@
 
         },
 
-        drag: {
+        drag: { //also handles card onClick
             dragging: false, timer: null,
             geometry: { lists: null },
             current: { listId: null, list:null, cardId: null, card:null, below: true, special: null },
@@ -333,6 +347,78 @@
                 });
                 S.kanban.card.drag.geometry = geo;
             }
+        },
+
+        archive: function () {
+            var data = {
+                boardId: S.board.id,
+                cardId: S.kanban.card.selected.id
+            };
+            S.ajax.post('Cards/Archive', data,
+                function (d) {
+                    if (d == 'success') {
+                        //hide archive button & show restore and delete buttons
+                        $('.popup .btn-archive').addClass('hide');
+                        $('.popup .btn-restore').removeClass('hide');
+                        $('.popup .btn-delete').removeClass('hide');
+
+                        //remove card from list
+                        S.kanban.card.selected.elem.remove();
+
+                    } else {
+                        S.message.show('.board .message', "error", S.message.error.generic);
+                    }
+                },
+                function () {
+                    S.message.show('.board .message', "error", S.message.error.generic);
+                }
+            );
+        },
+
+        restore: function () {
+            var data = {
+                boardId: S.board.id,
+                cardId: S.kanban.card.selected.id
+            };
+            S.ajax.post('Cards/Restore', data,
+                function (d) {
+                    if (d != '') {
+                        //hide restore and delete buttons, then show archive button
+                        $('.popup .btn-restore').addClass('hide');
+                        $('.popup .btn-delete').addClass('hide');
+                        $('.popup .btn-archive').removeClass('hide');
+
+                        //add card to list
+                        $('.board .list.id-' + S.kanban.card.selected.listId + ' .items').append(d);
+
+                    } else {
+                        S.message.show('.board .message', "error", S.message.error.generic);
+                    }
+                },
+                function () {
+                    S.message.show('.board .message', "error", S.message.error.generic);
+                }
+            );
+        },
+
+        delete: function () {
+            var data = {
+                boardId: S.board.id,
+                cardId: S.kanban.card.selected.id
+            };
+            S.ajax.post('Cards/Delete', data,
+                function (d) {
+                    if (d == 'success') {
+                        S.message.show('.board .message', "alert", 'The selected card has been permanently deleted from this board');
+                        S.popup.hide();
+                    } else {
+                        S.message.show('.board .message', "error", S.message.error.generic);
+                    }
+                },
+                function () {
+                    S.message.show('.board .message', "error", S.message.error.generic);
+                }
+            );
         }
     }
 };

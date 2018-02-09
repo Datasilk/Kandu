@@ -10,7 +10,7 @@ namespace Kandu.Query
         {
         }
 
-        public int CreateCard(Models.Card card)
+        public int Create(Models.Card card)
         {
             return Sql.ExecuteScalar<int>(
                 "Card_Create",
@@ -43,17 +43,18 @@ namespace Kandu.Query
             );
         }
 
-        public void ArchiveCard(int cardId)
+        public void Archive(int boardId, int cardId)
         {
             Sql.ExecuteNonQuery("Card_Archive",
                 new Dictionary<string, object>()
                 {
+                    {"boardId", boardId },
                     {"cardId", cardId }
                 }
             );
         }
 
-        public Models.Card GetCardDetails(int boardId, int cardId)
+        public Models.Card GetDetails(int boardId, int cardId)
         {
             var list = Sql.Populate<Models.Card>(
                 "Card_GetDetails",
@@ -67,11 +68,23 @@ namespace Kandu.Query
             return null;
         }
 
-        public void RestoreCard(int cardId)
+        public void Restore(int boardId, int cardId)
         {
             Sql.ExecuteNonQuery("Card_Restore",
                 new Dictionary<string, object>()
                 {
+                    {"boardId", boardId },
+                    {"cardId", cardId }
+                }
+            );
+        }
+
+        public void Delete(int boardId, int cardId)
+        {
+            Sql.ExecuteNonQuery("Card_Delete",
+                new Dictionary<string, object>()
+                {
+                    {"boardId", boardId },
                     {"cardId", cardId }
                 }
             );
@@ -91,11 +104,12 @@ namespace Kandu.Query
             );
         }
 
-        public void Move(int listId, int cardId, int[] cardIds)
+        public void Move(int boardId, int listId, int cardId, int[] cardIds)
         {
             Sql.ExecuteNonQuery("Card_Move",
                 new Dictionary<string, object>()
                 {
+                    {"boardId", boardId },
                     {"listId", listId },
                     {"cardId", cardId },
                     {"ids", string.Join(",", cardIds) }

@@ -28,7 +28,7 @@ namespace Kandu.Services
         {
             if (!CheckSecurity()) { return AccessDenied(); } //check security
             var query = new Query.Boards(S.Server.sqlConnectionString);
-            var board = query.GetBoardDetails(boardId);
+            var board = query.GetDetails(boardId);
             return S.Util.Serializer.WriteObjectToString( 
                 new Dictionary<string,Dictionary<string,string>>(){
                     {

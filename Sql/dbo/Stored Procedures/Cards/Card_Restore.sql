@@ -1,7 +1,6 @@
 ﻿CREATE PROCEDURE [dbo].[Card_Restore]
+	@boardId int,
 	@cardId int
 AS
-DECLARE @boardId int
-SELECT @boardId=boardId FROM cards WHERE cardId=@cardId
+UPDATE Cards SET archived=0 WHERE cardId=@cardId AND boardId=@boardId
 EXEC Board_Modified @boardId=@boardId
-UPDATE Cards SET archived=0 WHERE cardId=@cardId

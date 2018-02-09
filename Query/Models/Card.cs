@@ -13,6 +13,7 @@ namespace Kandu.Query.Models
         public int cardId { get; set; }
         public int listId { get; set; }
         public int boardId { get; set; }
+        public Board.BoardType boardType { get; set; }
         public int sort { get; set; }
         public CardType type { get; set; }
         public bool archived { get; set; }

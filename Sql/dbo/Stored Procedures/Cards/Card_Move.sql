@@ -1,4 +1,5 @@
 ﻿CREATE PROCEDURE [dbo].[Card_Move]
+	@boardId int,
 	@listId int,
 	@cardId int,
 	@ids nvarchar(MAX)
@@ -25,4 +26,4 @@ AS
 	CLOSE @cursor
 	DEALLOCATE @cursor
 
-
+	EXEC Board_Modified @boardId=@boardId

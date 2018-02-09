@@ -61,6 +61,7 @@ namespace Kandu
 
         public bool CheckSecurity(int boardId)
         {
+            if(S.User.userId <= 0) { return false; }
             Start();
             if (boards.Contains(boardId)){
                 return true;

@@ -26,7 +26,7 @@ namespace Kandu.Services
                     }
                 );
                 var boards = new Query.Boards(S.Server.sqlConnectionString);
-                var board = boards.GetBoardDetails(boardId);
+                var board = boards.GetDetails(boardId);
                 var html = "";
                 switch (board.type)
                 {

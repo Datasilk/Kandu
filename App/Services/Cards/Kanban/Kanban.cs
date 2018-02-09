@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace Kandu.Services.Card
 {
@@ -48,8 +45,13 @@ namespace Kandu.Services.Card
         {
             if (!UserInfo.CheckSecurity(boardId)) { return AccessDenied(); }
             var query = new Query.Cards(S.Server.sqlConnectionString);
-            var card = query.GetCardDetails(boardId, cardId);
+            var card = query.GetDetails(boardId, cardId);
             var scaffold = new Scaffold("/Services/Cards/Kanban/details.html", S.Server.Scaffold);
+            scaffold.Data["list-name"] = "";
+            scaffold.Data["archive-class"] = card.archived ? "hide" : "";
+            scaffold.Data["restore-class"] = card.archived ? "" : "hide";
+            scaffold.Data["delete-class"] = card.archived ? "" : "hide";
+
             return card.name + "|" + scaffold.Render();
         }
 
@@ -57,7 +59,7 @@ namespace Kandu.Services.Card
         {
             if (!UserInfo.CheckSecurity(boardId)) { return AccessDenied(); }
             var query = new Query.Cards(S.Server.sqlConnectionString);
-            query.Move(listId, cardId, cardIds);
+            query.Move(boardId, listId, cardId, cardIds);
             return Success();
         }
     }

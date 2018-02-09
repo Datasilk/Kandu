@@ -3,6 +3,8 @@
 AS
 	SELECT * FROM Boards WHERE boardId=@boardId
 
-	SELECT * FROM Lists WHERE boardId=@boardId ORDER BY sort
+	/* [2] Lists */
+	SELECT * FROM Lists WHERE boardId=@boardId AND archived=0
 
-	SELECT * FROM Cards WHERE listId IN (SELECT listId FROM Lists WHERE boardId=@boardId) ORDER BY listId, sort ASC
+	/* [3] Cards */
+	EXEC Cards_GetList @boardId=@boardId, @archivedOnly=0
