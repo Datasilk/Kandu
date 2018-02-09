@@ -18,9 +18,10 @@ This project was an effort started by [Mark Entingh](http://www.markentingh.com)
     ```git clone --recurse-submodules http://github.com/datasilk/kandu```
 
 2. Run command ```npm install```
-3. Publish SQL Project to SQL Server 2016 (or greater), to the database named `Kandu`
-4. Open `config.json` and make sure the database connection string for property `SqlServerTrusted` points to your database.
-4. Click Play in Visual Studio 2017
+3. Run command ```gulp default```
+4. Publish SQL Project to SQL Server 2016 (or greater), to the database named `Kandu`
+5. Open `config.json` and make sure the database connection string for property `SqlServerTrusted` points to your database.
+6. Click Play in Visual Studio 2017
 
 That's it! Enjoy true freedom & security with your private copy of Kandu.
 
@@ -84,7 +85,7 @@ As of February 1st, 2018, there are many basic features that need to be implemen
 
 ---
 
-#### Future development of features that are unique to Kandu include:
+#### Future development of features that are unique to Kandu
 
 **Custom HTML Card Layout**
 * Used for individual cards, displaying unique information about a card in a unique way
