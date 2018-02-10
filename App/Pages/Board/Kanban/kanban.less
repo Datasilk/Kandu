@@ -41,11 +41,21 @@
 }
 
 /* card details popup /////////////////////////// */
-.card-details{width:~"calc(100% - 200px)" !important;}
+.card-details{width:~"calc(100% - 200px)" !important;
+    a:link{text-decoration:underline;}
+    .new-description{border-radius:4px; margin-bottom:20px; padding:10px;
+    }
+    .new-description, .description-title{opacity:0.7;}
+    .markdown{line-height:1.25; font-weight:400; padding:0 0 30px 0;
+        ul{padding:10px 0 20px 10px;}
+    }
+    .description-title{padding-bottom:10px;}
+}
 .card-menu{width:130px !important;
     a{display:block !important; margin-bottom:5px; font-size:14px;}
     h6{padding-bottom:7px;}
 }
+
 
 /* new list ///////////////////////////////////// */
 @newlist-height:84px;

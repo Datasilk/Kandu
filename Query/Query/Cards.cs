@@ -90,7 +90,7 @@ namespace Kandu.Query
             );
         }
 
-        public List<Models.Card> GetList(int boardId, int listId = 0, int start = 1, int length = 20)
+        public List<Models.Card> GetList(int boardId, int listId = 0, int start = 1, int length = 2000)
         {
             return Sql.Populate<Models.Card>(
                 "Card_GetList",
@@ -113,6 +113,18 @@ namespace Kandu.Query
                     {"listId", listId },
                     {"cardId", cardId },
                     {"ids", string.Join(",", cardIds) }
+                }
+            );
+        }
+
+        public void UpdateDescription(int boardId, int cardId, string description)
+        {
+            Sql.ExecuteNonQuery("Card_UpdateDescription",
+                new Dictionary<string, object>()
+                {
+                    {"boardId", boardId },
+                    {"cardId", cardId },
+                    {"description", description }
                 }
             );
         }

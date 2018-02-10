@@ -1,4 +1,5 @@
 ﻿using System;
+using Utility;
 
 namespace Kandu.Services
 {
@@ -7,6 +8,8 @@ namespace Kandu.Services
         public Cards(Core DatasilkCore) : base(DatasilkCore)
         {
         }
+
+        #region "Create, Archive, Restore, & Delete"
 
         public string Create(int boardId, int listId, string name, string description = "", DateTime? dateDue = null, string colors = "")
         {
@@ -80,6 +83,9 @@ namespace Kandu.Services
                 return Error();
             }
         }
+        #endregion
+
+        #region "Render Card HTML based on Board Type"
 
         public string GetCard(int boardId, int cardId)
         {
@@ -99,5 +105,30 @@ namespace Kandu.Services
             }
             return "";
         }
+        #endregion
+
+        #region "Update Card Information"
+        public string UpdateDescription(int boardId, int cardId, string description)
+        {
+            if (!UserInfo.CheckSecurity(boardId)) { return AccessDenied(); }
+
+            //check description for malicious input
+            if (Malicious.IsMalicious(description, Malicious.InputType.TextOnly) == true)
+            {
+                return Error(); 
+            }
+
+            var query = new Query.Cards(S.Server.sqlConnectionString);
+            try
+            {
+                query.UpdateDescription(boardId, cardId, description);
+                return GetCard(boardId, cardId);
+            }
+            catch (Exception ex)
+            {
+                return Error();
+            }
+        }
+        #endregion
     }
 }

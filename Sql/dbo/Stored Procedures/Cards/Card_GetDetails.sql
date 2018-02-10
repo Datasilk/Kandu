@@ -3,7 +3,11 @@
 	@cardId int
 AS
 	/* [0] Card Info */
-	SELECT * FROM Cards WHERE cardId=@cardId AND boardId=@boardId
+	SELECT c.*, l.[name] AS listName, l.archived AS listArchived, b.type AS boardType
+	FROM Cards c
+	LEFT JOIN Lists l ON l.listId=c.listId
+	LEFT JOIN Boards b ON b.boardId=@boardId
+	WHERE c.cardId=@cardId AND c.boardId=@boardId
 
 	/* [1] Card Members */
 	SELECT * FROM View_CardMembers

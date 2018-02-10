@@ -143,7 +143,6 @@
                 listId: S.util.element.getClassId(elem.parents('.list'), 'id-'),
                 elem: $('.board .list .item.id-' + id)
             };
-            console.log(S.kanban.card.selected);
             S.popup.show("", S.loader(), { width: 350 });
             S.ajax.post('Card/Kanban/Details', data,
                 function (d) {
@@ -152,6 +151,10 @@
                     $('.popup .btn-archive a').off('click').on('click', S.kanban.card.archive);
                     $('.popup .btn-restore a').off('click').on('click', S.kanban.card.restore);
                     $('.popup .btn-delete a').off('click').on('click', S.kanban.card.delete);
+                    $('.popup .description-link a').off('click').on('click', S.kanban.card.description.edit);
+                    $('.popup .field-description .btn-cancel').off('click').on('click', S.kanban.card.description.cancel);
+                    $('.popup .field-description form').off('submit').on('submit', S.kanban.card.description.update);
+                    S.kanban.card.description.markdown();
                 },
                 function () {
                     S.message.show('.board .message', "error", S.message.error.generic);
@@ -419,6 +422,83 @@
                     S.message.show('.board .message', "error", S.message.error.generic);
                 }
             );
+        },
+
+        description: {
+            cached: null,
+            edit: function () {
+                S.kanban.card.description.cached = $('#card_description').val().trim();
+                $('.popup .field-description').removeClass('hide');
+                $('.popup .new-description').addClass('hide');
+                $('.popup .description').addClass('hide');
+            },
+
+            cancel: function () {
+                $('#card_description').val(S.kanban.card.description.cached);
+                S.kanban.card.description.markdown();
+                S.kanban.card.description.hide();
+            },
+
+            hide: function () {
+                $('.popup .field-description').addClass('hide');
+                if ($('.popup .description .markdown').html().trim() != '') {
+                    $('.popup .description').removeClass('hide');
+                } else {
+                    $('.popup .new-description').removeClass('hide');
+                }  
+            },
+
+            markdown: function () {
+                var text = $('#card_description').val().trim();
+                if (text == '' || text == null) { return;}
+                var markdown = new Remarkable({
+                    highlight: function (str, lang) {
+                        var language = lang || 'javascript';
+                        if (language && hljs.getLanguage(language)) {
+                            try {
+                                return hljs.highlight(language, str).value;
+                            } catch (err) { }
+                        }
+                        try {
+                            return hljs.highlightAuto(str).value;
+                        } catch (err) { }
+                        return '';
+                    },
+                    breaks: true,
+                    linkify: true
+                });
+
+                $('.popup .description .markdown').html(
+                    markdown.render(text.trim())
+                        .replace('<code>', '<code class="hljs">') //bug fix
+                );
+            },
+
+            update: function (e) {
+                var data = {
+                    boardId: S.board.id,
+                    cardId: S.kanban.card.selected.id,
+                    description: $('#card_description').val()
+                };
+                S.ajax.post('Cards/UpdateDescription', data,
+                    function (d) {
+                        if (d != '') {
+                            //add card to list
+                            $('.board .list .item.id-' + S.kanban.card.selected.id).before(d).remove();
+
+                            //update description markdown
+                            S.kanban.card.description.markdown();
+                            S.kanban.card.description.hide();
+                        } else {
+                            S.message.show('.board .message', "error", S.message.error.generic);
+                        }
+                    },
+                    function () {
+                        S.message.show('.board .message', "error", S.message.error.generic);
+                    }
+                );
+                e.preventDefault(); return false;
+            }
         }
     }
 };

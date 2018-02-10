@@ -3,7 +3,7 @@
 	@boardId int,
 	@type int = 0,
 	@colors nvarchar(128),
-	@name nvarchar(255),
+	@name nvarchar(MAX),
 	@datedue datetime = NULL,
 	@description nvarchar(MAX) = '',
 	@merge bit = 0

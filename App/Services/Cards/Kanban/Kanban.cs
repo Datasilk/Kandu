@@ -47,7 +47,10 @@ namespace Kandu.Services.Card
             var query = new Query.Cards(S.Server.sqlConnectionString);
             var card = query.GetDetails(boardId, cardId);
             var scaffold = new Scaffold("/Services/Cards/Kanban/details.html", S.Server.Scaffold);
-            scaffold.Data["list-name"] = "";
+            scaffold.Data["list-name"] = card.listName;
+            scaffold.Data["description"] = card.description;
+            scaffold.Data["no-description"] = card.description.Length > 0 ? "hide" : "";
+            scaffold.Data["has-description"] = card.description.Length <= 0 ? "hide" : "";
             scaffold.Data["archive-class"] = card.archived ? "hide" : "";
             scaffold.Data["restore-class"] = card.archived ? "" : "hide";
             scaffold.Data["delete-class"] = card.archived ? "" : "hide";

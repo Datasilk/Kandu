@@ -2,7 +2,7 @@
 	@boardId int = 0,
 	@listId int = 0,
 	@start int = 1,
-	@length int = 20,
+	@length int = 2000,
 	@archivedOnly bit = 0
 AS
 BEGIN

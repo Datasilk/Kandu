@@ -1,5 +1,5 @@
 ﻿<div class="row pad-height-sm">
-    <div class="col">In list {{list-name}}</div>
+    <div class="col">In list <b>{{list-name}}</b></div>
 </div>
 <div class="row">
     <div class="col card-details">
@@ -7,6 +7,36 @@
         <div class="row">Labels</div>
         <div class="row labels">{{labels-list}}</div>
         {{/labels}}
+
+        <div class="row hover description-link new-description {{no-description}}">
+            <a href="javascript:">Edit the description...</a>
+        </div>
+        <div class="row description {{has-description}}">
+            <div class="row description-title pad-top-sm">
+                <div class="col pad-right-sm">Description</div>
+                <div class="col description-link"><a href="javascript:">Edit</a></div>
+            </div>
+            <div class="markdown"></div>
+        </div>
+        <div class="row field-description pad-bottom-lg hide">
+            <form>
+                <div class="row markdown pad-bottom pad-top-sm">
+                    <textarea id="card_description" rows="3">{{description}}</textarea>
+                </div>
+                <div class="row">
+                    <div class="col pad-right">
+                        <button type="submit" class="button apply">Save</button>
+                    </div>
+                    <div class="col icon pad-top-sm faded small">
+                        <a href="javascript:" class="btn-cancel">
+                            <svg viewBox="0 0 32 32">
+                                <use xlink:href="#icon-close" x="0" y="0" width="32" height="32"></use>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+            </form>
+        </div>
 
         <div class="row">
             <div class="col icon pad-right-sm">
