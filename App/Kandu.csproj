@@ -7,6 +7,80 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Remove="Core\config.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="Pages\404.html" />
+    <None Remove="Pages\500.html" />
+    <None Remove="Pages\Boards\boards.html" />
+    <None Remove="Pages\Boards\list-item.html" />
+    <None Remove="Pages\Board\board.html" />
+    <None Remove="Pages\Import\Trello\success.html" />
+    <None Remove="Pages\Import\Trello\trello.html" />
+    <None Remove="Pages\Login\login.html" />
+    <None Remove="Pages\Login\new-admin.html" />
+    <None Remove="Pages\Login\new-pass.html" />
+    <None Remove="Services\Boards\menu-item.html" />
+    <None Remove="Services\Boards\menu-section.html" />
+    <None Remove="Services\Cards\Kanban\card.html" />
+    <None Remove="Services\Cards\Kanban\Card\default.html" />
+    <None Remove="Services\Cards\Kanban\details.html" />
+    <None Remove="Services\List\Kanban\list.html" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Pages\404.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Pages\500.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Pages\Boards\boards.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Pages\Boards\list-item.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Pages\Board\board.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Pages\Import\Trello\success.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Pages\Import\Trello\trello.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Pages\Login\login.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Pages\Login\new-admin.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Pages\Login\new-pass.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Services\Boards\menu-item.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Services\Boards\menu-section.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Services\Cards\Kanban\card.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Services\Cards\Kanban\Card\default.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Services\Cards\Kanban\details.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Services\List\Kanban\list.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="BCrypt.Net-Core" Version="1.4.0" />
     <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.1.1" />
     <PackageReference Include="Microsoft.AspNetCore" Version="2.0.0" />
@@ -32,7 +106,29 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Include="Core\config.json" />
     <None Include="wwwroot\themes\default\icons.svg" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="access-denied.html">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="layout.html">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Pages\Board\Kanban\kanban.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Partials\Templates\new-board.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Partials\UI\expander.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Partials\UI\header.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
 </Project>
