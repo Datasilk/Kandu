@@ -31,7 +31,7 @@
             return base.Render(path, body, metadata);
         }
 
-        public void LoadHeader(ref Scaffold scaffold)
+        public void LoadHeader(ref Scaffold scaffold, bool hasMenu = true)
         {
             UserInfo.Start();
             var service = new Services.Boards(S);
@@ -39,7 +39,6 @@
             if(S.User.userId > 0)
             {
                 scaffold.Child("header").Data["user"] = "1";
-                scaffold.Child("header").Data["boards"] = "1";
                 scaffold.Child("header").Data["boards-menu"] = service.BoardsMenu();
 
                 if (S.User.photo == true)
@@ -52,9 +51,14 @@
                 }
 
                 //apply user settings to UI layout configuration
-                if (UserInfo.Settings.keepMenuOpen == true)
+                if(hasMenu == true)
                 {
-                    scripts += "<script language=\"javascript\">S.head.boards.show();S.head.boards.alwaysShow(true);</script>";
+                    scaffold.Child("header").Data["boards"] = "1";
+                    scaffold.Child("header").Data["boards-2"] = "1";
+                    if (UserInfo.Settings.keepMenuOpen == true)
+                    {
+                        scripts += "<script language=\"javascript\">S.head.boards.show();S.head.boards.alwaysShow(true);</script>";
+                    }
                 }
             }
             else

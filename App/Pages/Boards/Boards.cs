@@ -45,12 +45,12 @@ namespace Kandu.Pages
             });
             scaffold.Data["team-options"] = html.ToString();
 
-            //load header
-            LoadHeader(ref scaffold);
-
             //load page resources
             AddScript("/js/dashboard.js");
             AddCSS("/css/dashboard.css");
+
+            //load header
+            LoadHeader(ref scaffold, false);
 
             //render page
             return base.Render(path, scaffold.Render());

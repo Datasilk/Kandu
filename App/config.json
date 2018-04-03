@@ -4,7 +4,7 @@
   "port": "80",
   "data": {
     "active": "SqlServerTrusted",
-    "SqlServerTrusted": "server=.\\SQL2016; database=Kandu; Trusted_Connection=true"
+    "SqlServerTrusted": "server=.\\SQL2017; database=Kandu; Trusted_Connection=true"
   },
 
   "encryption": {
