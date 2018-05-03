@@ -1,15 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace Kandu.Query
 {
     public class Cards : QuerySql
     {
-        public Cards(string connectionString) : base(connectionString)
-        {
-        }
-
         public int Create(Models.Card card)
         {
             return Sql.ExecuteScalar<int>(

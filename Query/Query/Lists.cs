@@ -1,14 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace Kandu.Query
 {
     public class Lists : QuerySql
     {
-        public Lists(string connectionString) : base(connectionString)
-        {
-        }
-
         public int CreateList(Models.List list)
         {
             return Sql.ExecuteScalar<int>(

@@ -10,7 +10,8 @@ public class Startup : Datasilk.Startup {
     public override void Configured(IApplicationBuilder app, IHostingEnvironment env, IConfigurationRoot config)
     {
         base.Configured(app, env, config);
-        var query = new Kandu.Query.Users(server.sqlConnectionString);
+        Kandu.Query.QuerySql.connectionString = server.sqlConnectionString;
+        var query = new Kandu.Query.Users();
         server.resetPass = query.HasPasswords();
         server.hasAdmin = query.HasAdmin();
     }

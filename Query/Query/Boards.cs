@@ -5,10 +5,6 @@ namespace Kandu.Query
 {
     public class Boards : QuerySql
     {
-        public Boards(string connectionString) : base(connectionString)
-        {
-        }
-
         public int CreateBoard(Models.Board board, int userId)
         {
             return Sql.ExecuteScalar<int>(

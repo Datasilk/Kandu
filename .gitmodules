@@ -11,5 +11,5 @@
 	path = App/Scripts/platform
 	url = http://github.com/datasilk/corejs
 [submodule "App/Utility/Malicious"]
-	path = App/Utility/Malicious
+	path = App/Common/Utility/Malicious
 	url = http://github.com/datasilk/Malicious

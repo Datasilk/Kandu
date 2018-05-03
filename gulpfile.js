@@ -26,10 +26,6 @@ var paths = {
     scripts: './App/Scripts/',
     css: './App/CSS/',
     app: './App/',
-    themes: './App/Content/themes/',
-    vendor: {
-        root: './App/Vendor/**/'
-    },
     webroot: './App/wwwroot/',
 };
 
@@ -83,16 +79,9 @@ paths.working = {
         app: paths.app + '**/*.css'
     },
 
-    vendor: {
-        js: paths.vendor.root + 'js/*.js',
-        css: paths.vendor.root + 'css/*.css',
-        less: paths.vendor.root + 'css/app.less'
-    },
-
     exclude: {
         app: [
             '!' + paths.app + 'wwwroot/**/',
-            '!' + paths.app + 'Content/**/',
             '!' + paths.app + 'CSS/**/',
             '!' + paths.app + 'CSS/',
             '!' + paths.app + 'Scripts/**/'
@@ -101,12 +90,12 @@ paths.working = {
 
     dashboard: {
         js: [
-            paths.app + 'pages/boards/boards.js',
-            paths.app + 'partials/ui/header.js'
+            paths.app + 'views/boards/boards.js',
+            paths.app + 'views/shared/header.js'
         ],
         css: [
-            paths.webroot + 'css/pages/boards/boards.css',
-            paths.webroot + 'css/partials/ui/header.css'
+            paths.webroot + 'css/views/boards/boards.css',
+            paths.webroot + 'css/views/shared/header.css'
         ]
     }
 };
@@ -151,13 +140,6 @@ gulp.task('js:selector', function () {
     var p = gulp.src(paths.scripts + 'selector/selector.js', { base: '.' })
             .pipe(concat('selector.js'));
     if (prod == true) { 
-        //p = p
-        //    .pipe(compile({
-        //        compilationLevel: 'SIMPLE',
-        //        warningLevel: 'VERBOSE',
-        //        jsOutputFile: 'selector.js',  // outputs single file
-        //        createSourceMap: true
-        //    }));
         p = p.pipe(uglify());
     }
     return p.pipe(gulp.dest(paths.compiled.js, { overwrite: true }));

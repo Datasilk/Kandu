@@ -7,75 +7,75 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Content\**" />
+    <Content Remove="Content\**" />
+    <EmbeddedResource Remove="Content\**" />
+    <None Remove="Content\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Content Remove="Core\config.json" />
   </ItemGroup>
 
   <ItemGroup>
-    <None Remove="Pages\404.html" />
-    <None Remove="Pages\500.html" />
-    <None Remove="Pages\Boards\boards.html" />
-    <None Remove="Pages\Boards\list-item.html" />
-    <None Remove="Pages\Board\board.html" />
-    <None Remove="Pages\Import\Trello\success.html" />
-    <None Remove="Pages\Import\Trello\trello.html" />
-    <None Remove="Pages\Login\login.html" />
-    <None Remove="Pages\Login\new-admin.html" />
-    <None Remove="Pages\Login\new-pass.html" />
-    <None Remove="Services\Boards\menu-item.html" />
-    <None Remove="Services\Boards\menu-section.html" />
-    <None Remove="Services\Cards\Kanban\card.html" />
-    <None Remove="Services\Cards\Kanban\Card\default.html" />
-    <None Remove="Services\Cards\Kanban\details.html" />
-    <None Remove="Services\List\Kanban\list.html" />
+    <None Remove="Controllers\404.html" />
+    <None Remove="Controllers\500.html" />
+    <None Remove="Views\Boards\boards.html" />
+    <None Remove="Views\Boards\list-item.html" />
+    <None Remove="Controllers\Import\success.html" />
+    <None Remove="Controllers\Import\trello.html" />
+    <None Remove="Views\Login\login.html" />
+    <None Remove="Views\Login\new-admin.html" />
+    <None Remove="Views\Login\new-pass.html" />
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include="Pages\404.html">
+    <Content Include="Views\404.html">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Pages\500.html">
+    <Content Include="Views\500.html">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Pages\Boards\boards.html">
+    <Content Include="Views\Boards\boards.html">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Pages\Boards\list-item.html">
+    <Content Include="Views\Boards\list-item.html">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Pages\Board\board.html">
+    <Content Include="Views\Board\board.html">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Pages\Import\Trello\success.html">
+    <Content Include="Views\Import\Trello\success.html">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Pages\Import\Trello\trello.html">
+    <Content Include="Views\Import\Trello\trello.html">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Pages\Login\login.html">
+    <Content Include="Views\Login\login.html">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Pages\Login\new-admin.html">
+    <Content Include="Views\Login\new-admin.html">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Pages\Login\new-pass.html">
+    <Content Include="Views\Login\new-pass.html">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Services\Boards\menu-item.html">
+    <Content Include="Views\Boards\menu-item.html">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Services\Boards\menu-section.html">
+    <Content Include="Views\Boards\menu-section.html">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Services\Cards\Kanban\card.html">
+    <Content Include="Views\Card\Kanban\card.html">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Services\Cards\Kanban\Card\default.html">
+    <Content Include="Views\Card\Kanban\Card\default.html">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Services\Cards\Kanban\details.html">
+    <Content Include="Views\Card\Kanban\details.html">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Services\List\Kanban\list.html">
+    <Content Include="Views\List\Kanban\list.html">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
@@ -84,13 +84,15 @@
     <PackageReference Include="BCrypt.Net-Core" Version="1.4.0" />
     <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.1.1" />
     <PackageReference Include="Microsoft.AspNetCore" Version="2.0.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication" Version="2.0.3" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.Cookies" Version="2.0.3" />
     <PackageReference Include="Microsoft.AspNetCore.Session" Version="2.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.StaticFiles" Version="2.0.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="2.0.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="2.0.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="2.0.0" />
     <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="2.0.0" />
-	<PackageReference Include="ImageSharp" Version="1.0.0-*" />
+    <PackageReference Include="SixLabors.ImageSharp" Version="1.0.0-beta0003" />
   </ItemGroup>
 
   <ItemGroup>
@@ -99,10 +101,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Query\Query.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Content\users\" />
   </ItemGroup>
 
   <ItemGroup>
@@ -117,18 +115,22 @@
     <None Update="layout.html">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Pages\Board\Kanban\kanban.html">
+    <None Update="Views\Board\Kanban\kanban.html">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="Partials\Templates\new-board.html">
+    <None Update="Views\Board\new-board.html">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="Partials\UI\expander.html">
+    <None Update="Views\Shared\expander.html">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="Partials\UI\header.html">
+    <None Update="Views\Shared\header.html">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Views\Board\Timeline\" />
   </ItemGroup>
 
 </Project>

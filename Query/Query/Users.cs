@@ -4,10 +4,6 @@ namespace Kandu.Query
 {
     public class Users : QuerySql
     {
-        public Users(string connectionString) : base(connectionString)
-        {
-        }
-
         public int CreateUser(Models.User user)
         {
             return Sql.ExecuteScalar<int>(

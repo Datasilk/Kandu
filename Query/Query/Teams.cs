@@ -1,14 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace Kandu.Query
 {
     public class Teams : QuerySql
     {
-        public Teams(string connectionString) : base(connectionString)
-        {
-        }
-
         public int CreateTeam(Models.Team team)
         {
             return Sql.ExecuteScalar<int>(

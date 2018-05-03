@@ -1,18 +1,18 @@
-﻿using Datasilk;
+﻿using Microsoft.AspNetCore.Http;
+using Datasilk;
 
 public class Routes: Datasilk.Routes
 {
-    public Routes(Core DatasilkCore) : base(DatasilkCore) {}
-
+    public Routes(HttpContext context) : base(context){ }
     public override Page FromPageRoutes(string name)
     {
         switch (name)
         {
-            case "": case "home": return new Kandu.Pages.Home(S);
-            case "login": return new Kandu.Pages.Login(S);
-            case "boards": return new Kandu.Pages.Boards(S);
-            case "board": return new Kandu.Pages.Board(S);
-            case "import": return new Kandu.Pages.Import(S);
+            case "": case "home": return new Kandu.Pages.Home(context);
+            case "login": return new Kandu.Pages.Login(context);
+            case "boards": return new Kandu.Pages.Boards(context);
+            case "board": return new Kandu.Pages.Board(context);
+            case "import": return new Kandu.Pages.Import(context);
         }
         return null;
 
