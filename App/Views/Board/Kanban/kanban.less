@@ -65,6 +65,7 @@
     &.hide{height:45px;}
     &.cancel{opacity:0; animation:cancelnewlist 0.3s ease-in-out; -webkit-animation:cancelnewlist 0.3s ease-in-out; height:45px;}
     &.show{animation:newlist 0.3s ease-in-out; -webkit-animation:newlist 0.3s ease-in-out; height:@newlist-height;}
+    input[type="text"]{padding:0 10px !important; font-weight:bold;}
 }
 
 @keyframes newlist {
@@ -92,38 +93,42 @@
 }
 
 /* new card ///////////////////////////////////// */
-@newcard-height:105px;
+@newcard-height:85px;
 
 .box .form-new-card{ 
     z-index:10; overflow:hidden; padding:4px;
     .text-field input{border:0 transparent !important; box-shadow:@shadow-sm !important; border-radius:4px !important; background-color:#fffff; padding:7px 7px 25px 7px !important;
                 &:focus{border:0 transparent !important; outline:0 transparent !important;}
     }
-    &.hide{height:45px;}
-    &.cancel{opacity:0; animation:cancelnewcard 0.3s ease-in-out; -webkit-animation:cancelnewcard 0.3s ease-in-out; height:0px;}
-    &.show{animation:newcard 0.3s ease-in-out; -webkit-animation:newcard 0.3s ease-in-out; height:@newcard-height;}
+    &.hide{min-height:45px;}
+    &.cancel{opacity:0; animation:cancelnewcard 0.3s ease-in-out; -webkit-animation:cancelnewcard 0.3s ease-in-out; min-height:0px;}
+    &.show{animation:newcard 0.3s ease-in-out; -webkit-animation:newcard 0.3s ease-in-out; min-height:@newcard-height;}
+    textarea{overflow:hidden; height:42px; resize:none; font-weight:400; padding:10px; line-height:1.5;}
+    .textarea-clone{opacity:0; position:absolute; z-index:-1; width:100%; height:0px; top:0;
+        & > div{position:absolute; width:100%; min-height:30px; font-size:15px; font-weight:400; padding:10px; white-space:normal; line-height:1.5; box-sizing:border-box; border-width:1px; box-sizing:border-box;}
+    }
 }
 
 @keyframes newcard {
-    from { height: 0px; opacity:0 }
-    to { height: @newcard-height; opacity:1 }
+    from { min-height: 0px; opacity:0 }
+    to { min-height: @newcard-height; opacity:1 }
 }
 @-moz-keyframes newcard {
-    from { height: 0px; opacity:0 }
-    to { height: @newcard-height; opacity:1 }
+    from { min-height: 0px; opacity:0 }
+    to { min-height: @newcard-height; opacity:1 }
 }
 @-webkit-keyframes newcard {
-    from { height: 0px; opacity:0 }
-    to { height: @newcard-height; opacity:1 }
+    from { min-height: 0px; opacity:0 }
+    to { min-height: @newcard-height; opacity:1 }
 }
 
 @keyframes cancelnewcard {
 }
 @-moz-keyframes cancelnewcard {
-    from { height: @newcard-height; opacity:1;}
-    to { height: 0px; opacity:0; }
+    from { min-height: @newcard-height; opacity:1;}
+    to { min-height: 0px; opacity:0; }
 }
 @-webkit-keyframes cancelnewcard {
-    from { height: @newcard-height; opacity:1;}
-    to { height: 0px; opacity:0; }
+    from { min-height: @newcard-height; opacity:1;}
+    to { min-height: 0px; opacity:0; }
 }

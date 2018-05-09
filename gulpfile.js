@@ -34,7 +34,6 @@ paths.working = {
     js: {
         platform: [
             paths.webroot + 'js/selector.js',
-            //paths.webroot + '/js/core/jquery-2.1.4.min.js',
             paths.scripts + 'utility/velocity.min.js',
             paths.scripts + "platform/_super.js",
             paths.scripts + "platform/ajax.js",

@@ -3,8 +3,7 @@ using Datasilk;
 
 public class Routes: Datasilk.Routes
 {
-    public Routes(HttpContext context) : base(context){ }
-    public override Page FromPageRoutes(string name)
+    public override Page FromPageRoutes(HttpContext context, string name)
     {
         switch (name)
         {
@@ -18,7 +17,7 @@ public class Routes: Datasilk.Routes
 
     }
 
-    public override Service FromServiceRoutes(string name)
+    public override Service FromServiceRoutes(HttpContext context, string name)
     {
         return null;
     }

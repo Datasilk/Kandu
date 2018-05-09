@@ -67,6 +67,7 @@
                 var list = $('.list.id-' + listid);
                 var form = list.find('.form-new-card');
                 form.html($('#template_newcard').html());
+                form.css({ height: '0px' });
                 form.removeClass('hide').addClass('show');
                 list.find('.btn-add-card').hide();
                 list.find('.btn-close').on('click', function () { S.kanban.card.create.hide(listid); });
@@ -76,6 +77,30 @@
                     return false;
                 });
                 list.find('.new-card-label')[0].focus();
+                var field = form.find('textarea');
+                field.on('change, keyup', function (e) {
+                    return S.kanban.card.create.change(e, listid);
+                });
+
+                form.animate({ height: 80 }, {
+                    duration: 3000, complete: () => {
+                        form.removeAttr('style');
+                    }
+                });
+            },
+
+            change: function (e, listid) {
+                if (e.keyCode && e.keyCode == 13) {
+                    S.kanban.card.create.submit(listid);
+                    e.preventDefault();
+                    return false;
+                }
+                var field = $(e.target);
+                //resize field
+                var clone = field.parent().find('.textarea-clone > div');
+                clone.html(field.val().replace(/\n/g, '<br/>') + '</br>');
+                field.css({ height: clone.height() });
+                field.scrollTop = 0;
             },
 
             hide: function (listid) {
@@ -93,7 +118,7 @@
                 var data = {
                     boardId: S.board.id,
                     listId: listid,
-                    name: text.val()
+                    name: text.val().replace('\n', '').replace('\r', '')
                 };
                 text.val('');
                 S.ajax.post('Cards/Create', data,
@@ -107,10 +132,11 @@
                             duration: 1000,
                             easing: 'ease-in-out',
                             complete: function () {
-                                item.css({ height:'auto'});
+                                item.css({ height:''});
                             }
                         });
-                        S.kanban.cards.init();
+                        var nodes = items.children();
+                        S.kanban.card.drag.init($(nodes[nodes.length - 1]).children()[0]);
                     },
                     function () {
                         S.message.show('.board .message', "error", S.message.error.generic);
@@ -163,8 +189,9 @@
             geometry: { lists: null },
             current: { listId: null, list:null, cardId: null, card:null, below: true, special: null },
 
-            init: function () {
-                $('.lists .item').each(function (item) {
+            init: function (elems) {
+                var selector = elems || '.lists .item';
+                $(selector).each(function (item) {
                     var cardElem = $(item);
                     S.drag.add(cardElem, cardElem,
                         //onStart  /////////////////////////////////////////////////////////////////////////////////
@@ -263,9 +290,10 @@
                             }
                         },
                         //onStop  /////////////////////////////////////////////////////////////////////////////////
-                        function (item) { 
+                        function (item) {
                             item.elem.removeClass('dragging');
                             $('.board .lists .list .item').removeClass('hovering').parent().removeClass('hovering upward downward');
+                            $('.board .lists .items').removeClass('hovering');
                             $('.board').removeClass('dragging');
                             item.elem.css({ top: 0, left: 0 });
 
