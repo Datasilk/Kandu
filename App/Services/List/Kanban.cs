@@ -16,5 +16,13 @@ namespace Kandu.Services.List
             var cards = new Query.Cards();
             return Common.Platform.List.Kanban.RenderList(list, cards.GetList(list.boardId, listId, 1, 100));
         }
+
+        public string Move(int boardId, int[] listIds)
+        {
+            if (!User.CheckSecurity(boardId)) { return AccessDenied(); }
+            var query = new Query.Lists();
+            query.Move(boardId, listIds);
+            return Success();
+        }
     }
 }

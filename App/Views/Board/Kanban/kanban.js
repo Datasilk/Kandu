@@ -13,7 +13,8 @@
         //add callback for header boards popup
         S.head.boards.callback.add('kanban', S.kanban.list.resize);
 
-        //add click & drag capabilities to cards
+        //add click & drag capabilities to lists & cards
+        S.kanban.list.drag.init();
         S.kanban.card.drag.init();
 
         //add event for detecting message displayed
@@ -40,6 +41,9 @@
 
                 S.ajax.post('Lists/Create', data, function (d) {
                     $('.lists .add-list').before(d);
+                    var lists = $('.lists .list');
+                    var list = lists[lists.length - 1];
+                    S.kanban.list.drag.init(list);
                 });
             }
         },
@@ -56,6 +60,155 @@
                 lists.css({ marginBottom: '' });
             }
             
+        },
+
+        drag: {
+            dragging: false, timer: null,
+            geometry: { lists: null },
+            current: { listId: null, list: null, side: 'left', pos:0},
+
+            init: function (elems) {
+                var selector = elems || '.lists .list .list-head';
+                $(selector).each(function (item) {
+                    var listElem = $(item);
+                    S.drag.add(listElem, listElem.parent(),
+                        //onStart  /////////////////////////////////////////////////////////////////////////////////
+                        function (item) {
+                            this.dragging = true;
+                            item.elem.addClass('dragging');
+                            $('.board').addClass('dragging');
+
+                            //reset classes
+                            $('.list .list.hovering').removeClass('hovering').parent().removeClass('hovering leftside rightside');
+
+                            //check the index position of the currectly selected list that is being dragged
+                            var lists = item.elem.parent().parent().children();
+                            this.current.pos = 0;
+                            for (var x = 0; x < lists.length; x++) {
+                                if (lists[x] == item.elem.parent()[0]) {
+                                    this.current.pos = x;
+                                }
+                            }
+
+                            //update geometry for lists & cards
+                            this.getGeometryForLists();
+                        },
+                        //onDrag /////////////////////////////////////////////////////////////////////////////////
+                        function (item) {
+                            //detect where to drop the card
+                            if (this.dragging == false) { return; }
+                            var current = this.current;
+                            var geo = this.geometry;
+                            var bounds = { top: item.cursor.y - 5, right: item.cursor.x, bottom: item.cursor.y + 5, left: item.cursor.x };
+
+                            //first, detect which list the cursor is over
+                            var found = false;
+                            var hovering = $('.list.hovering');
+                            var dragged = false; //determines if dragged element comes before or after hovered element
+
+                            for (var x = 0; x < geo.lists.length; x++) {
+                                var list = geo.lists[x];
+                                if (list.elem[0] == item.elem[0]) {
+                                    dragged = true;
+                                    item.elem.css({ 'margin-left': -262 * current.pos, 'margin-right': 262 * (current.pos - 1) + 12 });
+                                    continue;
+                                }
+                                var pos = list.elem.offset();
+                                pos.width = list.elem.width();
+                                if (list.elem.hasClass('rightside')) {
+                                    pos.rightside = 262;
+                                    pos.leftside = 0;
+                                } else if (list.elem.hasClass('leftside')) {
+                                    pos.leftside = 262;
+                                    pos.rightside = 0;
+                                } else {
+                                    pos.leftside = 0;
+                                    pos.rightside = 0;
+                                }
+                                if (bounds.left <= pos.left + pos.width + pos.rightside - 20) {
+                                    found = true;
+                                    var listId = S.util.element.getClassId(list.elem, 'id-');
+                                    var changed = false;
+                                    if (current.listId != listId) {
+                                        $('.list.hovering').removeClass('hovering leftside rightside');
+                                        current.listId = listId;
+                                        current.list = list.elem;
+                                        list.elem.addClass('hovering');
+                                        changed = true;
+                                    }
+                                    if (bounds.left < (pos.left + pos.leftside + pos.width)) {
+                                        current.side = 'left';
+                                        list.elem.removeClass('rightside').addClass('leftside');
+                                        changed = true;
+                                    } else {
+                                        current.side = 'right';
+                                        list.elem.removeClass('leftside').addClass('rightside');
+                                        changed = true;
+                                    }
+                                    if (changed == true) { S.drag.alteredDOM(); }
+                                    if (dragged == false) {
+                                        item.elem.css({ 'margin-left': -262 * (current.pos + 1), 'margin-right': 262 * (current.pos) + 12 });
+                                    }
+                                    break;
+                                }
+                            }
+                        },
+                        //onStop  /////////////////////////////////////////////////////////////////////////////////
+                        function (item) {
+                            item.elem.removeClass('dragging');
+                            $('.lists .list').removeClass('hovering leftside rightside after-hover').css({ 'margin-left': '', 'margin-right':'', left: '', top: '' });
+                            $('.board').removeClass('dragging');
+                            item.elem.css({ top: 0, left: 0 });
+
+                            //move card in DOM to drop area
+                            if (this.current.listId != null) {
+                                if (this.current.side == 'left') {
+                                    this.current.list.before(item.elem.parent());
+                                } else {
+                                    this.current.list.after(item.elem.parent());
+                                }
+                                this.current.listId = '';
+                                this.current.list = null;
+                                
+                                //send update to server via ajax
+                                var list = item.elem;
+                                var listId = S.util.element.getClassId(list);
+                                var lists = $('.lists .list');
+                                var sort = [];
+                                lists.each(function (currlist) {
+                                    sort.push(S.util.element.getClassId(currlist));
+                                });
+
+                                S.ajax.post('List/Kanban/Move', { boardId: S.board.id, listIds: sort });
+                            }
+                            setTimeout(function () { S.kanban.list.drag.dragging = false; }, 100);
+                        },
+                        //onClick  /////////////////////////////////////////////////////////////////////////////////
+                        function (item) {},
+                        //options
+                        { hideArea: false, hideAreaOffset: 7, speed: 1000 / 30, callee: S.kanban.list.drag, offsetX:-19, offsetY:-15 }
+                    )
+                });
+            },
+
+            getGeometryForLists: function () {
+                var geo = { lists: [] };
+                var lists = $('.lists .list');
+                lists.each(function (list) {
+                    list = $(list);
+                    var pos = list.offset();
+                    geo.lists.push({
+                        elem: list,
+                        top: pos.top,
+                        left: pos.left,
+                        right: pos.left + list.width(),
+                        bottom: pos.top + list.height(),
+                        width: list.width(),
+                        height: list.height()
+                    });
+                });
+                S.kanban.list.drag.geometry = geo;
+            }
         }
     },
 

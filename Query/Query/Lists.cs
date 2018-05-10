@@ -54,5 +54,16 @@ namespace Kandu.Query
             if(lists.Count > 0) { return lists[0]; }
             return null;
         }
+
+        public void Move(int boardId, int[] cardIds)
+        {
+            Sql.ExecuteNonQuery("List_Move",
+                new Dictionary<string, object>()
+                {
+                    {"boardId", boardId },
+                    {"ids", string.Join(",", cardIds) }
+                }
+            );
+        }
     }
 }

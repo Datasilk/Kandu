@@ -137,6 +137,7 @@
     <Build Include="dbo\Stored Procedures\Boards\Board_GetInfo.sql" />
     <Build Include="dbo\Stored Procedures\Cards\Card_Delete.sql" />
     <Build Include="dbo\Stored Procedures\Cards\Card_UpdateDescription.sql" />
+    <Build Include="dbo\Stored Procedures\Lists\List_Move.sql" />
   </ItemGroup>
   <ItemGroup>
     <RefactorLog Include="Sql.refactorlog" />
