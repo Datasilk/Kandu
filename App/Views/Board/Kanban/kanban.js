@@ -186,7 +186,7 @@
                         //onClick  /////////////////////////////////////////////////////////////////////////////////
                         function (item) {},
                         //options
-                        { hideArea: false, hideAreaOffset: 7, speed: 1000 / 30, callee: S.kanban.list.drag, offsetX:-19, offsetY:-15 }
+                        { hideAreaOffset: 7, speed: 1000 / 30, callee: S.kanban.list.drag, offsetX:-19, offsetY:-15 }
                     )
                 });
             },
@@ -444,7 +444,7 @@
                         },
                         //onStop  /////////////////////////////////////////////////////////////////////////////////
                         function (item) {
-                            item.elem.removeClass('dragging');
+                            item.elem.removeClass('dragging').css({ 'margin-left': ''});
                             $('.board .lists .list .item').removeClass('hovering').parent().removeClass('hovering upward downward');
                             $('.board .lists .items').removeClass('hovering');
                             $('.board').removeClass('dragging');
