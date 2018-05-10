@@ -45,14 +45,16 @@ Toggle a feature to always show the boards menu in a side bar instead of a drop 
 
 ---
 
-## Features
+## Current Features
 
 * Choose from 10 vibrant colors (along with black & grey) as a theme for each of your boards
 * Choose either grey lists or colored lists to display within your boards
-* Infinite boards, lists, cards, and checklists.
+* Infinite boards, lists & cards
 * Drag & drop cards from one list to another
+* Rearrange lists within a board
+* Update a card's description with markdown syntax
 * Archive & permanently delete cards from lists
-* Import lists & cards from Trello by uploading a JSON file
+* Import individual boards from Trello by uploading a JSON file
 
 ---
 
@@ -63,7 +65,7 @@ As of February 1st, 2018, there are many basic features that need to be implemen
 * Archiving & permanently deleting boards, lists, ~~cards~~, checklists, & attachments
 * Adding & managing team members & board members
 * Adding comments to cards
-* Updating a card's title & description
+* Updating a card's title
 * Attaching photos & files to a card
 * Creating checklists for a card
 * Copy a checklist from another card
