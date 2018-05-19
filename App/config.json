@@ -1,8 +1,8 @@
 {
-  "namespace":  "Kandu",
+  "assembly":  "Kandu",
   "environment": "development",
   "port": "80",
-  "data": {
+  "sql": {
     "active": "SqlServerTrusted",
     "SqlServerTrusted": "server=.\\SQL2017; database=Kandu; Trusted_Connection=true"
   },

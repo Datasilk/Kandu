@@ -83,7 +83,8 @@ paths.working = {
             '!' + paths.app + 'wwwroot/**/',
             '!' + paths.app + 'CSS/**/',
             '!' + paths.app + 'CSS/',
-            '!' + paths.app + 'Scripts/**/'
+            '!' + paths.app + 'Scripts/**/',
+            '!' + paths.app + 'obj/**/*'
         ]
     },
 
