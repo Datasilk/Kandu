@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using Microsoft.AspNetCore.Http;
 
 namespace Datasilk
 {
@@ -11,6 +13,21 @@ namespace Datasilk
 
         private Server Server { get; } = Server.Instance;
 
+        partial void VendorInit()
+        {
+            //check for persistant cookie
+            if (userId <= 0 && context.Request.Cookies.ContainsKey("authId"))
+            {
+                var query = new Kandu.Query.Users();
+                var user = query.AuthenticateUser(context.Request.Cookies["authId"]);
+                if (user != null)
+                {
+                    //persistant cookie was valid, log in
+                    LogIn(user.userId, user.email, user.name, user.datecreated, "", 1, user.photo);
+                }
+            }
+        }
+
         partial void VendorLogIn()
         {
             //load Kandu-specific properties for user from database
@@ -22,6 +39,16 @@ namespace Datasilk
             var query2 = new Kandu.Query.Boards();
             boards = query2.GetBoardsForMember(userId);
             if (boards == null) { boards = new List<int>(); }
+
+            //create persistant cookie
+            var query3 = new Kandu.Query.Users();
+            var auth = query3.CreateAuthToken(userId);
+            var options = new CookieOptions()
+            {
+                Expires = DateTime.Now.AddMonths(1)
+            };
+
+            context.Response.Cookies.Append("authId", auth, options);
         }
 
         public bool CheckSecurity(int boardId)
