@@ -14,13 +14,19 @@ namespace Kandu.Common.Platform
             var query = new Query.Boards();
             try
             {
-                return query.CreateBoard(new Query.Models.Board()
+                var id = query.CreateBoard(new Query.Models.Board()
                 {
                     name = name,
                     security = 1,
                     color = color,
                     teamId = teamId
                 }, request.User.userId);
+
+                //add board Id to user's permissions for boards
+                request.User.boards.Add(id);
+                request.User.Save(true);
+
+                return id;
             }catch (Exception)
             {
                 throw new ServiceErrorException("Error creating new board");

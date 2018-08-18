@@ -23,5 +23,18 @@ namespace Kandu.Common.Platform
                 throw new ServiceErrorException("Error creating list");
             }
         }
+
+        public static void Archive(int listId)
+        {
+            var query = new Query.Lists();
+            try
+            {
+                query.Archive(listId);
+            }
+            catch (Exception)
+            {
+                throw new ServiceErrorException("Error archiving list");
+            }
+        }
     }
 }

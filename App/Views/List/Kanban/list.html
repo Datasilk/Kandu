@@ -1,9 +1,17 @@
 ﻿<div class="col list id-{{id}} bg pad-sm">
     <div class="row list-head drag">
         <span class="bold">{{title}}</span>
+        <div class="more">
+            <svg viewBox="0 0 48 36">
+                <use xlink:href="#icon-dots" x="0" y="0" width="48" height="36"></use>
+            </svg>
+        </div>
     </div>
-    <div class="row items">
-        {{items}}
+    <div class="scrollable">
+        <div class="scroller"><div class="scrollbar"></div></div>
+        <div class="row items">
+            {{items}}
+        </div>
     </div>
     <div class="form-new-card hide"></div>
     <div class="row btn-add-card pad-sm">

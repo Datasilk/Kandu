@@ -1,10 +1,6 @@
 var svgstore = require('./index')
 var gulp = require('gulp')
-var mocha = require('gulp-mocha')
 var cheerio = require('gulp-cheerio')
-var connect = require('connect')
-var serveStatic = require('serve-static')
-var http = require('http')
 var inject = require('gulp-inject')
 var replace = require('gulp-replace');
 
@@ -29,7 +25,7 @@ gulp.task('svg', function () {
     '</style>\n\n\n' + 
     '<defs>'))
     //.pipe(gulp.dest('test/compiled'))
-	.pipe(gulp.dest('../../App/content/themes/default'));
+	.pipe(gulp.dest('../../App/wwwroot/themes/default'));
 });
 
 

@@ -143,9 +143,7 @@
     <Build Include="dbo\Stored Procedures\Users\User_AuthenticateByToken.sql" />
     <Build Include="dbo\Stored Procedures\Users\User_CreateAuthToken.sql" />
     <Build Include="dbo\Stored Procedures\Utility\GetCustomId.sql" />
-  </ItemGroup>
-  <ItemGroup>
-    <RefactorLog Include="Sql.refactorlog" />
+    <Build Include="dbo\Stored Procedures\Lists\List_Archive.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Sql.publish.xml" />

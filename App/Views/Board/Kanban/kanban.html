@@ -1,9 +1,11 @@
 ﻿<style type="text/css">
-    .board:not(.dragging) .list .item:hover{background-color:{{color-hover}}; color:#fff;}
-
+    .board:not(.dragging) .list .items:not(.scrolling) .item:hover{background-color:{{color-hover}}; color:#fff;}
+    .box > .list-menu li.item:not(.disabled):hover{background-color:{{color-hover}}; color:#fff;}
+    }
+}
 </style>
 <div class="kanban">
-    <div class="row toolbar pad">
+    <div class="row toolbar pad-top pad-left">
         <div class="col title pad-right">
             <h5>{{name}}</h5>
         </div>
@@ -11,8 +13,8 @@
 
         </div>
     </div>
-    
-    <div class="row lists">
+
+    <div class="row lists noselect">
         <div class="row pad text columns">
             {{lists}}
             <div class="col add-list">
@@ -40,25 +42,8 @@
             <div class="col pad-right">&nbsp;</div>
         </div>
     </div>
+    <div class="scroller"><div class="scrollbar"></div></div>
 </div>
 
-<script type="text/html" id="template_newcard">
-    <form>
-        <div class="row text-field">
-            <textarea class="new-card-label" placeholder="Add a card..."></textarea>
-            <div class="textarea-clone"><div></div></div>
-        </div>
-        <div class="row pad-top-sm">
-            <div class="col">
-                <button type="submit" class="button btn-save-newcard">Save</button>
-            </div>
-            <div class="col pad-left">
-                <a href="javascript:" class="icon small btn-close margin-top-sm">
-                    <svg viewBox="0 0 32 32">
-                        <use xlink:href="#icon-close" x="0" y="0" width="32" height="32"></use>
-                    </svg>
-                </a>
-            </div>
-        </div>
-    </form>
-</script>
+{{newcard "/Views/Card/Kanban/new-card.html"}}
+{{newcard "/Views/List/Kanban/list-menu.html"}}

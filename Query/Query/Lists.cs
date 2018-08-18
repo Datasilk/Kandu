@@ -65,5 +65,15 @@ namespace Kandu.Query
                 }
             );
         }
+
+        public void Archive(int listId)
+        {
+            Sql.ExecuteNonQuery("List_Archive",
+                new Dictionary<string, object>()
+                {
+                    {"listId", listId }
+                }
+            );
+        }
     }
 }

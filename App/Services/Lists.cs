@@ -35,5 +35,21 @@ namespace Kandu.Services
             }
             return Error();
         }
+
+        public string Archive(int boardId, int listId)
+        {
+            //check security
+            if (!User.CheckSecurity(boardId)) { return AccessDenied(); }
+
+            try
+            {
+                Common.Platform.Lists.Archive(listId);
+            }
+            catch (ServiceErrorException ex)
+            {
+                return Error(ex.Message);
+            }
+            return Success();
+        }
     }
 }

@@ -13,6 +13,12 @@ namespace Kandu
             
         }
 
+        public override string Render(string[] path, string body = "", object metadata = null)
+        {
+            scripts.Append("<script language=\"javascript\">S.svg.load('/themes/default/icons.svg');</script>");
+            return base.Render(path, body, metadata);
+        }
+
         public void LoadHeader(ref Scaffold scaffold, bool hasMenu = true)
         {
             if(User.userId > 0)

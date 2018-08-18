@@ -68,7 +68,7 @@ body, h1, h2, h3, h4, h5, h6, span, input, select, textarea{font-family: Open Sa
     .row(transparent, rgba(0,0,0,@opacity1), rgba(0,0,0,@opacity2), #fff, #fff, #fff, #fff, #fff, #fff, #fff, #fff, #fff, #fff, #fff, #fff);
     @opacity1:0.15;
     @opacity2:0.25;
-    .button(default,  rgba(0,0,0,@opacity1), rgba(0,0,0,@opacity2), rgba(0,0,0,@opacity2), rgba(0,0,0,@opacity2), transparent, transparent, transparent, transparent, transparent, transparent, transparent, transparent, #fff, #fff, #fff, #fff);
+    .button(default, rgba(0,0,0,@opacity1), rgba(0,0,0,@opacity2), rgba(0,0,0,@opacity2), rgba(0,0,0,@opacity2), transparent, transparent, transparent, transparent, transparent, transparent, transparent, transparent, #fff, #fff, #fff, #fff);
 }
 
 .box, .box .bg{
@@ -76,7 +76,6 @@ body, h1, h2, h3, h4, h5, h6, span, input, select, textarea{font-family: Open Sa
     .links(#00a8a3, #009bbe, #00abc3, #00a8a3);
     .icons(#555, #666, #666, #555);
     .row(transparent, #dfdfdf, #5eceb6, #444, #333, #333, #444, #111, #111, #444, #333, #555, #444, #444, #444);
-    .row-alt(transparent, #dfdfdf, #5eceb6, #444, #333, #333, #333, #005ec4, #005ec4, #333, #333, #555, #444, #444, #444);
     .fonts(#222, fade(#222, 30%), #009B87, #4DA400, #FF2222, #376EB2);
     .input(#fff, #444, #cccccc, #aaa, #ffffff, #444, #77c8b6, #fff, #444, #b1dcdc, #8c8c8c, #009875 );
     .line(#e6e6e6); 
@@ -91,16 +90,10 @@ body, h1, h2, h3, h4, h5, h6, span, input, select, textarea{font-family: Open Sa
     .message(error,   #f46f6f, transparent, #fff);
     .message(alert,   #dbdb86, transparent, #d79c0c); 
     .message(confirm, #92e061, transparent, #228f4b); 
+}
 
-    @perc:3%;
-    @perc2:1%;
-    .table(
-        #d1eff2, #2a898d, #0c7946, #00ab5b, #00ab5b, #0c7946,
-        #fafafa, #ddf0f0, #5EC7CE, #444, #1e3b41, #00343e, #009B87, #00C5C7, #00C5C7, #00C5C7, #009B87, #00C5C7, #00C5C7, #00C5C7,
-        darken(#fafafa, @perc), darken(#ddf0f0, @perc2), darken(#5EC7CE, @perc2), darken(#444, @perc), darken(#1e3b41, @perc), 
-        darken(#00343e, @perc), darken(#009B87, @perc), darken(#00C5C7, @perc), darken(#00C5C7, @perc), darken(#00C5C7, @perc), 
-        darken(#009B87, @perc), darken(#00C5C7, @perc), darken(#00C5C7, @perc), darken(#00C5C7, @perc)
-    );
+.box .bg.white{
+    .box(#fff, transparent, #555);
 }
 
 .popup{
