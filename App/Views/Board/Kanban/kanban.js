@@ -18,8 +18,9 @@
         S.kanban.list.drag.init();
         S.kanban.card.drag.init();
 
-        //add event for detecting message displayed
+        //add events for message popup
         $('.board .message').on('DOMSubtreeModified', S.kanban.list.resize);
+        $('.board .message .btn-close').on('click', () => { $('.board .message').addClass('hide').hide(); });
 
         //add event for horizontal scrollbar
         $('.kanban > .scroller .scrollbar').on('mousedown', S.kanban.scroll.start);
@@ -45,7 +46,7 @@
             if (w > win.w) {
                 //lists wider than window
                 scroller.removeClass('hide');
-                scrollbar.css({ width: (scrollW / w) * (w - win.w) });
+                scrollbar.css({ width: (scrollW / w) * win.w });
             } else {
                 //lists smaller than window width
                 scroller.addClass('hide');
@@ -73,9 +74,8 @@
                 scrollbar: scrollbar,
                 columns: lists.find('.columns'),
                 width: win.w,
-                barWidth: (scrollW / w) * (w - win.w),
+                barWidth: (scrollW / w) * win.w,
                 listsW: w,
-                scrollW: scrollW,
                 cursorX: e.clientX,
                 currentX: e.clientX,
                 barX: scrollbar.offset().left
@@ -90,11 +90,11 @@
         animate: function () {
             const scroll = S.kanban.scroll.selected;
             if (scroll == null) { return; }
-            const curr = scroll.currentX - scroll.cursorX - (20 - scroll.barX);
+            const curr = scroll.currentX - scroll.cursorX - (10 - scroll.barX);
             let perc = (100 / (scroll.width - scroll.barWidth)) * curr;
             if (perc > 100) { perc = 100; }
             if (perc < 0) { perc = 0; }
-            scroll.scrollbar.css({ left: ((scroll.width - scroll.barWidth) / 100) * perc });
+            scroll.scrollbar.css({ left: ((scroll.width - scroll.barWidth - 20) / 100) * perc });
             scroll.columns.css({ left: -1 * (((scroll.listsW - scroll.width) / 100) * perc) });
             requestAnimationFrame(() => {
                 S.kanban.scroll.animate.call(S.kanban.scroll);
@@ -155,33 +155,38 @@
         },
 
         resize: function () {
-            var lists = $('.kanban .lists');
-            var pos = lists.position();
-            var win = S.window.pos();
-            var h = win.h - pos.top - 115;
+            const id = typeof arguments[0] == 'string' ? arguments[0] : null;
+            const lists = $('.kanban .lists');
+            const pos = lists.position();
+            const win = S.window.pos();
+            let h = win.h - pos.top - 85;
 
             //check horizontal scrollbar
             S.kanban.scroll.resize();
 
             lists.css({ height: win.h - pos.top });
-            $('.lists .list .scrollable').css({ maxHeight: h });
             //display scrollbars on lists
-            $('.lists .list').each(function (e) {
+            $('.lists .list' + (id ? (' .id-' + id) : '')).each(function (e) {
                 const list = $(e);
                 const items = list.find('.items');
-                const itemsH = items.height();
+                const foot = list.find('.form-new-card');
+                const foot2 = list.find('.btn-add-card');
+                const footH = foot.height() + foot2.height();
                 const scrollable = list.find('.scrollable');
                 const scrollbar = list.find('.scrollbar');
-                if (itemsH > h) {
+                scrollable.css({ maxHeight: h - footH });
+                const itemsH = items.height();
+                if (itemsH > h - footH) {
                     //show scrollbar
                     if (!scrollable.hasClass('scroll')) {
                         scrollable.addClass('scroll');
                         //add scroll bar mouse events
                         scrollbar.on('mousedown', S.kanban.list.scroll.start);
                     }
-                    list.find('.scroller').css({ height: h - 7 });
+                    list.find('.scroller').css({ height: h - footH - 7 });
                     //update scrollbar height
-                    scrollbar.css({ height: ((h - 7) / itemsH) * h });
+                    scrollbar.css({ height: ((h - footH - 7) / itemsH) * (h - footH) });
+                    //check scrollTo position
                 } else {
                     //hide scrollbar
                     if (scrollable.hasClass('scroll')) {
@@ -206,7 +211,10 @@
                 const scrollbar = list.find('.scrollbar');
                 const scroller = list.find('.scroller');
                 const items = list.find('.items');
-                const height = win.h - pos.top - 115;
+                const foot = list.find('.form-new-card');
+                const foot2 = list.find('.btn-add-card');
+                const footH = foot.height() + foot2.height();
+                const height = win.h - pos.top - footH - 85;
                 items.addClass('scrolling');
                 S.kanban.list.scroll.selected = {
                     scrollbar: scrollbar,
@@ -468,7 +476,11 @@
                 });
 
                 form.animate({ height: 80 }, {
-                    duration: 3000, complete: () => {
+                    duration: 3000,
+                    progress: () => {
+                        S.kanban.list.resize(listid);
+                    },
+                    complete: () => {
                         form.removeAttr('style');
                     }
                 });
@@ -486,14 +498,17 @@
                 clone.html(field.val().replace(/\n/g, '<br/>') + '</br>');
                 field.css({ height: clone.height() });
                 field.scrollTop = 0;
+                S.kanban.list.resize(listid);
             },
 
             hide: function (listid) {
                 var list = $('.list.id-' + listid);
                 list.find('.form-new-card').removeClass('show').addClass('cancel');
+                S.kanban.list.resize(listid);
                 setTimeout(function () {
                     list.find('.form-new-card').removeClass('cancel').addClass('hide').html('');
                     list.find('.btn-add-card').show();
+                    S.kanban.list.resize(listid);
                 }, 310);
             },
 
@@ -516,6 +531,9 @@
                         item.animate({ height: h }, {
                             duration: 1000,
                             easing: 'ease-in-out',
+                            progress: () => {
+                                S.kanban.list.resize(listid);
+                            },
                             complete: function () {
                                 item.css({ height:''});
                             }
@@ -705,6 +723,7 @@
                                 cardlist.each(function (card) {
                                     cards.push(S.util.element.getClassId(card));
                                 });
+                                S.kanban.list.resize(listId);
 
                                 S.ajax.post('Card/Kanban/Move', { boardId: S.board.id, listId: listId, cardId: S.util.element.getClassId(item.elem), cardIds: cards });
                             }
@@ -775,6 +794,7 @@
 
                         //remove card from list
                         S.kanban.card.selected.elem.remove();
+                        S.kanban.list.resize(S.kanban.card.selected.listId);
 
                     } else {
                         S.message.show('.board .message', "error", S.message.error.generic);
@@ -801,6 +821,7 @@
 
                         //add card to list
                         $('.board .list.id-' + S.kanban.card.selected.listId + ' .items').append(d);
+                        S.kanban.list.resize(S.kanban.card.selected.listId);
 
                     } else {
                         S.message.show('.board .message', "error", S.message.error.generic);

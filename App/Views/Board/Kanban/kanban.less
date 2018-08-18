@@ -4,13 +4,18 @@
 
 body{overflow:hidden;}
 
-.board .message{width:95%;}
+.board .message{margin-top:-4px !important; margin-bottom:-20px !important; width:~"calc(100% - 20px)";}
 
 .drag-delete{position:absolute; width:100%; text-align:center;}
 .drag-delete .delete-area{border:2px solid rgba(255,255,255,0.3); padding:7px 100px; display:inline-block; position:relative; top:-5px;
     span{display:inline-block; font-size:17px; font-weight:400; text-align:center; padding-left:5px; position:relative; top:-5px;}
 }
 .drag-delete.hovering .delete-area{background-color:rgba(255,255,255,0.3);}
+
+/* toolbar /////////////////////////////////////// */
+.kanban > .toolbar{flex-direction:row; align-content:stretch; display:flex;
+    .col.msg{flex-grow:1;}
+}
 
 /* lists ///////////////////////////////////////// */
 .kanban .lists {overflow:hidden;
