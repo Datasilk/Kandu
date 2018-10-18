@@ -1,10 +1,10 @@
 ﻿using System.Collections.Generic;
 
-namespace Kandu.Query
+namespace Query
 {
-    public class Lists : QuerySql
+    public static class Lists
     {
-        public int CreateList(Models.List list)
+        public static int CreateList(Models.List list)
         {
             return Sql.ExecuteScalar<int>(
                 "List_Create",
@@ -17,7 +17,7 @@ namespace Kandu.Query
             );
         }
 
-        public int Import(Models.List list, bool merge = false)
+        public static int Import(Models.List list, bool merge = false)
         {
             return Sql.ExecuteScalar<int>(
                 "List_Import",
@@ -31,7 +31,7 @@ namespace Kandu.Query
             );
         }
 
-        public List<Models.List> GetListsForBoard(int boardId)
+        public static List<Models.List> GetListsForBoard(int boardId)
         {
             return Sql.Populate<Models.List>(
                 "Lists_GetList",
@@ -42,7 +42,7 @@ namespace Kandu.Query
             );
         }
 
-        public Models.List GetDetails(int listId)
+        public static Models.List GetDetails(int listId)
         {
             var lists = Sql.Populate<Models.List>(
                 "Lists_GetDetails",
@@ -55,7 +55,7 @@ namespace Kandu.Query
             return null;
         }
 
-        public void Move(int boardId, int[] cardIds)
+        public static void Move(int boardId, int[] cardIds)
         {
             Sql.ExecuteNonQuery("List_Move",
                 new Dictionary<string, object>()
@@ -66,7 +66,7 @@ namespace Kandu.Query
             );
         }
 
-        public void Archive(int listId)
+        public static void Archive(int listId)
         {
             Sql.ExecuteNonQuery("List_Archive",
                 new Dictionary<string, object>()

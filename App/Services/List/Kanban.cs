@@ -10,18 +10,15 @@ namespace Kandu.Services.List
 
         public string LoadList(int listId)
         {
-            var query = new Query.Lists();
-            var list = query.GetDetails(listId);
+            var list = Query.Lists.GetDetails(listId);
             if (!User.CheckSecurity(list.boardId)) { return AccessDenied(); }
-            var cards = new Query.Cards();
-            return Common.Platform.List.Kanban.RenderList(list, cards.GetList(list.boardId, listId, 1, 100));
+            return Common.Platform.List.Kanban.RenderList(list, Query.Cards.GetList(list.boardId, listId, 1, 100));
         }
 
         public string Move(int boardId, int[] listIds)
         {
             if (!User.CheckSecurity(boardId)) { return AccessDenied(); }
-            var query = new Query.Lists();
-            query.Move(boardId, listIds);
+            Query.Lists.Move(boardId, listIds);
             return Success();
         }
     }

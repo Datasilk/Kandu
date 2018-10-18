@@ -11,10 +11,9 @@ namespace Kandu.Common.Platform
         public static int Create(Datasilk.Request request, string name, string color, int teamId)
         {
             Server Server = Server.Instance;
-            var query = new Query.Boards();
             try
             {
-                var id = query.CreateBoard(new Query.Models.Board()
+                var id = Query.Boards.CreateBoard(new Query.Models.Board()
                 {
                     name = name,
                     security = 1,
@@ -36,17 +35,16 @@ namespace Kandu.Common.Platform
         public static void Update(Datasilk.Request request, int boardId, string name, string color, int teamId)
         {
             Server Server = Server.Instance;
-            var query = new Query.Boards();
 
             //check if user has access to board
-            if (!query.MemberExists(request.User.userId, boardId)) {
+            if (!Query.Boards.MemberExists(request.User.userId, boardId)) {
                 throw new ServiceDeniedException();
             }
 
             //finally, update board
             try
             {
-                query.UpdateBoard(new Query.Models.Board()
+                Query.Boards.UpdateBoard(new Query.Models.Board()
                 {
                     name = name,
                     boardId = boardId,
@@ -63,10 +61,9 @@ namespace Kandu.Common.Platform
         public static string Details(int boardId)
         {
             Server Server = Server.Instance;
-            var query = new Query.Boards();
             try
             {
-                var board = query.GetDetails(boardId);
+                var board = Query.Boards.GetDetails(boardId);
                 return Serializer.WriteObjectToString(
                     new Dictionary<string, Dictionary<string, string>>(){
                     {
@@ -93,8 +90,7 @@ namespace Kandu.Common.Platform
             var htm = new StringBuilder();
             var section = new Scaffold("/Views/Boards/menu-section.html", Server.Scaffold);
             var item = new Scaffold("/Views/Boards/menu-item.html", Server.Scaffold);
-            var query = new Query.Boards();
-            var boards = query.GetList(request.User.userId);
+            var boards = Query.Boards.GetList(request.User.userId);
             var favs = boards.Where((a) => { return a.favorite; });
             var teams = boards.OrderBy((a) => { return a.datecreated; }).Reverse().OrderBy((a) => { return a.ownerId == request.User.userId; });
 
@@ -163,8 +159,7 @@ namespace Kandu.Common.Platform
         public static void KeepBoardsMenuOpen(Datasilk.Request request, bool keepOpen)
         {
             Server Server = Server.Instance;
-            var query = new Query.Users();
-            query.KeepMenuOpen(request.User.userId, keepOpen);
+            Query.Users.KeepMenuOpen(request.User.userId, keepOpen);
             request.User.keepMenuOpen = keepOpen;
             request.User.Save(true);
         }
@@ -172,8 +167,7 @@ namespace Kandu.Common.Platform
         public static void UseAllColorScheme(Datasilk.Request request, bool allColor)
         {
             Server Server = Server.Instance;
-            var query = new Query.Users();
-            query.AllColor(request.User.userId, allColor);
+            Query.Users.AllColor(request.User.userId, allColor);
             request.User.allColor = allColor;
             request.User.Save(true);
         }

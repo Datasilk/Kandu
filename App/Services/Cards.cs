@@ -28,8 +28,7 @@ namespace Kandu.Services
             //load Card html
             try
             {
-                var boards = new Query.Boards();
-                var board = boards.GetDetails(boardId);
+                var board = Query.Boards.GetDetails(boardId);
                 card.boardType = board.type;
                 return GetCard(boardId, card);
             }
@@ -42,11 +41,10 @@ namespace Kandu.Services
         public string Archive(int boardId, int cardId)
         {
             if (!User.CheckSecurity(boardId)) { return AccessDenied(); }
-
-            var query = new Query.Cards();
+            
             try
             {
-                query.Archive(boardId, cardId);
+                Query.Cards.Archive(boardId, cardId);
             }
             catch (Exception) {
                 return Error();
@@ -57,11 +55,10 @@ namespace Kandu.Services
         public string Restore(int boardId, int cardId)
         {
             if (!User.CheckSecurity(boardId)) { return AccessDenied(); }
-
-            var query = new Query.Cards();
+            
             try
             {
-                query.Restore(boardId, cardId);
+                Query.Cards.Restore(boardId, cardId);
                 return GetCard(boardId, cardId);
             }
             catch (Exception)
@@ -73,11 +70,10 @@ namespace Kandu.Services
         public string Delete(int boardId, int cardId)
         {
             if (!User.CheckSecurity(boardId)) { return AccessDenied(); }
-
-            var query = new Query.Cards();
+            
             try
             {
-                query.Delete(boardId, cardId);
+                Query.Cards.Delete(boardId, cardId);
                 return Success();
             }
             catch (Exception)
@@ -91,8 +87,7 @@ namespace Kandu.Services
 
         public string GetCard(int boardId, int cardId)
         {
-            var query = new Query.Cards();
-            var card = query.GetDetails(boardId, cardId);
+            var card = Query.Cards.GetDetails(boardId, cardId);
             return GetCard(boardId, card);
         }
 
@@ -118,11 +113,10 @@ namespace Kandu.Services
             {
                 return Error(); 
             }
-
-            var query = new Query.Cards();
+            
             try
             {
-                query.UpdateDescription(boardId, cardId, description);
+                Query.Cards.UpdateDescription(boardId, cardId, description);
                 return GetCard(boardId, cardId);
             }
             catch (Exception)

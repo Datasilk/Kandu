@@ -21,12 +21,10 @@ namespace Kandu.Pages
             AddCSS("/css/dashboard.css");
 
             var scaffold = new Scaffold("/Views/Board/board.html", Server.Scaffold);
-            var query = new Query.Boards();
-            
 
             //load board details
             var colors = new Utility.Colors();
-            var board = query.GetBoardAndLists(boardId);
+            var board = Query.Boards.GetBoardAndLists(boardId);
             BoardPage page;
 
             //add custom javascript for User Settings & Board info

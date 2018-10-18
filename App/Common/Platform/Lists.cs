@@ -6,10 +6,9 @@ namespace Kandu.Common.Platform
     {
         public static int Create(int boardId, string name, int sort = 0)
         {
-            var query = new Query.Lists();
             try
             {
-                return query.CreateList(
+                return Query.Lists.CreateList(
                     new Query.Models.List()
                     {
                         boardId = boardId,
@@ -26,10 +25,9 @@ namespace Kandu.Common.Platform
 
         public static void Archive(int listId)
         {
-            var query = new Query.Lists();
             try
             {
-                query.Archive(listId);
+                Query.Lists.Archive(listId);
             }
             catch (Exception)
             {

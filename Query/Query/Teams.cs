@@ -1,10 +1,10 @@
 ﻿using System.Collections.Generic;
 
-namespace Kandu.Query
+namespace Query
 {
-    public class Teams : QuerySql
+    public static class Teams
     {
-        public int CreateTeam(Models.Team team)
+        public static int CreateTeam(Models.Team team)
         {
             return Sql.ExecuteScalar<int>(
                 "Team_Create",
@@ -19,7 +19,7 @@ namespace Kandu.Query
             );
         }
 
-        public Models.Team GetTeam(int teamId, int ownerId)
+        public static Models.Team GetTeam(int teamId, int ownerId)
         {
             var list = Sql.Populate<Models.Team>(
                 "Team_Get",
@@ -33,7 +33,7 @@ namespace Kandu.Query
             return null;
         }
 
-        public void UpdateTeam(Models.Team team)
+        public static void UpdateTeam(Models.Team team)
         {
             Sql.ExecuteNonQuery(
                 "Team_Update",
@@ -56,7 +56,7 @@ namespace Kandu.Query
             dateCreated = 2
         }
 
-        public List<Models.Team>GetList(int ownerId =0, int start = 1, int length = 20, string search = "", SortList orderBy = SortList.name)
+        public static List<Models.Team>GetList(int ownerId =0, int start = 1, int length = 20, string search = "", SortList orderBy = SortList.name)
         {
             return Sql.Populate<Models.Team>(
                 "Teams_GetList",

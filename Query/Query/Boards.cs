@@ -1,11 +1,12 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Dapper;
 
-namespace Kandu.Query
+namespace Query
 {
-    public class Boards : QuerySql
+    public static class Boards
     {
-        public int CreateBoard(Models.Board board, int userId)
+        public static int CreateBoard(Models.Board board, int userId)
         {
             return Sql.ExecuteScalar<int>(
                 "Board_Create",
@@ -21,7 +22,7 @@ namespace Kandu.Query
             );
         }
 
-        public void UpdateBoard(Models.Board board)
+        public static void UpdateBoard(Models.Board board)
         {
             Sql.ExecuteNonQuery(
                 "Board_Update",
@@ -35,7 +36,7 @@ namespace Kandu.Query
             );
         }
 
-        public Models.Board GetDetails(int boardId)
+        public static Models.Board GetDetails(int boardId)
         {
             var list = Sql.Populate<Models.Board>(
                 "Board_GetDetails",
@@ -48,7 +49,7 @@ namespace Kandu.Query
             return null;
         }
 
-        public Models.Board GetInfo(int boardId)
+        public static Models.Board GetInfo(int boardId)
         {
             var list = Sql.Populate<Models.Board>(
                 "Board_GetInfo",
@@ -61,7 +62,7 @@ namespace Kandu.Query
             return null;
         }
 
-        public List<Models.Board> GetList(int userId)
+        public static List<Models.Board> GetList(int userId)
         {
             return Sql.Populate<Models.Board>(
                 "Boards_GetList",
@@ -72,34 +73,37 @@ namespace Kandu.Query
             );
         }
 
-        public Models.Board GetBoardAndLists(int boardId)
+        public static Models.Board GetBoardAndLists(int boardId)
         {
-            var readers = Sql.PopulateMultiple(
-                "Board_GetLists",
-                new Dictionary<string, object>()
-                {
-                    {"boardId", boardId }
-                }
-            );
-
-            var boards = readers.Read<Models.Board>().ToList();
-            var lists = readers.Read<Models.List>().ToList();
-            var cards = readers.Read<Models.Card>().ToList();
-
-            for(var x = 0; x < boards.Count; x++)
+            using (
+                var sql = new Connection(
+                    "Board_GetLists",
+                      new Dictionary<string, object>()
+                      {
+                        {"boardId", boardId }
+                      }
+                ))
             {
-                boards[x].lists = new List<Models.List>();
-                for (var y = 0; y < lists.Count; y++)
+                var readers = sql.PopulateMultiple();
+                var boards = readers.Read<Models.Board>().ToList();
+                var lists = readers.Read<Models.List>().ToList();
+                var cards = readers.Read<Models.Card>().ToList();
+
+                for (var x = 0; x < boards.Count; x++)
                 {
-                    lists[y].cards = cards.Where((a) => { return a.listId == lists[y].listId; }).ToList();
-                    boards[x].lists.Add(lists[y]);
+                    boards[x].lists = new List<Models.List>();
+                    for (var y = 0; y < lists.Count; y++)
+                    {
+                        lists[y].cards = cards.Where((a) => { return a.listId == lists[y].listId; }).ToList();
+                        boards[x].lists.Add(lists[y]);
+                    }
                 }
+
+                return boards[0];
             }
-            Sql.EndQuery();
-            return boards[0];
         }
 
-        public bool MemberExists(int userId, int boardId)
+        public static bool MemberExists(int userId, int boardId)
         {
             return Sql.ExecuteScalar<int>(
                 "Board_MemberExists",
@@ -111,7 +115,7 @@ namespace Kandu.Query
             ) == 1;
         }
 
-        public List<int> GetBoardsForMember(int userId)
+        public static List<int> GetBoardsForMember(int userId)
         {
             return Sql.Populate<int>(
                 "BoardMember_GetBoards",
@@ -122,7 +126,7 @@ namespace Kandu.Query
             );
         }
 
-        public int Import(Models.Board board, int userId, bool merge = false)
+        public static int Import(Models.Board board, int userId, bool merge = false)
         {
             return Sql.ExecuteScalar<int>(
                 "Board_Import",

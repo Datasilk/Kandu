@@ -14,9 +14,8 @@ namespace Kandu.Services
         {
             //check security
             if (!User.CheckSecurity(boardId)) { return AccessDenied(); }
-
-            var boards = new Query.Boards();
-            var board = boards.GetDetails(boardId);
+            
+            var board = Query.Boards.GetDetails(boardId);
             int id;
             try
             {

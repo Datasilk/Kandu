@@ -13,3 +13,6 @@
 [submodule "App/Utility/Malicious"]
 	path = App/Common/Utility/Malicious
 	url = http://github.com/datasilk/Malicious
+[submodule "Query/Core"]
+	path = Query/Core
+	url = https://github.com/Datasilk/CoreQuery

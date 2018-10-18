@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Kandu.Query.Models
+namespace Query.Models
 {
     public class Board
     {

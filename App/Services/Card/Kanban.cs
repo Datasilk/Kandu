@@ -32,8 +32,7 @@ namespace Kandu.Services.Card
         public string Move(int boardId, int listId, int cardId, int[] cardIds)
         {
             if (!User.CheckSecurity(boardId)) { return AccessDenied(); }
-            var query = new Query.Cards();
-            query.Move(boardId, listId, cardId, cardIds);
+            Query.Cards.Move(boardId, listId, cardId, cardIds);
             return Success();
         }
     }

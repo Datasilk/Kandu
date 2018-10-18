@@ -20,9 +20,8 @@ namespace Kandu.Pages
             }
             //load boards list
             var scaffold = new Scaffold("/Views/Boards/boards.html", Server.Scaffold);
-
-            var query = new Query.Boards();
-            var boards = query.GetList(User.userId);
+            
+            var boards = Query.Boards.GetList(User.userId);
             var html = new StringBuilder();
             var item = new Scaffold("/Views/Boards/list-item.html", Server.Scaffold);
             boards.ForEach((Query.Models.Board b) => {
@@ -38,8 +37,7 @@ namespace Kandu.Pages
             scaffold.Data["list"] = html.ToString();
 
             //load teams list
-            var queryTeams = new Query.Teams();
-            var teams = queryTeams.GetList(User.userId);
+            var teams = Query.Teams.GetList(User.userId);
             html = new StringBuilder();
             teams.ForEach((Query.Models.Team t) =>
             {

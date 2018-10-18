@@ -27,10 +27,9 @@ namespace Kandu.Common.Platform.Card
         public static Tuple<Query.Models.Card, string> Details(int boardId, int cardId)
         {
             Server Server = Server.Instance;
-            var query = new Query.Cards();
             try
             {
-                var card = query.GetDetails(boardId, cardId);
+                var card = Query.Cards.GetDetails(boardId, cardId);
                 var scaffold = new Scaffold("/Views/Card/Kanban/details.html", Server.Scaffold);
                 scaffold.Data["list-name"] = card.listName;
                 scaffold.Data["description"] = card.description;

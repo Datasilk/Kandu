@@ -1,10 +1,10 @@
 ﻿using System.Collections.Generic;
 
-namespace Kandu.Query
+namespace Query
 {
-    public class Users : QuerySql
+    public static class Users
     {
-        public int CreateUser(Models.User user)
+        public static int CreateUser(Models.User user)
         {
             return Sql.ExecuteScalar<int>(
                 "User_Create",
@@ -18,7 +18,7 @@ namespace Kandu.Query
             );
         }
 
-        public Models.User AuthenticateUser(string email, string password)
+        public static Models.User AuthenticateUser(string email, string password)
         {
             var list = Sql.Populate<Models.User>("User_Authenticate",
                 new Dictionary<string, object>()
@@ -31,7 +31,7 @@ namespace Kandu.Query
             return null;
         }
 
-        public Models.User AuthenticateUser(string token)
+        public static Models.User AuthenticateUser(string token)
         {
             var list = Sql.Populate<Models.User>("User_AuthenticateByToken",
                 new Dictionary<string, object>()
@@ -43,7 +43,7 @@ namespace Kandu.Query
             return null;
         }
 
-        public string CreateAuthToken(int userId, int expireDays = 30)
+        public static string CreateAuthToken(int userId, int expireDays = 30)
         {
             return Sql.ExecuteScalar<string>("User_CreateAuthToken",
                 new Dictionary<string, object>()
@@ -54,7 +54,7 @@ namespace Kandu.Query
             );
         }
 
-        public void UpdatePassword(int userId, string password)
+        public static void UpdatePassword(int userId, string password)
         {
             Sql.ExecuteNonQuery("User_UpdatePassword",
                 new Dictionary<string, object>()
@@ -65,7 +65,7 @@ namespace Kandu.Query
             );
         }
 
-        public string GetEmail(int userId)
+        public static string GetEmail(int userId)
         {
             return Sql.ExecuteScalar<string>("User_GetEmail",
                 new Dictionary<string, object>()
@@ -75,7 +75,7 @@ namespace Kandu.Query
             );
         }
 
-        public string GetPassword(string email)
+        public static string GetPassword(string email)
         {
             return Sql.ExecuteScalar<string>("User_GetPassword",
                 new Dictionary<string, object>()
@@ -85,7 +85,7 @@ namespace Kandu.Query
             );
         }
 
-        public void UpdateEmail(int userId, string email)
+        public static void UpdateEmail(int userId, string email)
         {
             Sql.ExecuteNonQuery("User_UpdateEmail",
                 new Dictionary<string, object>()
@@ -96,17 +96,17 @@ namespace Kandu.Query
             );
         }
 
-        public bool HasPasswords()
+        public static bool HasPasswords()
         {
             return Sql.ExecuteScalar<int>("Users_HasPasswords") == 1;
         }
 
-        public bool HasAdmin()
+        public static bool HasAdmin()
         {
             return Sql.ExecuteScalar<int>("Users_HasAdmin") == 1;
         }
 
-        public void KeepMenuOpen(int userId, bool keepOpen)
+        public static void KeepMenuOpen(int userId, bool keepOpen)
         {
             Sql.ExecuteNonQuery("User_KeepMenuOpen",
                 new Dictionary<string, object>()
@@ -117,7 +117,7 @@ namespace Kandu.Query
             );
         }
 
-        public void AllColor(int userId, bool allColor)
+        public static void AllColor(int userId, bool allColor)
         {
             Sql.ExecuteNonQuery("User_AllColor",
                 new Dictionary<string, object>()
@@ -128,7 +128,7 @@ namespace Kandu.Query
             );
         }
 
-        public Models.User GetInfo(int userId)
+        public static Models.User GetInfo(int userId)
         {
             var list = Sql.Populate<Models.User>("User_GetInfo",
                 new Dictionary<string, object>()

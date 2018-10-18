@@ -7,7 +7,6 @@ namespace Kandu.Common.Platform
 
         public static Query.Models.Card Create(int boardId, int listId, string name, string description = "", DateTime? dateDue = null, string colors = "")
         {
-            var query = new Query.Cards();
             var card = new Query.Models.Card()
             {
                 boardId = boardId,
@@ -20,7 +19,7 @@ namespace Kandu.Common.Platform
             };
             try
             {
-                var id = query.Create(card);
+                var id = Query.Cards.Create(card);
                 card.cardId = id;
                 return card;
             }

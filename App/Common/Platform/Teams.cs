@@ -8,8 +8,7 @@ namespace Kandu.Common.Platform
         {
             try
             {
-                var query = new Query.Teams();
-                return query.CreateTeam(new Query.Models.Team()
+                return Query.Teams.CreateTeam(new Query.Models.Team()
                 {
                     name = name,
                     description = description,

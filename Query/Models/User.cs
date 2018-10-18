@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Kandu.Query.Models
+namespace Query.Models
 {
     public class User
     {

@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Kandu.Query
+namespace Query
 {
-    public class Cards : QuerySql
+    public static class Cards
     {
-        public int Create(Models.Card card)
+        public static int Create(Models.Card card)
         {
             return Sql.ExecuteScalar<int>(
                 "Card_Create",
@@ -21,7 +21,7 @@ namespace Kandu.Query
             );
         }
 
-        public int Import(Models.Card card, bool merge = false)
+        public static int Import(Models.Card card, bool merge = false)
         {
             return Sql.ExecuteScalar<int>(
                 "Card_Import",
@@ -38,7 +38,7 @@ namespace Kandu.Query
             );
         }
 
-        public void Archive(int boardId, int cardId)
+        public static void Archive(int boardId, int cardId)
         {
             Sql.ExecuteNonQuery("Card_Archive",
                 new Dictionary<string, object>()
@@ -49,7 +49,7 @@ namespace Kandu.Query
             );
         }
 
-        public Models.Card GetDetails(int boardId, int cardId)
+        public static Models.Card GetDetails(int boardId, int cardId)
         {
             var list = Sql.Populate<Models.Card>(
                 "Card_GetDetails",
@@ -63,7 +63,7 @@ namespace Kandu.Query
             return null;
         }
 
-        public void Restore(int boardId, int cardId)
+        public static void Restore(int boardId, int cardId)
         {
             Sql.ExecuteNonQuery("Card_Restore",
                 new Dictionary<string, object>()
@@ -74,7 +74,7 @@ namespace Kandu.Query
             );
         }
 
-        public void Delete(int boardId, int cardId)
+        public static void Delete(int boardId, int cardId)
         {
             Sql.ExecuteNonQuery("Card_Delete",
                 new Dictionary<string, object>()
@@ -85,7 +85,7 @@ namespace Kandu.Query
             );
         }
 
-        public List<Models.Card> GetList(int boardId, int listId = 0, int start = 1, int length = 2000)
+        public static List<Models.Card> GetList(int boardId, int listId = 0, int start = 1, int length = 2000)
         {
             return Sql.Populate<Models.Card>(
                 "Card_GetList",
@@ -99,7 +99,7 @@ namespace Kandu.Query
             );
         }
 
-        public void Move(int boardId, int listId, int cardId, int[] cardIds)
+        public static void Move(int boardId, int listId, int cardId, int[] cardIds)
         {
             Sql.ExecuteNonQuery("Card_Move",
                 new Dictionary<string, object>()
@@ -112,7 +112,7 @@ namespace Kandu.Query
             );
         }
 
-        public void UpdateDescription(int boardId, int cardId, string description)
+        public static void UpdateDescription(int boardId, int cardId, string description)
         {
             Sql.ExecuteNonQuery("Card_UpdateDescription",
                 new Dictionary<string, object>()

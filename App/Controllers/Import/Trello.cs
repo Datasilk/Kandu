@@ -45,9 +45,6 @@ namespace Kandu.Pages.Imports
                         scaffold.Data["name"] = board.name;
 
                         //import board
-                        var boards = new Query.Boards();
-                        var lists = new Query.Lists();
-                        var cards = new Query.Cards();
                         var merge = context.Request.QueryString.Value.Contains("merge");
                         var boardType = context.Request.Query.ContainsKey("type") ? int.Parse(context.Request.Query["type"]) : 0;
                         var sort = 0;
@@ -57,7 +54,7 @@ namespace Kandu.Pages.Imports
                         {
                             bgColor = board.prefs.backgroundTopColor;
                         }
-                        var boardId = boards.Import(new Query.Models.Board()
+                        var boardId = Query.Boards.Import(new Query.Models.Board()
                         {
                             name = board.name,
                             archived = board.closed,
@@ -79,7 +76,7 @@ namespace Kandu.Pages.Imports
                             {
                                 if (list.closed == false)
                                 {
-                                    var listId = lists.Import(new Query.Models.List()
+                                    var listId = Query.Lists.Import(new Query.Models.List()
                                     {
                                         boardId = boardId,
                                         name = list.name,
@@ -93,7 +90,7 @@ namespace Kandu.Pages.Imports
                                         if (card.closed == false)
                                         {
                                             var cardDate = board.actions.FindLast((a) => a.data != null ? (a.data.card != null ? (a.data.card.id != null ? a.data.card.id == card.id : false) : false) : false);
-                                            cards.Import(new Query.Models.Card()
+                                            Query.Cards.Import(new Query.Models.Card()
                                             {
                                                 boardId = boardId,
                                                 archived = card.closed,

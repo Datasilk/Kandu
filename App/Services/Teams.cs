@@ -19,8 +19,7 @@ namespace Kandu.Services
         public string List()
         {
             if (!CheckSecurity()) { return AccessDenied(); } //check security
-            var query = new Query.Teams();
-            var list = query.GetList(User.userId);
+            var list = Query.Teams.GetList(User.userId);
             var html = new StringBuilder("{\"teams\":[");
             var i = 0;
             list.ForEach((Query.Models.Team t) =>
