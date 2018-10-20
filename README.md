@@ -15,7 +15,8 @@ This project was an effort started by [Mark Entingh](http://www.markentingh.com)
 
 1. Clone the repository:
 
-    ```git clone --recurse-submodules http://github.com/datasilk/kandu```
+    ```git clone http://github.com/datasilk/kandu  --recursive```
+	NOTE: make sure to use the `--recursive` option when cloning since this repository relies on various git submodules
 
 2. Run command ```npm install```
 3. Run command ```gulp default```
