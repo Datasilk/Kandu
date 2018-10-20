@@ -19,7 +19,7 @@ This project was an effort started by [Mark Entingh](http://www.markentingh.com)
 
 2. Run command ```npm install```
 3. Run command ```gulp default```
-4. In Visual Studio, publish the SQL project to SQL Server 2016 (or greater), to a database named `Kandu`
+4. In Visual Studio, build then publish the SQL project to SQL Server 2016 (or greater), to a database named `Kandu`
 5. Open `config.json` and make sure the database connection string for property `SqlServerTrusted` points to your database.
 6. Click Play in Visual Studio 2017
 
