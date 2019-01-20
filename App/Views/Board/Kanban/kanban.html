@@ -1,10 +1,9 @@
 ﻿<style type="text/css">
     .board:not(.dragging) .list .items:not(.scrolling) .item:hover{background-color:{{color-hover}}; color:#fff;}
     .box > .list-menu li.item:not(.disabled):hover{background-color:{{color-hover}}; color:#fff;}
-    }
-}
 </style>
 <div class="kanban">
+    <div class="list bg clone-list"><div class="items"></div></div>
     <div class="row toolbar pad-top pad-left">
         <div class="col title pad-right">
             <h5>{{name}}</h5>
@@ -13,7 +12,8 @@
 
         </div>
         <div class="col msg">
-            <div class="row message hide"><span></span>
+            <div class="row message hide">
+                <span></span>
                 <a href="javascript:" class="icon small btn-close right">
                     <svg viewBox="0 0 32 32">
                         <use xlink:href="#icon-close" x="0" y="0" width="32" height="32"></use>

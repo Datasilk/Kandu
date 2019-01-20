@@ -5,10 +5,6 @@
         $('.form-new-list > form').on('submit', function (e) {
             e.preventDefault(); S.kanban.list.create.submit(); return false;
         });
-        //resize list height to fit window
-        $(window).on('resize', S.kanban.list.resize);
-        $(window).on('scroll', S.kanban.list.resize);
-        S.kanban.list.resize();
 
         //add callback for header boards popup
         S.head.boards.callback.add('kanban', S.kanban.list.resize);
@@ -24,6 +20,15 @@
 
         //add event for horizontal scrollbar
         $('.kanban > .scroller .scrollbar').on('mousedown', S.kanban.scroll.start);
+
+        //add event for list scrollbars
+        S.kanban.list.resize();
+        S.scrollbar.add('.list-items', { footer: S.kanban.list.scroll.footer });
+
+        //resize list height to fit window
+        $(window).on('resize', S.kanban.list.resize);
+        $(window).on('scroll', S.kanban.list.resize);
+        S.kanban.list.resize();
     },
 
     scroll: {
@@ -168,92 +173,20 @@
             //display scrollbars on lists
             $('.lists .list' + (id ? (' .id-' + id) : '')).each(function (e) {
                 const list = $(e);
-                const items = list.find('.items');
                 const foot = list.find('.form-new-card');
                 const foot2 = list.find('.btn-add-card');
                 const footH = foot.height() + foot2.height();
-                const scrollable = list.find('.scrollable');
-                const scrollbar = list.find('.scrollbar');
-                scrollable.css({ maxHeight: h - footH });
-                const itemsH = items.height();
-                if (itemsH > h - footH) {
-                    //show scrollbar
-                    if (!scrollable.hasClass('scroll')) {
-                        scrollable.addClass('scroll');
-                        //add scroll bar mouse events
-                        scrollbar.on('mousedown', S.kanban.list.scroll.start);
-                    }
-                    list.find('.scroller').css({ height: h - footH - 7 });
-                    //update scrollbar height
-                    scrollbar.css({ height: ((h - footH - 7) / itemsH) * (h - footH) });
-                    //check scrollTo position
-                } else {
-                    //hide scrollbar
-                    if (scrollable.hasClass('scroll')) {
-                        scrollable.removeClass('scroll');
-                        //remove scroll bar mouse events
-                        scrollbar.off('mousedown', S.kanban.list.scroll.start);
-                    }
-                }
+                const listitems = list.find('.list-items');
+                listitems.css({ maxHeight: h - footH });
             });
         },
 
         scroll: {
-            selected: { scrollable: null, height: null, itemsH: null },
-            start: function (e) {
-                e.cancelBubble = true;
-                e.stopPropagation();
-                e.preventDefault();
-                const win = S.window.pos();
-                const lists = $('.kanban .lists');
-                const pos = lists.position();
-                const list = $(e.target).parents('.list');
-                const scrollbar = list.find('.scrollbar');
-                const scroller = list.find('.scroller');
-                const items = list.find('.items');
-                const foot = list.find('.form-new-card');
-                const foot2 = list.find('.btn-add-card');
-                const footH = foot.height() + foot2.height();
-                const height = win.h - pos.top - footH - 85;
-                items.addClass('scrolling');
-                S.kanban.list.scroll.selected = {
-                    scrollbar: scrollbar,
-                    height: height,
-                    barHeight: ((height) / items.height()) * height,
-                    items: items,
-                    itemsH: items.height(),
-                    offsetY: scroller.offset().top,
-                    cursorY: e.clientY,
-                    currentY: e.clientY,
-                    barY: scrollbar.offset().top
-                };
-                $('body').on('mousemove', S.kanban.list.scroll.move);
-                $('body').on('mouseup', S.kanban.list.scroll.stop);
-                S.kanban.list.scroll.animate.call(S.kanban.list.scroll);
-            },
-            move: function (e) {
-                S.kanban.list.scroll.selected.currentY = e.clientY;
-            },
-
-            animate: function () {
-                const scroll = S.kanban.list.scroll.selected;
-                if (scroll == null) { return;}
-                const curr = scroll.currentY - scroll.cursorY - (scroll.offsetY - scroll.barY);
-                let perc = (100 / (scroll.height - scroll.barHeight)) * curr;
-                if (perc > 100) { perc = 100; }
-                if (perc < 0) { perc = 0;}
-                scroll.scrollbar.css({ top: ((scroll.height - scroll.barHeight) / 100) * perc });
-                scroll.items.css({ top: -1 * (((scroll.itemsH - scroll.height) / 100) * perc) });
-                requestAnimationFrame(() => {
-                    S.kanban.list.scroll.animate.call(S.kanban.list.scroll);
-                });
-            },
-
-            stop: function () {
-                $('body').off('mousemove', S.kanban.list.scroll.move);
-                $('body').off('mouseup', S.kanban.list.scroll.stop);
-                S.kanban.list.scroll.selected.items.removeClass('scrolling');
-                S.kanban.list.scroll.selected = null;
+            footer: function (list) {
+                //returns height of footer to offset scrollbar height
+                const foot = list.parent().find('.form-new-card');
+                const foot2 = list.parent().find('.btn-add-card');
+                return foot.height() + foot2.height() + 38
             }
         },
 
@@ -599,16 +532,25 @@
                     S.drag.add(cardElem, cardElem,
                         //onStart  /////////////////////////////////////////////////////////////////////////////////
                         function (item) {
-                            var self = this;
-                            self.dragging = true;
+                            this.dragging = true;
                             item.elem.addClass('dragging');
                             $('.board').addClass('dragging');
+                            this.headerHeight = $('header').height();
 
+                            //clone card for visual representation
+                            let clone = $(item.elem[0].cloneNode(true));
+                            clone.addClass('clone');
+                            item.elem.addClass('hide');
+                            $('.kanban > .list .items').prepend(clone);
+                            this.elem = $(S.drag.item.elem);
+                            this.listId = S.util.element.getClassId(this.elem.parents('.list').first(), 'id-');
+                            S.drag.item.elem = clone;
+                            
                             //reset classes
                             $('.list .item.hovering').removeClass('hovering').parent().removeClass('hovering upward downward');
 
                             //update geometry for lists & cards
-                            self.getGeometryForLists();
+                            this.getGeometryForLists();
                         },
                         //onDrag /////////////////////////////////////////////////////////////////////////////////
                         function (item) { 
@@ -633,6 +575,7 @@
                                             var card = list.cards[y];
                                             if (S.math.intersect(card, bounds)) {
                                                 var elem = $(card.elem);
+                                                var ownerList = false;
                                                 if ((current.cardId == null || !elem.hasClass('id-' + current.cardId)) && !elem.hasClass('dragging')) {
                                                     //found list belonging to card
                                                     $('.list .item.hovering').removeClass('hovering').parent().removeClass('hovering upward downward');
@@ -643,6 +586,9 @@
                                                     elem.addClass('hovering');
                                                     elem.parent().addClass('hovering');
                                                     changed = true;
+                                                    if (listId == this.listId) {
+                                                        ownerList = true;
+                                                    }
                                                 }
                                                 var pos = elem.offset();
                                                 var parent = elem.parent();
@@ -661,7 +607,32 @@
                                                         current.below = true;
                                                     }
                                                 }
+                                                //check if card is above dragging card in same list
+                                                if (ownerList == true) {
+                                                    const ownlist = $('.list.id-' + this.listId + ' .item');
+                                                    let foundcard = false;
+                                                    let founddrag = false;
+                                                    for (var z = 0; z < ownlist.length; z++) {
+                                                        if (ownlist[z].className.indexOf('id-' + current.cardId) >= 0) {
+                                                            foundcard = true;
+                                                            break;
+                                                        } else if (ownlist[z] == this.elem[0]) {
+                                                            founddrag = true;
+                                                        }
+                                                    }
+                                                    if ((foundcard == true && founddrag == false) ||
+                                                        (foundcard == false && founddrag == true)) {
+                                                        //card is above dragged card
+                                                        S.drag.item.offset.y = -this.headerHeight + 50;
+                                                    } else {
+                                                        //card is below dragged card
+                                                        S.drag.item.offset.y = -this.headerHeight;
+                                                    }
+                                                } else if (changed == true) {
+                                                    S.drag.item.offset.y = -this.headerHeight;
+                                                }
                                                 found = true;
+                                                break;
                                             }
                                         }
                                     } else {
@@ -690,11 +661,14 @@
                                 hovering.parent().removeClass('hovering upward downward');
                                 this.current = { listId: null, cardId: null, card: null, below: true };
                                 S.drag.alteredDOM();
+                                S.drag.item.offset.y = -this.headerHeight;
                             }
                         },
                         //onStop  /////////////////////////////////////////////////////////////////////////////////
                         function (item) {
-                            item.elem.removeClass('dragging').css({ 'margin-left': ''});
+                            $('.kanban > .list .items > *').remove();
+                            item.elem = $(this.elem);
+                            item.elem.removeClass('dragging hide').css({ 'margin-bottom': '' });
                             $('.board .lists .list .item').removeClass('hovering').parent().removeClass('hovering upward downward');
                             $('.board .lists .items').removeClass('hovering');
                             $('.board').removeClass('dragging');
@@ -734,16 +708,15 @@
                             S.kanban.card.details({ target: item.elem });
                         },
                         //options
-                        { hideArea:true, hideAreaOffset:7, speed:1000 / 30, callee: S.kanban.card.drag }
+                        { hideArea: true, hideAreaOffset: 7, useElemPos:true, offsetY: -($('header').height()), speed:1000 / 30, callee: S.kanban.card.drag }
                     )
                 });
             },
 
             getGeometryForLists: function () {
+                //get current rectangular geometry for all lists & subsequent cards
                 var geo = { lists: [] };
                 var lists = $('.lists .list');
-                var cardelem = S.kanban.card.drag.current.card;
-                if (cardelem != null) { cardelem = cardelem[0]; }
                 lists.each(function (list) {
                     list = $(list);
                     var pos = list.offset();
