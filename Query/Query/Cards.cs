@@ -112,6 +112,18 @@ namespace Query
             );
         }
 
+        public static void UpdateName(int boardId, int cardId, string name)
+        {
+            Sql.ExecuteNonQuery("Card_UpdateName",
+                new Dictionary<string, object>()
+                {
+                    {"boardId", boardId },
+                    {"cardId", cardId },
+                    {"name", name }
+                }
+            );
+        }
+
         public static void UpdateDescription(int boardId, int cardId, string description)
         {
             Sql.ExecuteNonQuery("Card_UpdateDescription",

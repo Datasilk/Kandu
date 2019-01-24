@@ -90,6 +90,15 @@ body{overflow:hidden;}
 }
 
 /* card details popup /////////////////////////// */
+.box .popup{
+    .title{max-width:~"calc(100% - 30px)";}
+    .card-field-title{position:absolute; top:9px; left:9px; width:~"calc(100% - 48px)";
+        textarea{font-size:1.3rem !important; line-height:1.25; overflow:hidden;}
+        .textarea-clone{opacity:0; position:absolute; z-index:-1; width:100%; height:0px; top:0;
+            & > div{position:absolute; width:100%; min-height:38px; padding:11px; font-size:1.3rem !important; white-space:normal; line-height:1.25; box-sizing:border-box; border-width:1px; box-sizing:border-box;}
+        }
+    }
+}
 .card-details{width:~"calc(100% - 200px)" !important;
     a:link{text-decoration:underline;}
     .new-description{border-radius:4px; margin-bottom:20px; padding:10px;

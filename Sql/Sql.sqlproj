@@ -144,6 +144,7 @@
     <Build Include="dbo\Stored Procedures\Users\User_CreateAuthToken.sql" />
     <Build Include="dbo\Stored Procedures\Utility\GetCustomId.sql" />
     <Build Include="dbo\Stored Procedures\Lists\List_Archive.sql" />
+    <Build Include="dbo\Stored Procedures\Cards\Card_UpdateName.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Sql.publish.xml" />

@@ -104,6 +104,27 @@ namespace Kandu.Services
         #endregion
 
         #region "Update Card Information"
+        public string UpdateName(int boardId, int cardId, string name)
+        {
+            if (!User.CheckSecurity(boardId)) { return AccessDenied(); }
+
+            //check description for malicious input
+            if (Malicious.IsMalicious(name, Malicious.InputType.TextOnly) == true)
+            {
+                return Error();
+            }
+
+            try
+            {
+                Query.Cards.UpdateName(boardId, cardId, name);
+                return GetCard(boardId, cardId);
+            }
+            catch (Exception)
+            {
+                return Error();
+            }
+        }
+
         public string UpdateDescription(int boardId, int cardId, string description)
         {
             if (!User.CheckSecurity(boardId)) { return AccessDenied(); }

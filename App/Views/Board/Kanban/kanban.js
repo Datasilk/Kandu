@@ -23,7 +23,7 @@
 
         //add event for list scrollbars
         S.kanban.list.resize();
-        S.scrollbar.add('.list-items', { footer: S.kanban.list.scroll.footer });
+        S.scrollbar.add('.kanban .list-items', { footer: S.kanban.list.scroll.footer });
 
         //resize list height to fit window
         $(window).on('resize', S.kanban.list.resize);
@@ -430,7 +430,7 @@
                 var clone = field.parent().find('.textarea-clone > div');
                 clone.html(field.val().replace(/\n/g, '<br/>') + '</br>');
                 field.css({ height: clone.height() });
-                field.scrollTop = 0;
+                field[0].scrollTo(0, 0);
                 S.kanban.list.resize(listid);
             },
 
@@ -505,6 +505,7 @@
                 function (d) {
                     var card = d.split('|');
                     S.popup.show(card[0], card[1], { width: '90%', maxWidth: 750 });
+                    $('.popup .card-field-title').on('click', S.kanban.card.title.edit);
                     $('.popup .btn-archive a').off('click').on('click', S.kanban.card.archive);
                     $('.popup .btn-restore a').off('click').on('click', S.kanban.card.restore);
                     $('.popup .btn-delete a').off('click').on('click', S.kanban.card.delete);
@@ -512,6 +513,8 @@
                     $('.popup .field-description .btn-cancel').off('click').on('click', S.kanban.card.description.cancel);
                     $('.popup .field-description form').off('submit').on('submit', S.kanban.card.description.update);
                     S.kanban.card.description.markdown();
+                    S.kanban.card.title.edit();
+                    S.kanban.card.title.cancel();
                 },
                 function () {
                     S.message.show('.board .message', "error", S.message.error.generic);
@@ -826,6 +829,84 @@
             );
         },
 
+        replace: function (html) {
+            let card = $('.board .list .item.id-' + S.kanban.card.selected.id).parent();
+            card.before(html);
+            let newcard = card.prev();
+            S.kanban.card.drag.init(newcard.find('.item')[0]);
+            card.remove();
+        },
+
+        title: {
+            cached: null, 
+            edit: function () {
+                if ($('.popup .card-field-title').hasClass('transparent') == false) { return;}
+                let title = $('.popup .title h5').html().trim();
+                let input = $('.popup .card-field-title textarea');
+                S.kanban.card.title.cached = title;
+                input.val(title);
+                $('.popup .card-field-title').removeClass('transparent');
+                input.on('change, keyup', S.kanban.card.title.change);
+                input.on('keydown', S.kanban.card.title.keydown);
+                S.kanban.card.title.change();
+                $(window).on('click', S.kanban.card.title.update);
+            },
+
+            keydown: function (e) {
+                if (e.keyCode && e.keyCode == 13) {
+                    S.kanban.card.title.update({});
+                    e.preventDefault();
+                    return false;
+                }
+            },
+
+            change: function (e) {
+                var field = $('.popup .card-field-title textarea');
+                //resize field
+                var clone = field.parent().find('.textarea-clone > div');
+                clone.html(field.val());
+                field.css({ height: clone.height() });
+                field[0].scrollTo(0, 0);
+                //update title
+                $('.popup .title h5').html(field.val());
+            },
+
+            cancel: function () {
+                let input = $('.popup .card-field-title textarea');
+                $(window).off('click', S.kanban.card.title.update);
+                input.off('change, keyup', S.kanban.card.title.change);
+                input.off('keydown', S.kanban.card.title.keydown);
+                $('.popup .card-field-title').addClass('transparent');
+            },
+
+            update: function (e) {
+                let input = $('.popup .card-field-title textarea');
+                if (e.target == input[0] || e.target == input.parent()[0]) { return false; }
+                S.kanban.card.title.cancel();
+                if (input.val().trim() == S.kanban.card.title.cached) { return false; }
+                var data = {
+                    boardId: S.board.id,
+                    cardId: S.kanban.card.selected.id,
+                    name: input.val()
+                };
+                S.ajax.post('Cards/UpdateName', data,
+                    function (d) {
+                        if (d != '') {
+                            //replace existing card with updated card
+                            S.kanban.card.replace(d);
+                        } else {
+                            S.message.show('.board .message', "error", S.message.error.generic);
+                        }
+                    },
+                    function () {
+                        S.message.show('.board .message', "error", S.message.error.generic);
+                    }
+                );
+                if (e.preventDefault) { e.preventDefault(); }
+                return false;
+            }
+        },
+
         description: {
             cached: null,
             edit: function () {
@@ -885,8 +966,8 @@
                 S.ajax.post('Cards/UpdateDescription', data,
                     function (d) {
                         if (d != '') {
-                            //add card to list
-                            $('.board .list .item.id-' + S.kanban.card.selected.id).before(d).remove();
+                            //replace existing card with updated card
+                            S.kanban.card.replace(d);
 
                             //update description markdown
                             S.kanban.card.description.markdown();
@@ -899,7 +980,8 @@
                         S.message.show('.board .message', "error", S.message.error.generic);
                     }
                 );
-                e.preventDefault(); return false;
+                e.preventDefault();
+                return false;
             }
         }
     }

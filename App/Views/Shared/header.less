@@ -1,22 +1,37 @@
 ﻿@shadow:2px 2px 5px rgba(0,0,0,0.3);
 
-.boards-menu{position:absolute; margin:10px 0 0 7px; max-width:250px; z-index:100; max-height:~"calc(100% - 85px)"; border-radius:5px; box-shadow:@shadow; overflow:hidden;
-    & > .scroller{overflow-y:auto; max-height:100%; position:relative; padding-bottom:30px;
-        &.no-scroll{overflow-y:visible;max-height:unset !important;}
-    }
-}
-.boards-menu.always-show{top:44px; left:0px; min-height:~"calc(100% - 44px)"; margin:0; border-radius:0;}
-.boards-menu .section-bar.locked{position:relative; z-index:105; background-color:#eee;}
-.bg-for-boards-menu{top:0; left:0; position:absolute; z-index:99; background:rgba(0,0,0,0.3)}
 .menu-section {
     .item{ cursor:pointer;
         a{display:inline-block; width:100%;}
-        &.row{width:~"calc(100% - 12px)"; margin:4px 6px;font-weight:400;}
-        .title{font-size:14px; font-weight:bold; width:130px;}
+        &.row{width:~"calc(100% - 6px)"; margin:4px 6px;font-weight:400;}
+        .title{font-size:14px; font-weight:bold; width:147px;}
         .owner{font-size:13px; opacity:0.5; display:inline-block; padding-top:3px;}
+        .icon-star{position:relative; top:10px;}
     }
     .color-box{width:32px; height:45px;border-radius:4px;}
 }
+
+.boards-menu{position:absolute; margin:10px 0 0 7px; max-width:250px; z-index:100; max-height:~"calc(100% - 85px)"; border-radius:5px; box-shadow:@shadow; overflow:hidden;
+    .movable{float:left; position:relative; max-width:224px;
+        & > div{float:left;}
+    }
+    .movable:after{content:'';display:block;clear:both;}
+    .scroller{position:relative; float:right; background-color:rgba(0,0,0,0.05); width:10px; height:100%; overflow:hidden; border-radius:10px; margin-top:7px;}
+    .scrollbar{position:relative; background-color:rgba(0,0,0,0.1); width:10px; min-height:20px; overflow:hidden; border-radius:10px;}
+    &.scrollable{overflow:hidden; max-width:224px;
+        .scroller{display:none;}
+        &:after{content:' '; display:block; clear:both; height:0; overflow:hidden;}
+        &.scroll{ max-width:234px;
+            .items{float:left; width:224px;}
+            .item{padding-right:8px;}
+            .scroller{display:block;} 
+            .menu-section .item .title{width:139px;} 
+        }
+    }
+}
+.boards-menu.always-show{top:44px; left:0px; min-height:~"calc(100% - 44px)"; margin:0; border-radius:0;}
+.bg-for-boards-menu{top:0; left:0; position:absolute; z-index:99; background:rgba(0,0,0,0.3)}
+
 
 header{
     .profile{border-radius:50px; overflow:hidden;

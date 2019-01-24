@@ -4,9 +4,9 @@
         $('.boards-menu .btn-always-show').on('click', S.head.boards.alwaysShow);
         $('.boards-menu .btn-all-color').on('click', S.head.allColor);
         $('.boards-menu .btn-import-trello').on('click', S.head.import.trello.show);
-        $('.boards-menu .scroller').on('scroll', S.head.scroller.scrolling);
         $('.btn-boards').on('click', S.head.boards.show);
         $('.bg-for-boards-menu').on('click', S.head.boards.hide);
+        S.scrollbar.add($('.boards-menu'), {footer: S.head.boards.scroll.footer});
     },
 
     boards: {
@@ -20,24 +20,36 @@
                 $(window).on('scroll', S.head.boards.resize);
                 S.head.boards.callback.execute(true, false);
                 S.head.boards.resize();
+                S.scrollbar.update($('.boards-menu'));
             }
         },
 
         resize: function () {
             //resizes bg for board menu to fit window
-            var bg = S.head.boards.boardsMenuBg;
-            var win = S.window.pos();
-            var menu = $('.boards-menu');
-            var scroller = $('.boards-menu .scroller');
+            const bg = S.head.boards.boardsMenuBg;
+            const win = S.window.pos();
+            const menu = $('.boards-menu');
+            const movable = $('.boards-menu .movable');
+            const h = movable.height();
             bg.css({ width: win.w, height: win.h + win.scrolly });
             if (menu.hasClass('always-show')) {
-                if (scroller.height() > win.h - 44) {
-                    menu[0].style.minHeight = scroller.height() + 'px';
+                if (h > win.h - 44) {
+                    menu[0].style.maxHeight = (win.h - 44) + 'px';
                 } else {
-                    menu.css({ minHeight: 'calc(100% - 44px)' });
+                    menu.css({ maxHeight: 'calc(100% - 44px)' });
                 }
             } else {
-                menu.css({ minHeight: '' });
+                menu.css({ maxHeight: '' });
+            }
+        },
+
+        scroll: {
+            footer: function () {
+                const win = S.window.pos();
+                const listitems = $('.boards-menu');
+                const h = listitems.height();
+                const pos = listitems[0].getBoundingClientRect();
+                return win.h - pos.top - h;
             }
         },
 
@@ -50,8 +62,6 @@
         },
 
         alwaysShow: function (init) {
-            var bars = S.head.scroller.sectionbars;
-            bars.removeClass('locked').css({ top: '' });
             $('header .btn-boards').hide();
             $('.boards-menu').addClass('always-show');
             $('.boards-menu .scroller').addClass('no-scroll');
@@ -64,6 +74,7 @@
             if (init !== true) { S.ajax.post('Boards/KeepMenuOpen', { keepOpen: true }); }
             S.head.boards.callback.execute(true, true);
             S.head.boards.resize();
+            S.scrollbar.update($('.boards-menu'));
         },
 
         cancelAlwaysShow: function () {
@@ -78,6 +89,8 @@
             $('.bg-for-boards-menu').removeClass('hide');
             S.ajax.post('Boards/KeepMenuOpen', { keepOpen: false });
             S.head.boards.callback.execute(true, false);
+            S.head.boards.resize();
+            S.scrollbar.update($('.boards-menu'));
         },
 
         callback: {
@@ -101,41 +114,6 @@
                             this.items[x].onShow(shown, alwaysShown);
                         }
                     }
-                }
-            }
-        }
-    },
-
-    scroller: {
-        sectionbars: $('.boards-menu .section-bar'),
-        scroller: $('.boards-menu .scroller'),
-
-        scrolling: function () {
-            var bars = S.head.scroller.sectionbars;
-            var scrollerPos = S.head.scroller.scroller.offset();
-            var itemPos = S.head.scroller.scroller.find('.items').offset();
-            var offsetTop = (itemPos.top - scrollerPos.top) * -1;
-            var above = -1;
-            for (var x = 0; x < bars.length; x++) {
-                var bar = $(bars[x]);
-                var pos = bar.offset();
-                pos.top = pos.top - scrollerPos.top;
-                if (pos.top <= 0 || bar.position().top > 0) {
-                    above = x;
-                } else { break; }
-            }
-            if (above >= 0) {
-                var bar = $(bars[above]);
-                var barTop = bar.parent().position().top;
-                var pos = bar.position();
-                var h = bar.parent().height() - bar.parent().position().top;
-                console.log([bar.parent().position().top, offsetTop, h]);
-                if (offsetTop - barTop <= h) {
-                    if (!bar.hasClass('locked')) {
-                        bars.removeClass('locked');
-                        bar.addClass('locked');
-                    }
-                    bar.css({ top: offsetTop - barTop });
                 }
             }
         }
