@@ -115,6 +115,9 @@
     <None Update="Views\Card\Kanban\new-card.html">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Update="Views\Card\Kanban\separator.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="Views\List\Kanban\list-menu.html">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

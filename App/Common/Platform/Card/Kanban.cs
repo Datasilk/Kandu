@@ -7,7 +7,18 @@ namespace Kandu.Common.Platform.Card
         public static string RenderCard(Query.Models.Card card)
         {
             var type = "default";
-            var cardscaff = new Scaffold("/Views/Card/Kanban/card.html");
+            Scaffold cardscaff;
+            if(card.name.IndexOf("----") == 0)
+            {
+                //separator
+                cardscaff = new Scaffold("/Views/Card/Kanban/separator.html");
+            }
+            else
+            {
+                //card
+                cardscaff = new Scaffold("/Views/Card/Kanban/card.html");
+            }
+            
 
             //load card custom design
             var scaffold = new Scaffold("/Views/Card/Kanban/Card/" + type + ".html");
