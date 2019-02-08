@@ -1,7 +1,7 @@
 ﻿CREATE PROCEDURE [dbo].[Card_Create]
 	@listId int,
 	@boardId int,
-	@type int = 0,
+	@layout int = 0,
 	@colors nvarchar(128),
 	@name nvarchar(MAX),
 	@datedue datetime = NULL,
@@ -12,8 +12,8 @@ AS
 	IF(YEAR(@datedue) < YEAR(GETDATE()) - 99) BEGIN
 		SET @datedue = NULL
 	END
-	INSERT INTO Cards (cardId, listId, boardId, [type], colors, [name], datecreated, datedue, [description])
-	VALUES (@id, @listId, @boardId, @type, @colors, @name, GETDATE(), @datedue, @description)
+	INSERT INTO Cards (cardId, listId, boardId, layout, colors, [name], datecreated, datedue, [description])
+	VALUES (@id, @listId, @boardId, @layout, @colors, @name, GETDATE(), @datedue, @description)
 
 	EXEC Board_Modified @boardId=@boardId
 

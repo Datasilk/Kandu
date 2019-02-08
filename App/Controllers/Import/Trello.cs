@@ -101,7 +101,7 @@ namespace Kandu.Pages.Imports
                                                 listId = listId,
                                                 name = card.name,
                                                 sort = sortCard,
-                                                type = 0
+                                                layout = 0
                                             }, merge);
 
                                                 //import checklists for each card

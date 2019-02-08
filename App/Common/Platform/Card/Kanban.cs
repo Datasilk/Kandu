@@ -6,30 +6,39 @@ namespace Kandu.Common.Platform.Card
     {
         public static string RenderCard(Query.Models.Card card)
         {
-            var type = "default";
+            var useLayout = false;
             Scaffold cardscaff;
             if(card.name.IndexOf("----") == 0)
             {
                 //separator
-                cardscaff = new Scaffold("/Views/Card/Kanban/separator.html");
+                cardscaff = new Scaffold("/Views/Card/Kanban/Type/separator.html");
+            }
+            else if(card.name.IndexOf("# ") == 0)
+            {
+                //header
+                cardscaff = new Scaffold("/Views/Card/Kanban/Type/header.html");
+                cardscaff.Data["name"] = card.name.TrimStart(new char[] { '#', ' ' });
             }
             else
             {
                 //card
-                cardscaff = new Scaffold("/Views/Card/Kanban/card.html");
+                cardscaff = new Scaffold("/Views/Card/Kanban/Type/card.html");
+                useLayout = true;
             }
             
+            if(useLayout == true)
+            {
+                //load card custom design
+                var scaffold = new Scaffold("/Views/Card/Kanban/Layout/" + card.layout.ToString() + ".html");
+                scaffold.Data["name"] = card.name;
+                scaffold.Data["colors"] = "";
 
-            //load card custom design
-            var scaffold = new Scaffold("/Views/Card/Kanban/Card/" + type + ".html");
-            scaffold.Data["title"] = card.name;
-            scaffold.Data["colors"] = "";
+                //render custom design inside card container
+                cardscaff.Data["layout"] = scaffold.Render();
+            }
 
             //load card container
             cardscaff.Data["id"] = card.cardId.ToString();
-
-            //render custom design inside card container
-            cardscaff.Data["layout"] = scaffold.Render();
 
             //render card container
             return cardscaff.Render();

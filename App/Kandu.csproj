@@ -66,10 +66,10 @@
     <Content Include="Views\Boards\menu-section.html">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Views\Card\Kanban\card.html">
+    <Content Include="Views\Card\Kanban\Type\card.html">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Views\Card\Kanban\Card\default.html">
+    <Content Include="Views\Card\Kanban\Layout\generic.html">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Views\Card\Kanban\details.html">
@@ -115,7 +115,7 @@
     <None Update="Views\Card\Kanban\new-card.html">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="Views\Card\Kanban\separator.html">
+    <None Update="Views\Card\Kanban\Type\separator.html">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="Views\List\Kanban\list-menu.html">

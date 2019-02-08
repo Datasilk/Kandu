@@ -1,7 +1,7 @@
 ﻿CREATE PROCEDURE [dbo].[Card_Import]
 	@listId int,
 	@boardId int,
-	@type int = 0,
+	@layout int = 0,
 	@colors nvarchar(128),
 	@name nvarchar(MAX),
 	@datedue datetime = NULL,
@@ -22,7 +22,7 @@ AS
 	END
 
 	IF @create = 1 BEGIN
-		INSERT INTO #tmp EXEC Card_Create @listId=@listId, @boardId=@boardId, @type=@type, @colors=@colors, @name=@name, @datedue=@datedue, @description=@description
+		INSERT INTO #tmp EXEC Card_Create @listId=@listId, @boardId=@boardId, @layout=@layout, @colors=@colors, @name=@name, @datedue=@datedue, @description=@description
 		SELECT @oldId=id FROM #tmp
 	END
 

@@ -36,10 +36,14 @@ body{overflow:hidden;}
         .item{width:216px; box-shadow:@shadow-sm; border-radius:4px; background-color:#ffffff; padding:8px; margin:7px 0; overflow:hidden; cursor:pointer;
             .title{font-size:15px; font-weight:400; line-height:1.5; white-space:normal; width: 100%; display: inline-block;}
             &.dragging{transform:rotate(7deg); z-index:100; box-shadow:@shadow;}
-            &.separator{box-shadow:none !important; background-color:transparent !important; font-size:0;
+            &.separator{
                 &:before{border-top:1px solid rgba(0, 0, 0, 0.2); content:'';width:~"calc(100% + 24px)";display:block; margin-left:-12px;}
-                &:hover:before{border-top:2px solid rgba(0, 0, 0, 0.5); margin-bottom:-1px;}
+                &:hover:before{border-top:1px solid rgba(0, 0, 0, 0.2);}
+                &:hover{background-color:rgba(0,0,0,0.1) !important;}
             }
+            &.separator, &.header{box-shadow:none !important; background-color:transparent !important;}
+            &.header{margin:0; padding:0;}
+            &.header:hover{background-color:rgba(0,0,0,0.1) !important;}
         }
         .list-items{position:relative;}
         .movable{position:relative; max-width:224px;}

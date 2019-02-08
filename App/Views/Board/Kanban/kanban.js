@@ -840,8 +840,8 @@
         title: {
             cached: null, 
             edit: function () {
-                if ($('.popup .card-field-title').hasClass('transparent') == false) { return;}
-                let title = $('.popup .title h5').html().trim();
+                if ($('.popup .card-field-title').hasClass('transparent') == false) { return; }
+                let title = S.util.text.html.decode($('.popup .title h5').html().trim());
                 let input = $('.popup .card-field-title textarea');
                 S.kanban.card.title.cached = title;
                 input.val(title);

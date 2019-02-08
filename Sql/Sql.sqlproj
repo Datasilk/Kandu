@@ -149,4 +149,7 @@
   <ItemGroup>
     <None Include="Sql.publish.xml" />
   </ItemGroup>
+  <ItemGroup>
+    <RefactorLog Include="Sql.refactorlog" />
+  </ItemGroup>
 </Project>

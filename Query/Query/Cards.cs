@@ -13,6 +13,7 @@ namespace Query
                 {
                     {"listId", card.listId },
                     {"boardId", card.boardId },
+                    {"layout", card.layout },
                     {"colors", card.colors },
                     {"name", card.name },
                     {"datedue", card.datedue == null ? DateTime.Now.AddYears(-100) : card.datedue },
@@ -29,6 +30,7 @@ namespace Query
                 {
                     {"listId", card.listId },
                     {"boardId", card.boardId },
+                    {"layout", card.layout },
                     {"colors", card.colors },
                     {"name", card.name },
                     {"datedue", card.datedue == null ? DateTime.Now.AddYears(-100) : card.datedue },

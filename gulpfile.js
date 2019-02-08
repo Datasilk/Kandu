@@ -46,6 +46,7 @@ paths.working = {
             paths.scripts + "platform/svg.js",
             paths.scripts + "platform/util.js",
             paths.scripts + "platform/util.color.js",
+            paths.scripts + "platform/util.text.js",
             paths.scripts + "platform/validate.js",
             paths.scripts + "platform/window.js",
             paths.scripts + 'utility/remarkable.min.js',
