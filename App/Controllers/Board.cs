@@ -1,9 +1,10 @@
 ﻿using Microsoft.AspNetCore.Http;
-namespace Kandu.Pages
+
+namespace Kandu.Controllers
 {
-    public class Board : Page
+    public class Board : Controller
     {
-        public Board(HttpContext context) : base(context)
+        public Board(HttpContext context, Parameters parameters) : base(context, parameters)
         {
         }
 
@@ -12,15 +13,15 @@ namespace Kandu.Pages
             //check security
             if(path.Length < 2) { return Error(); }
             var boardId = int.Parse(path[1]);
-            if (User.userId == 0) { return AccessDenied(true, new Login(context)); }
-            if (!User.CheckSecurity(boardId)) { return AccessDenied(true, new Login(context)); }
+            if (User.userId == 0) { return AccessDenied(new Login(context, parameters)); }
+            if (!User.CheckSecurity(boardId)) { return AccessDenied(new Login(context, parameters)); }
 
             //add client-side dependencies
             AddScript("/js/views/board/board.js");
             AddScript("/js/dashboard.js");
             AddCSS("/css/dashboard.css");
 
-            var scaffold = new Scaffold("/Views/Board/board.html", Server.Scaffold);
+            var scaffold = new Scaffold("/Views/Board/board.html");
 
             //load board details
             var colors = new Utility.Colors();
@@ -38,7 +39,7 @@ namespace Kandu.Pages
             {
                 default: 
                 case Query.Models.Board.BoardType.kanban: //kanban
-                    page = new Kanban(context);
+                    page = new Kanban(context, parameters);
                     break;
             }
 
@@ -51,7 +52,7 @@ namespace Kandu.Pages
 
             //transfer resources from page
             scripts.Append(page.scripts.ToString());
-            headCss.Append(page.headCss.ToString());
+            css.Append(page.css.ToString());
 
             //render board lists
             scaffold.Data["content"] = page.Render(path);
@@ -64,14 +65,14 @@ namespace Kandu.Pages
         }
     }
 
-    public class BoardPage : Page
+    public class BoardPage : Controller
     {
-        public BoardPage(HttpContext context) : base(context)
-        {
-        }
 
         public Query.Models.Board board;
-        public Page parent;
+        public Controller parent;
 
+        public BoardPage(HttpContext context, Parameters parameters) : base(context, parameters)
+        {
+        }
     }
 }

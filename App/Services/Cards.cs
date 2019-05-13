@@ -7,7 +7,7 @@ namespace Kandu.Services
 {
     public class Cards : Service
     {
-        public Cards(HttpContext context) : base(context)
+        public Cards(HttpContext context, Parameters parameters) : base(context, parameters)
         {
         }
 

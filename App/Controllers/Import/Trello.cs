@@ -4,11 +4,11 @@ using System.Linq;
 using Microsoft.AspNetCore.Http;
 using Utility.Serialization;
 
-namespace Kandu.Pages.Imports
+namespace Kandu.Controllers.Imports
 {
-    public class Trello : Page
+    public class Trello : Controller
     {
-        public Trello(HttpContext context) : base(context)
+        public Trello(HttpContext context, Parameters parameters) : base(context, parameters)
         {
         }
 
@@ -41,7 +41,7 @@ namespace Kandu.Pages.Imports
                     if (board != null)
                     {
                         //show success page in iframe
-                        var scaffold = new Scaffold("/Views/Import/Trello/success.html", Server.Scaffold);
+                        var scaffold = new Scaffold("/Views/Import/Trello/success.html");
                         scaffold.Data["name"] = board.name;
 
                         //import board

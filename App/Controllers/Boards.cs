@@ -2,11 +2,11 @@
 using System;
 using Microsoft.AspNetCore.Http;
 
-namespace Kandu.Pages
+namespace Kandu.Controllers
 {
-    public class Boards : Page
+    public class Boards : Controller
     {
-        public Boards(HttpContext context) : base(context)
+        public Boards(HttpContext context, Parameters parameters) : base(context, parameters)
         {
         }
 
@@ -15,15 +15,15 @@ namespace Kandu.Pages
             if(User.userId == 0)
             {
                 //load login page
-                var page = new Login(context);
+                var page = new Login(context, parameters);
                 return page.Render(path);
             }
             //load boards list
-            var scaffold = new Scaffold("/Views/Boards/boards.html", Server.Scaffold);
+            var scaffold = new Scaffold("/Views/Boards/boards.html");
             
             var boards = Query.Boards.GetList(User.userId);
             var html = new StringBuilder();
-            var item = new Scaffold("/Views/Boards/list-item.html", Server.Scaffold);
+            var item = new Scaffold("/Views/Boards/list-item.html");
             boards.ForEach((Query.Models.Board b) => {
                 item.Data["favorite"] = b.favorite ? "1" : "";
                 item.Data["name"] = b.name;

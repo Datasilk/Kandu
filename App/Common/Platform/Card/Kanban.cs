@@ -46,11 +46,10 @@ namespace Kandu.Common.Platform.Card
 
         public static Tuple<Query.Models.Card, string> Details(int boardId, int cardId)
         {
-            Server Server = Server.Instance;
             try
             {
                 var card = Query.Cards.GetDetails(boardId, cardId);
-                var scaffold = new Scaffold("/Views/Card/Kanban/details.html", Server.Scaffold);
+                var scaffold = new Scaffold("/Views/Card/Kanban/details.html");
                 scaffold.Data["list-name"] = card.listName;
                 scaffold.Data["description"] = card.description;
                 scaffold.Data["no-description"] = card.description.Length > 0 ? "hide" : "";

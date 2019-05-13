@@ -8,9 +8,8 @@ namespace Kandu.Common.Platform
 {
     public static class Boards
     {
-        public static int Create(Datasilk.Request request, string name, string color, int teamId)
+        public static int Create(Datasilk.Web.Request request, string name, string color, int teamId)
         {
-            Server Server = Server.Instance;
             try
             {
                 var id = Query.Boards.CreateBoard(new Query.Models.Board()
@@ -32,10 +31,8 @@ namespace Kandu.Common.Platform
             }   
         }
 
-        public static void Update(Datasilk.Request request, int boardId, string name, string color, int teamId)
+        public static void Update(Datasilk.Web.Request request, int boardId, string name, string color, int teamId)
         {
-            Server Server = Server.Instance;
-
             //check if user has access to board
             if (!Query.Boards.MemberExists(request.User.userId, boardId)) {
                 throw new ServiceDeniedException();
@@ -60,7 +57,6 @@ namespace Kandu.Common.Platform
 
         public static string Details(int boardId)
         {
-            Server Server = Server.Instance;
             try
             {
                 var board = Query.Boards.GetDetails(boardId);
@@ -83,13 +79,12 @@ namespace Kandu.Common.Platform
             
         }
 
-        public static string RenderBoardsMenu(Datasilk.Request request)
+        public static string RenderBoardsMenu(Datasilk.Web.Request request)
         {
-            Server Server = Server.Instance;
             var html = new StringBuilder();
             var htm = new StringBuilder();
-            var section = new Scaffold("/Views/Boards/menu-section.html", Server.Scaffold);
-            var item = new Scaffold("/Views/Boards/menu-item.html", Server.Scaffold);
+            var section = new Scaffold("/Views/Boards/menu-section.html");
+            var item = new Scaffold("/Views/Boards/menu-item.html");
             var boards = Query.Boards.GetList(request.User.userId);
             var favs = boards.Where((a) => { return a.favorite; });
             var teams = boards.OrderBy((a) => { return a.datecreated; }).Reverse().OrderBy((a) => { return a.ownerId == request.User.userId; });
@@ -156,17 +151,15 @@ namespace Kandu.Common.Platform
             return html.ToString();
         }
 
-        public static void KeepBoardsMenuOpen(Datasilk.Request request, bool keepOpen)
+        public static void KeepBoardsMenuOpen(Datasilk.Web.Request request, bool keepOpen)
         {
-            Server Server = Server.Instance;
             Query.Users.KeepMenuOpen(request.User.userId, keepOpen);
             request.User.keepMenuOpen = keepOpen;
             request.User.Save(true);
         }
 
-        public static void UseAllColorScheme(Datasilk.Request request, bool allColor)
+        public static void UseAllColorScheme(Datasilk.Web.Request request, bool allColor)
         {
-            Server Server = Server.Instance;
             Query.Users.AllColor(request.User.userId, allColor);
             request.User.allColor = allColor;
             request.User.Save(true);

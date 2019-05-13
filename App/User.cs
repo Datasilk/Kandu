@@ -10,9 +10,7 @@ namespace Datasilk
         public bool keepMenuOpen;
         public bool allColor;
         public List<int> boards = new List<int>();
-
-        private Server Server { get; } = Server.Instance;
-
+        
         partial void VendorInit()
         {
             //check for persistant cookie

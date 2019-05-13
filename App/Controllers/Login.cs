@@ -1,10 +1,10 @@
 ﻿using Microsoft.AspNetCore.Http;
 
-namespace Kandu.Pages
+namespace Kandu.Controllers
 {
-    public class Login: Page
+    public class Login: Controller
     {
-        public Login(HttpContext context) : base(context)
+        public Login(HttpContext context, Parameters parameters) : base(context, parameters)
         {
         }
 
@@ -17,19 +17,19 @@ namespace Kandu.Pages
             }
 
             //check for database reset
-            var scaffold = new Scaffold("/Views/Login/login.html", Server.Scaffold);
+            var scaffold = new Scaffold("/Views/Login/login.html");
 
             if(Server.environment == Server.Environment.development && Server.hasAdmin == false)
             {
                 //load new administrator form
-                scaffold = new Scaffold("/Views/Login/new-admin.html", Server.Scaffold);
+                scaffold = new Scaffold("/Views/Login/new-admin.html");
                 scaffold.Data["title"] = "Create an administrator account";
                 scripts.Append("<script src=\"/js/views/login/new-admin.js\"></script>");
             }
             else if (Server.environment == Server.Environment.development && User.resetPass == true)
             {
                 //load new password form (for admin only)
-                scaffold = new Scaffold("/Views/Login/new-pass.html", Server.Scaffold);
+                scaffold = new Scaffold("/Views/Login/new-pass.html");
                 scaffold.Data["title"] = "Create an administrator password";
                 scripts.Append("<script src=\"/js/views/login/new-pass.js\"></script>");
             }

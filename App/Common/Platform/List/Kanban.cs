@@ -7,10 +7,8 @@ namespace Kandu.Common.Platform.List
     {
         public static string RenderList(Query.Models.List list, List<Query.Models.Card> cards)
         {
-            Server Server = Server.Instance;
-
             //load html templates
-            var scaffold = new Scaffold("/Views/List/Kanban/list.html", Server.Scaffold);
+            var scaffold = new Scaffold("/Views/List/Kanban/list.html");
             var html = new StringBuilder();
 
             //set up each card

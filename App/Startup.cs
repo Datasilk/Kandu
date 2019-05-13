@@ -8,8 +8,8 @@ public class Startup : Datasilk.Startup {
     public override void Configured(IApplicationBuilder app, IHostingEnvironment env, IConfigurationRoot config)
     {
         base.Configured(app, env, config);
-        Query.Sql.connectionString = server.sqlConnectionString;
-        server.resetPass = Query.Users.HasPasswords();
-        server.hasAdmin = Query.Users.HasAdmin();
+        Query.Sql.connectionString = Server.sqlConnectionString;
+        Server.resetPass = Query.Users.HasPasswords();
+        Server.hasAdmin = Query.Users.HasAdmin();
     }
 }

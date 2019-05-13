@@ -1,11 +1,11 @@
 ﻿using Microsoft.AspNetCore.Http;
 using System.Text;
 
-namespace Kandu.Pages
+namespace Kandu.Controllers
 {
     public class Timeline : BoardPage
     {
-        public Timeline(HttpContext context) : base(context)
+        public Timeline(HttpContext context, Parameters parameters) : base(context, parameters)
         {
         }
 

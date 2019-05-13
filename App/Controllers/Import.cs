@@ -1,20 +1,20 @@
 ﻿using Microsoft.AspNetCore.Http;
 
-namespace Kandu.Pages
+namespace Kandu.Controllers
 {
-    public class Import : Page
+    public class Import : Controller
     {
-        public Import(HttpContext context) : base(context)
+        public Import(HttpContext context, Parameters parameters) : base(context, parameters)
         {
         }
 
         public override string Render(string[] path, string body = "", object metadata = null)
         {
-            Page page = null;
+            Controller page = null;
             switch (path[1].ToLower())
             {
                 case "trello":
-                    page = new Imports.Trello(context);
+                    page = new Imports.Trello(context, parameters);
                     break;
                     
             }

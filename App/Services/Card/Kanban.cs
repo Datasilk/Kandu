@@ -4,8 +4,7 @@ namespace Kandu.Services.Card
 {
     public class Kanban : Service
     {
-
-        public Kanban(HttpContext context) : base(context)
+        public Kanban(HttpContext context, Parameters parameters) : base(context, parameters)
         {
         }
 

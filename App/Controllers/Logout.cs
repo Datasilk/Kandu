@@ -1,10 +1,10 @@
 ﻿using Microsoft.AspNetCore.Http;
 
-namespace Kandu.Pages
+namespace Kandu.Controllers
 {
-    public class Logout : Page
+    public class Logout : Controller
     {
-        public Logout(HttpContext context) : base(context)
+        public Logout(HttpContext context, Parameters parameters) : base(context, parameters)
         {
         }
 

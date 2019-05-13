@@ -4,7 +4,7 @@ namespace Kandu.Services
 {
     public class User : Service
     {
-        public User(HttpContext context) : base(context)
+        public User(HttpContext context, Parameters parameters) : base(context, parameters)
         {
         }
 

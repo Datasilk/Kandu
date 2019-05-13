@@ -1,11 +1,11 @@
 ﻿using System.Text;
 using Microsoft.AspNetCore.Http;
 
-namespace Kandu.Pages
+namespace Kandu.Controllers
 {
-    public class Home : Page
+    public class Home : Controller
     {
-        public Home(HttpContext context) : base(context)
+        public Home(HttpContext context, Parameters parameters) : base(context, parameters)
         {
         }
 

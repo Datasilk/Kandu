@@ -6,7 +6,7 @@ namespace Kandu.Services
 {
     public class Lists : Service
     {
-        public Lists(HttpContext context) : base(context)
+        public Lists(HttpContext context, Parameters parameters) : base(context, parameters)
         {
         }
 

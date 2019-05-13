@@ -18,8 +18,6 @@ namespace Saber.Common.Utility
 
     public class Images
     {
-        private Server Server { get; } = Server.Instance;
-
         public ImageInfo Load(string path, string filename)
         {
             ImageInfo newImg = new ImageInfo();

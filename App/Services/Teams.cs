@@ -5,7 +5,7 @@ namespace Kandu.Services
 {
     public class Teams : Service
     {
-        public Teams(HttpContext context) : base(context)
+        public Teams(HttpContext context, Parameters parameters) : base(context, parameters)
         {
         }
 

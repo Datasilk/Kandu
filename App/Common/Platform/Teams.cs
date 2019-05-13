@@ -4,7 +4,7 @@ namespace Kandu.Common.Platform
 {
     public static class Teams
     {
-        public static int Create(Datasilk.Request request, string name, string description = "")
+        public static int Create(Datasilk.Web.Request request, string name, string description = "")
         {
             try
             {

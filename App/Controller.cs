@@ -3,10 +3,10 @@ using Utility.Strings;
 
 namespace Kandu
 {
-    public class Page : Datasilk.Page
+    public class Controller : Datasilk.Mvc.Controller
     {
 
-        public Page(HttpContext context) : base(context)
+        public Controller(HttpContext context, Parameters parameters) : base(context, parameters)
         {
             title = "Kandu";
             description = "You can do everything you ever wanted";
@@ -53,10 +53,10 @@ namespace Kandu
 
         }
 
-        public void LoadPartial(ref Page page)
+        public void LoadPartial(ref Controller page)
         {
             page.scripts.Append(scripts.ToString());
-            page.headCss.Append(headCss.ToString());
+            page.css.Append(css.ToString());
         }
     }
 }

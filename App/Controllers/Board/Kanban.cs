@@ -2,15 +2,15 @@
 using System.Text;
 using Microsoft.AspNetCore.Http;
 
-namespace Kandu.Pages
+namespace Kandu.Controllers
 {
     public class Kanban : BoardPage
     {
-        public Kanban(HttpContext context) : base(context)
+        public Kanban(HttpContext context, Parameters parameters) : base(context, parameters)
         {
             //load page resources
             scripts.Append("<script src=\"/js/views/board/kanban/kanban.js\"></script>");
-            headCss.Append("<link type=\"text/css\" rel=\"stylesheet\" href=\"/css/views/board/kanban/kanban.css\">");
+            css.Append("<link type=\"text/css\" rel=\"stylesheet\" href=\"/css/views/board/kanban/kanban.css\">");
         }
 
         public override string Render(string[] path, string body = "", object metadata = null)
@@ -21,7 +21,7 @@ namespace Kandu.Pages
             {
                 //load kanban lists for board
                 var boardId = int.Parse(path[1]);
-                var scaffold = new Scaffold("Views/Board/Kanban/kanban.html", Server.Scaffold);
+                var scaffold = new Scaffold("Views/Board/Kanban/kanban.html");
                 var htmlists = new StringBuilder();
                 foreach(var list in board.lists)
                 {
