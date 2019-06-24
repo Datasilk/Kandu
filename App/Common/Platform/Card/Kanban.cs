@@ -30,7 +30,17 @@ namespace Kandu.Common.Platform.Card
             {
                 //load card custom design
                 var scaffold = new Scaffold("/Views/Card/Kanban/Layout/" + card.layout.ToString() + ".html");
-                scaffold.Data["name"] = card.name;
+
+                if(card.name.IndexOf("[x]") == 0 || card.name.IndexOf("[X]") == 0)
+                {
+                    var checkmark = new Scaffold("/Views/Card/Kanban/Elements/checkmark.html");
+                    scaffold.Data["name"] = checkmark.Render() + card.name.Substring(4);
+                }
+                else
+                {
+                    scaffold.Data["name"] = card.name;
+                }
+                
                 scaffold.Data["colors"] = "";
 
                 //render custom design inside card container

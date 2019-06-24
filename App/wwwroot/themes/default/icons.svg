@@ -225,6 +225,12 @@ M 0 0
 L 0 64 64 64 64 0 0 0 Z"/>
 </g>
 
+<g id="iconCheck_0_Layer0_0_FILL">
+<path fill="#FFFFFF" stroke="none" d="
+M 64 6
+L 54 0 26 46 8 28 0 36 28 64 64 6 Z"/>
+</g>
+
 <g id="icon_0_Layer1_0_FILL">
 <path fill="#FFFFFF" fill-opacity="0.9882352941176471" stroke="none" d="
 M 32 4.2
@@ -834,6 +840,14 @@ L 0 0 0 64 64 64 64 0 Z"/>
 
 <g transform="matrix( 1, 0, 0, 1, 0,0) ">
 <use xlink:href="#chat_single_left_0_Layer0_0_FILL"/>
+</g>
+</g>
+</symbol><symbol id="icon-check" viewBox="0 0 64 64">
+
+
+<g transform="matrix( 1, 0, 0, 1, 0,0) ">
+<g transform="matrix( 1, 0, 0, 1, 0,0) ">
+<use xlink:href="#iconCheck_0_Layer0_0_FILL"/>
 </g>
 </g>
 </symbol><symbol id="icon-close" viewBox="0 0 32 32">
