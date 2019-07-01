@@ -36,6 +36,11 @@ namespace Kandu.Common.Platform.Card
                     var checkmark = new Scaffold("/Views/Card/Kanban/Elements/checkmark.html");
                     scaffold.Data["name"] = checkmark.Render() + card.name.Substring(4);
                 }
+                else if (card.name.IndexOf("[!]") == 0 || card.name.IndexOf("[!]") == 0)
+                {
+                    var checkmark = new Scaffold("/Views/Card/Kanban/Elements/warning.html");
+                    scaffold.Data["name"] = checkmark.Render() + card.name.Substring(4);
+                }
                 else
                 {
                     scaffold.Data["name"] = card.name;

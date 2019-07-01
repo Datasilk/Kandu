@@ -726,6 +726,27 @@ Q 36.6 6 40.15 9.55 43.65 13.05 43.65 18 43.65 22.95 40.15 26.5 36.6 30 31.65 30
 M 64 0
 L 0 0 0 64 64 64 64 0 Z"/>
 </g>
+
+<g id="iconWarning_0_Layer1_0_FILL">
+<path fill="#FFFFFF" stroke="none" d="
+M 27 11.9
+L 2.1 48.9
+Q -2.35 56.25 5.25 56.95
+L 58.65 56.95
+Q 66.3 56.25 61.85 48.9
+L 36.95 11.9
+Q 34.5 8.3 31.95 8.2 29.45 8.3 27 11.9
+M 27.4 20.45
+L 36.55 20.45 35.4 39.85 28.55 39.85 27.4 20.45
+M 28.55 43.3
+L 35.4 43.3 35.4 50.1 28.55 50.1 28.55 43.3 Z"/>
+</g>
+
+<g id="iconWarning_0_Layer0_0_FILL">
+<path fill="#FFFFFF" fill-opacity="0" stroke="none" d="
+M 64 0
+L 0 0 0 64 64 64 64 0 Z"/>
+</g>
 </defs><symbol id="btn-arrow-down" viewBox="0 0 32 32">
 
 
@@ -1076,6 +1097,18 @@ L 0 0 0 64 64 64 64 0 Z"/>
 
 <g transform="matrix( 1, 0, 0, 1, 0,0) ">
 <use xlink:href="#user_0_Layer0_0_FILL"/>
+</g>
+</g>
+</symbol><symbol id="icon-warning" viewBox="0 0 64 64">
+
+
+<g transform="matrix( 1, 0, 0, 1, 0,0) ">
+<g transform="matrix( 1, 0, 0, 1, 0,0) ">
+<use xlink:href="#iconWarning_0_Layer1_0_FILL"/>
+</g>
+
+<g transform="matrix( 1, 0, 0, 1, 0,0) ">
+<use xlink:href="#iconWarning_0_Layer0_0_FILL"/>
 </g>
 </g>
 </symbol></svg>

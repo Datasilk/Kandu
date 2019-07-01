@@ -1,0 +1,35 @@
+
+<svg xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" preserveAspectRatio="none" x="0px" y="0px" width="64px" height="64px" viewBox="0 0 64 64">
+<defs>
+<g id="iconWarning_0_Layer1_0_FILL">
+<path fill="#FFFFFF" stroke="none" d="
+M 27 11.9
+L 2.1 48.9
+Q -2.35 56.25 5.25 56.95
+L 58.65 56.95
+Q 66.3 56.25 61.85 48.9
+L 36.95 11.9
+Q 34.5 8.3 31.95 8.2 29.45 8.3 27 11.9
+M 27.4 20.45
+L 36.55 20.45 35.4 39.85 28.55 39.85 27.4 20.45
+M 28.55 43.3
+L 35.4 43.3 35.4 50.1 28.55 50.1 28.55 43.3 Z"/>
+</g>
+
+<g id="iconWarning_0_Layer0_0_FILL">
+<path fill="#FFFFFF" fill-opacity="0" stroke="none" d="
+M 64 0
+L 0 0 0 64 64 64 64 0 Z"/>
+</g>
+</defs>
+
+<g transform="matrix( 1, 0, 0, 1, 0,0) ">
+<g transform="matrix( 1, 0, 0, 1, 0,0) ">
+<use xlink:href="#iconWarning_0_Layer1_0_FILL"/>
+</g>
+
+<g transform="matrix( 1, 0, 0, 1, 0,0) ">
+<use xlink:href="#iconWarning_0_Layer0_0_FILL"/>
+</g>
+</g>
+</svg>
