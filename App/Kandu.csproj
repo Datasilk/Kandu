@@ -13,6 +13,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Content Remove="config.json" />
+    <Content Remove="config.prod.json" />
     <Content Remove="Core\config.json" />
   </ItemGroup>
 
@@ -102,6 +104,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Include="config.json" />
+    <None Include="config.prod.json" />
     <None Include="Core\config.json" />
     <None Include="wwwroot\themes\default\icons.svg" />
   </ItemGroup>
