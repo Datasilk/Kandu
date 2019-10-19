@@ -17,9 +17,9 @@ namespace Kandu.Controllers
             if (!User.CheckSecurity(boardId)) { return AccessDenied(new Login(context, parameters)); }
 
             //add client-side dependencies
-            AddScript("/js/views/board/board.js");
-            AddScript("/js/dashboard.js");
-            AddCSS("/css/dashboard.css");
+            AddScript("/js/views/board/board.js?v=" + Server.Version);
+            AddScript("/js/dashboard.js?v=" + Server.Version);
+            AddCSS("/css/dashboard.css?v=" + Server.Version);
 
             var scaffold = new Scaffold("/Views/Board/board.html");
 
@@ -47,15 +47,15 @@ namespace Kandu.Controllers
             page.board = board;
 
             //set background color of board
-            scaffold.Data["color"] = "#" + board.color;
-            scaffold.Data["color-dark"] = colors.ChangeHexBrightness(board.color, (float)-0.3);
+            scaffold["color"] = "#" + board.color;
+            scaffold["color-dark"] = colors.ChangeHexBrightness(board.color, (float)-0.3);
 
             //transfer resources from page
             scripts.Append(page.scripts.ToString());
             css.Append(page.css.ToString());
 
             //render board lists
-            scaffold.Data["content"] = page.Render(path);
+            scaffold["content"] = page.Render(path);
 
             //load header
             LoadHeader(ref scaffold);

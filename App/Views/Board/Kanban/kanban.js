@@ -20,10 +20,18 @@
 
         //add event for horizontal scrollbar
         $('.kanban > .scroller .scrollbar').on('mousedown', S.kanban.scroll.start);
+        $('.kanban > .lists').on('touchstart', S.kanban.scroll.touchstart);
+        $('.kanban > .lists').on('touchmove', S.kanban.scroll.touchmove);
+        $('.kanban > .lists').on('touchend', S.kanban.scroll.touchend);
 
         //add event for list scrollbars
         S.kanban.list.resize();
-        S.scrollbar.add('.kanban .list-items', { footer: S.kanban.list.scroll.footer });
+        S.scrollbar.add('.kanban .list-items', {
+            footer: S.kanban.list.scroll.footer,
+            touch: true,
+            touchStart: S.kanban.scroll.touchListStart,
+            touchEnd: S.kanban.scroll.touchListEnd,
+        });
 
         //resize list height to fit window
         $(window).on('resize', S.kanban.list.resize);
@@ -33,6 +41,7 @@
 
     scroll: {
         selected: null,
+        disabled: false,
 
         resize: function () {
             //check horizonal scrollbar
@@ -58,10 +67,7 @@
             }
         },
 
-        start: function (e) {
-            e.cancelBubble = true;
-            e.stopPropagation();
-            e.preventDefault();
+        start: function (e, istouch) {
             const lists = $('.kanban .lists');
             const scroller = $('.kanban > .scroller');
             const scrollbar = $('.kanban > .scroller .scrollbar');
@@ -75,6 +81,8 @@
                 w += $(e).width();
             });
 
+            var anim = S.kanban.scroll.selected == null;
+
             S.kanban.scroll.selected = {
                 scrollbar: scrollbar,
                 columns: lists.find('.columns'),
@@ -83,32 +91,109 @@
                 listsW: w,
                 cursorX: e.clientX,
                 currentX: e.clientX,
-                barX: scrollbar.offset().left
+                lastX: e.clientX,
+                speedSteps: [],
+                speed: 0,
+                speedStart: 0,
+                coastStart: null,
+                coasting:false,
+                barX: scrollbar.offset().left,
+                diff: (1 / win.w) * ((scrollW / w) * win.w)
             };
-            $('body').on('mousemove', S.kanban.scroll.move);
-            $('body').on('mouseup', S.kanban.scroll.stop);
-            S.kanban.scroll.animate.call(S.kanban.scroll);
+            if (!istouch === true) {
+                e.cancelBubble = true;
+                e.stopPropagation();
+                e.preventDefault();
+                $('body').on('mousemove', S.kanban.scroll.move);
+                $('body').on('mouseup', S.kanban.scroll.stop);
+            }
+            if (anim) {
+                S.kanban.scroll.animate.call(S.kanban.scroll);
+            }
         },
+
         move: function (e) {
             S.kanban.scroll.selected.currentX = e.clientX;
         },
+
         animate: function () {
-            const scroll = S.kanban.scroll.selected;
-            if (scroll == null) { return; }
-            const curr = scroll.currentX - scroll.cursorX - (10 - scroll.barX);
-            let perc = (100 / (scroll.width - scroll.barWidth)) * curr;
+            let sel = S.kanban.scroll.selected;
+            if (sel == null) { return; }
+
+            //update speed steps
+            if (sel.speedSteps.length >= 5) { S.kanban.scroll.selected.speedSteps.shift(); }
+            S.kanban.scroll.selected.speedSteps.push(sel.lastX - sel.currentX);
+            S.kanban.scroll.selected.lastX = sel.currentX || 0;
+
+            //animate scrollbar & columns
+            const curr = sel.currentX - sel.cursorX - (10 - sel.barX);
+            let perc = (100 / (sel.width - sel.barWidth)) * curr;
             if (perc > 100) { perc = 100; }
             if (perc < 0) { perc = 0; }
-            scroll.scrollbar.css({ left: ((scroll.width - scroll.barWidth - 20) / 100) * perc });
-            scroll.columns.css({ left: -1 * (((scroll.listsW - scroll.width) / 100) * perc) });
+            sel.scrollbar.css({ left: ((sel.width - sel.barWidth) / 100) * perc });
+            sel.columns.css({ left: -1 * (((sel.listsW - sel.width) / 100) * perc) });
             requestAnimationFrame(() => {
                 S.kanban.scroll.animate.call(S.kanban.scroll);
             });
         }, 
+
         stop: function (e) {
             $('body').off('mousemove', S.kanban.scroll.move);
             $('body').off('mouseup', S.kanban.scroll.stop);
             S.kanban.scroll.selected = null;
+        },
+
+        touchstart: function (e) {
+            if (S.kanban.scroll.disabled == true) { return;}
+            S.kanban.scroll.start(e.touches[0], true);
+        },
+
+        touchmove: function (e) {
+            let sel = S.kanban.scroll.selected;
+            if (sel == null || S.kanban.scroll.disabled == true) { return; }
+            let newX = sel.cursorX + ((sel.cursorX - e.touches[0].clientX) * sel.diff);
+            S.kanban.scroll.selected.currentX = newX;
+        },
+
+        touchend: function (e) {
+            //coast animation
+            let sel = S.kanban.scroll.selected;
+            if (sel == null || S.kanban.scroll.disabled == true) { return; }
+            if (sel.speedSteps.length == 0) {
+                S.kanban.scroll.selected = null;
+                return;
+            }
+            S.kanban.scroll.selected.speed = (sel.speedSteps.reduce((a, b, c, d) => b + d[c]) / sel.speedSteps.length) * sel.diff * -1 * 10;
+            S.kanban.scroll.selected.speedStart = S.kanban.scroll.selected.speed;
+            S.kanban.scroll.selected.coastStart = Date.now();
+            S.kanban.scroll.selected.coasting = true;
+            requestAnimationFrame(() => {
+                S.kanban.scroll.coast.call(S.kanban.scroll);
+            });
+        },
+
+        coast: function () {
+            let sel = S.kanban.scroll.selected;
+            if (sel == null || sel.coasting == false || S.kanban.scroll.disabled == true) { return;}
+            let oldspeed = sel.speed;
+            S.kanban.scroll.selected.currentX = sel.currentX + (sel.speed);
+            var newspeed = sel.speedStart - (sel.speedStart * ((1 / 500) * (Date.now() - sel.coastStart)));
+            S.kanban.scroll.selected.speed = newspeed;
+            if ((oldspeed > 0 && newspeed <= 0) || (oldspeed < 0 && newspeed >= 0) || oldspeed == 0) {
+                S.kanban.scroll.selected = null;
+                return;
+            }
+            requestAnimationFrame(() => {
+                S.kanban.scroll.coast.call(S.kanban.scroll);
+            });
+        },
+
+        touchListStart: function (e, options) {
+            //S.kanban.scroll.disabled = true;
+        },
+
+        touchListEnd: function (e, options) {
+            //S.kanban.scroll.disabled = false;
         }
     },
 

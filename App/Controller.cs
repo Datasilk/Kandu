@@ -15,7 +15,7 @@ namespace Kandu
 
         public override string Render(string[] path, string body = "", object metadata = null)
         {
-            scripts.Append("<script language=\"javascript\">S.svg.load('/themes/default/icons.svg');</script>");
+            scripts.Append("<script language=\"javascript\">S.svg.load('/themes/default/icons.svg?v=" + Server.Version + "');</script>");
             return base.Render(path, body, metadata);
         }
 
@@ -23,23 +23,23 @@ namespace Kandu
         {
             if(User.userId > 0)
             {
-                scaffold.Child("header").Data["user"] = "1";
-                scaffold.Child("header").Data["boards-menu"] = Common.Platform.Boards.RenderBoardsMenu(this);
+                scaffold.Child("header")["user"] = "1";
+                scaffold.Child("header")["boards-menu"] = Common.Platform.Boards.RenderBoardsMenu(this);
 
                 if (User.photo == true)
                 {
-                    scaffold.Child("header").Data["user-photo"] = "/users/" + FileSystem.DateFolders(User.datecreated) + "/photo.jpg";
+                    scaffold.Child("header")["user-photo"] = "/users/" + FileSystem.DateFolders(User.datecreated) + "/photo.jpg";
                 }
                 else
                 {
-                    scaffold.Child("header").Data["no-user"] = "1";
+                    scaffold.Child("header")["no-user"] = "1";
                 }
 
                 //apply user settings to UI layout configuration
                 if(hasMenu == true)
                 {
-                    scaffold.Child("header").Data["boards"] = "1";
-                    scaffold.Child("header").Data["boards-2"] = "1";
+                    scaffold.Child("header")["boards"] = "1";
+                    scaffold.Child("header")["boards-2"] = "1";
                     if (User.keepMenuOpen == true)
                     {
                         scripts.Append("<script language=\"javascript\">S.head.boards.show();S.head.boards.alwaysShow(true);</script>");
@@ -48,7 +48,7 @@ namespace Kandu
             }
             else
             {
-                scaffold.Child("header").Data["no-user"] = "1";
+                scaffold.Child("header")["no-user"] = "1";
             }
 
         }

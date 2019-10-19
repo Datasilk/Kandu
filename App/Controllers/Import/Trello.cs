@@ -42,7 +42,7 @@ namespace Kandu.Controllers.Imports
                     {
                         //show success page in iframe
                         var scaffold = new Scaffold("/Views/Import/Trello/success.html");
-                        scaffold.Data["name"] = board.name;
+                        scaffold["name"] = board.name;
 
                         //import board
                         var merge = context.Request.QueryString.Value.Contains("merge");

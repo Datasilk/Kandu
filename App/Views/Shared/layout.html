@@ -8,9 +8,20 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="google" content="notranslate">
     <meta name="viewport" content="initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,width=device-width,height=device-height,user-scalable=yes" />
-    <link type="text/css" rel="stylesheet" href="/css/platform.css" />
+    <link type="text/css" rel="stylesheet" href="/css/platform.css?v={{version}}" />
     {{head-css}}
-    <link rel="icon" type="image/ico" href="{{favicon}}" />
+    <link rel="icon" type="image/ico" href="{{favicon}}?v={{version}}" />
+
+    <link rel="apple-touch-icon" href="/images/mobile/iphone.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="/images/mobile/ipad.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="/images/mobile/iphone-retina.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="/images/mobile/ipad-retina.png">
+
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+    <link rel="manifest" href="/android-manifest.json">
+    <meta name="mobile-web-app-capable" content="yes">
 </head>
 <body class="box">
     <div class="bg for-popup hide" onclick="S.popup.bg(event)"></div>
@@ -29,7 +40,8 @@
         #body#
     </script>
     <div class="svgicons">{{svg-icons}}</div>
-    <script src="/js/platform.js"></script>
+    <script src="/js/platform.js?v={{version}}"></script>
+    <script>S.version = '{{version}}';</script>
     {{scripts}}
 </body>
 </html>

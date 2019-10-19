@@ -23,20 +23,20 @@ namespace Kandu.Controllers
             {
                 //load new administrator form
                 scaffold = new Scaffold("/Views/Login/new-admin.html");
-                scaffold.Data["title"] = "Create an administrator account";
-                scripts.Append("<script src=\"/js/views/login/new-admin.js\"></script>");
+                scaffold["title"] = "Create an administrator account";
+                scripts.Append("<script src=\"/js/views/login/new-admin.js?v=" + Server.Version + "\"></script>");
             }
             else if (Server.environment == Server.Environment.development && User.resetPass == true)
             {
                 //load new password form (for admin only)
                 scaffold = new Scaffold("/Views/Login/new-pass.html");
-                scaffold.Data["title"] = "Create an administrator password";
-                scripts.Append("<script src=\"/js/views/login/new-pass.js\"></script>");
+                scaffold["title"] = "Create an administrator password";
+                scripts.Append("<script src=\"/js/views/login/new-pass.js?v=" + Server.Version + "\"></script>");
             }
             else
             {
                 //load login form (default)
-                scripts.Append("<script src=\"/js/views/login/login.js\"></script>");
+                scripts.Append("<script src=\"/js/views/login/login.js?v=" + Server.Version + "\"></script>");
             }
 
             //load login page

@@ -92,21 +92,21 @@ namespace Kandu.Common.Platform
             // Favorite Boards //////////////////////////////////////////
             if (favs.Count() > 0)
             {
-                section.Data["title"] = "Starred Boards";
-                section.Data["id"] = "favs";
-                section.Data["icon"] = "star-border-sm";
+                section["title"] = "Starred Boards";
+                section["id"] = "favs";
+                section["icon"] = "star-border-sm";
                 htm = new StringBuilder();
                 foreach (var fav in favs)
                 {
-                    item.Data["id"] = fav.boardId.ToString();
-                    item.Data["url"] = "/board/" + fav.boardId + "/" + fav.name.Replace(" ", "-").ToLower();
-                    item.Data["color"] = "#" + fav.color;
-                    item.Data["title"] = fav.name;
-                    item.Data["owner"] = fav.ownerName;
-                    item.Data["star"] = fav.favorite ? "star" : "star-border";
+                    item["id"] = fav.boardId.ToString();
+                    item["url"] = "/board/" + fav.boardId + "/" + fav.name.Replace(" ", "-").ToLower();
+                    item["color"] = "#" + fav.color;
+                    item["title"] = fav.name;
+                    item["owner"] = fav.ownerName;
+                    item["star"] = fav.favorite ? "star" : "star-border";
                     htm.Append(item.Render());
                 }
-                section.Data["items"] = htm.ToString();
+                section["items"] = htm.ToString();
                 html.Append(section.Render());
             }
 
@@ -122,7 +122,7 @@ namespace Kandu.Common.Platform
                     {
                         if (teamId > 0)
                         {
-                            section.Data["items"] = htm.ToString();
+                            section["items"] = htm.ToString();
                             html.Append(section.Render());
                         }
                         isnewTeam = true;
@@ -130,20 +130,20 @@ namespace Kandu.Common.Platform
                     }
                     if (isnewTeam == true)
                     {
-                        section.Data["title"] = team.teamName;
-                        section.Data["id"] = "team" + team.teamId.ToString();
-                        section.Data["icon"] = "user";
+                        section["title"] = team.teamName;
+                        section["id"] = "team" + team.teamId.ToString();
+                        section["icon"] = "user";
                     }
 
-                    item.Data["id"] = team.boardId.ToString();
-                    item.Data["url"] = "/board/" + team.boardId + "/" + team.name.Replace(" ", "-").ToLower();
-                    item.Data["color"] = "#" + team.color;
-                    item.Data["title"] = team.name;
-                    item.Data["owner"] = team.ownerName;
-                    item.Data["star"] = team.favorite ? "star" : "star-border";
+                    item["id"] = team.boardId.ToString();
+                    item["url"] = "/board/" + team.boardId + "/" + team.name.Replace(" ", "-").ToLower();
+                    item["color"] = "#" + team.color;
+                    item["title"] = team.name;
+                    item["owner"] = team.ownerName;
+                    item["star"] = team.favorite ? "star" : "star-border";
                     htm.Append(item.Render());
                 }
-                section.Data["items"] = htm.ToString();
+                section["items"] = htm.ToString();
                 html.Append(section.Render());
             }
 

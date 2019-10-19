@@ -18,9 +18,9 @@ namespace Kandu.Common.Platform.List
             }
 
             //set up list
-            scaffold.Data["id"] = list.listId.ToString();
-            scaffold.Data["title"] = list.name;
-            scaffold.Data["items"] = html.ToString();
+            scaffold["id"] = list.listId.ToString();
+            scaffold["title"] = list.name;
+            scaffold["items"] = html.ToString();
 
             //render list
             return scaffold.Render();

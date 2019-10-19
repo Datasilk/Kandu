@@ -9,8 +9,8 @@ namespace Kandu.Controllers
         public Kanban(HttpContext context, Parameters parameters) : base(context, parameters)
         {
             //load page resources
-            scripts.Append("<script src=\"/js/views/board/kanban/kanban.js\"></script>");
-            css.Append("<link type=\"text/css\" rel=\"stylesheet\" href=\"/css/views/board/kanban/kanban.css\">");
+            scripts.Append("<script src=\"/js/views/board/kanban/kanban.js?v=" + Server.Version + "\"></script>");
+            css.Append("<link type=\"text/css\" rel=\"stylesheet\" href=\"/css/views/board/kanban/kanban.css?v=" + Server.Version + "\">");
         }
 
         public override string Render(string[] path, string body = "", object metadata = null)
@@ -30,15 +30,15 @@ namespace Kandu.Controllers
 
                 var colors = new Utility.Colors();
 
-                scaffold.Data["name"] = board.name;
+                scaffold["name"] = board.name;
                 try
                 {
-                    scaffold.Data["color-hover"] = colors.FromHexToRgba("#" + board.color, 1);
+                    scaffold["color-hover"] = colors.FromHexToRgba("#" + board.color, 1);
                 }
                 catch (Exception)
                 {
                 }
-                scaffold.Data["lists"] = htmlists.ToString();
+                scaffold["lists"] = htmlists.ToString();
                 html.Append(scaffold.Render());
             }
 

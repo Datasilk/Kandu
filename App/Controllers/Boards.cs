@@ -25,16 +25,16 @@ namespace Kandu.Controllers
             var html = new StringBuilder();
             var item = new Scaffold("/Views/Boards/list-item.html");
             boards.ForEach((Query.Models.Board b) => {
-                item.Data["favorite"] = b.favorite ? "1" : "";
-                item.Data["name"] = b.name;
-                item.Data["color"] = "#" + b.color;
-                item.Data["extra"] = b.favorite ? "fav" : "";
-                item.Data["id"] = b.boardId.ToString();
-                item.Data["type"] = b.type.ToString();
-                item.Data["url"] = Uri.EscapeUriString("/board/" + b.boardId + "/" + b.name.Replace(" ", "-").ToLower());
+                item["favorite"] = b.favorite ? "1" : "";
+                item["name"] = b.name;
+                item["color"] = "#" + b.color;
+                item["extra"] = b.favorite ? "fav" : "";
+                item["id"] = b.boardId.ToString();
+                item["type"] = b.type.ToString();
+                item["url"] = Uri.EscapeUriString("/board/" + b.boardId + "/" + b.name.Replace(" ", "-").ToLower());
                 html.Append(item.Render());
             });
-            scaffold.Data["list"] = html.ToString();
+            scaffold["list"] = html.ToString();
 
             //load teams list
             var teams = Query.Teams.GetList(User.userId);
@@ -43,11 +43,11 @@ namespace Kandu.Controllers
             {
                 html.Append("<option value=\"" + t.teamId + "\">" + t.name + "</option>\n");
             });
-            scaffold.Data["team-options"] = html.ToString();
+            scaffold["team-options"] = html.ToString();
 
             //load page resources
-            AddScript("/js/dashboard.js");
-            AddCSS("/css/dashboard.css");
+            AddScript("/js/dashboard.js?v=" + Server.Version);
+            AddCSS("/css/dashboard.css?v=" + Server.Version);
 
             //load header
             LoadHeader(ref scaffold, false);

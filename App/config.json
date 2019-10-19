@@ -1,7 +1,6 @@
 {
-  "assembly":  "Kandu",
-  "environment": "development",
-  "port": "80",
+  "assembly": "Kandu",
+  "version":  "0.25",
   "sql": {
     "active": "SqlServerTrusted",
     "SqlServerTrusted": "server=.\\SQL2017; database=Kandu; Trusted_Connection=true"
