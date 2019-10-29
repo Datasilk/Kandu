@@ -10,15 +10,7 @@ namespace Query
         {
             return Sql.ExecuteScalar<int>(
                 "Board_Create",
-                new Dictionary<string, object>()
-                {
-                    {"userId", userId },
-                    {"teamId", board.teamId },
-                    {"favorite", board.favorite },
-                    {"name", board.name },
-                    {"security", board.security },
-                    {"color", board.color }
-                }
+                new {userId, board.teamId, board.favorite, board.name, board.security, board.color }
             );
         }
 
@@ -26,24 +18,14 @@ namespace Query
         {
             Sql.ExecuteNonQuery(
                 "Board_Update",
-                new Dictionary<string, object>()
-                {
-                    {"boardId", board.boardId },
-                    {"teamId", board.teamId },
-                    {"name", board.name },
-                    {"color", board.color }
-                }
+                new { board.boardId, board.teamId, board.name, board.color }
             );
         }
 
         public static Models.Board GetDetails(int boardId)
         {
             var list = Sql.Populate<Models.Board>(
-                "Board_GetDetails",
-                new Dictionary<string, object>()
-                {
-                    {"boardId", boardId }
-                }
+                "Board_GetDetails", new { boardId }
             );
             if(list.Count > 0) { return list[0]; }
             return null;
@@ -52,11 +34,7 @@ namespace Query
         public static Models.Board GetInfo(int boardId)
         {
             var list = Sql.Populate<Models.Board>(
-                "Board_GetInfo",
-                new Dictionary<string, object>()
-                {
-                    {"boardId", boardId }
-                }
+                "Board_GetInfo", new { boardId }
             );
             if (list.Count > 0) { return list[0]; }
             return null;
@@ -65,24 +43,13 @@ namespace Query
         public static List<Models.Board> GetList(int userId)
         {
             return Sql.Populate<Models.Board>(
-                "Boards_GetList",
-                new Dictionary<string, object>()
-                {
-                    {"userId", userId }
-                }
+                "Boards_GetList", new { userId }
             );
         }
 
         public static Models.Board GetBoardAndLists(int boardId)
         {
-            using (
-                var sql = new Connection(
-                    "Board_GetLists",
-                      new Dictionary<string, object>()
-                      {
-                        {"boardId", boardId }
-                      }
-                ))
+            using (var sql = new Connection("Board_GetLists", new { boardId }))
             {
                 var readers = sql.PopulateMultiple();
                 var boards = readers.Read<Models.Board>().ToList();
@@ -107,22 +74,14 @@ namespace Query
         {
             return Sql.ExecuteScalar<int>(
                 "Board_MemberExists",
-                new Dictionary<string, object>()
-                {
-                    {"userId", userId },
-                    {"boardId", boardId }
-                }
+                new { userId, boardId }
             ) == 1;
         }
 
         public static List<int> GetBoardsForMember(int userId)
         {
             return Sql.Populate<int>(
-                "BoardMember_GetBoards",
-                new Dictionary<string, object>()
-                {
-                    {"userId", userId }
-                }
+                "BoardMember_GetBoards", new { userId }
             );
         }
 
@@ -130,16 +89,7 @@ namespace Query
         {
             return Sql.ExecuteScalar<int>(
                 "Board_Import",
-                new Dictionary<string, object>()
-                {
-                    {"userId", userId },
-                    {"teamId", board.teamId },
-                    {"favorite", board.favorite },
-                    {"name", board.name },
-                    {"security", board.security },
-                    {"color", board.color },
-                    {"merge", merge }
-                }
+                new { userId, board.teamId, board.favorite, board.name, board.security, board.color, merge }
             );
         }
     }

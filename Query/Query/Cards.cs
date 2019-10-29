@@ -9,15 +9,15 @@ namespace Query
         {
             return Sql.ExecuteScalar<int>(
                 "Card_Create",
-                new Dictionary<string, object>()
+                new
                 {
-                    {"listId", card.listId },
-                    {"boardId", card.boardId },
-                    {"layout", card.layout },
-                    {"colors", card.colors },
-                    {"name", card.name },
-                    {"datedue", card.datedue == null ? DateTime.Now.AddYears(-100) : card.datedue },
-                    {"description", card.description }
+                    card.listId,
+                    card.boardId,
+                    card.layout,
+                    card.colors,
+                    card.name,
+                    datedue = card.datedue == null ? DateTime.Now.AddYears(-100) : card.datedue,
+                    card.description
                 }
             );
         }
@@ -26,16 +26,16 @@ namespace Query
         {
             return Sql.ExecuteScalar<int>(
                 "Card_Import",
-                new Dictionary<string, object>()
+                new
                 {
-                    {"listId", card.listId },
-                    {"boardId", card.boardId },
-                    {"layout", card.layout },
-                    {"colors", card.colors },
-                    {"name", card.name },
-                    {"datedue", card.datedue == null ? DateTime.Now.AddYears(-100) : card.datedue },
-                    {"description", card.description },
-                    {"merge", merge }
+                    card.listId,
+                    card.boardId,
+                    card.layout,
+                    card.colors,
+                    card.name,
+                    datedue = card.datedue == null ? DateTime.Now.AddYears(-100) : card.datedue,
+                    card.description,
+                    merge
                 }
             );
         }
@@ -43,11 +43,7 @@ namespace Query
         public static void Archive(int boardId, int cardId)
         {
             Sql.ExecuteNonQuery("Card_Archive",
-                new Dictionary<string, object>()
-                {
-                    {"boardId", boardId },
-                    {"cardId", cardId }
-                }
+                new { boardId, cardId }
             );
         }
 
@@ -55,11 +51,7 @@ namespace Query
         {
             var list = Sql.Populate<Models.Card>(
                 "Card_GetDetails",
-                new Dictionary<string, object>()
-                {
-                    {"boardId", boardId },
-                    {"cardId", cardId }
-                }
+                new { boardId, cardId }
             );
             if(list.Count > 0) { return list[0]; }
             return null;
@@ -68,22 +60,14 @@ namespace Query
         public static void Restore(int boardId, int cardId)
         {
             Sql.ExecuteNonQuery("Card_Restore",
-                new Dictionary<string, object>()
-                {
-                    {"boardId", boardId },
-                    {"cardId", cardId }
-                }
+                new { boardId, cardId }
             );
         }
 
         public static void Delete(int boardId, int cardId)
         {
             Sql.ExecuteNonQuery("Card_Delete",
-                new Dictionary<string, object>()
-                {
-                    {"boardId", boardId },
-                    {"cardId", cardId }
-                }
+                new { boardId, cardId }
             );
         }
 
@@ -91,50 +75,28 @@ namespace Query
         {
             return Sql.Populate<Models.Card>(
                 "Card_GetList",
-                new Dictionary<string, object>()
-                {
-                    {"boardId", boardId },
-                    {"listId", listId },
-                    {"start", start },
-                    {"length", length }
-                }
+                new { boardId, listId, start, length }
             );
         }
 
         public static void Move(int boardId, int listId, int cardId, int[] cardIds)
         {
             Sql.ExecuteNonQuery("Card_Move",
-                new Dictionary<string, object>()
-                {
-                    {"boardId", boardId },
-                    {"listId", listId },
-                    {"cardId", cardId },
-                    {"ids", string.Join(",", cardIds) }
-                }
+                new { boardId, listId, cardId, ids = string.Join(",", cardIds) }
             );
         }
 
         public static void UpdateName(int boardId, int cardId, string name)
         {
             Sql.ExecuteNonQuery("Card_UpdateName",
-                new Dictionary<string, object>()
-                {
-                    {"boardId", boardId },
-                    {"cardId", cardId },
-                    {"name", name }
-                }
+                new { boardId, cardId, name }
             );
         }
 
         public static void UpdateDescription(int boardId, int cardId, string description)
         {
             Sql.ExecuteNonQuery("Card_UpdateDescription",
-                new Dictionary<string, object>()
-                {
-                    {"boardId", boardId },
-                    {"cardId", cardId },
-                    {"description", description }
-                }
+                new { boardId, cardId, description }
             );
         }
     }

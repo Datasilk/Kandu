@@ -23,7 +23,7 @@ namespace Kandu
         {
             if(User.userId > 0)
             {
-                scaffold.Child("header")["user"] = "1";
+                scaffold.Child("header").Show("user");
                 scaffold.Child("header")["boards-menu"] = Common.Platform.Boards.RenderBoardsMenu(this);
 
                 if (User.photo == true)
@@ -32,14 +32,14 @@ namespace Kandu
                 }
                 else
                 {
-                    scaffold.Child("header")["no-user"] = "1";
+                    scaffold.Child("header").Show("no-user");
                 }
 
                 //apply user settings to UI layout configuration
                 if(hasMenu == true)
                 {
-                    scaffold.Child("header")["boards"] = "1";
-                    scaffold.Child("header")["boards-2"] = "1";
+                    scaffold.Child("header").Show("boards");
+                    scaffold.Child("header").Show("boards-2");
                     if (User.keepMenuOpen == true)
                     {
                         scripts.Append("<script language=\"javascript\">S.head.boards.show();S.head.boards.alwaysShow(true);</script>");
@@ -48,7 +48,7 @@ namespace Kandu
             }
             else
             {
-                scaffold.Child("header")["no-user"] = "1";
+                scaffold.Child("header").Show("no-user");
             }
 
         }

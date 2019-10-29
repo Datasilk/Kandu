@@ -2,7 +2,6 @@
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.PixelFormats;
 using SixLabors.ImageSharp.Processing;
-using SixLabors.ImageSharp.Processing.Transforms;
 using SixLabors.Primitives;
 
 namespace Saber.Common.Utility
@@ -23,7 +22,7 @@ namespace Saber.Common.Utility
             ImageInfo newImg = new ImageInfo();
             using (var fs = File.OpenRead(Server.MapPath(path + filename)))
             {
-                var image = Image.Load(fs);
+                var image = Image.Load<Rgba32>(fs);
                 newImg.bitmap = image;
                 newImg.filename = filename;
                 newImg.path = path;

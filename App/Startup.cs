@@ -5,12 +5,11 @@ using Microsoft.Extensions.Configuration;
 
 public class Startup : Datasilk.Startup {
 
-    public override void Configured(IApplicationBuilder app, IHostingEnvironment env, IConfigurationRoot config)
+    public override void Configured(IApplicationBuilder app, IWebHostEnvironment env, IConfigurationRoot config)
     {
-        base.Configured(app, env, config);
-        //app.UseHttpsRedirection(); //force redirection to HTTPS
         Query.Sql.connectionString = Server.sqlConnectionString;
         Server.resetPass = Query.Users.HasPasswords();
         Server.hasAdmin = Query.Users.HasAdmin();
+        base.Configured(app, env, config);
     }
 }

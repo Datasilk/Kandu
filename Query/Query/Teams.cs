@@ -8,14 +8,7 @@ namespace Query
         {
             return Sql.ExecuteScalar<int>(
                 "Team_Create",
-                new Dictionary<string, object>()
-                {
-                    {"ownerId", team.ownerId },
-                    {"security", team.security },
-                    {"name", team.name },
-                    {"website", team.website },
-                    {"description", team.description }
-                }
+                new {team.ownerId, team.security, team.name, team.website, team.description }
             );
         }
 
@@ -23,11 +16,7 @@ namespace Query
         {
             var list = Sql.Populate<Models.Team>(
                 "Team_Get",
-                new Dictionary<string, object>()
-                {
-                    { "teamId", teamId },
-                    { "ownerId", ownerId }
-                }
+                new { teamId, ownerId }
             );
             if(list.Count > 0) { return list[0]; }
             return null;
@@ -37,15 +26,7 @@ namespace Query
         {
             Sql.ExecuteNonQuery(
                 "Team_Update",
-                new Dictionary<string, object>()
-                {
-                    {"teamId", team.teamId },
-                    {"ownerId", team.ownerId },
-                    {"security", team.security },
-                    {"name", team.name },
-                    {"website", team.website },
-                    {"description", team.description }
-                }
+                new { team.teamId, team.ownerId, team.security, team.name, team.website, team.description }
             );
         }
 
@@ -60,14 +41,7 @@ namespace Query
         {
             return Sql.Populate<Models.Team>(
                 "Teams_GetList",
-                new Dictionary<string, object>()
-                {
-                    {"ownerId", ownerId },
-                    {"start", start },
-                    {"length", length },
-                    {"search", search },
-                    {"orderby", (int)orderBy }
-                }
+                new { ownerId, start, length, search, orderby = (int)orderBy }
             );
         }
     }
