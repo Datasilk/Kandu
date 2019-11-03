@@ -1,13 +1,7 @@
-﻿using Microsoft.AspNetCore.Http;
-
-namespace Kandu.Services
+﻿namespace Kandu.Services
 {
     public class Boards : Service
     {
-        public Boards(HttpContext context, Parameters parameters) : base(context, parameters)
-        {
-        }
-
         public string Create(string name, string color, int teamId)
         {
             if (!CheckSecurity()) { return AccessDenied(); } //check security

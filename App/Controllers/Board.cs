@@ -1,27 +1,21 @@
-﻿using Microsoft.AspNetCore.Http;
-
-namespace Kandu.Controllers
+﻿namespace Kandu.Controllers
 {
     public class Board : Controller
     {
-        public Board(HttpContext context, Parameters parameters) : base(context, parameters)
-        {
-        }
-
-        public override string Render(string[] path, string body = "", object metadata = null)
+        public override string Render(string body = "")
         {
             //check security
-            if(path.Length < 2) { return Error(); }
-            var boardId = int.Parse(path[1]);
-            if (User.userId == 0) { return AccessDenied(new Login(context, parameters)); }
-            if (!User.CheckSecurity(boardId)) { return AccessDenied(new Login(context, parameters)); }
+            if(PathParts.Length < 2) { return Error(); }
+            var boardId = int.Parse(PathParts[1]);
+            if (User.userId == 0) { return AccessDenied<Login>(); }
+            if (!User.CheckSecurity(boardId)) { return AccessDenied<Login>(); }
 
             //add client-side dependencies
             AddScript("/js/views/board/board.js?v=" + Server.Version);
             AddScript("/js/dashboard.js?v=" + Server.Version);
             AddCSS("/css/dashboard.css?v=" + Server.Version);
 
-            var scaffold = new Scaffold("/Views/Board/board.html");
+            var view = new Scaffold("/Views/Board/board.html");
 
             //load board details
             var colors = new Utility.Colors();
@@ -29,7 +23,7 @@ namespace Kandu.Controllers
             BoardPage page;
 
             //add custom javascript for User Settings & Board info
-            scripts.Append("<script language=\"javascript\">" + 
+            Scripts.Append("<script language=\"javascript\">" + 
                 "S.board.id=" + board.boardId + ";" + 
                 (User.allColor ? "S.head.allColor();" : "") + 
                 "</script>");
@@ -39,7 +33,8 @@ namespace Kandu.Controllers
             {
                 default: 
                 case Query.Models.Board.BoardType.kanban: //kanban
-                    page = new Kanban(context, parameters);
+                    page = new Kanban();
+                    page.Init(Context, Parameters, Path, PathParts);
                     break;
             }
 
@@ -47,32 +42,27 @@ namespace Kandu.Controllers
             page.board = board;
 
             //set background color of board
-            scaffold["color"] = "#" + board.color;
-            scaffold["color-dark"] = colors.ChangeHexBrightness(board.color, (float)-0.3);
+            view["color"] = "#" + board.color;
+            view["color-dark"] = colors.ChangeHexBrightness(board.color, (float)-0.3);
 
             //transfer resources from page
-            scripts.Append(page.scripts.ToString());
-            css.Append(page.css.ToString());
+            Scripts.Append(page.Scripts.ToString());
+            Css.Append(page.Css.ToString());
 
             //render board lists
-            scaffold["content"] = page.Render(path);
+            view["content"] = page.Render();
 
             //load header
-            LoadHeader(ref scaffold);
+            LoadHeader(ref view);
            
 
-            return base.Render(path, scaffold.Render());
+            return base.Render(view.Render());
         }
     }
 
     public class BoardPage : Controller
     {
-
         public Query.Models.Board board;
         public Controller parent;
-
-        public BoardPage(HttpContext context, Parameters parameters) : base(context, parameters)
-        {
-        }
     }
 }

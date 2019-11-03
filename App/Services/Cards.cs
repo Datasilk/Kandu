@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
-using System;
+﻿using System;
 using Utility;
 
 
@@ -7,10 +6,6 @@ namespace Kandu.Services
 {
     public class Cards : Service
     {
-        public Cards(HttpContext context, Parameters parameters) : base(context, parameters)
-        {
-        }
-
         #region "Create, Archive, Restore, & Delete"
 
         public string Create(int boardId, int listId, string name, string description = "", DateTime? dateDue = null, string colors = "")

@@ -2,13 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Utility.Serialization;
+using System.Text.Json;
 
 namespace Kandu.Common.Platform
 {
     public static class Boards
     {
-        public static int Create(Datasilk.Web.Request request, string name, string color, int teamId)
+        public static int Create(Request request, string name, string color, int teamId)
         {
             try
             {
@@ -31,7 +31,7 @@ namespace Kandu.Common.Platform
             }   
         }
 
-        public static void Update(Datasilk.Web.Request request, int boardId, string name, string color, int teamId)
+        public static void Update(Request request, int boardId, string name, string color, int teamId)
         {
             //check if user has access to board
             if (!Query.Boards.MemberExists(request.User.userId, boardId)) {
@@ -60,7 +60,7 @@ namespace Kandu.Common.Platform
             try
             {
                 var board = Query.Boards.GetDetails(boardId);
-                return Serializer.WriteObjectToString(
+                return JsonSerializer.Serialize(
                     new Dictionary<string, Dictionary<string, string>>(){
                     {
                         "board", new Dictionary<string,string>(){
@@ -79,7 +79,7 @@ namespace Kandu.Common.Platform
             
         }
 
-        public static string RenderBoardsMenu(Datasilk.Web.Request request)
+        public static string RenderBoardsMenu(Request request)
         {
             var html = new StringBuilder();
             var htm = new StringBuilder();
@@ -151,14 +151,14 @@ namespace Kandu.Common.Platform
             return html.ToString();
         }
 
-        public static void KeepBoardsMenuOpen(Datasilk.Web.Request request, bool keepOpen)
+        public static void KeepBoardsMenuOpen(Request request, bool keepOpen)
         {
             Query.Users.KeepMenuOpen(request.User.userId, keepOpen);
             request.User.keepMenuOpen = keepOpen;
             request.User.Save(true);
         }
 
-        public static void UseAllColorScheme(Datasilk.Web.Request request, bool allColor)
+        public static void UseAllColorScheme(Request request, bool allColor)
         {
             Query.Users.AllColor(request.User.userId, allColor);
             request.User.allColor = allColor;

@@ -1,25 +1,21 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
-using Microsoft.AspNetCore.Http;
-using Utility.Serialization;
+using System.Text.Json;
 
 namespace Kandu.Controllers.Imports
 {
     public class Trello : Controller
     {
-        public Trello(HttpContext context, Parameters parameters) : base(context, parameters)
-        {
-        }
 
-        public override string Render(string[] path, string body = "", object metadata = null)
+        public override string Render(string body = "")
         {
             if (!CheckSecurity()) { return AccessDenied(); } //check security
 
-            if (context.Request.QueryString.Value.Contains("?upload"))
+            if (Context.Request.QueryString.Value.Contains("?upload"))
             {
                 //uploaded json file
-                var files = context.Request.Form.Files;
+                var files = Context.Request.Form.Files;
                 if (files.Count > 0)
                 {
                     Models.Trello.Board board = null;
@@ -31,7 +27,7 @@ namespace Kandu.Controllers.Imports
                         var sr = new StreamReader(ms);
                         var txt = sr.ReadToEnd();
 
-                        board = (Models.Trello.Board)Serializer.ReadObject(txt.ToString(), typeof(Models.Trello.Board));
+                        board = JsonSerializer.Deserialize<Models.Trello.Board>(txt.ToString());
                     }
                     catch(Exception ex)
                     {
@@ -41,12 +37,12 @@ namespace Kandu.Controllers.Imports
                     if (board != null)
                     {
                         //show success page in iframe
-                        var scaffold = new Scaffold("/Views/Import/Trello/success.html");
-                        scaffold["name"] = board.name;
+                        var view = new Scaffold("/Views/Import/Trello/success.html");
+                        view["name"] = board.name;
 
                         //import board
-                        var merge = context.Request.QueryString.Value.Contains("merge");
-                        var boardType = context.Request.Query.ContainsKey("type") ? int.Parse(context.Request.Query["type"]) : 0;
+                        var merge = Context.Request.QueryString.Value.Contains("merge");
+                        var boardType = Context.Request.Query.ContainsKey("type") ? int.Parse(Context.Request.Query["type"]) : 0;
                         var sort = 0;
                         var sortCard = 0;
                         var bgColor = board.prefs.backgroundColor != null ? board.prefs.backgroundColor : board.prefs.backgroundBottomColor;
@@ -113,7 +109,7 @@ namespace Kandu.Controllers.Imports
                             });
                         }
 
-                        return scaffold.Render();
+                        return view.Render();
                     }
                     else
                     {

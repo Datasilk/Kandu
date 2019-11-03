@@ -1,14 +1,9 @@
 ﻿using System.Text;
-using Microsoft.AspNetCore.Http;
 
 namespace Kandu.Services
 {
     public class Teams : Service
     {
-        public Teams(HttpContext context, Parameters parameters) : base(context, parameters)
-        {
-        }
-
         public string Create(string name, string description = "")
         {
             if (!CheckSecurity()) { return AccessDenied(); } //check security

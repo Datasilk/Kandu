@@ -1,13 +1,7 @@
-﻿using Microsoft.AspNetCore.Http;
-
-namespace Kandu.Services.List
+﻿namespace Kandu.Services.List
 {
     public class Kanban: Service
     {
-        public Kanban(HttpContext context, Parameters parameters) : base(context, parameters)
-        {
-        }
-
         public string LoadList(int listId)
         {
             var list = Query.Lists.GetDetails(listId);

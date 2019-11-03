@@ -1,27 +1,25 @@
 ﻿using System;
 using System.Text;
-using Microsoft.AspNetCore.Http;
 
 namespace Kandu.Controllers
 {
     public class Kanban : BoardPage
     {
-        public Kanban(HttpContext context, Parameters parameters) : base(context, parameters)
+        public Kanban()
         {
             //load page resources
-            scripts.Append("<script src=\"/js/views/board/kanban/kanban.js?v=" + Server.Version + "\"></script>");
-            css.Append("<link type=\"text/css\" rel=\"stylesheet\" href=\"/css/views/board/kanban/kanban.css?v=" + Server.Version + "\">");
+            Scripts.Append("<script src=\"/js/views/board/kanban/kanban.js?v=" + Server.Version + "\"></script>");
+            Css.Append("<link type=\"text/css\" rel=\"stylesheet\" href=\"/css/views/board/kanban/kanban.css?v=" + Server.Version + "\">");
         }
 
-        public override string Render(string[] path, string body = "", object metadata = null)
+        public override string Render(string body = "")
         {
             var html = new StringBuilder();
 
-            if(path.Length > 1)
+            if(PathParts.Length > 1)
             {
                 //load kanban lists for board
-                var boardId = int.Parse(path[1]);
-                var scaffold = new Scaffold("Views/Board/Kanban/kanban.html");
+                var view = new Scaffold("Views/Board/Kanban/kanban.html");
                 var htmlists = new StringBuilder();
                 foreach(var list in board.lists)
                 {
@@ -30,18 +28,17 @@ namespace Kandu.Controllers
 
                 var colors = new Utility.Colors();
 
-                scaffold["name"] = board.name;
+                view["name"] = board.name;
                 try
                 {
-                    scaffold["color-hover"] = colors.FromHexToRgba("#" + board.color, 1);
+                    view["color-hover"] = colors.FromHexToRgba("#" + board.color, 1);
                 }
                 catch (Exception)
                 {
                 }
-                scaffold["lists"] = htmlists.ToString();
-                html.Append(scaffold.Render());
+                view["lists"] = htmlists.ToString();
+                html.Append(view.Render());
             }
-
             return html.ToString();
         }
     }

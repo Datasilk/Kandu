@@ -1,18 +1,21 @@
 ﻿using Microsoft.AspNetCore.Http;
-using Datasilk.Mvc;
+using Datasilk.Core.Web;
 
-public class Routes: Datasilk.Web.Routes
+namespace Kandu
 {
-    public override Controller FromControllerRoutes(HttpContext context, Parameters parameters, string name)
+    public class Routes : Datasilk.Core.Web.Routes
     {
-        switch (name)
+        public override IController FromControllerRoutes(HttpContext context, Parameters parameters, string name)
         {
-            case "": case "home": return new Kandu.Controllers.Home(context, parameters);
-            case "login": return new Kandu.Controllers.Login(context, parameters);
-            case "boards": return new Kandu.Controllers.Boards(context, parameters);
-            case "board": return new Kandu.Controllers.Board(context, parameters);
-            case "import": return new Kandu.Controllers.Import(context, parameters);
+            switch (name)
+            {
+                case "": case "home": return new Controllers.Home();
+                case "login": return new Controllers.Login();
+                case "boards": return new Controllers.Boards();
+                case "board": return new Controllers.Board();
+                case "import": return new Controllers.Import();
+            }
+            return null;
         }
-        return null;
     }
 }

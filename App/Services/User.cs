@@ -1,13 +1,7 @@
-﻿using Microsoft.AspNetCore.Http;
-
-namespace Kandu.Services
+﻿namespace Kandu.Services
 {
     public class User : Service
     {
-        public User(HttpContext context, Parameters parameters) : base(context, parameters)
-        {
-        }
-
         public string Authenticate(string email, string password)
         {
             var encrypted = Query.Users.GetPassword(email);

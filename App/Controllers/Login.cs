@@ -1,46 +1,40 @@
-﻿using Microsoft.AspNetCore.Http;
-
-namespace Kandu.Controllers
+﻿namespace Kandu.Controllers
 {
     public class Login: Controller
     {
-        public Login(HttpContext context, Parameters parameters) : base(context, parameters)
-        {
-        }
-
-        public override string Render(string[] path, string body = "", object metadata = null)
+        public override string Render(string body = "")
         {
             if(User.userId > 0)
             {
                 //redirect to dashboard
-                return base.Render(path, Redirect("/boards/"));
+                return base.Render(Redirect("/boards/"));
             }
 
             //check for database reset
-            var scaffold = new Scaffold("/Views/Login/login.html");
+            var view = new Scaffold("/Views/Login/login.html");
 
             if(Server.environment == Server.Environment.development && Server.hasAdmin == false)
             {
                 //load new administrator form
-                scaffold = new Scaffold("/Views/Login/new-admin.html");
-                scaffold["title"] = "Create an administrator account";
-                scripts.Append("<script src=\"/js/views/login/new-admin.js?v=" + Server.Version + "\"></script>");
+                view = new Scaffold("/Views/Login/new-admin.html");
+                view["title"] = "Create an administrator account";
+                Scripts.Append("<script src=\"/js/views/login/new-admin.js?v=" + Server.Version + "\"></script>");
             }
             else if (Server.environment == Server.Environment.development && User.resetPass == true)
             {
                 //load new password form (for admin only)
-                scaffold = new Scaffold("/Views/Login/new-pass.html");
-                scaffold["title"] = "Create an administrator password";
-                scripts.Append("<script src=\"/js/views/login/new-pass.js?v=" + Server.Version + "\"></script>");
+                view = new Scaffold("/Views/Login/new-pass.html");
+                view["title"] = "Create an administrator password";
+                Scripts.Append("<script src=\"/js/views/login/new-pass.js?v=" + Server.Version + "\"></script>");
             }
             else
             {
                 //load login form (default)
-                scripts.Append("<script src=\"/js/views/login/login.js?v=" + Server.Version + "\"></script>");
+                Scripts.Append("<script src=\"/js/views/login/login.js?v=" + Server.Version + "\"></script>");
             }
 
             //load login page
-            return base.Render(path, scaffold.Render());
+            return base.Render(view.Render());
         }
     }
 }

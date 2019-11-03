@@ -1,13 +1,7 @@
-﻿using Microsoft.AspNetCore.Http;
-
-namespace Kandu.Services.Card
+﻿namespace Kandu.Services.Card
 {
     public class Kanban : Service
     {
-        public Kanban(HttpContext context, Parameters parameters) : base(context, parameters)
-        {
-        }
-
         public string LoadCardHtml(Query.Models.Card card)
         {
             if (!CheckSecurity()) { return AccessDenied(); }

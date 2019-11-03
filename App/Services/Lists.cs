@@ -1,15 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using Microsoft.AspNetCore.Http;
+﻿using System.Collections.Generic;
 
 namespace Kandu.Services
 {
     public class Lists : Service
     {
-        public Lists(HttpContext context, Parameters parameters) : base(context, parameters)
-        {
-        }
-
         public string Create(int boardId, string name, int sort = 0)
         {
             //check security

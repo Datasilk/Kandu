@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.0</TargetFramework>
-    <StartupObject>Datasilk.Program</StartupObject>
+    <StartupObject></StartupObject>
     <AspNetCoreHostingModel>OutOfProcess</AspNetCoreHostingModel>
   </PropertyGroup>
 
@@ -103,7 +103,6 @@
     <None Include="config.prod.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Core\config.json" />
     <None Include="wwwroot\themes\default\icons.svg" />
   </ItemGroup>
 

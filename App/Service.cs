@@ -1,11 +1,14 @@
-using Microsoft.AspNetCore.Http;
+using Datasilk.Core.Web;
 
 namespace Kandu
 {
-    public class Service : Datasilk.Web.Service
+    public class Service : Request, IService
     {
-        public Service(HttpContext context, Parameters parameters) : base(context, parameters)
+        public string Success()
         {
+            return "success";
         }
+
+        public string Empty() { return "{}"; }
     }
 }
