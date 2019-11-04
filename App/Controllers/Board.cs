@@ -15,7 +15,7 @@
             AddScript("/js/dashboard.js?v=" + Server.Version);
             AddCSS("/css/dashboard.css?v=" + Server.Version);
 
-            var view = new Scaffold("/Views/Board/board.html");
+            var view = new View("/Views/Board/board.html");
 
             //load board details
             var colors = new Utility.Colors();

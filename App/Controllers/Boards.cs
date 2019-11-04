@@ -15,11 +15,11 @@ namespace Kandu.Controllers
                 return page.Render();
             }
             //load boards list
-            var view = new Scaffold("/Views/Boards/boards.html");
+            var view = new View("/Views/Boards/boards.html");
             
             var boards = Query.Boards.GetList(User.userId);
             var html = new StringBuilder();
-            var item = new Scaffold("/Views/Boards/list-item.html");
+            var item = new View("/Views/Boards/list-item.html");
             boards.ForEach((Query.Models.Board b) => {
                 item["favorite"] = b.favorite ? "1" : "";
                 item["name"] = b.name;

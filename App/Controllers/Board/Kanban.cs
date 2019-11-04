@@ -19,7 +19,7 @@ namespace Kandu.Controllers
             if(PathParts.Length > 1)
             {
                 //load kanban lists for board
-                var view = new Scaffold("Views/Board/Kanban/kanban.html");
+                var view = new View("Views/Board/Kanban/kanban.html");
                 var htmlists = new StringBuilder();
                 foreach(var list in board.lists)
                 {

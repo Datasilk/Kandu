@@ -83,8 +83,8 @@ namespace Kandu.Common.Platform
         {
             var html = new StringBuilder();
             var htm = new StringBuilder();
-            var section = new Scaffold("/Views/Boards/menu-section.html");
-            var item = new Scaffold("/Views/Boards/menu-item.html");
+            var section = new View("/Views/Boards/menu-section.html");
+            var item = new View("/Views/Boards/menu-item.html");
             var boards = Query.Boards.GetList(request.User.userId);
             var favs = boards.Where((a) => { return a.favorite; });
             var teams = boards.OrderBy((a) => { return a.datecreated; }).Reverse().OrderBy((a) => { return a.ownerId == request.User.userId; });

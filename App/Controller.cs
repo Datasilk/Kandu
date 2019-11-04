@@ -37,27 +37,27 @@ namespace Kandu
             return view.Render();
         }
 
-        public void LoadHeader(ref Scaffold scaffold, bool hasMenu = true)
+        public void LoadHeader(ref View view, bool hasMenu = true)
         {
             if(User.userId > 0)
             {
-                scaffold.Child("header").Show("user");
-                scaffold.Child("header")["boards-menu"] = Common.Platform.Boards.RenderBoardsMenu(this);
+                view.Child("header").Show("user");
+                view.Child("header")["boards-menu"] = Common.Platform.Boards.RenderBoardsMenu(this);
 
                 if (User.photo == true)
                 {
-                    scaffold.Child("header")["user-photo"] = "/users/" + FileSystem.DateFolders(User.datecreated) + "/photo.jpg";
+                    view.Child("header")["user-photo"] = "/users/" + FileSystem.DateFolders(User.datecreated) + "/photo.jpg";
                 }
                 else
                 {
-                    scaffold.Child("header").Show("no-user");
+                    view.Child("header").Show("no-user");
                 }
 
                 //apply user settings to UI layout configuration
                 if(hasMenu == true)
                 {
-                    scaffold.Child("header").Show("boards");
-                    scaffold.Child("header").Show("boards-2");
+                    view.Child("header").Show("boards");
+                    view.Child("header").Show("boards-2");
                     if (User.keepMenuOpen == true)
                     {
                         Scripts.Append("<script language=\"javascript\">S.head.boards.show();S.head.boards.alwaysShow(true);</script>");
@@ -66,7 +66,7 @@ namespace Kandu
             }
             else
             {
-                scaffold.Child("header").Show("no-user");
+                view.Child("header").Show("no-user");
             }
 
         }

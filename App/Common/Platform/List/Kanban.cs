@@ -8,7 +8,7 @@ namespace Kandu.Common.Platform.List
         public static string RenderList(Query.Models.List list, List<Query.Models.Card> cards)
         {
             //load html templates
-            var scaffold = new Scaffold("/Views/List/Kanban/list.html");
+            var view = new View("/Views/List/Kanban/list.html");
             var html = new StringBuilder();
 
             //set up each card
@@ -18,12 +18,12 @@ namespace Kandu.Common.Platform.List
             }
 
             //set up list
-            scaffold["id"] = list.listId.ToString();
-            scaffold["title"] = list.name;
-            scaffold["items"] = html.ToString();
+            view["id"] = list.listId.ToString();
+            view["title"] = list.name;
+            view["items"] = html.ToString();
 
             //render list
-            return scaffold.Render();
+            return view.Render();
         }
     }
 }

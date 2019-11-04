@@ -37,7 +37,7 @@ namespace Kandu.Controllers.Imports
                     if (board != null)
                     {
                         //show success page in iframe
-                        var view = new Scaffold("/Views/Import/Trello/success.html");
+                        var view = new View("/Views/Import/Trello/success.html");
                         view["name"] = board.name;
 
                         //import board

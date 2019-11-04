@@ -11,19 +11,19 @@
             }
 
             //check for database reset
-            var view = new Scaffold("/Views/Login/login.html");
+            var view = new View("/Views/Login/login.html");
 
             if(Server.environment == Server.Environment.development && Server.hasAdmin == false)
             {
                 //load new administrator form
-                view = new Scaffold("/Views/Login/new-admin.html");
+                view = new View("/Views/Login/new-admin.html");
                 view["title"] = "Create an administrator account";
                 Scripts.Append("<script src=\"/js/views/login/new-admin.js?v=" + Server.Version + "\"></script>");
             }
             else if (Server.environment == Server.Environment.development && User.resetPass == true)
             {
                 //load new password form (for admin only)
-                view = new Scaffold("/Views/Login/new-pass.html");
+                view = new View("/Views/Login/new-pass.html");
                 view["title"] = "Create an administrator password";
                 Scripts.Append("<script src=\"/js/views/login/new-pass.js?v=" + Server.Version + "\"></script>");
             }
