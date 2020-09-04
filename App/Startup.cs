@@ -122,7 +122,7 @@ namespace Kandu
             }
 
             //use HTTPS
-            app.UseHttpsRedirection();
+            //app.UseHttpsRedirection();
 
             //set up database connection
             Query.Sql.connectionString = Server.sqlConnectionString;
