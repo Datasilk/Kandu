@@ -1,30 +1,43 @@
-﻿using Datasilk.Core.Web;
+﻿using System.Collections.Generic;
+using System.Text;
+using Datasilk.Core.Web;
 using Utility.Strings;
 
 namespace Kandu
 {
     public class Controller : Request, IController
     {
-        public bool usePlatform = false;
-        public string title = "Datasilk";
-        public string description = "";
-        public string favicon = "/images/favicon.png";
-        public string theme = "default";
+        public bool UsePlatform = true;
+        public string Title = "Kandu";
+        public string Description = "";
+        public string Favicon = "/images/favicon.png";
+        public string Theme = "default";
+        public StringBuilder Scripts { get; set; } = new StringBuilder();
+        public StringBuilder Css { get; set; } = new StringBuilder();
+        private List<string> Resources = new List<string>();
+
+        public virtual void Init() { }
+
+        public override void Dispose()
+        {
+            base.Dispose();
+            User.Save();
+        }
 
         public virtual string Render(string body = "")
         {
-            if (usePlatform == true)
+            if (UsePlatform == true)
             {
                 Scripts.Append("<script language=\"javascript\">S.svg.load('/themes/default/icons.svg?v=" + Server.Version + "');</script>");
             }
             var view = new View("/Views/Shared/layout.html");
-            view["title"] = title;
-            view["description"] = description;
-            view["theme"] = theme;
+            view["title"] = Title;
+            view["description"] = Description;
+            view["theme"] = Theme;
             view["head-css"] = Css.ToString();
-            view["favicon"] = favicon;
+            view["favicon"] = Favicon;
             view["body"] = body;
-            if (usePlatform)
+            if (UsePlatform)
             {
                 view.Show("platform-1");
                 view.Show("platform-2");
@@ -77,17 +90,8 @@ namespace Kandu
             page.Css.Append(Css.ToString());
         }
 
-        public override void Unload()
+        public bool CheckSecurity()
         {
-            User.Save();
-        }
-
-        public override bool CheckSecurity()
-        {
-            if (!base.CheckSecurity())
-            {
-                return false;
-            }
             if (User.userId > 0)
             {
                 return true;
@@ -95,9 +99,38 @@ namespace Kandu
             return false;
         }
 
-        public string AccessDenied<T>() where T : IController
+        public string AccessDenied<T>() where T : Datasilk.Core.Web.IController
         {
-            return IController.AccessDenied<T>();
+            return Datasilk.Core.Web.IController.AccessDenied<T>(this);
+        }
+
+        public virtual string AccessDenied()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public string Error<T>() where T : Datasilk.Core.Web.IController
+        {
+            Context.Response.StatusCode = 500;
+            return Datasilk.Core.Web.IController.Error<T>(this);
+        }
+
+        public string Error(string message = "Error 500")
+        {
+            Context.Response.StatusCode = 500;
+            return message;
+        }
+
+        public string Error404<T>() where T : Datasilk.Core.Web.IController
+        {
+            Context.Response.StatusCode = 404;
+            return Datasilk.Core.Web.IController.Error404<T>(this);
+        }
+
+        public string Error404(string message = "Error 404")
+        {
+            Context.Response.StatusCode = 404;
+            return message;
         }
 
         public string Redirect(string url)
@@ -105,14 +138,14 @@ namespace Kandu
             return "<script language=\"javascript\">window.location.href = '" + url + "';</script>";
         }
 
-        public override void AddScript(string url, string id = "", string callback = "")
+        public void AddScript(string url, string id = "", string callback = "")
         {
             if (ContainsResource(url)) { return; }
             Scripts.Append("<script language=\"javascript\"" + (id != "" ? " id=\"" + id + "\"" : "") + " src=\"" + url + "\"" +
                 (callback != "" ? " onload=\"" + callback + "\"" : "") + "></script>");
         }
 
-        public override void AddCSS(string url, string id = "")
+        public void AddCSS(string url, string id = "")
         {
             if (ContainsResource(url)) { return; }
             Css.Append("<link rel=\"stylesheet\" type=\"text/css\"" + (id != "" ? " id=\"" + id + "\"" : "") + " href=\"" + url + "\"></link>");

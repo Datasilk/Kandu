@@ -34,7 +34,11 @@
                 default: 
                 case Query.Models.Board.BoardType.kanban: //kanban
                     page = new Kanban();
-                    page.Init(Context, Parameters, Path, PathParts);
+                    page.Context = Context;
+                    page.Parameters = Parameters;
+                    page.Path = Path;
+                    page.PathParts = PathParts;
+                    page.Init();
                     break;
             }
 
@@ -51,6 +55,7 @@
 
             //render board lists
             view["content"] = page.Render();
+            Title = board.name + " - Kandu";
 
             //load header
             LoadHeader(ref view);

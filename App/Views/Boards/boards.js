@@ -6,7 +6,7 @@
             var hasid = false;
             if (id > 0) { hasid = true;}
             S.ajax.post('Teams/List', {}, function (data) {
-                var scaffold = new S.scaffold(
+                var view = new S.view(
                     $('#template_newboard').html()
                         .replace('#team-options#',
                         data.teams.map(a => {
@@ -16,7 +16,7 @@
                         .replace('#submit-label#', !hasid ? 'Create Board' : 'Update Board')
                         .replace('#submit-click#', !hasid ? 'S.boards.add.submit()' : 'S.boards.add.submit(\'' + id + '\')')
                     , {});
-                S.popup.show(!hasid ? 'Create A New Board' : 'Edit Board Settings', scaffold.render(), { width: 430 });
+                S.popup.show(!hasid ? 'Create A New Board' : 'Edit Board Settings', view.render(), { width: 430 });
 
                 //load board details if id is supplied
                 if (hasid) {

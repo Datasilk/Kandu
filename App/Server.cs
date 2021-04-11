@@ -28,8 +28,6 @@ public static class Server
     //config properties
     public static IConfiguration config;
     public static string nameSpace = "";
-    public static string defaultController = "Home";
-    public static string defaultServiceMethod = "Index";
     public static string[] servicePaths = new string[] { "api" };
     public static string sqlActive = "";
     public static string sqlConnectionString = "";

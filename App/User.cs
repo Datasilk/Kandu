@@ -123,6 +123,7 @@ namespace Kandu
             photo = false;
             changed = true;
             Context.Response.Cookies.Delete("authId");
+            Save();
         }
 
         public bool CheckSecurity(int boardId)

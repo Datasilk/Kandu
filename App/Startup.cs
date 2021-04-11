@@ -66,8 +66,6 @@ namespace Kandu
 
             //configure Server defaults
             Server.nameSpace = config.GetSection("assembly").Value;
-            Server.defaultController = config.GetSection("defaultController").Value;
-            Server.defaultServiceMethod = config.GetSection("defaultServiceMethod").Value;
             Server.hostUrl = config.GetSection("hostUrl").Value;
             var servicepaths = config.GetSection("servicePaths").Value;
             if (servicepaths != null && servicepaths != "")
@@ -94,7 +92,6 @@ namespace Kandu
             var sessionOpts = new SessionOptions();
             sessionOpts.Cookie.Name = Server.nameSpace;
             sessionOpts.IdleTimeout = TimeSpan.FromMinutes(expires);
-
             app.UseSession(sessionOpts);
 
             //handle static files
@@ -111,14 +108,19 @@ namespace Kandu
             //exception handling
             if (Server.environment == Server.Environment.development)
             {
-                app.UseDeveloperExceptionPage(new DeveloperExceptionPageOptions
-                {
-                    SourceCodeLineCount = 10
-                });
+                //app.UseDeveloperExceptionPage(new DeveloperExceptionPageOptions
+                //{
+                //    SourceCodeLineCount = 10
+                //});
             }
             else
             {
+                //use HTTPS
                 app.UseHsts();
+                app.UseHttpsRedirection();
+
+                //use health checks
+                app.UseHealthChecks("/health");
             }
 
             //use HTTPS
@@ -132,9 +134,11 @@ namespace Kandu
             //run Datasilk application
             app.UseDatasilkMvc(new MvcOptions()
             {
-                IgnoreRequestBodySize = true,
                 Routes = new Routes(),
-                WriteDebugInfoToConsole = true
+                IgnoreRequestBodySize = true,
+                WriteDebugInfoToConsole = false,
+                LogRequests = false,
+                InvokeNext = false
             });
         }
     }

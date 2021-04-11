@@ -65,6 +65,7 @@ namespace Kandu.Common.Platform.Card
             {
                 var card = Query.Cards.GetDetails(boardId, cardId);
                 var view = new View("/Views/Card/Kanban/details.html");
+                view["title"] = card.name;
                 view["list-name"] = card.listName;
                 view["description"] = card.description;
                 view["no-description"] = card.description.Length > 0 ? "hide" : "";

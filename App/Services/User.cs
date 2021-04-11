@@ -65,6 +65,19 @@
             return Error();
         }
 
+        public string CreateAccount(string name, string email, string password)
+        {
+            Query.Users.CreateUser(new Query.Models.User()
+            {
+                name = name,
+                email = email,
+                password = EncryptPassword(email, password)
+            });
+            Server.hasAdmin = true;
+            Server.resetPass = false;
+            return "success";
+        }
+
         public void LogOut()
         {
             User.LogOut();

@@ -49,7 +49,7 @@
 }
 
 /* tapestry theme engine */
-@import "../tapestry/less/theme.less"; 
+@import "../tapestry/theme.less"; 
 
 body{font-weight:lighter;}
 body, h1, h2, h3, h4, h5, h6, span, input, select, textarea{font-family: Open Sans, Arial, Helvetica, sans;}
@@ -85,10 +85,10 @@ body, h1, h2, h3, h4, h5, h6, span, input, select, textarea{font-family: Open Sa
     .button(grey,       #e0e0e0, #bfbfbf, #bfbfbf, #e0e0e0, transparent, transparent, transparent, transparent, transparent, transparent, transparent, transparent, #333, #333, #333, #333);
     .button(delete,     #d07d7d, #c95454, #c95454, #c95454, transparent, transparent, transparent, transparent, transparent, transparent, transparent, transparent, #fff, #fff, #fff, #fff);
     .button(red,        #c80c0c, #ff0000, #ff0000, #c80c0c, transparent, transparent, transparent, transparent, transparent, transparent, transparent, transparent, #fff, #fff, #fff, #fff);
-    .message(default, #8ccaef, transparent, #0066ff);
-    .message(error,   #f46f6f, transparent, #fff);
-    .message(alert,   #dbdb86, transparent, #d79c0c); 
-    .message(confirm, #92e061, transparent, #228f4b); 
+    .message(default, #8ccaef, transparent, #0066ff, #0066ff);
+    .message(error,   #f46f6f, transparent, #fff, #fff);
+    .message(alert,   #dbdb86, transparent, #d79c0c, #d79c0c); 
+    .message(confirm, #92e061, transparent, #228f4b, #228f4b); 
 }
 
 .box .bg.white{

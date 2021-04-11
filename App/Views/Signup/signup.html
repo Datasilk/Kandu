@@ -1,0 +1,48 @@
+﻿<style type="text/css">
+    .section.login {max-width: 440px;}
+    .login .col.title{font-size:22px;}
+    .section.login .logo img{max-width:100%;}
+</style>
+<div class="row pad-top-xl">
+    <div class="section login pad-lg pad-width-xl center">
+        <form method="post">
+            <div class="row logo text-center pad-top pad-bottom-lg">
+                <img src="/images/logo-xs.png" />
+            </div>
+
+            <div class="row pad-top">
+                <div class="col title pad-bottom">{{title}}</div>
+            </div>
+            <div class="row message hide"><span></span></div>
+            <div class="row hover">
+                <div class="col field long">Your Name</div>
+                <div class="col input">
+                    <input type="text" id="name" placeholder="Mark Entingh" />
+                </div>
+            </div>
+            <div class="row hover">
+                <div class="col field long">Email</div>
+                <div class="col input">
+                    <input type="text" id="email" placeholder="admin@localhost" />
+                </div>
+            </div>
+            <div class="row hover">
+                <div class="col field long">Password</div>
+                <div class="col input">
+                    <input type="password" id="password" />
+                </div>
+            </div>
+            <div class="row hover">
+                <div class="col field long">Password</div>
+                <div class="col input">
+                    <input type="password" id="password2" />
+                </div>
+            </div>
+            <div class="row pad-top">
+                <div class="col right buttons">
+                    <input type="submit" class="button apply" value="Create Account" />
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

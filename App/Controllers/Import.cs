@@ -9,7 +9,11 @@
             {
                 case "trello":
                     page = new Imports.Trello();
-                    page.Init(Context, Parameters, Path, PathParts);
+                    page.Context = Context;
+                    page.Parameters = Parameters;
+                    page.Path = Path;
+                    page.PathParts = PathParts;
+                    page.Init();
                     break;
                     
             }

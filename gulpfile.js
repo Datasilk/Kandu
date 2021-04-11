@@ -41,7 +41,7 @@ paths.working = {
             paths.scripts + "platform/message.js",
             paths.scripts + "platform/polyfill.js",
             paths.scripts + "platform/popup.js",
-            paths.scripts + "platform/scaffold.js",
+            paths.scripts + "platform/view.js",
             paths.scripts + "platform/scrollbar.js",
             paths.scripts + "platform/svg.js",
             paths.scripts + "platform/util.js",

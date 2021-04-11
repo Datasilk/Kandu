@@ -17,5 +17,10 @@ namespace Kandu
             }
             return null;
         }
+
+        public override IService FromServiceRoutes(HttpContext context, Parameters parameters, string name)
+        {
+            return null;
+        }
     }
 }

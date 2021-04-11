@@ -585,10 +585,11 @@
                 listId: S.util.element.getClassId(elem.parents('.list'), 'id-'),
                 elem: $('.board .list .item.id-' + id)
             };
-            S.popup.show("", S.loader(), { width: 350 });
+            var popup = S.popup.show("", S.loader(), { width: 350 });
             S.ajax.post('Card/Kanban/Details', data,
                 function (d) {
-                    var card = d.split('|');
+                    var card = d.split('|', 2);
+                    S.popup.hide(popup);
                     S.popup.show(card[0], card[1], { width: '90%', maxWidth: 750 });
                     $('.popup .card-field-title').on('click', S.kanban.card.title.edit);
                     $('.popup .btn-archive a').off('click').on('click', S.kanban.card.archive);
@@ -926,7 +927,7 @@
             cached: null, 
             edit: function () {
                 if ($('.popup .card-field-title').hasClass('transparent') == false) { return; }
-                let title = S.util.text.html.decode($('.popup .title h5').html().trim());
+                let title = $('.popup .textarea-clone').val();
                 let input = $('.popup .card-field-title textarea');
                 S.kanban.card.title.cached = title;
                 input.val(title);

@@ -13,6 +13,7 @@ namespace Kandu
             {
                 webBuilder
                 .UseContentRoot(Directory.GetCurrentDirectory())
+                //.UseIISIntegration()
                 .UseKestrel(
                     options =>
                     {
