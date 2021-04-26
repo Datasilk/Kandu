@@ -36,15 +36,6 @@ namespace Kandu.Controllers
             });
             view["list"] = html.ToString();
 
-            //load teams list
-            var teams = Query.Teams.GetList(User.userId);
-            html = new StringBuilder();
-            teams.ForEach((Query.Models.Team t) =>
-            {
-                html.Append("<option value=\"" + t.teamId + "\">" + t.name + "</option>\n");
-            });
-            view["team-options"] = html.ToString();
-
             //load page resources
             AddScript("/js/dashboard.js?v=" + Server.Version);
             AddCSS("/css/dashboard.css?v=" + Server.Version);

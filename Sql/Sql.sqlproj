@@ -72,6 +72,7 @@
     <Folder Include="dbo\Stored Procedures\Utility" />
     <Folder Include="dbo\Stored Procedures\OrgSecurity" />
     <Folder Include="dbo\Stored Procedures\Organizations" />
+    <Folder Include="scripts" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="dbo\Tables\Users.sql" />
@@ -159,9 +160,11 @@
     <Build Include="dbo\Tables\BoardMembers.sql" />
     <Build Include="dbo\Stored Procedures\Boards\Board_Favorite.sql" />
     <Build Include="dbo\Stored Procedures\Boards\Board_Unfavorite.sql" />
+    <None Include="scripts\Publish-2021-04-26.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Sql.publish.xml" />
+    <None Include="scripts\Migrate-2021-04-26.sql" />
   </ItemGroup>
   <ItemGroup>
     <RefactorLog Include="Sql.refactorlog" />

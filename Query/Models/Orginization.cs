@@ -2,7 +2,7 @@
 
 namespace Query.Models
 {
-    public class Orginization
+    public class Organization
     {
         public int orgId { get; set; }
         public int ownerId { get; set; }

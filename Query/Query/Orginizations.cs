@@ -2,26 +2,26 @@
 
 namespace Query
 {
-    public static class Orginizations
+    public static class Organizations
     {
-        public static void Create(Models.Orginization org)
+        public static void Create(Models.Organization org)
         {
-            Sql.ExecuteNonQuery("Orginization_Create", new { org.ownerId, org.name, org.website, org.description, org.isprivate });
+            Sql.ExecuteNonQuery("Organization_Create", new { org.ownerId, org.name, org.website, org.description, org.isprivate });
         }
 
         public static  void Disable(int orgId)
         {
-            Sql.ExecuteNonQuery("Orginization_Disable", new { orgId });
+            Sql.ExecuteNonQuery("Organization_Disable", new { orgId });
         }
 
         public static void Enable(int orgId)
         {
-            Sql.ExecuteNonQuery("Orginization_Enable", new { orgId });
+            Sql.ExecuteNonQuery("Organization_Enable", new { orgId });
         }
 
-        public static Models.Orginization GetInfo(int orgId)
+        public static Models.Organization GetInfo(int orgId)
         {
-            var list = Sql.Populate<Models.Orginization>("Orginization_GetInfo", new { orgId });
+            var list = Sql.Populate<Models.Organization>("Organization_GetInfo", new { orgId });
             if(list != null && list.Count > 0)
             {
                 return list[0];
@@ -29,14 +29,14 @@ namespace Query
             return null;
         }
 
-        public static List<Models.Orginization> Owned(int ownerId)
+        public static List<Models.Organization> Owned(int ownerId)
         {
-            return Sql.Populate<Models.Orginization>("Orginizations_Owned", new { ownerId });
+            return Sql.Populate<Models.Organization>("Organizations_Owned", new { ownerId });
         }
 
-        public static List<Models.Orginization> UserIsPartOf(int userId)
+        public static List<Models.Organization> UserIsPartOf(int userId)
         {
-            return Sql.Populate<Models.Orginization>("Orginizations_UserIsPartOf", new { userId });
+            return Sql.Populate<Models.Organization>("Organizations_UserIsPartOf", new { userId });
         }
     }
 }

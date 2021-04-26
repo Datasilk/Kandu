@@ -9,6 +9,7 @@ namespace Kandu
     {
         protected HttpContext Context;
 
+        //fields saved into user session
         public int userId { get; set; } = 0;
         public string visitorId { get; set; } = "";
         public string email { get; set; } = "";
@@ -16,15 +17,14 @@ namespace Kandu
         public string displayName { get; set; } = "";
         public bool photo { get; set; } = false;
         public DateTime datecreated { get; set; }
-
         public Dictionary<int, Dictionary<string, bool>> Security { get; set; } = new Dictionary<int, Dictionary<string, bool>>();
+        public bool resetPass { get; set; } = false;
+        public bool keepMenuOpen { get; set; }
+        public bool allColor { get; set; }
+        public List<int> boards { get; set; } = new List<int>();
 
-        public bool resetPass = false;
+        //private fields
         protected bool changed = false;
-
-        public bool keepMenuOpen;
-        public bool allColor;
-        public List<int> boards = new List<int>();
 
         //get User object from session
         public static User Get(HttpContext context)

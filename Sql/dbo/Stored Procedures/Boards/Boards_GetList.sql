@@ -1,7 +1,7 @@
 ﻿CREATE PROCEDURE [dbo].[Boards_GetList]
 	@userId int
 AS
-	SELECT DISTINCT b.* 
+	SELECT DISTINCT b.*, org.sort, org.[name] AS orgName, bm.favorite 
 	FROM TeamMembers tm
 	JOIN BoardTeams bt ON bt.teamId = tm.teamId
 	JOIN Boards b ON b.boardId = bt.boardId

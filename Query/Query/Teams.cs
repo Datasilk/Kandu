@@ -37,11 +37,11 @@ namespace Query
             dateCreated = 2
         }
 
-        public static List<Models.Team>GetList(int ownerId =0, int start = 1, int length = 20, string search = "", SortList orderBy = SortList.name)
+        public static List<Models.Team>GetList(int userId = 0, int start = 1, int length = 20, string search = "", SortList orderBy = SortList.name)
         {
             return Sql.Populate<Models.Team>(
                 "Teams_GetList",
-                new { ownerId, start, length, search, orderby = (int)orderBy }
+                new { userId, start, length, search, orderby = (int)orderBy }
             );
         }
     }

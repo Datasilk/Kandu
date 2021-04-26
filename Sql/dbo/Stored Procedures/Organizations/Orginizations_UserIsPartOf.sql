@@ -1,4 +1,4 @@
-﻿CREATE PROCEDURE [dbo].[Orginizations_UserIsPartOf]
+﻿CREATE PROCEDURE [dbo].[Organizations_UserIsPartOf]
 	@userId int
 AS
 	SELECT DISTINCT * FROM Organizations o

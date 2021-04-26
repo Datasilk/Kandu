@@ -8,16 +8,15 @@ namespace Kandu.Common.Platform
 {
     public static class Boards
     {
-        public static int Create(Request request, string name, string color, int teamId)
+        public static int Create(Request request, string name, string color, int orgId)
         {
             try
             {
                 var id = Query.Boards.CreateBoard(new Query.Models.Board()
                 {
                     name = name,
-                    security = 1,
                     color = color,
-                    teamId = teamId
+                    orgId = orgId
                 }, request.User.userId);
 
                 //add board Id to user's permissions for boards

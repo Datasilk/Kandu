@@ -14,6 +14,7 @@ namespace Query.Models
         public int boardId { get; set; }
         public int teamId { get; set; }
         public int orgId { get; set; }
+        public int sort { get; set; }
         public BoardType type { get; set; }
         public bool favorite { get; set; }
         public bool archived { get; set; }

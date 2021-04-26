@@ -35,14 +35,14 @@
             var hasid = false;
             var name = $('#boardname').val();
             var color = S.util.color.rgbToHex($('.popup .color-input').css('background-color')).replace('#','');
-            var team = $('#boardteam').val();
+            var orgId = $('#orgId').val();
             var msg = $('.popup .message');
             if (id > 0) { hasid = true;}
             if (name == '' || name == null) {
                 S.message.show(msg, 'error', 'Please specify a board name');
                 return;
             }
-            var form = { name: name, color: color, teamId: team };
+            var form = { name: name, color: color, orgId: orgId };
             if (hasid) { form.boardId = id;}
             S.ajax.post(hasid ? 'Boards/Update' : 'Boards/Create', form,
                 function (data) {
