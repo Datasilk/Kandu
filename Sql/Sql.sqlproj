@@ -69,8 +69,9 @@
     <Folder Include="dbo\Stored Procedures\Cards" />
     <Folder Include="dbo\Stored Procedures\Boards" />
     <Folder Include="dbo\Stored Procedures\Lists" />
-    <Folder Include="dbo\Stored Procedures\BoardMembers" />
     <Folder Include="dbo\Stored Procedures\Utility" />
+    <Folder Include="dbo\Stored Procedures\OrgSecurity" />
+    <Folder Include="dbo\Stored Procedures\Organizations" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="dbo\Tables\Users.sql" />
@@ -111,8 +112,7 @@
     <Build Include="dbo\Stored Procedures\Boards\Board_Archive.sql" />
     <Build Include="dbo\Stored Procedures\Boards\Board_Restore.sql" />
     <Build Include="dbo\Stored Procedures\Boards\Board_GetDetails.sql" />
-    <Build Include="dbo\Tables\BoardMembers.sql" />
-    <Build Include="dbo\Views\View_BoardMembers.sql" />
+    <Build Include="dbo\Tables\BoardTeams.sql" />
     <Build Include="dbo\Stored Procedures\Users\Users_HasAdmin.sql" />
     <None Include="utility\resetdb.sql" />
     <Build Include="dbo\Stored Procedures\Users\User_UpdateLastBoard.sql" />
@@ -122,8 +122,6 @@
     <Build Include="dbo\Stored Procedures\Boards\Board_MemberExists.sql" />
     <Build Include="dbo\Stored Procedures\Lists\List_GetDetails.sql" />
     <Build Include="dbo\Stored Procedures\Boards\Board_GetLists.sql" />
-    <Build Include="dbo\Stored Procedures\BoardMembers\BoardMember_GetBoards.sql" />
-    <Build Include="dbo\Views\View_Boards.sql" />
     <Build Include="dbo\Stored Procedures\Cards\Card_Move.sql" />
     <Build Include="dbo\Functions\SplitArray.sql" />
     <Build Include="dbo\Stored Procedures\Users\User_KeepMenuOpen.sql" />
@@ -145,6 +143,22 @@
     <Build Include="dbo\Stored Procedures\Utility\GetCustomId.sql" />
     <Build Include="dbo\Stored Procedures\Lists\List_Archive.sql" />
     <Build Include="dbo\Stored Procedures\Cards\Card_UpdateName.sql" />
+    <Build Include="dbo\Sequences\SequenceOrganizations.sql" />
+    <Build Include="dbo\Tables\Organizations.sql" />
+    <Build Include="dbo\Tables\OrgSecurity.sql" />
+    <Build Include="dbo\Stored Procedures\Organizations\Organization_Create.sql" />
+    <Build Include="dbo\Stored Procedures\Organizations\Orginization_GetInfo.sql" />
+    <Build Include="dbo\Stored Procedures\Organizations\Orginizations_UserIsPartOf.sql" />
+    <Build Include="dbo\Stored Procedures\Organizations\Orginizations_Owned.sql" />
+    <Build Include="dbo\Stored Procedures\Organizations\Orginization_Enable.sql" />
+    <Build Include="dbo\Stored Procedures\Organizations\Orginization_Disable.sql" />
+    <Build Include="dbo\Stored Procedures\Boards\Boards_MemberIsPartOf.sql" />
+    <Build Include="dbo\Stored Procedures\OrgSecurity\OrgSecurity_SaveKeys.sql" />
+    <Build Include="dbo\Stored Procedures\OrgSecurity\OrgSecurity_ForUser.sql" />
+    <Build Include="dbo\Stored Procedures\OrgSecurity\OrgSecurity_AllKeysForUser.sql" />
+    <Build Include="dbo\Tables\BoardMembers.sql" />
+    <Build Include="dbo\Stored Procedures\Boards\Board_Favorite.sql" />
+    <Build Include="dbo\Stored Procedures\Boards\Board_Unfavorite.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Sql.publish.xml" />

@@ -271,7 +271,7 @@
                 //returns height of footer to offset scrollbar height
                 const foot = list.parent().find('.form-new-card');
                 const foot2 = list.parent().find('.btn-add-card');
-                return foot.height() + foot2.height() + 38
+                return foot.height() + foot2.height() + 38;
             }
         },
 

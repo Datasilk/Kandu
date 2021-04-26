@@ -13,16 +13,14 @@ namespace Query.Models
 
         public int boardId { get; set; }
         public int teamId { get; set; }
-        public int ownerId { get; set; }
+        public int orgId { get; set; }
         public BoardType type { get; set; }
         public bool favorite { get; set; }
         public bool archived { get; set; }
         public string name { get; set; }
-        public string ownerName { get; set; }
+        public string orgName { get; set; }
         public string teamName { get; set; }
         public string teamDescription { get; set; }
-        public string teamWebsite { get; set; }
-        public short security { get; set; }
         public string color { get; set; }
         public DateTime datecreated { get; set; }
         public DateTime lastmodified { get; set; }

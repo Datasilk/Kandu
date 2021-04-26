@@ -7,22 +7,20 @@ namespace Kandu
 {
     public class User
     {
-        public int userId = 0;
-        public short userType = 0;
-        public string visitorId = "";
-        public string email = "";
-        public string name = "";
-        public string displayName = "";
-        public bool photo = false;
-        public bool isBot = false;
-        public bool useAjax = true;
-        public bool isMobile = false;
-        public bool isTablet = false;
-        public bool resetPass = false;
-        public DateTime datecreated;
-        public Dictionary<string, string> Data = new Dictionary<string, string>();
-        protected bool changed = false;
         protected HttpContext Context;
+
+        public int userId { get; set; } = 0;
+        public string visitorId { get; set; } = "";
+        public string email { get; set; } = "";
+        public string name { get; set; } = "";
+        public string displayName { get; set; } = "";
+        public bool photo { get; set; } = false;
+        public DateTime datecreated { get; set; }
+
+        public Dictionary<int, Dictionary<string, bool>> Security { get; set; } = new Dictionary<int, Dictionary<string, bool>>();
+
+        public bool resetPass = false;
+        protected bool changed = false;
 
         public bool keepMenuOpen;
         public bool allColor;
@@ -67,7 +65,7 @@ namespace Kandu
                 if (user != null)
                 {
                     //persistant cookie was valid, log in
-                    LogIn(user.userId, user.email, user.name, user.datecreated, "", 1, user.photo);
+                    LogIn(user.userId, user.email, user.name, user.datecreated, "", user.photo);
                 }
             }
         }
@@ -85,15 +83,16 @@ namespace Kandu
             }
         }
 
-        public void LogIn(int userId, string email, string name, DateTime datecreated, string displayName = "", short userType = 1, bool photo = false)
+        public void LogIn(int userId, string email, string name, DateTime datecreated, string displayName = "", bool photo = false)
         {
             this.userId = userId;
-            this.userType = userType;
             this.email = email;
             this.photo = photo;
             this.name = name;
             this.displayName = displayName;
             this.datecreated = datecreated;
+
+            //TODO: load security keys for user
 
             //load Kandu-specific properties for user from database
             var user = Query.Users.GetInfo(userId);

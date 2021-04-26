@@ -1,15 +1,21 @@
 ﻿CREATE PROCEDURE [dbo].[Board_Create]
-	@userId int,
+	@orgId int,
 	@teamId int,
+	@userId int,
 	@name nvarchar(64),
 	@favorite bit = 0,
-	@security smallint = 0,
 	@color nvarchar(6) = ''
 AS
-	DECLARE @id int = NEXT VALUE FOR SequenceBoards
-	INSERT INTO Boards (boardId, teamId, [name], favorite, [security], color)
-	VALUES (@id, @teamId, @name, @favorite, @security, @color)
+	DECLARE @boardId int = NEXT VALUE FOR SequenceBoards
+	INSERT INTO Boards (boardId, orgId, [name], color)
+	VALUES (@boardId, @orgId, @name, @color)
 
-	INSERT INTO BoardMembers (boardId, userId) VALUES (@id, @userId)
+	INSERT INTO BoardTeams (boardId, teamId) VALUES (@boardId, @teamId)
 
-	SELECT @id
+	IF @favorite = 1 BEGIN
+		EXEC Board_Favorite @boardId=@boardId, @userId=@userId
+	END ELSE BEGIN
+		EXEC Board_Unfavorite @boardId=@boardId, @userId=@userId
+	END
+
+	SELECT @boardId

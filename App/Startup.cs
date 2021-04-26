@@ -127,7 +127,7 @@ namespace Kandu
             //app.UseHttpsRedirection();
 
             //set up database connection
-            Query.Sql.connectionString = Server.sqlConnectionString;
+            Query.Sql.ConnectionString = Server.sqlConnectionString;
             Server.resetPass = Query.Users.HasPasswords();
             Server.hasAdmin = Query.Users.HasAdmin();
 

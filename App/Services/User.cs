@@ -11,7 +11,7 @@
                 var user = Query.Users.AuthenticateUser(email, encrypted);
                 if (user != null)
                 {
-                    User.LogIn(user.userId, user.email, user.name, user.datecreated, "", 1, user.photo);
+                    User.LogIn(user.userId, user.email, user.name, user.datecreated, "", user.photo);
                     User.Save(true);
 
                     if (user.lastboard == 0)

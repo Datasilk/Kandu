@@ -87,7 +87,7 @@ namespace Kandu.Common.Platform
             var item = new View("/Views/Boards/menu-item.html");
             var boards = Query.Boards.GetList(request.User.userId);
             var favs = boards.Where((a) => { return a.favorite; });
-            var teams = boards.OrderBy((a) => { return a.datecreated; }).Reverse().OrderBy((a) => { return a.ownerId == request.User.userId; });
+            var teams = boards.OrderBy((a) => { return a.datecreated; }).Reverse().OrderBy((a) => { return a.orgId == request.User.userId; });
 
             // Favorite Boards //////////////////////////////////////////
             if (favs.Count() > 0)
@@ -102,7 +102,7 @@ namespace Kandu.Common.Platform
                     item["url"] = "/board/" + fav.boardId + "/" + fav.name.Replace(" ", "-").ToLower();
                     item["color"] = "#" + fav.color;
                     item["title"] = fav.name;
-                    item["owner"] = fav.ownerName;
+                    item["owner"] = fav.orgName;
                     item["star"] = fav.favorite ? "star" : "star-border";
                     htm.Append(item.Render());
                 }
@@ -139,7 +139,7 @@ namespace Kandu.Common.Platform
                     item["url"] = "/board/" + team.boardId + "/" + team.name.Replace(" ", "-").ToLower();
                     item["color"] = "#" + team.color;
                     item["title"] = team.name;
-                    item["owner"] = team.ownerName;
+                    item["owner"] = team.orgName;
                     item["star"] = team.favorite ? "star" : "star-border";
                     htm.Append(item.Render());
                 }

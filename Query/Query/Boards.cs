@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using Dapper;
 
 namespace Query
 {
@@ -10,7 +9,7 @@ namespace Query
         {
             return Sql.ExecuteScalar<int>(
                 "Board_Create",
-                new {userId, board.teamId, board.favorite, board.name, board.security, board.color }
+                new {board.orgId, board.teamId, userId, board.name, board.favorite, board.color }
             );
         }
 
@@ -81,7 +80,7 @@ namespace Query
         public static List<int> GetBoardsForMember(int userId)
         {
             return Sql.Populate<int>(
-                "BoardMember_GetBoards", new { userId }
+                "Boards_MemberIsPartOf", new { userId }
             );
         }
 
@@ -89,8 +88,18 @@ namespace Query
         {
             return Sql.ExecuteScalar<int>(
                 "Board_Import",
-                new { userId, board.teamId, board.favorite, board.name, board.security, board.color, merge }
+                new { board.orgId, board.teamId, userId, board.name, board.favorite, board.color, merge }
             );
+        }
+
+        public static void Favorite(int boardId, int userId)
+        {
+            Sql.ExecuteNonQuery("Board_Favorite", new { boardId, userId });
+        }
+
+        public static void Unfavorite(int boardId, int userId)
+        {
+            Sql.ExecuteNonQuery("Board_Unfavorite", new { boardId, userId });
         }
     }
 }

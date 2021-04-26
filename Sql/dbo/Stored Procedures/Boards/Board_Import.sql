@@ -1,9 +1,9 @@
 ﻿CREATE PROCEDURE [dbo].[Board_Import]
-	@userId int,
+	@orgId int,
 	@teamId int,
+	@userId int,
 	@name nvarchar(64),
 	@favorite bit = 0,
-	@security smallint = 0,
 	@color nvarchar(6) = '',
 	@merge bit = 0
 AS
@@ -25,13 +25,19 @@ AS
 			DELETE FROM Lists WHERE boardId=@oldId
 		END
 		/* merge */
-		UPDATE Boards SET favorite=@favorite, @color=@color WHERE boardId=@oldId
+		UPDATE Boards SET @color=@color WHERE boardId=@oldId
 		SET @create = 0
 	END
 
 	IF @create = 1 BEGIN
-		INSERT INTO #tmp EXEC Board_Create @userId=@userId, @teamId=@teamId, @name=@name, @favorite=@favorite, @security=@security, @color=@color
+		INSERT INTO #tmp EXEC Board_Create @orgId=@orgId, @teamId=@teamId, @userId=@userId, @name=@name, @favorite=@favorite, @color=@color
 		SELECT @oldId=id FROM #tmp
+	END
+
+	IF @favorite = 1 BEGIN
+		EXEC Board_Favorite @boardId=@oldId, @userId=@userId
+	END ELSE BEGIN
+		EXEC Board_Unfavorite @boardId=@oldId, @userId=@userId
 	END
 
 	SELECT @oldId

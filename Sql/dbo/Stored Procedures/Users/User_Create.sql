@@ -4,22 +4,17 @@
 	@password nvarchar(255),
 	@photo bit = 0
 AS
-	DECLARE @id int = NEXT VALUE FOR SequenceUsers
+	DECLARE @userId int = NEXT VALUE FOR SequenceUsers
 	INSERT INTO Users (userId, [name], email, [password], photo, datecreated)
-	VALUES (@id, @name, @email, @password, @photo, GETDATE())
-
-	/* Create a Team for new User */
-	IF OBJECT_ID('tempdb.dbo.#tmp') IS NOT NULL DROP TABLE #tmp
-	CREATE TABLE #tmp (id int)
-	DECLARE @teamId int = 0
-	INSERT INTO #tmp EXEC Team_Create @ownerId=@id, @name=@name, @security=1
-	SELECT @teamId = id FROM #tmp
-	DELETE FROM #tmp
-
-	/* Create record for Team Member */
-	INSERT INTO TeamMembers (teamId, userId, [security])
-	VALUES (@teamId, @id, 1)
-
-	DROP TABLE #tmp
+	VALUES (@userId, @name, @email, @password, @photo, GETDATE())
 	
-	SELECT @id
+	-- create organization for user
+	DECLARE @tmp TABLE (id int)
+	INSERT INTO @tmp EXEC Organization_Create @ownerId=@userId, @name='My Organization', @website='', @description='Personal Organization', @isprivate=1
+	DECLARE @orgId int
+	SELECT @orgId = id FROM @tmp
+
+	-- create a team for the user
+	EXEC Team_Create @orgId=@orgId, @ownerId=@userId, @name='My Team', @description='Personal Team'
+
+	SELECT @userId

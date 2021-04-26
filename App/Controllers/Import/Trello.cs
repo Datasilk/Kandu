@@ -57,9 +57,8 @@ namespace Kandu.Controllers.Imports
                             color = bgColor,
                             datecreated = board.actions.Last().date,
                             lastmodified = board.dateLastActivity,
-                            ownerId = User.userId,
+                            orgId = User.userId,
                             favorite = board.pinned,
-                            security = (short)(board.prefs.permissionLevel == "private" ? 1 : 0),
                             type = (Query.Models.Board.BoardType)boardType
 
                         }, User.userId, merge);

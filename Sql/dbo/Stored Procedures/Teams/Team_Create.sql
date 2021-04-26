@@ -1,14 +1,13 @@
 ﻿CREATE PROCEDURE [dbo].[Team_Create]
+	@orgId int,
 	@ownerId int,
-	@security bit, 
 	@name nvarchar(64),
-	@website nvarchar(255) = '',
 	@description nvarchar(MAX) = ''
 AS
-	DECLARE @id int = NEXT VALUE FOR SequenceTeams
-	INSERT INTO Teams (teamId, ownerId, [security], [name], datecreated, website, [description])
-	VALUES (@id, @ownerId, @security, @name, GETDATE(), @website, @description)
+	DECLARE @teamId int = NEXT VALUE FOR SequenceTeams
+	INSERT INTO Teams (teamId, orgId, [name], datecreated, [description])
+	VALUES (@teamId, @orgId, @name, GETDATE(), @description)
 
-	INSERT INTO TeamMembers (userId, teamId) VALUES (@ownerId, @id)
+	INSERT INTO TeamMembers (teamId, userId) VALUES (@teamId, @ownerId)
 
-	SELECT @id
+	SELECT @teamId

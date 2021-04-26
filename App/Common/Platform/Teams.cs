@@ -12,9 +12,7 @@ namespace Kandu.Common.Platform
                 {
                     name = name,
                     description = description,
-                    ownerId = request.User.userId,
-                    website = "",
-                    security = true
+                    ownerId = request.User.userId
                 });
             }
             catch (Exception)

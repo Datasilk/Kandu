@@ -8,7 +8,7 @@ namespace Query
         {
             return Sql.ExecuteScalar<int>(
                 "Team_Create",
-                new {team.ownerId, team.security, team.name, team.website, team.description }
+                new {team.ownerId, team.name, team.description }
             );
         }
 
@@ -26,14 +26,14 @@ namespace Query
         {
             Sql.ExecuteNonQuery(
                 "Team_Update",
-                new { team.teamId, team.ownerId, team.security, team.name, team.website, team.description }
+                new { team.teamId, team.ownerId, team.name, team.description }
             );
         }
 
         public enum SortList
         {
-            name = 0,
-            security = 1,
+            teamId = 0,
+            name = 1,
             dateCreated = 2
         }
 
