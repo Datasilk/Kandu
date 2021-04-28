@@ -92,7 +92,19 @@ namespace Kandu
             this.displayName = displayName;
             this.datecreated = datecreated;
 
-            //TODO: load security keys for user
+            //load security keys for user
+            var keys = Query.Security.AllKeysForUser(userId);
+            foreach(var key in keys)
+            {
+                if (Security.ContainsKey(key.orgId))
+                {
+                    Security[key.orgId].Add(key.key, key.enabled);
+                }
+                else
+                {
+                    Security.Add(key.orgId, new Dictionary<string, bool>() { { key.key, key.enabled } });
+                }
+            }
 
             //load Kandu-specific properties for user from database
             var user = Query.Users.GetInfo(userId);
@@ -112,6 +124,7 @@ namespace Kandu
             Context.Response.Cookies.Append("authId", auth, options);
 
             changed = true;
+            Save();
         }
 
         public void LogOut()
@@ -134,6 +147,14 @@ namespace Kandu
                 return true;
             }
             return false;
+        }
+
+        public bool CheckSecurity(int orgId, string key)
+        {
+            return (Security.ContainsKey(orgId) && (
+                    Security[orgId].ContainsKey(key) ? Security[orgId][key] :
+                    (Security[orgId].ContainsKey("owner") ? Security[orgId]["owner"] : false)
+                )) || false;
         }
 
         #region "Helpers"

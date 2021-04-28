@@ -22,7 +22,7 @@ namespace Query
 
         public static List<Models.SecurityKey> AllKeysForUser(int userId)
         {
-            return Sql.Populate<Models.SecurityKey>("OrgSecurity_ForUser", new { userId });
+            return Sql.Populate<Models.SecurityKey>("OrgSecurity_AllKeysForUser", new { userId });
         }
     }
 }

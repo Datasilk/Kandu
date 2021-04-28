@@ -1,16 +1,16 @@
 ﻿S.boards = {
     add: {
-        data:{name:'',teamId:0, color:'FFCC66'},
         show: function (e, id) {
             //get team list
             var hasid = false;
             if (id > 0) { hasid = true;}
-            S.ajax.post('Teams/List', {}, function (data) {
+            S.ajax.post('Organizations/List', { security: 'board-create' }, function (data) {
+                console.log(data);
                 var view = new S.view(
                     $('#template_newboard').html()
-                        .replace('#team-options#',
-                        data.teams.map(a => {
-                            return '<option value="' + a.teamId + '">' + a.name + '</option>';
+                        .replace('#org-options#',
+                        data.orgs.map(a => {
+                            return '<option value="' + a.orgId + '">' + a.name + '</option>';
                         }).join(''))
                         .replace('#color#', '#0094ff')
                         .replace('#submit-label#', !hasid ? 'Create Board' : 'Update Board')

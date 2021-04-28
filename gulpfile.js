@@ -92,10 +92,12 @@ paths.working = {
 
     dashboard: {
         js: [
+            paths.app + 'views/organizations/organizations.js',
             paths.app + 'views/boards/boards.js',
             paths.app + 'views/shared/header.js'
         ],
         css: [
+            paths.webroot + 'css/views/boards/organizations.css',
             paths.webroot + 'css/views/boards/boards.css',
             paths.webroot + 'css/views/shared/header.css'
         ]

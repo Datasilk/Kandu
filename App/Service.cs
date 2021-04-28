@@ -31,6 +31,11 @@ namespace Kandu
             return JsonResponse(new Response(html, Css.ToString() + Scripts.ToString()));
         }
 
+        public virtual bool CheckSecurity()
+        {
+            return User.userId > 0;
+        }
+
         public virtual bool CheckSecurity(int boardId)
         {
             return User.CheckSecurity(boardId);
