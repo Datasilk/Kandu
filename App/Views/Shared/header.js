@@ -6,11 +6,13 @@
         $('.boards-menu .btn-import-trello').on('click', S.head.import.trello.show);
         $('.btn-boards').on('click', S.head.boards.show);
         $('.bg-for-boards-menu').on('click', S.head.boards.hide);
-        S.scrollbar.add($('.boards-menu'), {footer: S.head.boards.scroll.footer});
+        $('.btn-user').on('click', S.head.user.show);
+        $('.bg-for-user-menu').on('click', S.head.user.hide);
+        S.scrollbar.add($('.boards-menu .scroll-container'), {footer: S.head.boards.scroll.footer});
     },
 
     boards: {
-        boardsMenuBg: $('.bg-for-boards-menu'),
+        menuBg: $('.bg-for-boards-menu'),
 
         show: function () {
             if (!$('.boards-menu').hasClass('always-show')) {
@@ -26,18 +28,13 @@
 
         resize: function () {
             //resizes bg for board menu to fit window
-            const bg = S.head.boards.boardsMenuBg;
+            const bg = S.head.boards.menuBg;
             const win = S.window.pos();
             const menu = $('.boards-menu');
             const movable = $('.boards-menu .movable');
             const h = movable.height();
-            bg.css({ width: win.w, height: win.h + win.scrolly });
             if (menu.hasClass('always-show')) {
-                if (h > win.h - 44) {
-                    menu[0].style.maxHeight = (win.h - 44) + 'px';
-                } else {
-                    menu.css({ maxHeight: 'calc(100% - 44px)' });
-                }
+                menu.css({ height: (win.h - 44) + 'px' });
             } else {
                 menu.css({ maxHeight: '' });
             }
@@ -49,7 +46,7 @@
                 const listitems = $('.boards-menu');
                 const h = listitems.height();
                 const pos = listitems[0].getBoundingClientRect();
-                return win.h - pos.top - h;
+                return win.h - pos.top - h - 10;
             }
         },
 
@@ -66,7 +63,7 @@
             $('.boards-menu').addClass('always-show');
             $('.boards-menu .scroller').addClass('no-scroll');
             $('.btn-always-show')
-                .html('Don\'t keep this menu open')
+                .html('Unpin this menu')
                 .off('click', S.head.boards.alwaysShow)
                 .on('click', S.head.boards.cancelAlwaysShow);
             $('.body').css({ marginLeft: 250 });  
@@ -82,7 +79,7 @@
             $('.boards-menu .scroller').removeClass('no-scroll');
             $('.boards-menu').removeClass('always-show');
             $('.btn-always-show')
-                .html('Always keep this menu open')
+                .html('Pin this menu')
                 .off('click', S.head.boards.cancelAlwaysShow)
                 .on('click', S.head.boards.alwaysShow);
             $('.body').css({ marginLeft: '' });
@@ -118,6 +115,25 @@
             }
         }
     },
+
+    user: {
+        menuBg: $('.bg-for-user-menu'),
+        show: function () {
+            $('.user-menu').removeClass('hide').addClass('show');
+            $('.bg-for-user-menu').removeClass('hide');
+            $(window).on('resize', S.head.user.resize);
+            $(window).on('scroll', S.head.user.resize);
+            //S.head.user.callback.execute(true, false);
+            S.scrollbar.update($('.boards-menu'));
+        },
+
+        hide: function () {
+            $('.user-menu').removeClass('show').addClass('hide');
+            $('.bg-for-user-menu').addClass('hide');
+            $(window).off('resize', S.head.user.resize);
+            $(window).off('scroll', S.head.user.resize);
+        }
+    }, 
 
     allColor: function () {
         var all = true;

@@ -3,7 +3,7 @@
     <div class="absolute">
         <a href="javascript:" class="button btn-boards">
             <img src="/images/boards.png" />
-            <span>Boards</span>
+            {{boards-label}}<span>Boards</span>{{/boards-label}}
         </a>
     </div>
     {{/boards}}
@@ -12,42 +12,24 @@
     </div>
     {{user}}
     <div class="col right pad-right-sm">
-        <div class="col profile {{no-user}}no-user{{/no-user}}">
-            {{no-user}}
+        <div class="col profile {{no-photo}}no-photo{{/no-photo}} btn-user">
+            {{no-photo}}
             <svg viewBox="0 0 32 32">
                 <use xlink:href="#icon-user" x="0" y="0" width="32" height="32"></use>
             </svg>
-            {{/no-user}}
+            {{/no-photo}}
         </div>
     </div>
     {{/user}}
 </header>
+{{user}}
+{{user-menu}}
+{{org-templates}}
+{{/user}}
 
-{{boards-2}}
-<div class="bg-for-boards-menu hide">&nbsp;</div>
-<div class="boards-menu bg hide">
-    <div class="movable">
-        <div class="items">
-            <div class="row" style="height:20px;">&nbsp;</div>
-            {{boards-menu}}
-        </div>
-        <div class="row hover pad">
-            <a href="javascript:" class="btn-create-board">Create a new board</a>
-        </div>
-        <div class="row hover pad">
-            <a href="javascript:" class="btn-always-show">Always keep this menu open</a>
-        </div>
-
-        <div class="row hover pad">
-            <a href="javascript:" class="btn-all-color">Colorize Lists</a>
-        </div>
-
-        <div class="row hover pad">
-            <a href="javascript:" class="btn-import-trello">Import from Trello</a>
-        </div>
-    </div>
-</div>
-{{/boards-2}}
+{{boards}}
+{{boards-menu}}
+{{/boards}}
 
 <script type="text/html" id="template_import_trello">
     <div class="row field">Upload JSON file</div>

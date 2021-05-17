@@ -54,7 +54,7 @@
             let pos = lists.position();
             pos.width = lists.width();
             //get total width of all lists
-            $('.lists .columns > div').each((e) => {
+            $('.lists .columns > div').each((i, e) => {
                 w += $(e).width();
             });
             if (w > win.w) {
@@ -77,7 +77,7 @@
             let pos = lists.position();
             pos.width = lists.width();
             //get total width of all lists
-            $('.lists .columns > div').each((e) => {
+            $('.lists .columns > div').each((i, e) => {
                 w += $(e).width();
             });
 
@@ -256,7 +256,7 @@
 
             lists.css({ height: win.h - pos.top });
             //display scrollbars on lists
-            $('.lists .list' + (id ? (' .id-' + id) : '')).each(function (e) {
+            $('.lists .list' + (id ? (' .id-' + id) : '')).each(function (i, e) {
                 const list = $(e);
                 const foot = list.find('.form-new-card');
                 const foot2 = list.find('.btn-add-card');
@@ -282,7 +282,7 @@
 
             init: function (elems) {
                 var selector = elems || '.lists .list';
-                $(selector).find('.list-head').each(function (item) {
+                $(selector).find('.list-head').each(function (i, item) {
                     var listElem = $(item);
                     S.drag.add(listElem, listElem.parent(),
                         //onStart  /////////////////////////////////////////////////////////////////////////////////
@@ -388,7 +388,7 @@
                                 var listId = S.util.element.getClassId(list);
                                 var lists = $('.lists .list');
                                 var sort = [];
-                                lists.each(function (currlist) {
+                                lists.each(function (i, currlist) {
                                     sort.push(S.util.element.getClassId(currlist));
                                 });
 
@@ -407,7 +407,7 @@
             getGeometryForLists: function () {
                 var geo = { lists: [] };
                 var lists = $('.lists .list');
-                lists.each(function (list) {
+                lists.each(function (i, list) {
                     list = $(list);
                     var pos = list.offset();
                     geo.lists.push({
@@ -616,7 +616,7 @@
 
             init: function (elems) {
                 var selector = elems || '.lists .item';
-                $(selector).each(function (item) {
+                $(selector).each(function (i, item) {
                     var cardElem = $(item);
                     S.drag.add(cardElem, cardElem,
                         //onStart  /////////////////////////////////////////////////////////////////////////////////
@@ -783,7 +783,7 @@
                                 var listId = S.util.element.getClassId(list);
                                 var cards = [];
                                 var cardlist = list.find('.item');
-                                cardlist.each(function (card) {
+                                cardlist.each(function (i, card) {
                                     cards.push(S.util.element.getClassId(card));
                                 });
                                 S.kanban.list.resize(listId);
@@ -806,7 +806,7 @@
                 //get current rectangular geometry for all lists & subsequent cards
                 var geo = { lists: [] };
                 var lists = $('.lists .list');
-                lists.each(function (list) {
+                lists.each(function (i, list) {
                     list = $(list);
                     var pos = list.offset();
                     geo.lists.push({

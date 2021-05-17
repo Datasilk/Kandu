@@ -35,6 +35,7 @@ paths.working = {
             paths.webroot + 'js/selector.js',
             paths.scripts + 'utility/velocity.min.js',
             paths.scripts + "platform/_super.js",
+            paths.scripts + "platform/accordion.js",
             paths.scripts + "platform/ajax.js",
             paths.scripts + "platform/drag.js",
             paths.scripts + "platform/loader.js",
@@ -97,7 +98,7 @@ paths.working = {
             paths.app + 'views/shared/header.js'
         ],
         css: [
-            paths.webroot + 'css/views/boards/organizations.css',
+            paths.webroot + 'css/views/organizations/organizations.css',
             paths.webroot + 'css/views/boards/boards.css',
             paths.webroot + 'css/views/shared/header.css'
         ]

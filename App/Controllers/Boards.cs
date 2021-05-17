@@ -41,7 +41,7 @@ namespace Kandu.Controllers
             AddCSS("/css/dashboard.css?v=" + Server.Version);
 
             //load header
-            LoadHeader(ref view, false);
+            LoadHeader(ref view, HasMenu.Boards);
 
             //render page
             return base.Render(view.Render());

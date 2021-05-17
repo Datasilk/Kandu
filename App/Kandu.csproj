@@ -69,10 +69,10 @@
     <Content Include="Views\Login\new-pass.html">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Views\Boards\menu-item.html">
+    <Content Include="Views\Board\menu-item.html">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Views\Boards\menu-section.html">
+    <Content Include="Views\Board\menu.html">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Views\Card\Kanban\Type\card.html">

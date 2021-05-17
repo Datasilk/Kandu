@@ -1,4 +1,6 @@
-﻿S.boards = {
+﻿//NOTE: S.boards is available from all dashboard pages
+
+S.boards = {
     add: {
         show: function (e, id) {
             //get team list

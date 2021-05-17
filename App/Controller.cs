@@ -26,10 +26,8 @@ namespace Kandu
 
         public virtual string Render(string body = "")
         {
-            if (UsePlatform == true)
-            {
-                Scripts.Append("<script language=\"javascript\">S.svg.load('/themes/default/icons.svg?v=" + Server.Version + "');</script>");
-            }
+            if (Server.environment == Server.Environment.development) { ViewCache.Clear(); }
+            Scripts.Append("<script language=\"javascript\">S.svg.load('/themes/default/icons.svg?v=" + Server.Version + "');</script>");
             var view = new View("/Views/Shared/layout.html");
             view["title"] = Title;
             view["description"] = Description;
@@ -37,12 +35,6 @@ namespace Kandu
             view["head-css"] = Css.ToString();
             view["favicon"] = Favicon;
             view["body"] = body;
-            if (UsePlatform)
-            {
-                view.Show("platform-1");
-                view.Show("platform-2");
-                view.Show("platform-3");
-            }
 
             //add initialization script
             view["scripts"] = Scripts.ToString();
@@ -50,12 +42,18 @@ namespace Kandu
             return view.Render();
         }
 
-        public void LoadHeader(ref View view, bool hasMenu = true)
+        public enum HasMenu
+        {
+            None = 0,
+            Boards = 1,
+            Board = 2
+        }
+
+        public void LoadHeader(ref View view, HasMenu hasMenu = HasMenu.None)
         {
             if(User.userId > 0)
             {
                 view.Child("header").Show("user");
-                view.Child("header")["boards-menu"] = Common.Platform.Boards.RenderBoardsMenu(this);
 
                 if (User.photo == true)
                 {
@@ -63,19 +61,28 @@ namespace Kandu
                 }
                 else
                 {
-                    view.Child("header").Show("no-user");
+                    view.Child("header").Show("no-photo");
                 }
 
-                //apply user settings to UI layout configuration
-                if(hasMenu == true)
+                if(hasMenu == HasMenu.Boards)
                 {
+                    //show drop down menu for boards list
+                }
+                else if (hasMenu == HasMenu.Board)
+                {
+                    //show drop down menu for board
                     view.Child("header").Show("boards");
-                    view.Child("header").Show("boards-2");
+                    view.Child("header")["boards-menu"] = Common.Platform.Boards.RenderBoardMenu(this);
+
                     if (User.keepMenuOpen == true)
                     {
+                        //apply user settings to UI layout configuration
                         Scripts.Append("<script language=\"javascript\">S.head.boards.show();S.head.boards.alwaysShow(true);</script>");
                     }
                 }
+
+                //load user menu
+                view.Child("header")["user-menu"] = Common.Platform.User.RenderUserMenu(this);
             }
             else
             {

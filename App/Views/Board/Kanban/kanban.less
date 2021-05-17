@@ -2,7 +2,7 @@
 @shadow:2px 2px 5px rgba(0,0,0,0.3);
 @shadow-sm:1px 1px 2px rgba(0, 0, 0, 0.2);
 
-body{overflow:hidden;}
+body{overflow:hidden; overscroll-behavior-x: contain;}
 
 .board .message{margin-top:-4px !important; margin-bottom:-20px !important; width:~"calc(100% - 20px)";}
 
@@ -19,6 +19,7 @@ body{overflow:hidden;}
 
 /* lists ///////////////////////////////////////// */
 .kanban {overflow:hidden;
+    & > .scroller .scrollbar{overscroll-behavior-x: contain;}
     .lists .columns{white-space:nowrap;
         & > .col{min-width:238px; border-radius:4px; margin-right:7px; margin-bottom:30px; height:auto;
             &.bg{box-shadow:@shadow;}

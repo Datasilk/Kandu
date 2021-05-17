@@ -58,7 +58,7 @@
             Title = board.name + " - Kandu";
 
             //load header
-            LoadHeader(ref view);
+            LoadHeader(ref view, HasMenu.Board);
            
 
             return base.Render(view.Render());

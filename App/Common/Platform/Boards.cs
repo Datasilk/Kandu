@@ -75,18 +75,16 @@ namespace Kandu.Common.Platform
             {
                 throw new ServiceErrorException("Error displaying board details");
             }
-            
         }
 
-        public static string RenderBoardsMenu(Request request)
+        public static string RenderBoardMenu(Request request)
         {
             var html = new StringBuilder();
             var htm = new StringBuilder();
-            var section = new View("/Views/Boards/menu-section.html");
-            var item = new View("/Views/Boards/menu-item.html");
+            var section = new View("/Views/Board/menu.html");
+            var item = new View("/Views/Board/menu-item.html");
             var boards = Query.Boards.GetList(request.User.userId);
             var favs = boards.Where((a) => { return a.favorite; });
-            var teams = boards.OrderBy((a) => { return a.datecreated; }).Reverse().OrderBy((a) => { return a.orgId == request.User.userId; });
 
             // Favorite Boards //////////////////////////////////////////
             if (favs.Count() > 0)
@@ -109,44 +107,42 @@ namespace Kandu.Common.Platform
                 html.Append(section.Render());
             }
 
-            // Team Boards //////////////////////////////////////////
-            if (teams.Count() > 0)
+            // Boards (sorted by organization, favorite, alphabetical) //////////////////////////////////////////
+            if (boards.Count() > 0)
             {
-                var teamId = 0;
-                var isnewTeam = true;
+                var orgId = 0;
+                var isnewOrg = true;
                 htm = new StringBuilder();
-                foreach (var team in teams)
+                foreach (var board in boards)
                 {
-                    if (team.teamId != teamId)
+                    if (board.orgId != orgId)
                     {
-                        if (teamId > 0)
+                        if (orgId > 0)
                         {
                             section["items"] = htm.ToString();
                             html.Append(section.Render());
                         }
-                        isnewTeam = true;
-                        teamId = team.teamId;
+                        isnewOrg = true;
+                        orgId = board.teamId;
                     }
-                    if (isnewTeam == true)
+                    if (isnewOrg == true)
                     {
-                        section["title"] = team.teamName;
-                        section["id"] = "team" + team.teamId.ToString();
+                        section["title"] = board.orgName;
+                        section["id"] = "org" + board.orgId.ToString();
                         section["icon"] = "user";
                     }
 
-                    item["id"] = team.boardId.ToString();
-                    item["url"] = "/board/" + team.boardId + "/" + team.name.Replace(" ", "-").ToLower();
-                    item["color"] = "#" + team.color;
-                    item["title"] = team.name;
-                    item["owner"] = team.orgName;
-                    item["star"] = team.favorite ? "star" : "star-border";
+                    item["id"] = board.boardId.ToString();
+                    item["url"] = "/board/" + board.boardId + "/" + board.name.Replace(" ", "-").ToLower();
+                    item["color"] = "#" + board.color;
+                    item["title"] = board.name;
+                    item["owner"] = board.orgName;
+                    item["star"] = board.favorite ? "star" : "star-border";
                     htm.Append(item.Render());
                 }
                 section["items"] = htm.ToString();
                 html.Append(section.Render());
             }
-
-            // Team Boards (sort by user owned, then by date created) /////////
             return html.ToString();
         }
 

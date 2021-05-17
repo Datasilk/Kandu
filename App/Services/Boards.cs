@@ -48,7 +48,7 @@
         public string BoardsMenu()
         {
             if (!CheckSecurity()) { return AccessDenied(); } //check security
-            return Common.Platform.Boards.RenderBoardsMenu(this);
+            return Common.Platform.Boards.RenderBoardMenu(this);
         }
 
         public string KeepMenuOpen(bool keepOpen)
