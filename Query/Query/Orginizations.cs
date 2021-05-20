@@ -4,9 +4,9 @@ namespace Query
 {
     public static class Organizations
     {
-        public static void Create(Models.Organization org)
+        public static int Create(Models.Organization org)
         {
-            Sql.ExecuteNonQuery("Organization_Create", new { org.ownerId, org.name, org.website, org.description, org.isprivate });
+            return Sql.ExecuteScalar<int>("Organization_Create", new { org.ownerId, org.name, org.website, org.description, org.isprivate });
         }
 
         public static  void Disable(int orgId)

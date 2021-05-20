@@ -8,7 +8,8 @@ AS
 	DECLARE @orgId int = NEXT VALUE FOR SequenceOrganizations
 	INSERT INTO Organizations(orgId, ownerId, [name], datecreated, website, [description], [isprivate])
 	VALUES (@orgId, @ownerId, @name, GETUTCDATE(), @website, @description, @isprivate)
-	SELECT @orgId
 
 	INSERT INTO OrgSecurity (orgId, userId, [key], [enabled]) 
 	VALUES (@orgId, @ownerId, 'owner', 1)
+	
+	SELECT @orgId

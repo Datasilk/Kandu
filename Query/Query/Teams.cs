@@ -4,11 +4,11 @@ namespace Query
 {
     public static class Teams
     {
-        public static int CreateTeam(Models.Team team)
+        public static int Create(Models.Team team, int ownerId)
         {
             return Sql.ExecuteScalar<int>(
                 "Team_Create",
-                new {team.ownerId, team.name, team.description }
+                new {team.orgId, ownerId, team.name, team.description }
             );
         }
 
@@ -26,7 +26,7 @@ namespace Query
         {
             Sql.ExecuteNonQuery(
                 "Team_Update",
-                new { team.teamId, team.ownerId, team.name, team.description }
+                new { team.teamId, team.orgId, team.name, team.description }
             );
         }
 
@@ -37,11 +37,11 @@ namespace Query
             dateCreated = 2
         }
 
-        public static List<Models.Team>GetList(int userId = 0, int start = 1, int length = 20, string search = "", SortList orderBy = SortList.name)
+        public static List<Models.Team>GetList(int orgId = 0, int start = 1, int length = 20, string search = "", SortList orderBy = SortList.name)
         {
             return Sql.Populate<Models.Team>(
                 "Teams_GetList",
-                new { userId, start, length, search, orderby = (int)orderBy }
+                new { orgId, start, length, search, orderby = (int)orderBy }
             );
         }
     }

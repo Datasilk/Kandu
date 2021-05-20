@@ -11,7 +11,7 @@ S.orgs = {
         }
     },
     add: {
-        show: function (e, id) {
+        show: function (id, callback) {
             var hasid = false;
             if (id > 0) { hasid = true; }
             var view = new S.view(
@@ -19,7 +19,18 @@ S.orgs = {
                     .replace('#submit-label#', !hasid ? 'Create Organization' : 'Update Organization')
                     .replace('#submit-click#', !hasid ? 'S.orgs.add.submit()' : 'S.orgs.add.submit(\'' + id + '\')')
                 , {});
-            S.popup.show(!hasid ? 'Create A New Organization' : 'Edit Organization Settings', view.render(), { width: 430 });
+            var popup = S.popup.show(!hasid ? 'Create A New Organization' : 'Edit Organization', view.render(), { width: 430 });
+
+            $('.org-form .button.apply').on('click', () => {
+                S.orgs.add.submit(id, () => {
+                    popup.hide();
+                    if (callback) { callback(true); }
+                });
+            });
+            $('.org-form .button.cancel').on('click', () => {
+                popup.hide();
+                if (callback) { callback(false); }
+            });
 
             //load organization details if id is supplied
             if (hasid) {
@@ -29,34 +40,28 @@ S.orgs = {
                     $('#org_website').val(data.org.website);
                 }, null, true);
             }
-            if (e) { e.cancelBubble = true; }
             return false;
         },
 
-        submit: function (id) {
+        submit: function (id, callback) {
             var hasid = false;
-            var name = $('#boardname').val();
-            var color = S.util.color.rgbToHex($('.popup .color-input').css('background-color')).replace('#', '');
-            var orgId = $('#orgId').val();
-            var msg = $('.popup .message');
+            var name = $('#orgname').val();
+            var description = $('#org_description').val();
+            var website = $('#org_website').val();
+            var msg = $('.popup.show .message');
             if (id > 0) { hasid = true; }
             if (name == '' || name == null) {
-                S.message.show(msg, 'error', 'Please specify a board name');
+                S.message.show(msg, 'error', 'Please specify an organization name');
                 return;
             }
-            var form = { name: name, color: color, orgId: orgId };
-            if (hasid) { form.boardId = id; }
-            S.ajax.post(hasid ? 'Boards/Update' : 'Boards/Create', form,
-                function (data) {
-                    if (data == 'success') {
-                        window.location.reload();
-                    } else {
-                        S.message.show(msg, 'error', S.message.error.generic);
-                        return;
-                    }
+            var form = { name: name, description: description, website: website };
+            if (hasid) { form.orgId = id; }
+            S.ajax.post(hasid ? 'Organizations/Update' : 'Organizations/Create', form,
+                function (orgId) {
+                    if (callback) { callback(true, orgId); }
                 },
-                function () {
-                    S.message.show(msg, 'error', S.message.error.generic);
+                function (err) {
+                    S.message.show(msg, 'error', err.responseText);
                     return;
                 }
             );

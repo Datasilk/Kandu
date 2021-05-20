@@ -18,7 +18,22 @@ S.boards = {
                         .replace('#submit-label#', !hasid ? 'Create Board' : 'Update Board')
                         .replace('#submit-click#', !hasid ? 'S.boards.add.submit()' : 'S.boards.add.submit(\'' + id + '\')')
                     , {});
-                S.popup.show(!hasid ? 'Create A New Board' : 'Edit Board Settings', view.render(), { width: 430 });
+                var popup = S.popup.show(!hasid ? 'Create A New Board' : 'Edit Board Settings', view.render(), { width: 430 });
+
+                $('.board-form .btn-add-org').on('click', () => {
+                    popup.hide();
+                    S.orgs.add.show(null, (result, id) => {
+                        if (result == true) {
+                            //reload list of organizations
+                            S.ajax.post('Organizations/List', { security: 'board-create' }, function (data2) {
+                                $('.board-form #orgId').html(data2.orgs.map(a => {
+                                    return '<option value="' + a.orgId + '">' + a.name + '</option>';
+                                }).join(''));
+                            }, null, true);
+                        }
+                        popup.show();
+                    });
+                });
 
                 //load board details if id is supplied
                 if (hasid) {

@@ -4,16 +4,16 @@ namespace Kandu.Common.Platform
 {
     public static class Teams
     {
-        public static int Create(Request request, string name, string description = "")
+        public static int Create(Request request, int orgId, string name, string description = "")
         {
             try
             {
-                return Query.Teams.CreateTeam(new Query.Models.Team()
+                return Query.Teams.Create(new Query.Models.Team()
                 {
+                    orgId = orgId,
                     name = name,
-                    description = description,
-                    ownerId = request.User.userId
-                });
+                    description = description
+                }, request.User.userId);
             }
             catch (Exception)
             {

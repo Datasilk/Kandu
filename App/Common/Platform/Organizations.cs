@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using System;
+using System.Text;
 
 namespace Kandu.Common.Platform
 {
@@ -19,6 +20,29 @@ namespace Kandu.Common.Platform
             }
             section["list"] = html.ToString();
             return section.Render();
+        }
+
+        public static int Create(Request request, string name, string description, string website)
+        {
+            try
+            {
+                var id = Query.Organizations.Create(new Query.Models.Organization()
+                {
+                    ownerId = request.User.userId,
+                    name = name,
+                    description = description,
+                    website = website,
+                    isprivate = false
+                });
+
+                //TODO: Add organization to user's security
+
+                return id;
+            }
+            catch (Exception)
+            {
+                throw new ServiceErrorException("Error creating new organization");
+            }
         }
     }
 }
