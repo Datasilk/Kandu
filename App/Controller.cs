@@ -53,6 +53,7 @@ namespace Kandu
         {
             if(User.userId > 0)
             {
+                //user logged in
                 view.Child("header").Show("user");
 
                 if (User.photo == true)
@@ -83,9 +84,14 @@ namespace Kandu
 
                 //load user menu
                 view.Child("header")["user-menu"] = Common.Platform.User.RenderUserMenu(this);
+                
+                //load organization templates
+                view.Child("header")["org-menu"] = Common.Platform.Organizations.RenderOrgListModal(this);
+                view.Child("header")["org-templates"] = Server.LoadFileFromCache("/Views/Organizations/templates.html"); ;
             }
             else
             {
+                //user not logged in
                 view.Child("header").Show("no-user");
             }
 

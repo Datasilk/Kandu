@@ -193,6 +193,91 @@ M 5 0
 L 5 36 27 36 27 0 5 0 Z"/>
 </g>
 
+<g id="iconBoards_0_Layer0_0_FILL">
+<path fill="#FFFFFF" stroke="none" d="
+M 37 44
+L 27 44
+Q 22 44 22 49
+L 22 59
+Q 22 64 27 64
+L 37 64
+Q 42 64 42 59
+L 42 49
+Q 42 44 37 44
+M 15 44
+L 5 44
+Q 0 44 0 49
+L 0 59
+Q 0 64 5 64
+L 15 64
+Q 20 64 20 59
+L 20 49
+Q 20 44 15 44
+M 15 22
+L 5 22
+Q 0 22 0 27
+L 0 37
+Q 0 42 5 42
+L 15 42
+Q 20 42 20 37
+L 20 27
+Q 20 22 15 22
+M 20 5
+Q 20 0 15 0
+L 5 0
+Q 0 0 0 5
+L 0 15
+Q 0 20 5 20
+L 15 20
+Q 20 20 20 15
+L 20 5
+M 42 37
+L 42 27
+Q 42 22 37 22
+L 27 22
+Q 22 22 22 27
+L 22 37
+Q 22 42 27 42
+L 37 42
+Q 42 42 42 37
+M 59 44
+L 49 44
+Q 44 44 44 49
+L 44 59
+Q 44 64 49 64
+L 59 64
+Q 64 64 64 59
+L 64 49
+Q 64 44 59 44
+M 59 22
+L 49 22
+Q 44 22 44 27
+L 44 37
+Q 44 42 49 42
+L 59 42
+Q 64 42 64 37
+L 64 27
+Q 64 22 59 22
+M 42 15
+L 42 5
+Q 42 0 37 0
+L 27 0
+Q 22 0 22 5
+L 22 15
+Q 22 20 27 20
+L 37 20
+Q 42 20 42 15
+M 64 15
+L 64 5
+Q 64 0 59 0
+L 49 0
+Q 44 0 44 5
+L 44 15
+Q 44 20 49 20
+L 59 20
+Q 64 20 64 15 Z"/>
+</g>
+
 <g id="chat_single_left_0_Layer1_0_FILL">
 <path fill="#FFFFFF" stroke="none" d="
 M 60.3 12.65
@@ -418,6 +503,30 @@ M 17.65 6.95
 Q 19.9 9.15 19.9 12.3 19.9 15.4 17.65 17.55 15.5 19.8 12.35 19.8 9.25 19.8 7.05 17.55 4.85 15.4 4.85 12.3 4.85 9.2 7.05 7
 L 7.1 6.95
 Q 9.3 4.75 12.35 4.75 15.5 4.75 17.65 6.95 Z"/>
+</g>
+
+<g id="iconOrg_0_Layer1_0_FILL">
+<path fill="#FFFFFF" stroke="none" d="
+M 61.55 23.25
+L 63.4 19.7 58.65 17.2
+Q 58.480859375 17.0814453125 58.3 17
+L 33.1 2.9
+Q 33.0224609375 2.8134765625 32.9 2.75
+L 32.15 2.35 32.1 2.2 32 2.25 31.9 2.2 31.8 2.35 31.1 2.75
+Q 30.9783203125 2.8130859375 30.85 2.85
+L 0.55 19.7 2.4 23.25 4.5 22.15 4.5 53.5
+Q 4.49453125 54.3337890625 5.05 54.9 5.666015625 55.5052734375 6.5 55.5
+L 57.5 55.5
+Q 58.3337890625 55.5052734375 58.9 54.9 59.5052734375 54.3337890625 59.5 53.5
+L 59.5 22.15 61.55 23.25
+M 8.5 20
+L 32 6.85 55.5 20 55.5 51.5 8.5 51.5 8.5 20 Z"/>
+</g>
+
+<g id="iconOrg_0_Layer0_0_FILL">
+<path fill="#FFFFFF" fill-opacity="0" stroke="none" d="
+M 64 0
+L 0 0 0 64 64 64 64 0 Z"/>
 </g>
 
 <g id="icon_photos_0_Layer1_0_FILL">
@@ -851,6 +960,14 @@ L 0 0 0 64 64 64 64 0 Z"/>
 <use xlink:href="#arrow_0_Layer0_0_FILL"/>
 </g>
 </g>
+</symbol><symbol id="icon-boards" viewBox="0 0 64 64">
+
+
+<g transform="matrix( 1, 0, 0, 1, 0,0) ">
+<g transform="matrix( 1, 0, 0, 1, 0,0) ">
+<use xlink:href="#iconBoards_0_Layer0_0_FILL"/>
+</g>
+</g>
 </symbol><symbol id="icon-chat-single-left" viewBox="0 0 64 64">
 
 
@@ -965,6 +1082,18 @@ L 0 0 0 64 64 64 64 0 Z"/>
 
 <g transform="matrix( 1, 0, 0, 1, 0,0) ">
 <use xlink:href="#icon_options_0_Layer0_0_FILL"/>
+</g>
+</g>
+</symbol><symbol id="icon-org" viewBox="0 0 64 64">
+
+
+<g transform="matrix( 1, 0, 0, 1, 0,0) ">
+<g transform="matrix( 1, 0, 0, 1, 0,0) ">
+<use xlink:href="#iconOrg_0_Layer1_0_FILL"/>
+</g>
+
+<g transform="matrix( 1, 0, 0, 1, 0,0) ">
+<use xlink:href="#iconOrg_0_Layer0_0_FILL"/>
 </g>
 </g>
 </symbol><symbol id="icon-photos" viewBox="0 0 36 36">

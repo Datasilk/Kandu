@@ -34,9 +34,9 @@
             const movable = $('.boards-menu .movable');
             const h = movable.height();
             if (menu.hasClass('always-show')) {
-                menu.css({ height: (win.h - 44) + 'px' });
+                menu.find('.scroll-container').css({ height: (win.h - 55) + 'px' });
             } else {
-                menu.css({ maxHeight: '' });
+                menu.find('.scroll-container').css({ maxHeight: '' });
             }
         },
 
@@ -119,7 +119,7 @@
     user: {
         menuBg: $('.bg-for-user-menu'),
         show: function () {
-            $('.user-menu').removeClass('hide').addClass('show');
+            $('.user-menu').removeClass('hide');
             $('.bg-for-user-menu').removeClass('hide');
             $(window).on('resize', S.head.user.resize);
             $(window).on('scroll', S.head.user.resize);
@@ -128,10 +128,11 @@
         },
 
         hide: function () {
-            $('.user-menu').removeClass('show').addClass('hide');
+            $('.user-menu').addClass('hide');
             $('.bg-for-user-menu').addClass('hide');
             $(window).off('resize', S.head.user.resize);
             $(window).off('scroll', S.head.user.resize);
+            S.orgs.list.hide();
         }
     }, 
 

@@ -1,6 +1,15 @@
 ﻿//NOTE: S.org is available from all dashboard pages
 
 S.orgs = {
+    list: {
+        show: function () {
+            $('.orgs-list-menu').removeClass('hide');
+        },
+
+        hide: function () {
+            $('.orgs-list-menu').addClass('hide');
+        }
+    },
     add: {
         show: function (e, id) {
             var hasid = false;

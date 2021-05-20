@@ -1,14 +1,35 @@
-﻿<div class="bg-for-user-menu hide">&nbsp;</div>
-<div class="user-menu bg hide">
+﻿<div class="bg-for-user-menu hide"><div class="dark-area">&nbsp;</div></div>
+<div class="user-menu bg has-top-arrow hide">
     <div class="scrollable">
-        <div class="row hover pad">
-            <a href="/Boards">Boards</a>
-        </div>
-        <div class="row hover pad">
-            <a href="javascript:" class="btn-organizations">Organizations</a>
-        </div>
-        <div class="row hover pad">
-            <a href="javascript:" class="btn-user-settings">Settings</a>
-        </div>
+        <a href="/Boards">
+            <div class="row hover pad">
+                <div class="col icon small">
+                    <svg viewBox="0 0 32 32">
+                        <use xlink:href="#icon-boards" x="0" y="0" width="32" height="32"></use>
+                    </svg>
+                </div>
+                <div class="col pad-left">Boards</div>
+            </div>
+        </a>
+        <a href="javascript:" onclick="S.orgs.list.show()">
+            <div class="row hover pad">
+                <div class="col icon small">
+                    <svg viewBox="0 0 32 32">
+                        <use xlink:href="#icon-arrow-left" x="0" y="0" width="32" height="32"></use>
+                    </svg>
+                </div>
+                <div class="col pad-left">Organizations</div>
+            </div>
+        </a>
+        <a href="javascript:" onclick="S.user.settings.show()">
+            <div class="row hover pad">
+                <div class="col icon small">
+                    <svg viewBox="0 0 32 32">
+                        <use xlink:href="#icon-options" x="0" y="0" width="32" height="32"></use>
+                    </svg>
+                </div>
+                <div class="col pad-left">Settings</div>
+            </div>
+        </a>
     </div>
 </div>

@@ -11,7 +11,7 @@ FETCH NEXT FROM @cursor INTO @userId, @name
 WHILE @@FETCH_STATUS = 0 BEGIN
 	-- create organization for user
 	IF NOT EXISTS(SELECT * FROM Organizations WHERE ownerId=@userId AND isprivate = 1) BEGIN
-		INSERT INTO @tmp EXEC Organization_Create @ownerId=@userId, @name='My Organization', @website='', @description='Personal Organization', @isprivate=1
+		INSERT INTO @tmp EXEC Organization_Create @ownerId=@userId, @name='Personal', @website='', @description='Private Organization for myself', @isprivate=1
 		SELECT @orgId = id FROM @tmp
 		DELETE FROM @tmp
 	PRINT 'Created Organization for ' + CONVERT(nvarchar(MAX), @userId)
