@@ -53,5 +53,12 @@ namespace Kandu.Services
             html.Append("]}");
             return html.ToString();
         }
+
+        public string RefreshListMenu()
+        {
+            if (!CheckSecurity()) { return AccessDenied(); } //check security
+            var list = Query.Organizations.UserIsPartOf(User.userId);
+            return Common.Platform.Organizations.RenderOrgListModal(this);
+        }
     }
 }

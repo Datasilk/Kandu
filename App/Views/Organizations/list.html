@@ -1,17 +1,19 @@
 ﻿<div class="orgs-list-menu bg has-right-arrow hide">
-    <div class="scrollable">
-        <a href="javascript:" onclick="S.orgs.add.show()">
-            <div class="row hover pad">
-                <div class="col icon small">
-                    <svg viewBox="0 0 32 32">
-                        <use xlink:href="#icon-add" x="0" y="0" width="32" height="32"></use>
-                    </svg>
+    <div class="scroll-container">
+        <div class="movable">
+            <a href="javascript:" onclick="S.orgs.add.show()">
+                <div class="row hover pad">
+                    <div class="col icon small">
+                        <svg viewBox="0 0 32 32">
+                            <use xlink:href="#icon-add" x="0" y="0" width="32" height="32"></use>
+                        </svg>
+                    </div>
+                    <div class="col pad-left">New Organization</div>
                 </div>
-                <div class="col pad-left">New Organization</div>
-            </div>
-        </a>
-        <div class="row separator"></div>
-        {{list}}
+            </a>
+            <div class="row separator"></div>
+            {{list}}
+        </div>
     </div>
 </div>
 

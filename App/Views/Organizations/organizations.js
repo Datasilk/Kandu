@@ -1,6 +1,17 @@
 ﻿//NOTE: S.org is available from all dashboard pages
 
 S.orgs = {
+    init: function () {
+        S.scrollbar.add('.orgs-list-menu .scroll-container', {
+            touch: true,
+            footer: function () {
+                var win = S.window;
+                $('.orgs-list-menu .scroll-container').css({ 'max-height': (win.h - 70) + 'px' });
+                return 20;
+            }
+        });
+        
+    },
     list: {
         show: function () {
             $('.orgs-list-menu').removeClass('hide');
@@ -58,7 +69,23 @@ S.orgs = {
             if (hasid) { form.orgId = id; }
             S.ajax.post(hasid ? 'Organizations/Update' : 'Organizations/Create', form,
                 function (orgId) {
-                    if (callback) { callback(true, orgId); }
+                    //update the organization list menu
+                    S.ajax.post('Organizations/RefreshListMenu', {},
+                        function (html) {
+                            $('.orgs-list-menu').remove();
+                            $('.user-menu').after(html);
+                            $('.orgs-list-menu').removeClass('hide');
+                            //reinit scrollbar for list menu
+                            S.scrollbar.add('.orgs-list-menu', {
+                                touch: true
+                            });
+                            if (callback) { callback(true, orgId); }
+                        },
+                        function (err) {
+                            S.message.show(msg, 'error', err.responseText);
+                            return;
+                        }
+                    );
                 },
                 function (err) {
                     S.message.show(msg, 'error', err.responseText);
@@ -68,3 +95,7 @@ S.orgs = {
         }
     }
 };
+
+setTimeout(() => {
+    S.orgs.init();
+}, 100);

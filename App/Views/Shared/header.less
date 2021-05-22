@@ -81,19 +81,22 @@
     &:after { bottom:100%; left:90%; border:solid transparent; content:""; height:0; width:0; position:absolute; pointer-events:none; border-width:15px; margin-left:-15px;}
 }
 
-.orgs-list-menu{position:absolute; right:190px; top:40px; margin:10px 0 0 7px; max-width:200px; z-index:100; border-radius:5px; box-shadow:@shadow;
+.orgs-list-menu{position:absolute; right:190px; top:40px; margin:10px 0 0 7px; max-height:~"calc(100% - 70px)"; width:220px; z-index:100; border-radius:5px; box-shadow:@shadow;
     .scroller{position:relative; float:right; background-color:rgba(0,0,0,0.05); width:10px; height:100%; overflow:hidden; border-radius:10px; margin-top:7px;}
     .scrollbar{position:relative; background-color:rgba(0,0,0,0.1); width:10px; min-height:20px; overflow:hidden; border-radius:10px;}
     .scrollable{overflow:hidden; max-width:224px;
         .scroller{display:none;}
         &:after{content:' '; display:block; clear:both; height:0; overflow:hidden;}
         &.scroll{ max-width:234px;
-            .items{float:left; width:224px;}
-            .item{padding-right:8px;}
             .scroller{display:block;} 
-            .menu-section .item .title{width:139px;} 
         }
     }
+    .movable{float:left; position:relative; max-width:200px; padding-bottom:10px;line-height:0; 
+        & > div{float:left;}
+        a .row{white-space:nowrap; text-wrap:none; text-overflow:ellipsis; overflow:hidden;}
+    }
+    .movable > *{display:inline-block; width:200px; }
+    .movable:after{content:'';display:block;clear:both;}
     a:hover, a:active{text-decoration:none !important;}
     &:after { top:68px; left:100%; border:solid transparent; content:""; height:0; width:0; position:absolute; pointer-events:none; border-width:15px; margin-top:-15px;}
 

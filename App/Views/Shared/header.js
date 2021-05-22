@@ -8,7 +8,10 @@
         $('.bg-for-boards-menu').on('click', S.head.boards.hide);
         $('.btn-user').on('click', S.head.user.show);
         $('.bg-for-user-menu').on('click', S.head.user.hide);
-        S.scrollbar.add($('.boards-menu .scroll-container'), {footer: S.head.boards.scroll.footer});
+        S.scrollbar.add($('.boards-menu .scroll-container'), {
+            footer: S.head.boards.scroll.footer,
+            touch: true
+        });
     },
 
     boards: {
