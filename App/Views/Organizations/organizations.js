@@ -11,6 +11,7 @@ S.orgs = {
 
         $(window).on('resize', S.orgs.list.resize);
     },
+
     list: {
         show: function () {
             $('.orgs-list-menu').removeClass('hide');
@@ -26,6 +27,7 @@ S.orgs = {
             $('.orgs-list-menu .scroll-container').css({ 'max-height': (win.h - 70) + 'px' });
         }
     },
+
     add: {
         show: function (id, callback) {
             var hasid = false;
@@ -97,6 +99,39 @@ S.orgs = {
                     return;
                 }
             );
+        }
+    },
+
+    details: {
+        popup: null,
+
+        show: function (id, title) {
+            S.ajax.post('Organizations/Details', { orgId: id }, (result) => {
+                S.orgs.details.popup = S.popup.show(title, result, {
+                    width: 700, offsetTop: 20, padding: 20,
+                    onResize: () => {
+                        var win = S.window;
+                        var content = $('.org-details .content');
+                        var rect = content[0].getBoundingClientRect();
+                        content.css({ 'max-height': (win.h - rect.top - 40) + 'px' })
+                    }
+                });
+
+                S.scrollbar.add('.org-details .content', { touch: true });
+            },
+            (err) => {
+
+            });
+        }
+    },
+
+    boards: {
+        add: function (orgId) {
+            S.orgs.details.popup.hide();
+            S.boards.add.show(null, null, orgId, () => {
+                S.orgs.details.popup.show();
+                S.popup.resize();
+            });
         }
     }
 };

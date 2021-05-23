@@ -1,0 +1,42 @@
+﻿<div class="org-details">
+    <div class="row message hide"><span></span></div>
+    {{view-org}}
+        <div class="row hover">
+            <div class="col field">Name</div>
+            <div class="col input expand"><input type="text" id="orgname" placeholder="Datasilk" /></div>
+        </div>
+        <div class="row hover">
+            <div class="col field">Description</div>
+            <div class="col input expand"><input type="text" id="org_description" placeholder="Building open source technologies for the web" /></div>
+        </div>
+        <div class="row hover">
+            <div class="col field">Website</div>
+            <div class="col input expand"><input type="text" id="org_website" placeholder="https://www.datasilk.io" /></div>
+        </div>
+    {{/view-org}}
+    {{edit-org}}
+        <div class="org-form">
+            <div class="row message hide"><span></span></div>
+            <div class="row hover">
+                <div class="col field">Name</div>
+                <div class="col input expand"><input type="text" id="orgname" placeholder="Datasilk" /></div>
+            </div>
+            <div class="row hover">
+                <div class="col field">Description</div>
+                <div class="col input expand"><input type="text" id="org_description" placeholder="Building open source technologies for the web" /></div>
+            </div>
+            <div class="row hover">
+                <div class="col field">Website</div>
+                <div class="col input expand"><input type="text" id="org_website" placeholder="https://www.datasilk.io" /></div>
+            </div>
+            <div class="row pad-top text-center buttons">
+                <a href="#" class="button apply hide">Save</a>
+            </div>
+        </div>
+    {{/edit-org}}
+
+    <div class="tabs">{{tabs}}</div>
+    <div class="content">
+        <div class="movable">{{content}}</div>
+    </div>
+</div>

@@ -1,4 +1,4 @@
-﻿CREATE PROCEDURE [dbo].[OrgSecurity_SaveKeys]
+﻿CREATE PROCEDURE [dbo].[Security_SaveKeys]
 	@orgId int,
 	@userId int,
 	@keys XML 
@@ -33,10 +33,10 @@ AS
 	SELECT * FROM @newkeys
 	FETCH NEXT FROM @cursor INTO @key, @value
 	WHILE @@FETCH_STATUS = 0 BEGIN
-		IF EXISTS(SELECT * FROM OrgSecurity WHERE orgId=@orgId AND userId=@userId AND [key]=@key) BEGIN
-			UPDATE OrgSecurity SET [enabled] = @value WHERE orgId=orgId AND userId=@userId AND [key]=@key
+		IF EXISTS(SELECT * FROM Security WHERE orgId=@orgId AND userId=@userId AND [key]=@key) BEGIN
+			UPDATE Security SET [enabled] = @value WHERE orgId=orgId AND userId=@userId AND [key]=@key
 		END ELSE BEGIN
-			INSERT INTO OrgSecurity (orgId, userId, [key], [enabled]) 
+			INSERT INTO Security (orgId, userId, [key], [enabled]) 
 			VALUES (@orgId, @userId, @key, @value)
 		END
 		FETCH NEXT FROM @cursor INTO @key, @value

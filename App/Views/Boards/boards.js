@@ -2,24 +2,42 @@
 
 S.boards = {
     add: {
-        show: function (e, id) {
+        popup: null,
+        callback:null,
+        show: function (e, id, orgId, callback) {
             //get team list
+            S.boards.add.callback = callback;
             var hasid = false;
             if (id > 0) { hasid = true;}
             S.ajax.post('Organizations/List', { security: 'board-create' }, function (data) {
-                console.log(data);
                 var view = new S.view(
                     $('#template_newboard').html()
                         .replace('#org-options#',
                         data.orgs.map(a => {
-                            return '<option value="' + a.orgId + '">' + a.name + '</option>';
+                            return '<option value="' + a.orgId + '"' +
+                                (orgId != null ? (a.orgId == orgId ? ' selected' : '') : '') +
+                                '>' + a.name + '</option>';
                         }).join(''))
                         .replace('#color#', '#0094ff')
                         .replace('#submit-label#', !hasid ? 'Create Board' : 'Update Board')
                         .replace('#submit-click#', !hasid ? 'S.boards.add.submit()' : 'S.boards.add.submit(\'' + id + '\')')
+                    .replace('#org-name#', orgId ? data.orgs.filter(a => a.orgId == orgId)[0].name : '')
                     , {});
-                var popup = S.popup.show(!hasid ? 'Create A New Board' : 'Edit Board Settings', view.render(), { width: 430 });
+                var popup = S.popup.show(!hasid ? 'Create A New Board' : 'Edit Board Settings', view.render(), {
+                    width: 430,
+                    onClose: function () {
+                        if (callback) { callback();}
+                    }
+                });
+                S.boards.add.popup = popup;
 
+                //when orgId is provided
+                if (orgId) {
+                    $('.board-form .choose-org').hide();
+                    $('.board-form .chosen-org').removeClass('hide');
+                }
+
+                //button events
                 $('.board-form .btn-add-org').on('click', () => {
                     popup.hide();
                     S.orgs.add.show(null, (result, id) => {
@@ -32,6 +50,7 @@ S.boards = {
                             }, null, true);
                         }
                         popup.show();
+                        S.popup.resize();
                     });
                 });
 
@@ -46,6 +65,14 @@ S.boards = {
             }, null, true);
             if (e) { e.cancelBubble = true;}
             return false;
+        },
+
+        hide: function () {
+            console.log('hide popup');
+            if (S.boards.add.callback != null) {
+                S.popup.hide(S.boards.add.popup);
+            }
+            S.boards.add.callback();
         },
 
         submit: function (id) {
@@ -64,7 +91,12 @@ S.boards = {
             S.ajax.post(hasid ? 'Boards/Update' : 'Boards/Create', form,
                 function (data) {
                     if (data == 'success') {
-                        window.location.reload();
+                        if (S.boards.add.callback != null) {
+                            S.popup.hide(S.boards.add.popup);
+                            S.boards.add.callback();
+                        } else {
+                            window.location.reload();
+                        }
                     } else {
                         S.message.show(msg, 'error', S.message.error.generic);
                         return;
@@ -95,19 +127,18 @@ S.boards = {
             $('.color-picker').show();
             $('.color-picker .color').on('click', S.boards.colorPicker.select);
             S.boards.colorPicker.callback = callback;
+            S.popup.resize();
         },
 
         hide: function () {
             $('.color-picker .color').off('click', S.boards.colorPicker.select);
             $('.color-picker').hide();
             $('.board-form').show();
+            S.popup.resize();
         },
 
         select: function (e) {
-            console.log(e);
             var elem = e.target;
-            console.log('---------------------------------------------------');
-            console.log($(elem).css('background-color'));
             var color = S.util.color.rgbToHex($(elem).css('background-color'));
             $('.color-input').css({ 'background-color': color });
             S.boards.colorPicker.hide();
@@ -158,4 +189,5 @@ S.teams = {
         }
     }
 }
+
 $('.boards .board.create-new').on('click', S.boards.add.show);

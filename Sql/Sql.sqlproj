@@ -70,9 +70,9 @@
     <Folder Include="dbo\Stored Procedures\Boards" />
     <Folder Include="dbo\Stored Procedures\Lists" />
     <Folder Include="dbo\Stored Procedures\Utility" />
-    <Folder Include="dbo\Stored Procedures\OrgSecurity" />
     <Folder Include="dbo\Stored Procedures\Organizations" />
     <Folder Include="scripts" />
+    <Folder Include="dbo\Stored Procedures\Security" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="dbo\Tables\Users.sql" />
@@ -146,7 +146,6 @@
     <Build Include="dbo\Stored Procedures\Cards\Card_UpdateName.sql" />
     <Build Include="dbo\Sequences\SequenceOrganizations.sql" />
     <Build Include="dbo\Tables\Organizations.sql" />
-    <Build Include="dbo\Tables\OrgSecurity.sql" />
     <Build Include="dbo\Stored Procedures\Organizations\Organization_Create.sql" />
     <Build Include="dbo\Stored Procedures\Organizations\Orginization_GetInfo.sql" />
     <Build Include="dbo\Stored Procedures\Organizations\Orginizations_UserIsPartOf.sql" />
@@ -154,13 +153,15 @@
     <Build Include="dbo\Stored Procedures\Organizations\Orginization_Enable.sql" />
     <Build Include="dbo\Stored Procedures\Organizations\Orginization_Disable.sql" />
     <Build Include="dbo\Stored Procedures\Boards\Boards_MemberIsPartOf.sql" />
-    <Build Include="dbo\Stored Procedures\OrgSecurity\OrgSecurity_SaveKeys.sql" />
-    <Build Include="dbo\Stored Procedures\OrgSecurity\OrgSecurity_ForUser.sql" />
-    <Build Include="dbo\Stored Procedures\OrgSecurity\OrgSecurity_AllKeysForUser.sql" />
     <Build Include="dbo\Tables\BoardMembers.sql" />
     <Build Include="dbo\Stored Procedures\Boards\Board_Favorite.sql" />
     <Build Include="dbo\Stored Procedures\Boards\Board_Unfavorite.sql" />
     <None Include="scripts\Publish-2021-04-26.sql" />
+    <Build Include="dbo\Tables\Security.sql" />
+    <Build Include="dbo\Stored Procedures\Security\Security_ForUser.sql" />
+    <Build Include="dbo\Stored Procedures\Security\Security_SaveKeys.sql" />
+    <Build Include="dbo\Stored Procedures\Security\Security_AllKeysForUser.sql" />
+    <Build Include="dbo\Stored Procedures\Boards\Boards_GetByOrgId.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Sql.publish.xml" />

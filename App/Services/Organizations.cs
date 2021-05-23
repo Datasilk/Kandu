@@ -57,8 +57,42 @@ namespace Kandu.Services
         public string RefreshListMenu()
         {
             if (!CheckSecurity()) { return AccessDenied(); } //check security
-            var list = Query.Organizations.UserIsPartOf(User.userId);
             return Common.Platform.Organizations.RenderOrgListModal(this);
+        }
+
+        public string Details(int orgId)
+        {
+            if (!CheckSecurity()) { return AccessDenied(); } //check security
+            var canEdit = CheckSecurity(orgId, Common.Platform.Security.Keys.OrgCanEdit.ToString());
+            var tabHtml = new StringBuilder();
+            var contentHtml = new StringBuilder();
+            var view = new View("/Views/Organizations/details.html");
+            var tab = new View("/Views/Organizations/tab.html");
+            if (canEdit) 
+            {
+                view.Show("edit-org");
+            }
+            else
+            {
+                view.Show("view-org");
+            }
+
+            //load boards tab
+            tab["title"] = "Boards";
+            tab.Show("selected");
+            tabHtml.Append(tab.Render());
+            var html = Common.Platform.Boards.RenderBoardMenu(this, orgId, true, false);
+            if(html == "")
+            {
+                //no boards
+                var noboards = new View("/Views/Organizations/no-boards.html");
+                noboards["orgId"] = orgId.ToString();
+                html = noboards.Render();
+            }
+            contentHtml.Append("<div class=\"content-boards\">" + html + "</div>\n");
+            view["tabs"] = tabHtml.ToString();
+            view["content"] = contentHtml.ToString();
+            return view.Render();
         }
     }
 }

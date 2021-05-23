@@ -45,10 +45,10 @@
             return Success();
         }
 
-        public string BoardsMenu()
+        public string BoardsMenu(int orgId)
         {
             if (!CheckSecurity()) { return AccessDenied(); } //check security
-            return Common.Platform.Boards.RenderBoardMenu(this);
+            return Common.Platform.Boards.RenderBoardMenu(this, orgId);
         }
 
         public string KeepMenuOpen(bool keepOpen)

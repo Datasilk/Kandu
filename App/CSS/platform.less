@@ -8,8 +8,8 @@ body{width:100%; position:relative; overflow-x:hidden; font-weight:400;}
 
 body > .bg.for-popup{background-color:rgba(0,0,0,0.5) !important; position:absolute; top:0; right:0; bottom:0; left:0; z-index:7777;}
 .for-popup{
-    & > .popup{
-        position:relative; min-width:200px; z-index:5000; max-height:100%; overflow-y:auto; overflow-x:hidden; padding:20px 20px 30px 20px;
+    & > .popup{position:relative; min-width:200px; z-index:5000; max-height:100%; max-width:100%; 
+               overflow-y:auto; overflow-x:hidden; padding:20px 20px 30px 20px;
         &.center{margin:0 auto;}
         &.right{right:0;}
         .btn-close{position:absolute; right:0px; z-index:5010;}

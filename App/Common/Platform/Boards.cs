@@ -77,13 +77,22 @@ namespace Kandu.Common.Platform
             }
         }
 
-        public static string RenderBoardMenu(Request request)
+        public static string RenderBoardMenu(Request request, int orgId = 0, bool listOnly = false, bool showSubTitle = true)
         {
             var html = new StringBuilder();
             var htm = new StringBuilder();
             var section = new View("/Views/Board/menu.html");
             var item = new View("/Views/Board/menu-item.html");
-            var boards = Query.Boards.GetList(request.User.userId);
+            List<Query.Models.Board> boards;
+            if(orgId == 0)
+            {
+                boards = Query.Boards.GetList(request.User.userId);
+            }
+            else
+            {
+                boards = Query.Boards.GetByOrgId(orgId);
+            }
+            
             var favs = boards.Where((a) => { return a.favorite; });
 
             // Favorite Boards //////////////////////////////////////////
@@ -101,6 +110,7 @@ namespace Kandu.Common.Platform
                     item["title"] = fav.name;
                     item["owner"] = fav.orgName;
                     item["star"] = fav.favorite ? "star" : "star-border";
+                    if (showSubTitle) { item.Show("subtitle"); }
                     htm.Append(item.Render());
                 }
                 section["items"] = htm.ToString();
@@ -110,7 +120,6 @@ namespace Kandu.Common.Platform
             // Boards (sorted by organization, favorite, alphabetical) //////////////////////////////////////////
             if (boards.Count() > 0)
             {
-                var orgId = 0;
                 var isnewOrg = true;
                 htm = new StringBuilder();
                 foreach (var board in boards)
@@ -138,11 +147,13 @@ namespace Kandu.Common.Platform
                     item["title"] = board.name;
                     item["owner"] = board.orgName;
                     item["star"] = board.favorite ? "star" : "star-border";
+                    if (showSubTitle) { item.Show("subtitle"); }
                     htm.Append(item.Render());
                 }
                 section["items"] = htm.ToString();
                 html.Append(section.Render());
             }
+            if(listOnly == true) { return section["items"]; }
             return html.ToString();
         }
 

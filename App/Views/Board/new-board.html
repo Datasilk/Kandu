@@ -17,7 +17,7 @@
                 </select>
             </div>
         </div>
-        <div class="row hover">
+        <div class="row hover choose-org">
             <div class="col field long">Organization</div>
             <div class="col input">
                 <select id="orgId">#org-options#</select>
@@ -30,9 +30,15 @@
                 </a>
             </div>
         </div>
+        <div class="row hover chosen-org hide">
+            <div class="col field long">Organization</div>
+            <div class="col text bold">
+                #org-name#
+            </div>
+        </div>
         <div class="row pad-top text-center">
             <a href="#" class="button apply" onclick="#submit-click#">#submit-label#</a>
-            <a href="#" class="button cancel" onclick="S.popup.hide()">Cancel</a>
+            <a href="#" class="button cancel" onclick="S.boards.add.hide()">Cancel</a>
         </div>
     </div>
     <div class="color-picker" style="display:none;">

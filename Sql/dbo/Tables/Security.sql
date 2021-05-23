@@ -1,4 +1,4 @@
-﻿CREATE TABLE [dbo].[OrgSecurity]
+﻿CREATE TABLE [dbo].[Security]
 (
 	[orgId] INT NOT NULL, 
     [userId] INT NOT NULL,

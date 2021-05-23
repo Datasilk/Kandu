@@ -46,6 +46,13 @@ namespace Query
             );
         }
 
+        public static List<Models.Board> GetByOrgId(int orgId)
+        {
+            return Sql.Populate<Models.Board>(
+                "Boards_GetByOrgId", new { orgId }
+            );
+        }
+
         public static Models.Board GetBoardAndLists(int boardId)
         {
             using (var sql = new Connection("Board_GetLists", new { boardId }))

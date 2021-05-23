@@ -1,4 +1,4 @@
-﻿DELETE FROM OrgSecurity
+﻿DELETE FROM Security
 DECLARE @userId int, @name nvarchar(255),
 @orgId int, @teamId int, @boardId int
 DECLARE @tmp TABLE (id int)

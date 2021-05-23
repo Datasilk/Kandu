@@ -318,11 +318,11 @@ CREATE TABLE [dbo].[Organizations] (
 
 
 GO
-PRINT N'Creating [dbo].[OrgSecurity]...';
+PRINT N'Creating [dbo].[Security]...';
 
 
 GO
-CREATE TABLE [dbo].[OrgSecurity] (
+CREATE TABLE [dbo].[Security] (
     [orgId]   INT          NOT NULL,
     [userId]  INT          NOT NULL,
     [key]     VARCHAR (32) NOT NULL,
@@ -399,11 +399,11 @@ ALTER TABLE [dbo].[Organizations]
 
 
 GO
-PRINT N'Creating unnamed constraint on [dbo].[OrgSecurity]...';
+PRINT N'Creating unnamed constraint on [dbo].[Security]...';
 
 
 GO
-ALTER TABLE [dbo].[OrgSecurity]
+ALTER TABLE [dbo].[Security]
     ADD DEFAULT 0 FOR [enabled];
 
 GO
@@ -631,7 +631,7 @@ AS
 	VALUES (@orgId, @ownerId, @name, GETUTCDATE(), @website, @description, @isprivate)
 	SELECT @orgId
 
-	INSERT INTO OrgSecurity (orgId, userId, [key], [enabled]) 
+	INSERT INTO Security (orgId, userId, [key], [enabled]) 
 	VALUES (@orgId, @ownerId, 'owner', 1)
 GO
 PRINT N'Creating [dbo].[Organization_Disable]...';
@@ -682,33 +682,33 @@ AS
 	JOIN Teams t ON t.orgId = o.orgId AND t.teamId=tm.teamId
 	WHERE o.orgId=t.orgId
 GO
-PRINT N'Creating [dbo].[OrgSecurity_AllKeysForUser]...';
+PRINT N'Creating [dbo].[Security_AllKeysForUser]...';
 
 
 GO
-CREATE PROCEDURE [dbo].[OrgSecurity_AllKeysForUser]
+CREATE PROCEDURE [dbo].[Security_AllKeysForUser]
 	@userId int
 AS
-	SELECT orgId, [key], [enabled] FROM OrgSecurity
+	SELECT orgId, [key], [enabled] FROM Security
 	WHERE userId=@userId
 	ORDER BY orgId
 GO
-PRINT N'Creating [dbo].[OrgSecurity_ForUser]...';
+PRINT N'Creating [dbo].[Security_ForUser]...';
 
 
 GO
-CREATE PROCEDURE [dbo].[OrgSecurity_ForUser]
+CREATE PROCEDURE [dbo].[Security_ForUser]
 	@orgId int,
 	@userId int
 AS
-	SELECT [key], [enabled] FROM OrgSecurity
+	SELECT [key], [enabled] FROM Security
 	WHERE orgId=@orgId AND userId=@userId
 GO
-PRINT N'Creating [dbo].[OrgSecurity_SaveKeys]...';
+PRINT N'Creating [dbo].[Security_SaveKeys]...';
 
 
 GO
-CREATE PROCEDURE [dbo].[OrgSecurity_SaveKeys]
+CREATE PROCEDURE [dbo].[Security_SaveKeys]
 	@orgId int,
 	@userId int,
 	@keys XML 
@@ -743,10 +743,10 @@ AS
 	SELECT * FROM @newkeys
 	FETCH NEXT FROM @cursor INTO @key, @value
 	WHILE @@FETCH_STATUS = 0 BEGIN
-		IF EXISTS(SELECT * FROM OrgSecurity WHERE orgId=@orgId AND userId=@userId AND [key]=@key) BEGIN
-			UPDATE OrgSecurity SET [enabled] = @value WHERE orgId=orgId AND userId=@userId AND [key]=@key
+		IF EXISTS(SELECT * FROM Security WHERE orgId=@orgId AND userId=@userId AND [key]=@key) BEGIN
+			UPDATE Security SET [enabled] = @value WHERE orgId=orgId AND userId=@userId AND [key]=@key
 		END ELSE BEGIN
-			INSERT INTO OrgSecurity (orgId, userId, [key], [enabled]) 
+			INSERT INTO Security (orgId, userId, [key], [enabled]) 
 			VALUES (@orgId, @userId, @key, @value)
 		END
 		FETCH NEXT FROM @cursor INTO @key, @value
