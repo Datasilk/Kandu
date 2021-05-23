@@ -5,20 +5,25 @@ S.orgs = {
         S.scrollbar.add('.orgs-list-menu .scroll-container', {
             touch: true,
             footer: function () {
-                var win = S.window;
-                $('.orgs-list-menu .scroll-container').css({ 'max-height': (win.h - 70) + 'px' });
                 return 20;
             }
         });
-        
+
+        $(window).on('resize', S.orgs.list.resize);
     },
     list: {
         show: function () {
             $('.orgs-list-menu').removeClass('hide');
+            S.orgs.list.resize();
+            S.scrollbar.update('.orgs-list-menu .scroll-container');
         },
 
         hide: function () {
             $('.orgs-list-menu').addClass('hide');
+        },
+        resize: function () {
+            var win = S.window;
+            $('.orgs-list-menu .scroll-container').css({ 'max-height': (win.h - 70) + 'px' });
         }
     },
     add: {

@@ -124,17 +124,12 @@
         show: function () {
             $('.user-menu').removeClass('hide');
             $('.bg-for-user-menu').removeClass('hide');
-            $(window).on('resize', S.head.user.resize);
-            $(window).on('scroll', S.head.user.resize);
-            //S.head.user.callback.execute(true, false);
             S.scrollbar.update($('.boards-menu'));
         },
 
         hide: function () {
             $('.user-menu').addClass('hide');
             $('.bg-for-user-menu').addClass('hide');
-            $(window).off('resize', S.head.user.resize);
-            $(window).off('scroll', S.head.user.resize);
             S.orgs.list.hide();
         }
     }, 
