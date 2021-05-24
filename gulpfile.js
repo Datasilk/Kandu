@@ -94,6 +94,7 @@ paths.working = {
     dashboard: {
         js: [
             paths.app + 'views/organizations/organizations.js',
+            paths.app + 'views/teams/teams.js',
             paths.app + 'views/boards/boards.js',
             paths.app + 'views/shared/header.js'
         ],

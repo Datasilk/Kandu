@@ -1,18 +1,45 @@
 ﻿CREATE PROCEDURE [dbo].[Boards_GetList]
-	@userId int
+	@userId int,
+	@orgId int = 0,
+	@sort int
 AS
-	SELECT DISTINCT b.*, org.sort, org.[name] AS orgName, bm.favorite 
-	FROM TeamMembers tm
-	JOIN BoardTeams bt ON bt.teamId = tm.teamId
-	JOIN Boards b ON b.boardId = bt.boardId
-	JOIN Teams t ON t.teamId = tm.teamId
-	LEFT JOIN BoardMembers bm ON bm.boardId=bt.boardId AND bm.userId=@userId
+
+
+	SELECT b.*, 
+	org.sort, org.[name] AS orgName, bm.favorite 
+	FROM Boards b
+	LEFT JOIN BoardMembers bm ON bm.boardId=b.boardId AND bm.userId=@userId
 	CROSS APPLY (
 		SELECT 
 		CASE WHEN o.ownerId=@userId THEN 0 ELSE 1 END AS sort,
 		o.orgId, o.[name]
 		FROM Organizations o
-		WHERE o.orgId = t.orgId
+		WHERE o.orgId = b.orgId
 	) AS org
-	WHERE tm.userId=@userId
-	ORDER BY org.sort ASC, org.[name] ASC, bm.favorite DESC, b.lastmodified DESC
+	CROSS APPLY (
+		SELECT CASE WHEN EXISTS(
+		SELECT * FROM [SecurityUsers] su
+		JOIN SecurityGroups sg ON sg.groupId = su.groupId
+		JOIN Security s ON s.groupId = sg.groupId
+		WHERE su.userId = @userId AND sg.orgId=b.orgId
+		AND (
+			s.[key] = 'Owner'
+			OR s.[key] = 'BoardsCanViewAll'
+		))
+		THEN 1 ELSE 0 END AS viewall
+	) AS sec
+	WHERE (
+		sec.viewall = 1 OR
+		(sec.viewall = 0 AND bm.userId=@userId)
+	) 
+	AND
+	(
+		(@orgId > 0 AND b.orgId=@orgId)
+		OR @orgId <= 0
+	)
+	ORDER BY 
+	org.sort ASC,
+	org.[name] ASC,
+	CASE WHEN @sort = 1 THEN b.[name] END ASC,
+	CASE WHEN @sort = 0 THEN bm.favorite END ASC,
+	CASE WHEN @sort = 0 OR @sort = 2 THEN b.lastmodified END ASC

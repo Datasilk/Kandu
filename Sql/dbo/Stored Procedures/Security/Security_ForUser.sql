@@ -2,5 +2,10 @@
 	@orgId int,
 	@userId int
 AS
-	SELECT [key], [enabled] FROM Security
-	WHERE orgId=@orgId AND userId=@userId
+	SELECT s.orgId, s.[key], s.[enabled], s.groupId
+	FROM SecurityUsers su
+	JOIN SecurityGroups sg ON sg.groupId = su.groupId
+	JOIN [Security] s ON s.groupId = sg.groupId
+	WHERE su.userId = @userId
+	AND sg.orgId=@orgId
+	ORDER BY sg.groupId

@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+﻿using System;
 using System.Linq;
 using System.Text;
 
@@ -21,12 +21,6 @@ namespace Kandu.Services
                     return Error("An organization with that name already exists");
                 }
                 var id = Common.Platform.Organizations.Create(this, name, description, website);
-                Common.Platform.Teams.Create(this, id, "Managers", "Organization Managers");
-                User.Security.Add(id, new Dictionary<string, bool>()
-                {
-                    {"owner", true}
-                });
-                User.Save(true);
 
                 return id.ToString();
             }
@@ -42,9 +36,10 @@ namespace Kandu.Services
             var list = Query.Organizations.UserIsPartOf(User.userId);
             var html = new StringBuilder("{\"orgs\":[");
             var i = 0;
+            var sec = Enum.Parse<Common.Platform.Security.Keys>(security);
             list.ForEach((Query.Models.Organization o) =>
             {
-                if(security == "" || (security != "" && User.CheckSecurity(o.orgId, security)))
+                if(security == "" || (security != "" && User.CheckSecurity(o.orgId, sec)))
                 {
                     html.Append((i > 0 ? "," : "") + "{\"name\":\"" + o.name + "\", \"description\":\"" + o.description + "\",\"orgId\":\"" + o.orgId + "\"}");
                 }
@@ -63,7 +58,7 @@ namespace Kandu.Services
         public string Details(int orgId)
         {
             if (!CheckSecurity()) { return AccessDenied(); } //check security
-            var canEdit = CheckSecurity(orgId, Common.Platform.Security.Keys.OrgCanEdit.ToString());
+            var canEdit = CheckSecurity(orgId, Common.Platform.Security.Keys.OrgCanEdit);
             var tabHtml = new StringBuilder();
             var contentHtml = new StringBuilder();
             var view = new View("/Views/Organizations/details.html");
@@ -77,8 +72,15 @@ namespace Kandu.Services
                 view.Show("view-org");
             }
 
+            //load org info
+            var org = Query.Organizations.GetInfo(orgId);
+            view["name"] = org.name;
+            view["description"] = org.description;
+            view["website"] = org.website;
+
             //load boards tab
             tab["title"] = "Boards";
+            tab["id"] = "boards";
             tab.Show("selected");
             tabHtml.Append(tab.Render());
             var html = Common.Platform.Boards.RenderBoardMenu(this, orgId, true, false);
@@ -90,9 +92,63 @@ namespace Kandu.Services
                 html = noboards.Render();
             }
             contentHtml.Append("<div class=\"content-boards\">" + html + "</div>\n");
+
+            //load teams tab
+            tab.Clear();
+            tab["title"] = "Teams";
+            tab["id"] = "teams";
+            tabHtml.Append(tab.Render());
+            contentHtml.Append("<div class=\"content-teams\"></div>\n");
+
+            //load members tab
+            tab.Clear();
+            tab["title"] = "Members";
+            tab["id"] = "members";
+            tabHtml.Append(tab.Render());
+            html = "";
+            contentHtml.Append("<div class=\"content-members\"></div>\n");
+
+            //load following tab
+            tab.Clear();
+            tab["title"] = "Following";
+            tab["id"] = "following";
+            tabHtml.Append(tab.Render());
+            html = "";
+            contentHtml.Append("<div class=\"content-following\"></div>\n");
+
+
             view["tabs"] = tabHtml.ToString();
             view["content"] = contentHtml.ToString();
             return view.Render();
+        }
+
+        public string Update(int orgId, string name, string description, string website)
+        {
+            if (website.Length > 0)
+            {
+                website = "https://" + website.Replace("http://", "").Replace("https://", "");
+            }
+            var orgsOwned = Query.Organizations.Owned(User.userId);
+            if (orgsOwned.Any(a => a.name.ToLower() == name.ToLower() && a.orgId != orgId))
+            {
+                return Error("An organization with that name already exists");
+            }
+
+            try
+            {
+                Query.Organizations.Update(new Query.Models.Organization()
+                {
+                    orgId = orgId,
+                    name = name,
+                    description = description,
+                    website = website
+                });
+                return Success();
+            }
+            catch (Exception)
+            {
+                return Error();
+            }
         }
     }
 }

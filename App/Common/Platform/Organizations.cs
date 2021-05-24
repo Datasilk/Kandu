@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Text;
 
 namespace Kandu.Common.Platform
@@ -35,7 +36,15 @@ namespace Kandu.Common.Platform
                     isprivate = false
                 });
 
-                //TODO: Add organization to user's security
+                //create new team for organization
+                Teams.Create(request, id, "Managers", "Organization Managers");
+
+                //add "owner" security to current user
+                request.User.Security.Add(id, new Dictionary<string, bool>()
+                {
+                    {"Owner", true}
+                });
+                request.User.Save(true);
 
                 return id;
             }

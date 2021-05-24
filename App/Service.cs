@@ -41,8 +41,13 @@ namespace Kandu
             return User.CheckSecurity(boardId);
         }
 
-        public virtual bool CheckSecurity(int orgId = 0, string key = "") {
-            return false;
+        public virtual bool CheckSecurity(int orgId, Common.Platform.Security.Keys key) {
+            return User.CheckSecurity(orgId, key);
+        }
+
+        public bool IsInOrganization(int orgId)
+        {
+            return User.IsInOrganization(orgId);
         }
 
         public string Success()

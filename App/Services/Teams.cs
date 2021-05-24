@@ -11,10 +11,10 @@ namespace Kandu.Services
             return Success();
         }
 
-        public string List()
+        public string List(int orgId)
         {
-            if (!CheckSecurity()) { return AccessDenied(); } //check security
-            var list = Query.Teams.GetList(User.userId);
+            if (!IsInOrganization(orgId)) { return AccessDenied(); } //check security
+            var list = Query.Teams.GetList(orgId, User.userId);
             var html = new StringBuilder("{\"teams\":[");
             var i = 0;
             list.ForEach((Query.Models.Team t) =>
@@ -24,6 +24,12 @@ namespace Kandu.Services
             });
             html.Append("]}");
             return html.ToString();
+        }
+
+        public string RefreshList(int orgId)
+        {
+            if (!IsInOrganization(orgId)) { return AccessDenied(); } //check security
+            return Common.Platform.Teams.RenderTeamsList(this, orgId);
         }
     }
 }

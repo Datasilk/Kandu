@@ -149,12 +149,17 @@ namespace Kandu
             return false;
         }
 
-        public bool CheckSecurity(int orgId, string key)
+        public bool CheckSecurity(int orgId, Common.Platform.Security.Keys key)
         {
             return (Security.ContainsKey(orgId) && (
-                    Security[orgId].ContainsKey(key) ? Security[orgId][key] :
-                    (Security[orgId].ContainsKey("owner") ? Security[orgId]["owner"] : false)
+                    Security[orgId].ContainsKey(key.ToString()) ? Security[orgId][key.ToString()] :
+                    (Security[orgId].ContainsKey("Owner") ? Security[orgId]["Owner"] : false)
                 )) || false;
+        }
+
+        public bool IsInOrganization(int orgId)
+        {
+            return Security.ContainsKey(orgId);
         }
 
         #region "Helpers"

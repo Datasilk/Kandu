@@ -4,6 +4,13 @@ namespace Query
 {
     public static class Teams
     {
+        public enum Roles
+        {
+            Member = 0, //can view/contribute to boards/lists/cards
+            Moderator = 1, //moderates contributions made by members
+            Manager = 2 //can create boards, invite members, assign roles, etc
+        }
+
         public static int Create(Models.Team team, int ownerId)
         {
             return Sql.ExecuteScalar<int>(
@@ -37,12 +44,14 @@ namespace Query
             dateCreated = 2
         }
 
-        public static List<Models.Team>GetList(int orgId = 0, int start = 1, int length = 20, string search = "", SortList orderBy = SortList.name)
+        public static List<Models.Team>GetList(int orgId, int userId)
         {
-            return Sql.Populate<Models.Team>(
-                "Teams_GetList",
-                new { orgId, start, length, search, orderby = (int)orderBy }
-            );
+            return Sql.Populate<Models.Team>("Teams_GetList", new { orgId, userId});
+        }
+
+        public static void UpdateMember(int teamId, int userId, Roles role)
+        {
+            Sql.ExecuteNonQuery("Team_UpdateMember", new { teamId, userId, roleId = (int)role });
         }
     }
 }

@@ -36,6 +36,7 @@
     <None Remove="Views\Login\new-pass.html" />
     <None Remove="Views\Signup\signup.html" />
     <None Remove="Views\Signup\signup.js" />
+    <None Remove="Views\Teams\list-item.html" />
   </ItemGroup>
 
   <ItemGroup>
@@ -91,6 +92,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Views\Signup\signup.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Views\Teams\list-item.html">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

@@ -80,7 +80,7 @@ S.boards = {
             var name = $('#boardname').val();
             var color = S.util.color.rgbToHex($('.popup .color-input').css('background-color')).replace('#','');
             var orgId = $('#orgId').val();
-            var msg = $('.popup .message');
+            var msg = $('.popup.show .message');
             if (id > 0) { hasid = true;}
             if (name == '' || name == null) {
                 S.message.show(msg, 'error', 'Please specify a board name');
@@ -110,8 +110,8 @@ S.boards = {
         }
     },
 
-    updateTeamList: function () {
-        S.ajax.post('Teams/List', {}, function (data) {
+    updateTeamList: function (orgId) {
+        S.ajax.post('Teams/List', {orgId:orgId}, function (data) {
             $('#boardteam').html(
                 data.teams.map(a => {
                     return '<option value="' + a.teamId + '">' + a.name + '</option>';
@@ -148,46 +148,5 @@ S.boards = {
         }
     }
 };
-
-S.teams = {
-    add: {
-        show: function () {
-            $('.popup > .row > .col > h4').html('Create A New Team');
-            $('.board-form, .color-picker').hide();
-            $('.team-form').show();
-        },
-
-        hide: function () {
-            $('.popup > .row > .col > h4').html('Create A New Board');
-            $('.team-form').hide();
-            $('.board-form').show();
-        },
-
-        submit: function () {
-            var name = $('#teamname').val();
-            var description = $('#description').val() || '';
-            var msg = $('.popup .message');
-            if (name == '' || name == null) {
-                S.message.show(msg, 'error', 'Please specify a team name');
-                return;
-            }
-            S.ajax.post('Teams/Create', { name: name, description: description },
-                function (data) {
-                    if (data.indexOf('success') == 0) {
-                        S.boards.updateTeamList();
-                        S.teams.add.hide();
-                    } else {
-                        S.message.show(msg, 'error', S.message.error.generic);
-                        return;
-                    }
-                },
-                function () {
-                    S.message.show(msg, 'error', S.message.error.generic);
-                    return;
-                }
-            );
-        }
-    }
-}
 
 $('.boards .board.create-new').on('click', S.boards.add.show);

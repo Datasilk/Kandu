@@ -9,5 +9,6 @@ namespace Query.Models
         public string name { get; set; }
         public DateTime datecreated { get; set; }
         public string description { get; set; }
+        public int totalMembers { get; set; }
     }
 }

@@ -24,7 +24,7 @@ namespace Kandu.Common.Platform
                 request.User.Save(true);
 
                 return id;
-            }catch (Exception)
+            }catch (Exception ex)
             {
                 throw new ServiceErrorException("Error creating new board");
             }   
@@ -77,22 +77,13 @@ namespace Kandu.Common.Platform
             }
         }
 
-        public static string RenderBoardMenu(Request request, int orgId = 0, bool listOnly = false, bool showSubTitle = true)
+        public static string RenderBoardMenu(Request request, int orgId = 0, bool listOnly = false, bool showSubTitle = true, int sort = 0)
         {
             var html = new StringBuilder();
             var htm = new StringBuilder();
             var section = new View("/Views/Board/menu.html");
             var item = new View("/Views/Board/menu-item.html");
-            List<Query.Models.Board> boards;
-            if(orgId == 0)
-            {
-                boards = Query.Boards.GetList(request.User.userId);
-            }
-            else
-            {
-                boards = Query.Boards.GetByOrgId(orgId);
-            }
-            
+            var boards = Query.Boards.GetList(request.User.userId, orgId, (Query.Boards.BoardsSort)sort);
             var favs = boards.Where((a) => { return a.favorite; });
 
             // Favorite Boards //////////////////////////////////////////

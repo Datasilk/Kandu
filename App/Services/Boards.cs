@@ -2,12 +2,12 @@
 {
     public class Boards : Service
     {
-        public string Create(string name, string color, int teamId)
+        public string Create(string name, string color, int orgId)
         {
             if (!CheckSecurity()) { return AccessDenied(); } //check security
             try
             {
-                var boardId = Common.Platform.Boards.Create(this, name, color, teamId);
+                var boardId = Common.Platform.Boards.Create(this, name, color, orgId);
                 return Success();
             }catch(ServiceErrorException ex)
             {
@@ -27,12 +27,12 @@
             }
         }
 
-        public string Update(int boardId, string name, string color, int teamId)
+        public string Update(int boardId, string name, string color, int orgId)
         {
             if (!CheckSecurity()) { return AccessDenied(); } //check security
             try
             {
-                Common.Platform.Boards.Update(this, boardId, name, color, teamId);
+                Common.Platform.Boards.Update(this, boardId, name, color, orgId);
             }
             catch (ServiceDeniedException)
             {
@@ -45,10 +45,10 @@
             return Success();
         }
 
-        public string BoardsMenu(int orgId)
+        public string BoardsMenu(int orgId, bool subTitles = false, int sort = 0)
         {
             if (!CheckSecurity()) { return AccessDenied(); } //check security
-            return Common.Platform.Boards.RenderBoardMenu(this, orgId);
+            return Common.Platform.Boards.RenderBoardMenu(this, orgId, true, subTitles);
         }
 
         public string KeepMenuOpen(bool keepOpen)

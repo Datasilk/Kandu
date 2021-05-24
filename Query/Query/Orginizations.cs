@@ -9,6 +9,11 @@ namespace Query
             return Sql.ExecuteScalar<int>("Organization_Create", new { org.ownerId, org.name, org.website, org.description, org.isprivate });
         }
 
+        public static void Update(Models.Organization org)
+        {
+            Sql.ExecuteNonQuery("Organization_Update", new { org.orgId, org.name, org.website, org.description });
+        }
+
         public static  void Disable(int orgId)
         {
             Sql.ExecuteNonQuery("Organization_Disable", new { orgId });
@@ -38,5 +43,7 @@ namespace Query
         {
             return Sql.Populate<Models.Organization>("Organizations_UserIsPartOf", new { userId });
         }
+
+
     }
 }

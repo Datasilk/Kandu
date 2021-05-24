@@ -1,36 +1,34 @@
 ﻿CREATE PROCEDURE [dbo].[Teams_GetList]
 	@orgId int,
-	@start int = 1,
-	@length int = 20,
-	@search nvarchar(MAX) = '',
-	@orderby int = 0
+	@userId int
 AS
 BEGIN
 	SET NOCOUNT ON;
-	SELECT *
-	FROM (
-		SELECT ROW_NUMBER() 
-		OVER (ORDER BY
-		CASE WHEN @orderby = 0 THEN teamId END ASC,
-		CASE WHEN @orderby = 1 THEN [name] END DESC,
-		CASE WHEN @orderby = 2 THEN datecreated END ASC
-		) as rownum, *
-		FROM Teams
-		WHERE 
-		(
-			(@orgId > 0 AND orgId = @orgId)
-			OR @orgId <= 0
+
+	DECLARE @hasAllAccess bit = 0
+	IF EXISTS(
+		SELECT * FROM [SecurityUsers] su
+		JOIN SecurityGroups sg ON sg.groupId = su.groupId
+		JOIN Security s ON s.groupId = sg.groupId
+		WHERE su.userId = @userId AND sg.orgId=@orgId
+		AND (
+			s.[key] = 'Owner'
+			OR s.[key] = 'TeamsCanViewAll'
 		)
-		AND
-		(
-			(@search <> '' AND [name] LIKE '%' + @search + '%')
-			OR @search = ''
-		)
-		AND
-		(
-			(@search <> '' AND [description] LIKE '%' + @search + '%')
-			OR @search = ''
-		)
-	) as myTable
-	WHERE rownum >= @start AND  rownum <= @start + @length
+	) SET @hasAllAccess = 1
+
+
+	SELECT DISTINCT t.*, (SELECT COUNT(*) FROM TeamMembers tm2 WHERE tm2.teamId=t.teamId) AS totalMembers
+	FROM Teams t
+	LEFT JOIN TeamMembers tm ON tm.teamId=t.teamId AND tm.userId=@userId
+	WHERE 
+	(
+		(@orgId > 0 AND t.orgId = @orgId)
+		OR @orgId <= 0
+	)
+	AND
+	(
+		(@hasAllAccess = 0 AND tm.userId IS NOT NULL)
+		OR @hasAllAccess = 1
+	)
 END

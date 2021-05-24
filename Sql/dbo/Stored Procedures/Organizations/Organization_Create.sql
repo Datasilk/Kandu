@@ -8,8 +8,13 @@ AS
 	DECLARE @orgId int = NEXT VALUE FOR SequenceOrganizations
 	INSERT INTO Organizations(orgId, ownerId, [name], datecreated, website, [description], [isprivate])
 	VALUES (@orgId, @ownerId, @name, GETUTCDATE(), @website, @description, @isprivate)
+	
+	DECLARE @groupId int = NEXT VALUE FOR SequenceSecurityGroups
+	INSERT INTO SecurityGroups (groupId, orgId, [name]) VALUES (@groupId, @orgId, 'Administrators')
 
-	INSERT INTO Security (orgId, userId, [key], [enabled]) 
-	VALUES (@orgId, @ownerId, 'owner', 1)
+	INSERT INTO SecurityUsers (groupId, userId) VALUES (@groupId, @ownerId)
+
+	INSERT INTO [Security] (orgId, groupId, [key], [enabled]) 
+	VALUES (@orgId, @groupId, 'Owner', 1)
 	
 	SELECT @orgId

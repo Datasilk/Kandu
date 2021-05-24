@@ -39,17 +39,16 @@ namespace Query
             return null;
         }
 
-        public static List<Models.Board> GetList(int userId)
-        {
-            return Sql.Populate<Models.Board>(
-                "Boards_GetList", new { userId }
-            );
-        }
 
-        public static List<Models.Board> GetByOrgId(int orgId)
+        public enum BoardsSort
+        {
+            FavsFirst = 0,
+            AtoZ = 1
+        }
+        public static List<Models.Board> GetList(int userId, int orgId = 0, BoardsSort sort = BoardsSort.FavsFirst)
         {
             return Sql.Populate<Models.Board>(
-                "Boards_GetByOrgId", new { orgId }
+                "Boards_GetList", new { userId, orgId, sort = (int)sort }
             );
         }
 

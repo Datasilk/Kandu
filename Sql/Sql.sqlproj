@@ -162,6 +162,12 @@
     <Build Include="dbo\Stored Procedures\Security\Security_SaveKeys.sql" />
     <Build Include="dbo\Stored Procedures\Security\Security_AllKeysForUser.sql" />
     <Build Include="dbo\Stored Procedures\Boards\Boards_GetByOrgId.sql" />
+    <Build Include="dbo\Stored Procedures\Organizations\Organization_Update.sql" />
+    <Build Include="dbo\Stored Procedures\Users\Users_InOrganization.sql" />
+    <Build Include="dbo\Stored Procedures\Teams\Team_UpdateMember.sql" />
+    <Build Include="dbo\Tables\SecurityGroups.sql" />
+    <Build Include="dbo\Tables\SecurityUsers.sql" />
+    <Build Include="dbo\Sequences\SequenceSecurityGroups.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Sql.publish.xml" />

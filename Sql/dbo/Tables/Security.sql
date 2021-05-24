@@ -1,8 +1,8 @@
 ﻿CREATE TABLE [dbo].[Security]
 (
 	[orgId] INT NOT NULL, 
-    [userId] INT NOT NULL,
+    [groupId] INT NOT NULL,
 	[key] VARCHAR(32) NOT NULL,
 	[enabled] BIT NOT NULL DEFAULT 0,
-	PRIMARY KEY ([orgId], userId, [key])
+	PRIMARY KEY ([orgId], [groupId], [key])
 )
