@@ -3,12 +3,16 @@
 S.boards = {
     add: {
         popup: null,
-        callback:null,
-        show: function (e, id, orgId, callback) {
+        boardId: null,
+        callback: null,
+
+        show: function (e, id, name, orgId, callback) {
             //get team list
+            S.boards.add.boardId = id;
             S.boards.add.callback = callback;
             var hasid = false;
-            if (id > 0) { hasid = true;}
+            if (id != null && id > 0) { hasid = true; }
+            if (typeof name == 'function') { name = name(id, orgId);}
             S.ajax.post('Organizations/List', { security: 'board-create' }, function (data) {
                 var view = new S.view(
                     $('#template_newboard').html()
@@ -18,6 +22,7 @@ S.boards = {
                                 (orgId != null ? (a.orgId == orgId ? ' selected' : '') : '') +
                                 '>' + a.name + '</option>';
                         }).join(''))
+                        .replace('#name#', name ? name : '')
                         .replace('#color#', '#0094ff')
                         .replace('#submit-label#', !hasid ? 'Create Board' : 'Update Board')
                         .replace('#submit-click#', !hasid ? 'S.boards.add.submit()' : 'S.boards.add.submit(\'' + id + '\')')
@@ -59,8 +64,11 @@ S.boards = {
                     S.ajax.post('Boards/Details', { boardId: id }, function (data) {
                         $('#boardname').val(data.board.name);
                         $('.popup .color-input').css({ 'background-color': data.board.color });
-                        $('#boardteam').val(data.board.teamId);
+                        $('#orgId').val(data.board.orgId);
                     }, null, true);
+                }
+                if (orgId != null && orgId > 0) {
+                    $('#orgId').val(orgId);
                 }
             }, null, true);
             if (e) { e.cancelBubble = true;}
@@ -69,10 +77,10 @@ S.boards = {
 
         hide: function () {
             console.log('hide popup');
-            if (S.boards.add.callback != null) {
-                S.popup.hide(S.boards.add.popup);
+            if (typeof S.boards.add.callback != 'undefined') {
+                S.boards.add.callback(null);
             }
-            S.boards.add.callback();
+            S.popup.hide(S.boards.add.popup);
         },
 
         submit: function (id) {
@@ -87,19 +95,15 @@ S.boards = {
                 return;
             }
             var form = { name: name, color: color, orgId: orgId };
-            if (hasid) { form.boardId = id;}
+            if (hasid) { form.boardId = id; }
             S.ajax.post(hasid ? 'Boards/Update' : 'Boards/Create', form,
                 function (data) {
-                    if (data == 'success') {
-                        if (S.boards.add.callback != null) {
-                            S.popup.hide(S.boards.add.popup);
-                            S.boards.add.callback();
-                        } else {
-                            window.location.reload();
-                        }
+                    console.log('updated/created board');
+                    if (S.boards.add.callback != null) {
+                        S.boards.add.callback(form);
+                        S.popup.hide(S.boards.add.popup);
                     } else {
-                        S.message.show(msg, 'error', S.message.error.generic);
-                        return;
+                        window.location.reload();
                     }
                 },
                 function () {
@@ -107,7 +111,22 @@ S.boards = {
                     return;
                 }
             );
+        },
+
+        updated: function (data) {
+            if (!data) { return; }
+            if (data.color != null) {
+                console.log(data);
+                console.log('.board.board-' + data.boardId);
+                console.log($('.board.board-' + data.boardId));
+                $('.board.board-' + data.boardId).css({ 'background-color': '#' + data.color });
+            }
+            $('.board.board-' + data.boardId + ' .title').html(data.name);
         }
+    },
+
+    getTitle: function (boardId, orgId) {
+        return  $('.board.board-' + boardId + ' .title').html().trim();
     },
 
     updateTeamList: function (orgId) {
@@ -148,5 +167,3 @@ S.boards = {
         }
     }
 };
-
-$('.boards .board.create-new').on('click', S.boards.add.show);

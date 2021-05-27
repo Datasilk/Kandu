@@ -3,7 +3,7 @@
         <div class="row message hide"><span></span></div>
         <div class="row hover">
             <div class="col field long">Board Name</div>
-            <div class="col input"><input type="text" id="boardname" placeholder="Weekend Project" /></div>
+            <div class="col input"><input type="text" id="boardname" value="#name#" placeholder="Weekend Project" /></div>
             <div class="col input pad-left-sm">
                 <div class="color-input" title="Board Color" style="background-color:#color#" onclick="S.boards.colorPicker.show()"></div>
             </div>
@@ -37,8 +37,8 @@
             </div>
         </div>
         <div class="row pad-top text-center">
-            <a href="#" class="button apply" onclick="#submit-click#">#submit-label#</a>
-            <a href="#" class="button cancel" onclick="S.boards.add.hide()">Cancel</a>
+            <a href="javascript:" class="button apply" onclick="#submit-click#">#submit-label#</a>
+            <a href="javascript:" class="button cancel" onclick="S.boards.add.hide()">Cancel</a>
         </div>
     </div>
     <div class="color-picker" style="display:none;">
@@ -56,7 +56,7 @@
         <div class="color" style="background-color:#9f9f9f"></div>
         <div class="color" style="background-color:#272727"></div>
         <div class="row text-center pad-top clear">
-            <a href="#" class="button cancel" onclick="S.boards.colorPicker.hide()">Cancel</a>
+            <a href="javascript:" class="button cancel" onclick="S.boards.colorPicker.hide()">Cancel</a>
         </div>
     </div>
     <div class="team-form" style="display:none;">
@@ -70,8 +70,8 @@
             <div class="row hover input long"><textarea id="description" placeholder="describe your team" cols="3"></textarea></div>
         </div>
         <div class="row pad-top text-center">
-            <a href="#" class="button apply" onclick="S.teams.add.submit()">Create Team</a>
-            <a href="#" class="button cancel" onclick="S.boards.add.show()">Cancel</a>
+            <a href="javascript:" class="button apply" onclick="S.teams.add.submit()">Create Team</a>
+            <a href="javascript:" class="button cancel" onclick="S.boards.add.show()">Cancel</a>
         </div>
     </div>
 </script>

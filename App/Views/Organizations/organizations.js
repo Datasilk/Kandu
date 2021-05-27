@@ -138,6 +138,9 @@ S.orgs = {
                 $('.org-details .content-boards').show();
                 $('.org-details .tab-teams').on('click', S.orgs.teams.show);
 
+                //set up buttons
+                $('.org-details .btn-add-board').on('click', S.orgs.boards.add);
+
                 //set up custom scrollbars
                 S.scrollbar.add('.org-details .content', { touch: true });
             },
@@ -183,18 +186,21 @@ S.orgs = {
     },
 
     boards: {
-        add: function (orgId) {
+        refresh: function () {
+            S.ajax.post('Boards/BoardsMenu', { orgId: S.orgs.details.orgId }, (result) => {
+                $('.content-boards').html(result);
+            },
+            (err) => {
+
+            });
+        },
+
+        add: function () {
             S.orgs.details.popup.hide();
-            S.boards.add.show(null, null, orgId, () => {
+            S.boards.add.show(null, null, '', S.orgs.details.orgId, () => {
                 S.orgs.details.popup.show();
                 S.popup.resize();
-                //reload boards list in org details modal
-                S.ajax.post('Boards/BoardsMenu', { orgId: orgId }, (result) => {
-                    $('.content-boards').html(result);
-                },
-                (err) => {
-
-                });
+                S.orgs.boards.refresh();
             });
         }
     },
@@ -209,12 +215,21 @@ S.orgs = {
             }
         },
 
-        refresh: function (orgId) {
+        refresh: function () {
             S.ajax.post('Teams/RefreshList', { orgId: S.orgs.details.orgId }, function (result) {
                 $('.content-teams').html(result);
             },
             (err) => {
 
+            });
+        },
+
+        add: function () {
+            S.orgs.details.popup.hide();
+            S.teams.add.show(null, null, S.orgs.details.orgId, () => {
+                S.orgs.details.popup.show();
+                S.popup.resize();
+                S.orgs.teams.refresh();
             });
         }
     }

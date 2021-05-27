@@ -10,7 +10,9 @@ AS
 	INSERT INTO Boards (boardId, orgId, [name], color)
 	VALUES (@boardId, @orgId, @name, @color)
 
-	INSERT INTO BoardTeams (boardId, teamId) VALUES (@boardId, @teamId)
+	IF (@teamId IS NOT NULL AND @teamId > 0) BEGIN
+		INSERT INTO BoardTeams (boardId, teamId) VALUES (@boardId, @teamId)
+	END
 
 	IF @favorite = 1 BEGIN
 		EXEC Board_Favorite @boardId=@boardId, @userId=@userId

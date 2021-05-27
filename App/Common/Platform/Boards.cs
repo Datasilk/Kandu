@@ -30,7 +30,7 @@ namespace Kandu.Common.Platform
             }   
         }
 
-        public static void Update(Request request, int boardId, string name, string color, int teamId)
+        public static void Update(Request request, int boardId, string name, string color, int orgId)
         {
             //check if user has access to board
             if (!Query.Boards.MemberExists(request.User.userId, boardId)) {
@@ -45,7 +45,7 @@ namespace Kandu.Common.Platform
                     name = name,
                     boardId = boardId,
                     color = color,
-                    teamId = teamId
+                    orgId = orgId
                 });
             }
             catch(Exception)
@@ -77,7 +77,7 @@ namespace Kandu.Common.Platform
             }
         }
 
-        public static string RenderBoardMenu(Request request, int orgId = 0, bool listOnly = false, bool showSubTitle = true, int sort = 0)
+        public static string RenderBoardMenu(Request request, int orgId = 0, bool listOnly = false, bool showSubTitle = true, int sort = 0, bool btnsInFront = false)
         {
             var html = new StringBuilder();
             var htm = new StringBuilder();
@@ -133,6 +133,7 @@ namespace Kandu.Common.Platform
                     }
 
                     item["id"] = board.boardId.ToString();
+                    item["orgId"] = orgId.ToString();
                     item["url"] = "/board/" + board.boardId + "/" + board.name.Replace(" ", "-").ToLower();
                     item["color"] = "#" + board.color;
                     item["title"] = board.name;
@@ -144,8 +145,19 @@ namespace Kandu.Common.Platform
                 section["items"] = htm.ToString();
                 html.Append(section.Render());
             }
-            if(listOnly == true) { return section["items"]; }
-            return html.ToString();
+
+            //add new board button
+            var addbutton = "";
+            if(request.User.CheckSecurity(orgId, Security.Keys.BoardCanCreate))
+            {
+                var additem = new View("/Views/Boards/add-item.html");
+                addbutton = additem.Render();
+            }
+
+            if(listOnly == true) { 
+                return (btnsInFront == true ? addbutton : "") + section["items"] + (btnsInFront == false ? addbutton : ""); 
+            }
+            return html.ToString() + addbutton;
         }
 
         public static void KeepBoardsMenuOpen(Request request, bool keepOpen)

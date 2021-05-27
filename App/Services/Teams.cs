@@ -26,10 +26,17 @@ namespace Kandu.Services
             return html.ToString();
         }
 
-        public string RefreshList(int orgId)
+        public string RefreshList(int orgId, bool btnsInFront = false)
         {
             if (!IsInOrganization(orgId)) { return AccessDenied(); } //check security
-            return Common.Platform.Teams.RenderTeamsList(this, orgId);
+            var html =  Common.Platform.Teams.RenderTeamsList(this, orgId);
+            if(CheckSecurity(orgId, Common.Platform.Security.Keys.TeamCanCreate))
+            {
+                var additem = new View("/Views/Teams/add-item.html");
+                var addbutton = additem.Render();
+                html = (btnsInFront == true ? addbutton : "") + html + (btnsInFront == false ? addbutton : "");
+            }
+            return html;
         }
     }
 }

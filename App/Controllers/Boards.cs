@@ -20,20 +20,43 @@ namespace Kandu.Controllers
             }
             //load boards list
             var view = new View("/Views/Boards/boards.html");
-            
+            var createView = new View("/Views/Boards/create-board.html");
+            var orgView = new View("/Views/Boards/org-head.html");
+
             var boards = Query.Boards.GetList(User.userId);
             var html = new StringBuilder();
             var item = new View("/Views/Boards/list-item.html");
+            var orgId = 0;
             boards.ForEach((Query.Models.Board b) => {
+                //check organization
+                if(orgId != b.orgId)
+                {
+                    if(orgId > 0)
+                    {
+                        createView["onclick"] = "S.boards.add.show(null, null, '', " + orgId + ")";
+                        html.Append(createView.Render());
+                        html.Append("</div>");
+                    }
+                    orgView.Clear();
+                    orgView["name"] = b.orgName;
+                    orgId = b.orgId;
+                    html.Append(orgView.Render());
+                    html.Append("<div class=\"org-boards\">");
+                }
                 item["favorite"] = b.favorite ? "1" : "";
                 item["name"] = b.name;
                 item["color"] = "#" + b.color;
                 item["extra"] = b.favorite ? "fav" : "";
                 item["id"] = b.boardId.ToString();
+                item["orgId"] = orgId.ToString();
                 item["type"] = b.type.ToString();
                 item["url"] = Uri.EscapeUriString("/board/" + b.boardId + "/" + b.name.Replace(" ", "-").ToLower());
                 html.Append(item.Render());
             });
+
+            createView["onclick"] = "S.boards.add.show(null, null, '', " + orgId + ")";
+            html.Append(createView.Render());
+            html.Append("</div>");
             view["list"] = html.ToString();
 
             //load page resources

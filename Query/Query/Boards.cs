@@ -17,7 +17,7 @@ namespace Query
         {
             Sql.ExecuteNonQuery(
                 "Board_Update",
-                new { board.boardId, board.teamId, board.name, board.color }
+                new { board.boardId, board.orgId, board.name, board.color }
             );
         }
 

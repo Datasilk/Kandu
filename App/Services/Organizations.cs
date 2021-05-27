@@ -30,16 +30,15 @@ namespace Kandu.Services
             }
         }
 
-        public string List(string security = "")
+        public string List()
         {
             if (!CheckSecurity()) { return AccessDenied(); } //check security
             var list = Query.Organizations.UserIsPartOf(User.userId);
             var html = new StringBuilder("{\"orgs\":[");
             var i = 0;
-            var sec = Enum.Parse<Common.Platform.Security.Keys>(security);
             list.ForEach((Query.Models.Organization o) =>
             {
-                if(security == "" || (security != "" && User.CheckSecurity(o.orgId, sec)))
+                if(User.CheckSecurity(o.orgId, Common.Platform.Security.Keys.BoardCanCreate))
                 {
                     html.Append((i > 0 ? "," : "") + "{\"name\":\"" + o.name + "\", \"description\":\"" + o.description + "\",\"orgId\":\"" + o.orgId + "\"}");
                 }
