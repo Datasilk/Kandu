@@ -1,4 +1,7 @@
-﻿namespace Kandu.Services
+﻿using System;
+using System.Text;
+
+namespace Kandu.Services
 {
     public class Boards : Service
     {
@@ -13,6 +16,12 @@
             {
                 return Error(ex.Message);
             }
+        }
+
+        public string RenderList()
+        {
+            if (!CheckSecurity()) { return AccessDenied(); } //check security
+            return Common.Platform.Boards.RenderList(this);
         }
 
         public string Details(int boardId)
@@ -45,10 +54,10 @@
             return Success();
         }
 
-        public string BoardsMenu(int orgId, bool subTitles = false, int sort = 0)
+        public string BoardsMenu(int orgId, bool subTitles = false, bool listOnly = true, int sort = 0, bool buttonsInFront = false)
         {
             if (!CheckSecurity()) { return AccessDenied(); } //check security
-            return Common.Platform.Boards.RenderBoardMenu(this, orgId, true, subTitles);
+            return Common.Platform.Boards.RenderBoardMenu(this, orgId, listOnly, subTitles, sort, buttonsInFront);
         }
 
         public string KeepMenuOpen(bool keepOpen)

@@ -77,11 +77,52 @@ namespace Kandu.Common.Platform
             }
         }
 
+        public static string RenderList(Request request)
+        {
+            var createView = new View("/Views/Boards/create-board.html");
+            var orgView = new View("/Views/Boards/org-head.html");
+            var boards = Query.Boards.GetList(request.User.userId);
+            var html = new StringBuilder();
+            var item = new View("/Views/Boards/list-item.html");
+            var orgId = 0;
+            boards.ForEach((Query.Models.Board b) => {
+                //check organization
+                if (orgId != b.orgId)
+                {
+                    if (orgId > 0)
+                    {
+                        createView["onclick"] = "S.boards.add.show(null, null, '', " + orgId + ")";
+                        html.Append(createView.Render());
+                        html.Append("</div>");
+                    } 
+                    orgView.Clear();
+                    orgView["name"] = b.orgName;
+                    orgId = b.orgId;
+                    html.Append(orgView.Render());
+                    html.Append("<div class=\"org-boards\">");
+                }
+                item["favorite"] = b.favorite ? "1" : "";
+                item["name"] = b.name;
+                item["color"] = "#" + b.color;
+                item["extra"] = b.favorite ? "fav" : "";
+                item["id"] = b.boardId.ToString();
+                item["orgId"] = orgId.ToString();
+                item["type"] = b.type.ToString();
+                item["url"] = Uri.EscapeUriString("/board/" + b.boardId + "/" + b.name.Replace(" ", "-").ToLower());
+                html.Append(item.Render());
+            });
+            createView["onclick"] = "S.boards.add.show(null, null, '', " + orgId + ")";
+            html.Append(createView.Render());
+            html.Append("</div>");
+
+            return html.ToString();
+        }
+
         public static string RenderBoardMenu(Request request, int orgId = 0, bool listOnly = false, bool showSubTitle = true, int sort = 0, bool btnsInFront = false)
         {
             var html = new StringBuilder();
             var htm = new StringBuilder();
-            var section = new View("/Views/Board/menu.html");
+            var menu = new View("/Views/Board/menu.html");
             var item = new View("/Views/Board/menu-item.html");
             var boards = Query.Boards.GetList(request.User.userId, orgId, (Query.Boards.BoardsSort)sort);
             var favs = boards.Where((a) => { return a.favorite; });
@@ -89,9 +130,9 @@ namespace Kandu.Common.Platform
             // Favorite Boards //////////////////////////////////////////
             if (favs.Count() > 0)
             {
-                section["title"] = "Starred Boards";
-                section["id"] = "favs";
-                section["icon"] = "star-border-sm";
+                menu["title"] = "Starred Boards";
+                menu["id"] = "favs";
+                menu["icon"] = "star-border-sm";
                 htm = new StringBuilder();
                 foreach (var fav in favs)
                 {
@@ -104,8 +145,7 @@ namespace Kandu.Common.Platform
                     if (showSubTitle) { item.Show("subtitle"); }
                     htm.Append(item.Render());
                 }
-                section["items"] = htm.ToString();
-                html.Append(section.Render());
+                menu["items"] = htm.ToString();
             }
 
             // Boards (sorted by organization, favorite, alphabetical) //////////////////////////////////////////
@@ -119,17 +159,17 @@ namespace Kandu.Common.Platform
                     {
                         if (orgId > 0)
                         {
-                            section["items"] = htm.ToString();
-                            html.Append(section.Render());
+                            menu["items"] = htm.ToString();
+                            html.Append(menu.Render());
                         }
                         isnewOrg = true;
                         orgId = board.teamId;
                     }
                     if (isnewOrg == true)
                     {
-                        section["title"] = board.orgName;
-                        section["id"] = "org" + board.orgId.ToString();
-                        section["icon"] = "user";
+                        menu["title"] = board.orgName;
+                        menu["id"] = "org" + board.orgId.ToString();
+                        menu["icon"] = "user";
                     }
 
                     item["id"] = board.boardId.ToString();
@@ -142,22 +182,26 @@ namespace Kandu.Common.Platform
                     if (showSubTitle) { item.Show("subtitle"); }
                     htm.Append(item.Render());
                 }
-                section["items"] = htm.ToString();
-                html.Append(section.Render());
+                menu["items"] = htm.ToString();
             }
-
-            //add new board button
-            var addbutton = "";
-            if(request.User.CheckSecurity(orgId, Security.Keys.BoardCanCreate))
+            if(menu["items"] != "")
             {
-                var additem = new View("/Views/Boards/add-item.html");
-                addbutton = additem.Render();
+                //add new board button
+                if (request.User.CheckSecurity(orgId, Security.Keys.BoardCanCreate))
+                {
+                    var additem = new View("/Views/Boards/add-item.html");
+                    menu["items"] = btnsInFront ? (additem.Render() + menu["items"]) : (menu["items"] + additem.Render());
+                }
+
+                //finally, render menu
+                if (listOnly)
+                {
+                    return menu["items"];
+                }
+                html.Append(menu.Render());
             }
 
-            if(listOnly == true) { 
-                return (btnsInFront == true ? addbutton : "") + section["items"] + (btnsInFront == false ? addbutton : ""); 
-            }
-            return html.ToString() + addbutton;
+            return html.ToString();
         }
 
         public static void KeepBoardsMenuOpen(Request request, bool keepOpen)

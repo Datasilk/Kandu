@@ -102,6 +102,8 @@ S.boards = {
                     if (S.boards.add.callback != null) {
                         S.boards.add.callback(form);
                         S.popup.hide(S.boards.add.popup);
+                        //broadcast event for board added
+                        S.boards.events.broadcast('board-added', { orgId: orgId });
                     } else {
                         window.location.reload();
                     }
@@ -122,6 +124,33 @@ S.boards = {
                 $('.board.board-' + data.boardId).css({ 'background-color': '#' + data.color });
             }
             $('.board.board-' + data.boardId + ' .title').html(data.name);
+        }
+    },
+
+    events: {
+        callbacks: [],
+
+        listen: function (callback) {
+            S.boards.events.callbacks.push(callback);
+        },
+
+        broadcast: function (action, params) {
+            var c = S.boards.events.callbacks;
+            for (var x = 0; x < c.length; x++) {
+                c[x](action, params);
+            }
+        }
+    },
+
+    page: {
+        init: function () {
+            S.boards.events.listen(() => {
+                //update boards list
+                console.log('boards list listener');
+                S.ajax.post('Boards/RenderList', {}, (data) => {
+                    $('.boards').html(data);
+                });
+            });
         }
     },
 

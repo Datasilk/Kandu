@@ -187,8 +187,10 @@ S.orgs = {
 
     boards: {
         refresh: function () {
-            S.ajax.post('Boards/BoardsMenu', { orgId: S.orgs.details.orgId }, (result) => {
+            S.ajax.post('Boards/BoardsMenu', { orgId: S.orgs.details.orgId, listOnly:true }, (result) => {
+                console.log(result);
                 $('.content-boards').html(result);
+                S.popup.resize();
             },
             (err) => {
 
@@ -199,7 +201,6 @@ S.orgs = {
             S.orgs.details.popup.hide();
             S.boards.add.show(null, null, '', S.orgs.details.orgId, () => {
                 S.orgs.details.popup.show();
-                S.popup.resize();
                 S.orgs.boards.refresh();
             });
         }
