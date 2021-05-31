@@ -219,6 +219,7 @@ S.orgs = {
         refresh: function () {
             S.ajax.post('Teams/RefreshList', { orgId: S.orgs.details.orgId }, function (result) {
                 $('.content-teams').html(result);
+                $('.org-details .btn-add-team').on('click', S.orgs.teams.add);
             },
             (err) => {
 
@@ -226,8 +227,9 @@ S.orgs = {
         },
 
         add: function () {
+            console.log('add team');
             S.orgs.details.popup.hide();
-            S.teams.add.show(null, null, S.orgs.details.orgId, () => {
+            S.teams.add.show(null, S.orgs.details.orgId, () => {
                 S.orgs.details.popup.show();
                 S.popup.resize();
                 S.orgs.teams.refresh();

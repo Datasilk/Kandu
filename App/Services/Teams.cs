@@ -4,10 +4,10 @@ namespace Kandu.Services
 {
     public class Teams : Service
     {
-        public string Create(string name, string description = "")
+        public string Create(int orgId, string name, string description = "")
         {
-            if (!CheckSecurity()) { return AccessDenied(); } //check security
-            
+            if (!CheckSecurity(orgId, Common.Platform.Security.Keys.TeamCanCreate)) { return AccessDenied(); } //check security
+            Common.Platform.Teams.Create(this, orgId, name, description);
             return Success();
         }
 
