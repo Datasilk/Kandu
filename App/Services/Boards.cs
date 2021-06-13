@@ -57,7 +57,7 @@ namespace Kandu.Services
         public string BoardsMenu(int orgId, bool subTitles = false, bool listOnly = true, int sort = 0, bool buttonsInFront = false)
         {
             if (!CheckSecurity()) { return AccessDenied(); } //check security
-            return Common.Platform.Boards.RenderBoardMenu(this, orgId, listOnly, subTitles, sort, buttonsInFront);
+            return Common.Platform.Boards.RenderMenu(this, orgId, listOnly, subTitles, sort, buttonsInFront);
         }
 
         public string KeepMenuOpen(bool keepOpen)

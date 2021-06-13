@@ -73,7 +73,7 @@ namespace Kandu
                 {
                     //show drop down menu for board
                     view.Child("header").Show("boards");
-                    view.Child("header")["boards-menu"] = Common.Platform.Boards.RenderBoardMenu(this);
+                    view.Child("header")["boards-menu"] = Common.Platform.Boards.RenderMenu(this);
 
                     if (User.keepMenuOpen == true)
                     {

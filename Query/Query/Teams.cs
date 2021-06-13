@@ -19,11 +19,11 @@ namespace Query
             );
         }
 
-        public static Models.Team GetTeam(int teamId, int ownerId)
+        public static Models.Team GetTeam(int teamId)
         {
             var list = Sql.Populate<Models.Team>(
                 "Team_Get",
-                new { teamId, ownerId }
+                new { teamId }
             );
             if(list.Count > 0) { return list[0]; }
             return null;

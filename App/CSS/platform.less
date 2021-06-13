@@ -60,3 +60,10 @@ input[type]:not([type=button]):not([type=submit]):not([type=radio]){border-radiu
 /* popup menus */
 .has-top-arrow, .has-bottom-arrow, .has-left-arrow, .has-right-arrow{border-style:solid; border-color:transparent;}
 
+/* tabs */
+.tab-content{padding:0 !important; clear:both; overflow:hidden;}
+    .tabs{width:100%; padding:10px 13px 0 13px;
+        &:after{content:''; display:block; clear:both;}
+    }
+    .tab{float:left; padding:5px 15px; margin-right:5px; border-top-left-radius:5px; border-top-right-radius:5px; cursor:pointer;}
+

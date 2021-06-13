@@ -1,10 +1,8 @@
-﻿<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="utf-8" />
-    <title></title>
-</head>
-<body>
-
-</body>
-</html>
+﻿<div class="row hover item item-{{team.teamid}}">
+    <a href="javascript:" onclick="{{click}}">
+        <span class="col pad-top-sm pad-left team-label">
+            <span class="team-title block">{{team.name}}</span>
+            {{subtitle}}<span class="team-subtitle">{{team.totalmembers}} member{{plural}}s{{/plural}}</span>{{/subtitle}}
+        </span>
+    </a>
+</div>

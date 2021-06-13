@@ -40,6 +40,7 @@ S.orgs = {
                     });
                 },
                 function (err) {
+                    var msg = $('.popup.show .message');
                     S.message.show(msg, 'error', err.responseText);
                     return;
                 }
@@ -120,7 +121,7 @@ S.orgs = {
                     width: 700, offsetTop: 20, padding: 20,
                     onResize: () => {
                         var win = S.window;
-                        var content = $('.org-details .content');
+                        var content = $('.org-details .tab-content');
                         var rect = content[0].getBoundingClientRect();
                         content.css({ 'max-height': (win.h - rect.top - 40) + 'px' });
                     }
@@ -142,7 +143,7 @@ S.orgs = {
                 $('.org-details .btn-add-board').on('click', S.orgs.boards.add);
 
                 //set up custom scrollbars
-                S.scrollbar.add('.org-details .content', { touch: true });
+                S.scrollbar.add('.org-details .tab-content', { touch: true });
             },
             (err) => {
 
@@ -178,7 +179,7 @@ S.orgs = {
             select: function (id) {
                 $('.org-details .tabs > .tab').removeClass('selected');
                 $('.org-details .tabs > .tab-' + id).addClass('selected');
-                $('.org-details > .content > .movable > div').hide();
+                $('.org-details > .tab-content > .movable > div').hide();
                 $('.org-details .content-' + id).show();
                 S.popup.resize();
             }
@@ -187,9 +188,10 @@ S.orgs = {
 
     boards: {
         refresh: function () {
+            S.popup.resize();
             S.ajax.post('Boards/BoardsMenu', { orgId: S.orgs.details.orgId, listOnly:true }, (result) => {
-                console.log(result);
                 $('.content-boards').html(result);
+                $('.org-details .btn-add-board').on('click', S.orgs.boards.add);
                 S.popup.resize();
             },
             (err) => {
@@ -220,14 +222,25 @@ S.orgs = {
             S.ajax.post('Teams/RefreshList', { orgId: S.orgs.details.orgId }, function (result) {
                 $('.content-teams').html(result);
                 $('.org-details .btn-add-team').on('click', S.orgs.teams.add);
+                S.popup.resize();
             },
             (err) => {
 
             });
         },
 
+        details: function (id, name) {
+            S.orgs.details.popup.hide();
+            S.teams.details.show(id, S.orgs.details.orgId, name, (type) => {
+                if (type != 'saved') {
+                    S.orgs.details.popup.show();
+                    S.popup.resize();
+                    S.orgs.teams.refresh();
+                }
+            });
+        },
+
         add: function () {
-            console.log('add team');
             S.orgs.details.popup.hide();
             S.teams.add.show(null, S.orgs.details.orgId, () => {
                 S.orgs.details.popup.show();

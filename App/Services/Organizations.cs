@@ -61,7 +61,7 @@ namespace Kandu.Services
             var tabHtml = new StringBuilder();
             var contentHtml = new StringBuilder();
             var view = new View("/Views/Organizations/details.html");
-            var tab = new View("/Views/Organizations/tab.html");
+            var tab = new View("/Views/Shared/tab.html");
             if (canEdit) 
             {
                 view.Show("edit-org");
@@ -80,9 +80,10 @@ namespace Kandu.Services
             //load boards tab
             tab["title"] = "Boards";
             tab["id"] = "boards";
+            tab["onclick"] = "S.orgs.details.tabs.select('boards')";
             tab.Show("selected");
             tabHtml.Append(tab.Render());
-            var html = Common.Platform.Boards.RenderBoardMenu(this, orgId, true, false);
+            var html = Common.Platform.Boards.RenderMenu(this, orgId, true, false);
             if(html == "")
             {
                 //no boards
@@ -96,6 +97,7 @@ namespace Kandu.Services
             tab.Clear();
             tab["title"] = "Teams";
             tab["id"] = "teams";
+            tab["onclick"] = "S.orgs.details.tabs.select('teams')";
             tabHtml.Append(tab.Render());
             contentHtml.Append("<div class=\"content-teams\"></div>\n");
 
@@ -103,16 +105,16 @@ namespace Kandu.Services
             tab.Clear();
             tab["title"] = "Members";
             tab["id"] = "members";
+            tab["onclick"] = "S.orgs.details.tabs.select('members')";
             tabHtml.Append(tab.Render());
-            html = "";
             contentHtml.Append("<div class=\"content-members\"></div>\n");
 
             //load following tab
             tab.Clear();
             tab["title"] = "Following";
             tab["id"] = "following";
+            tab["onclick"] = "S.orgs.details.tabs.select('following')";
             tabHtml.Append(tab.Render());
-            html = "";
             contentHtml.Append("<div class=\"content-following\"></div>\n");
 
 

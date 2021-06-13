@@ -12,7 +12,11 @@
                     .replace('#submit-label#', !id ? 'Create Team' : 'Update Team')
                     .replace('#submit-click#', !id ? 'S.teams.add.submit()' : 'S.teams.add.submit(\'' + id + '\')')
                 , {});
-            S.teams.add.popup = S.popup.show(!id ? 'Create A New Team' : 'Edit Team', view.render(), { width: 430 });
+            S.teams.add.popup = S.popup.show(!id ? 'Create A New Team' : 'Edit Team', view.render(), {
+                width: 430,
+                onClose: function () {
+                if (callback) { callback(); }
+            }});
         },
 
         hide: function () {
@@ -40,6 +44,75 @@
                     return;
                 }
             );
+        }
+    },
+
+    details: {
+        popup: null,
+        teamId: null,
+        orgId: null,
+        callback: null,
+
+        show: function (id, orgId, name, callback) {
+            S.teams.details.teamId = id;
+            S.teams.details.orgId = orgId;
+            S.teams.details.callback = callback;
+            if (typeof name == 'function') { name = name(id, orgId); }
+            S.ajax.post('Teams/Details', {teamId: id}, function (result) {
+                S.teams.details.popup = S.popup.show('Team ' + name, result, {
+                    width: 700,
+                    onClose: function () {
+                        if (callback) { callback(); }
+                    }
+                });
+                //add events to fields
+                $('.team-form input').on('keyup, change', () => {
+                    $('.team-form a.apply').removeClass('hide');
+                });
+
+                //save button
+                $('.team-form a.apply').on('click', S.teams.details.save);
+
+                //set up tabs
+                $('.team-details .movable > div').hide();
+                $('.team-details .content-boards').show();
+                $('.team-details .tab-teams').on('click', S.orgs.teams.show);
+
+                //set up custom scrollbars
+                S.scrollbar.add('.team-details .tab-content', { touch: true });
+            });
+        },
+
+        hide: function () {
+            S.popup.hide(S.teams.details.popup);
+        },
+
+        save: function () {
+            var form = {
+                teamId: S.teams.details.teamId,
+                name: $('#teamname').val(),
+                description: $('#team_description').val(),
+            };
+            var msg = $('.popup.show .message');
+            S.ajax.post('Teams/Update', form, function () {
+                $('.popup.show .title h5').html('Team ' + form.name);
+                if (S.teams.details.callback) {
+                    S.teams.details.callback('saved');
+                }
+                S.message.show(msg, null, 'Team updated successfully');
+            }, (err) => {
+                S.message.show(msg, 'error', err.responseText);
+            });
+        },
+
+        tabs: {
+            select: function (id) {
+                $('.team-details .tabs > .tab').removeClass('selected');
+                $('.team-details .tabs > .tab-' + id).addClass('selected');
+                $('.team-details > .tab-content > .movable > div').hide();
+                $('.team-details .content-' + id).show();
+                S.popup.resize();
+            }
         }
     },
 

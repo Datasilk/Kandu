@@ -22,7 +22,7 @@ namespace Kandu.Common.Platform
             }
         }
 
-        public static string RenderTeamsList(Request request, int orgId, bool showMembers = true)
+        public static string RenderList(Request request, int orgId, bool showMembers = true)
         {
             var listItem = new View("/Views/Teams/list-item.html");
             var html = new StringBuilder();
@@ -32,7 +32,7 @@ namespace Kandu.Common.Platform
                 listItem.Clear();
                 listItem.Bind(new { team });
                 if (team.totalMembers != 1) { listItem.Show("plural"); }
-                listItem["click"] = "S.orgs.team.show(" + team.teamId + ")";
+                listItem["click"] = "S.orgs.teams.details(" + team.teamId + ", '" + team.name.Replace("'","\\'").Replace("\"", "&quot;") + "')";
                 if (showMembers) { listItem.Show("subtitle"); }
                 html.Append(listItem.Render());
             }

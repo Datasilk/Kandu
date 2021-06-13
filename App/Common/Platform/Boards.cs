@@ -118,7 +118,7 @@ namespace Kandu.Common.Platform
             return html.ToString();
         }
 
-        public static string RenderBoardMenu(Request request, int orgId = 0, bool listOnly = false, bool showSubTitle = true, int sort = 0, bool btnsInFront = false)
+        public static string RenderMenu(Request request, int orgId = 0, bool listOnly = false, bool showSubTitle = true, int sort = 0, bool btnsInFront = false)
         {
             var html = new StringBuilder();
             var htm = new StringBuilder();

@@ -48,7 +48,7 @@ S.boards = {
                     S.orgs.add.show(null, (result, id) => {
                         if (result == true) {
                             //reload list of organizations
-                            S.ajax.post('Organizations/List', { security: 'board-create' }, function (data2) {
+                            S.ajax.post('Organizations/List', {}, function (data2) {
                                 $('.board-form #orgId').html(data2.orgs.map(a => {
                                     return '<option value="' + a.orgId + '">' + a.name + '</option>';
                                 }).join(''));
