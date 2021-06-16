@@ -24,5 +24,20 @@ namespace Query
         {
             return Sql.Populate<Models.SecurityKey>("Security_AllKeysForUser", new { userId });
         }
+
+        public static void CreateGroup(int orgId, string name)
+        {
+            Sql.ExecuteNonQuery("Security_CreateGroup", new { orgId, name });
+        }
+
+        public static void UpdateGroup(int groupId, string name)
+        {
+            Sql.ExecuteNonQuery("Security_UpdateGroup", new { groupId, name });
+        }
+
+        public static void UpdateKey(int orgId, int groupId, string key, string value)
+        {
+            Sql.ExecuteNonQuery("Security_UpdateKey", new { orgId, groupId, key, value });
+        }
     }
 }

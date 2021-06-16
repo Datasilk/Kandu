@@ -49,6 +49,11 @@ namespace Query
             return Sql.Populate<Models.Team>("Teams_GetList", new { orgId, userId});
         }
 
+        public static List<Models.Team> GetMembers(int teamId)
+        {
+            return Sql.Populate<Models.Team>("Team_GetMembers", new { teamId });
+        }
+
         public static void UpdateMember(int teamId, int userId, Roles role)
         {
             Sql.ExecuteNonQuery("Team_UpdateMember", new { teamId, userId, roleId = (int)role });

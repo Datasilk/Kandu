@@ -55,6 +55,7 @@ namespace Kandu.Services
             tab["onclick"] = "S.teams.details.tabs.select('members')";
             tab.Show("selected");
             tabHtml.Append(tab.Render());
+            contentHtml.Append(Common.Platform.Members.RenderTeam(this, teamId));
 
             view["name"] = team.name;
             view["description"] = team.description;

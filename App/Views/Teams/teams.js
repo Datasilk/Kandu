@@ -130,4 +130,10 @@
             }
         }
     },
+
+    members: {
+        details: function () {
+
+        }
+    }
 }
