@@ -7,7 +7,7 @@ namespace Kandu.Services
     {
         public string Create(string name, string color, int orgId)
         {
-            if (!CheckSecurity()) { return AccessDenied(); } //check security
+            if (!User.CheckSecurity(orgId, Common.Platform.Security.Keys.BoardCanCreate)) { return AccessDenied(); } //check security
             try
             {
                 var boardId = Common.Platform.Boards.Create(this, name, color, orgId);
@@ -16,6 +16,57 @@ namespace Kandu.Services
             {
                 return Error(ex.Message);
             }
+        }
+
+        public string RenderForm(int boardId = 0, int orgId = 0)
+        {
+            if (!CheckSecurity()) { return AccessDenied(); } //check security
+            var view = new View("/Views/Board/new-board.html");
+            if(boardId != 0)
+            {
+                var board = Query.Boards.GetInfo(boardId);
+                if (!CheckSecurity(board.orgId, Common.Platform.Security.Keys.BoardCanUpdate, Common.Platform.Security.Scope.Board, boardId))
+                {
+                    return AccessDenied();
+                }
+                view["name"] = board.name;
+                view["color"] = "#0094ff";
+                view["submit-label"] = "Update Board";
+                view["submit-click"] = "S.boards.add.submit('" + boardId + "')";
+            }
+            else
+            {
+                view["color"] = "#0094ff";
+                view["submit-label"] = "Create Board";
+                view["submit-click"] = "S.boards.add.submit()";
+            }
+
+            if(orgId != 0)
+            {
+                if (!CheckSecurity(orgId, Common.Platform.Security.Keys.BoardCanUpdate))
+                {
+                    return AccessDenied();
+                }
+                var org = Query.Organizations.GetInfo(orgId);
+                view["org-options"] = "<option value=\"" + org.orgId + "\">" + org.name + "</option>";
+                view["org-name"] = org.name;
+                view.Show("has-id");
+            }
+            else
+            {
+                var orgs = Query.Organizations.UserIsPartOf(User.userId);
+                var opts = new StringBuilder();
+                foreach (var org in orgs)
+                {
+                    if (CheckSecurity(org.orgId, Common.Platform.Security.Keys.BoardCanCreate))
+                    {
+                        opts.Append("<option value=\"" + org.orgId + "\">" + org.name + "</option>");
+                    }
+                }
+                view["org-options"] = opts.ToString();
+                view.Show("no-id");
+            }
+            return view.Render();
         }
 
         public string RenderList()
@@ -38,7 +89,7 @@ namespace Kandu.Services
 
         public string Update(int boardId, string name, string color, int orgId)
         {
-            if (!CheckSecurity()) { return AccessDenied(); } //check security
+            if (!User.CheckSecurity(orgId, Common.Platform.Security.Keys.BoardCanUpdate, Common.Platform.Security.Scope.Board, boardId)) { return AccessDenied(); } //check security
             try
             {
                 Common.Platform.Boards.Update(this, boardId, name, color, orgId);

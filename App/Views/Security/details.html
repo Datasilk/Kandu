@@ -1,0 +1,19 @@
+﻿<div class="security-details">
+    {{can-edit}}
+        <div class="security-form">
+            <div class="row message hide"><span></span></div>
+            <div class="row margin-bottom">
+                <div class="row field long">Security Group Name</div>
+                <div class="row hover input"><input type="text" id="groupname" placeholder="Manager" value="{{name}}" /></div>    
+            </div>
+            <div class="row pad-top text-center buttons">
+                <a href="javascript:" class="button apply hide">Save Changes</a>
+            </div>
+        </div>
+    {{/can-edit}}
+
+    <div class="tabs">{{tabs}}</div>
+    <div class="tab-content">
+        <div class="movable">{{content}}</div>
+    </div>
+</div>

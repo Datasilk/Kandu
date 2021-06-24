@@ -41,8 +41,8 @@ namespace Kandu
             return User.CheckSecurity(boardId);
         }
 
-        public virtual bool CheckSecurity(int orgId, Common.Platform.Security.Keys key) {
-            return User.CheckSecurity(orgId, key);
+        public virtual bool CheckSecurity(int orgId, Common.Platform.Security.Keys key, Common.Platform.Security.Scope scope = Common.Platform.Security.Scope.All, int scopeId = 0) {
+            return User.CheckSecurity(orgId, key, scope, scopeId);
         }
 
         public bool IsInOrganization(int orgId)

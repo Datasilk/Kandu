@@ -2,7 +2,7 @@
 	@orgId int,
 	@userId int
 AS
-	SELECT s.orgId, s.[key], s.[enabled], s.groupId
+	SELECT s.orgId, s.[key], s.[enabled], s.groupId, s.scope, s.scopeId
 	FROM SecurityUsers su
 	JOIN SecurityGroups sg ON sg.groupId = su.groupId
 	JOIN [Security] s ON s.groupId = sg.groupId

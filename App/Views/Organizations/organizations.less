@@ -14,29 +14,35 @@
     .movable{float:left; position:relative; width:~"calc(100% - 20px)"; padding-bottom:10px; line-height:0;
         & > div{min-height:250px;}
     }
-    .buttons{padding-bottom:20px; }
+    .buttons{padding-bottom:20px;}
 
     .content-boards{padding-top:5px; width:100%;
         @height:48px;
         .item{float:left; width:~"calc(33% - 6px)"; height:@height; box-sizing:border-box; margin:3px;}
-        .item > a{width:100%; display:block;}
+        .item > a{width:100%; display:block; height:@height;}
         .board-title{font-weight:bold;}
         .color-box{width:10px; height:@height; border-radius:5px;}
-        &:after{content:''; display:block; clear:both;}
         .board-label{width:~"calc(100% - 35px)";}
         .fav{padding-top:5px;}
-        .item a{height:@height;}
+        &:after{content:''; display:block; clear:both;}
     }
     
     .content-teams{padding-top:5px; width:100%;
         @height:48px;
         .item{float:left; width:~"calc(33% - 6px)"; height:@height; box-sizing:border-box; margin:3px;}
-        .item > a{width:100%; display:block;}
-        .board-title{font-weight:bold;}
-        &:after{content:''; display:block; clear:both;}
-        .team-title{font-weight:bold;}
+        .item > a{width:100%; display:block; height:@height;}
+        .team-title{font-weight:bold; font-weight:bold;}
         .team-subtitle{padding-top:3px;}
-        .item a{height:@height;}
+        &:after{content:''; display:block; clear:both;}
+    }
+
+    .content-security{padding-top:5px; width:100%;
+        @height:48px;
+        .item{float:left; width:~"calc(33% - 6px)"; height:@height; box-sizing:border-box; margin:3px;}
+        .item > a{width:100%; display:block; height:@height;}
+        &:after{content:''; display:block; clear:both;}
+        .security-title{font-weight:bold;}
+        .security-subtitle{padding-top:3px;}
     }
 
     .item .add-icon{padding:14px 0 0 14px;}

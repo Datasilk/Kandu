@@ -39,15 +39,41 @@ namespace Kandu.Services
             return html;
         }
 
+        public string RenderForm(int teamId, int orgId)
+        {
+            if (!IsInOrganization(orgId)) { return AccessDenied(); } //check security
+            var view = new View("/Views/Teams/new-team.html");
+            if (teamId != 0)
+            {
+                //Create Team form
+                var team = Query.Teams.GetTeam(teamId);
+                if (!CheckSecurity(team.orgId, Common.Platform.Security.Keys.TeamCanCreate, Common.Platform.Security.Scope.Team, teamId))
+                {
+                    return AccessDenied();
+                }
+                view["name"] = team.name;
+                view["submit-label"] = "Update Team";
+                view["submit-click"] = "S.teams.add.submit('" + teamId + "')";
+            }
+            else
+            {
+                //Edit Team form
+                view["submit-label"] = "Create Team";
+                view["submit-click"] = "S.teams.add.submit()";
+            }
+            return view.Render();
+        }
+
         public string Details(int teamId)
         {
-            var team = Query.Teams.GetTeam(teamId);
             if (!CheckSecurity()) { return AccessDenied(); } //check security
-            var canEdit = CheckSecurity(team.orgId, Common.Platform.Security.Keys.TeamCanEditInfo);
+            var team = Query.Teams.GetTeam(teamId);
+            var canEdit = CheckSecurity(team.orgId, Common.Platform.Security.Keys.TeamCanEditInfo, Common.Platform.Security.Scope.Team, teamId);
             var tabHtml = new StringBuilder();
             var contentHtml = new StringBuilder();
             var view = new View("/Views/Teams/details.html");
             var tab = new View("/Views/Shared/tab.html");
+            var html = new StringBuilder();
 
             //load members tab
             tab["title"] = "Members";
@@ -55,7 +81,15 @@ namespace Kandu.Services
             tab["onclick"] = "S.teams.details.tabs.select('members')";
             tab.Show("selected");
             tabHtml.Append(tab.Render());
-            contentHtml.Append(Common.Platform.Members.RenderTeam(this, teamId));
+
+            html.Append(Common.Platform.Teams.RenderMembers(this, teamId));
+            if (CheckSecurity(team.orgId, Common.Platform.Security.Keys.TeamCanInviteUsers, Common.Platform.Security.Scope.Team, teamId))
+            {
+                var additem = new View("/Views/Members/add-item.html");
+                var addbutton = additem.Render();
+                html.Append(addbutton);
+            }
+            contentHtml.Append("<div class=\"content-members\">" + html.ToString() + "</div>");
 
             view["name"] = team.name;
             view["description"] = team.description;
@@ -75,7 +109,7 @@ namespace Kandu.Services
         public string Update(int teamId, string name, string description)
         {
             var team = Query.Teams.GetTeam(teamId);
-            if (!CheckSecurity(team.orgId, Common.Platform.Security.Keys.TeamCanEditInfo)) { return AccessDenied(); } //check security
+            if (!CheckSecurity(team.orgId, Common.Platform.Security.Keys.TeamCanEditInfo, Common.Platform.Security.Scope.Team, teamId)) { return AccessDenied(); } //check security
             Query.Teams.UpdateTeam(new Query.Models.Team()
             {
                 teamId = teamId,

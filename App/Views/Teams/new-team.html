@@ -1,17 +1,15 @@
-﻿<script type="text/html" id="template_newteam">
-    <div class="team-form">
-        <div class="row message hide"><span></span></div>
-        <div class="row margin-bottom">
-            <div class="row field long">Team Name</div>
-            <div class="row hover input"><input type="text" id="teamname" placeholder="Alpha" /></div>
-        </div>
-        <div class="row">
-            <div class="row field long">Description</div>
-            <div class="row hover input long"><textarea id="description" placeholder="describe your team" cols="3"></textarea></div>
-        </div>
-        <div class="row pad-top text-center">
-            <a href="javascript:" class="button apply" onclick="#submit-click#">#submit-label#</a>
-            <a href="javascript:" class="button cancel" onclick="S.teams.add.hide()">Cancel</a>
-        </div>
+﻿<div class="team-form">
+    <div class="row message hide"><span></span></div>
+    <div class="row margin-bottom">
+        <div class="row field long">Team Name</div>
+        <div class="row hover input"><input type="text" id="teamname" placeholder="Alpha" value="{{name}}" /></div>
     </div>
-</script>
+    <div class="row">
+        <div class="row field long">Description</div>
+        <div class="row hover input long"><textarea id="description" placeholder="describe your team" cols="3">{{deescription}}</textarea></div>
+    </div>
+    <div class="row pad-top text-center">
+        <a href="javascript:" class="button apply" onclick="{{submit-click}}">{{submit-label}}</a>
+        <a href="javascript:" class="button cancel" onclick="S.teams.add.hide()">Cancel</a>
+    </div>
+</div>

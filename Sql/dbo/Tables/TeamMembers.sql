@@ -2,5 +2,5 @@
 (
 	[teamId] INT NOT NULL, 
     [userId] INT NOT NULL, 
-    [roleId] INT NOT NULL DEFAULT 0
+    [title] NVARCHAR(64) NOT NULL DEFAULT ''
 )

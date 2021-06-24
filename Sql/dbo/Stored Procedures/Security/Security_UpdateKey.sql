@@ -2,11 +2,14 @@
 	@orgId int,
 	@groupId int,
 	@key varchar(32),
-	@value bit
+	@value bit,
+	@scope int,
+	@scopeId int
 AS
 	IF EXISTS(SELECT * FROM Security WHERE orgId=@orgId AND groupId=@groupId AND [key]=@key) BEGIN
-		UPDATE Security SET [enabled] = @value WHERE orgId=orgId AND groupId=@groupId AND [key]=@key
+		UPDATE Security SET [enabled] = @value, scope=@scope, scopeId=@scopeId 
+		WHERE orgId=orgId AND groupId=@groupId AND [key]=@key
 	END ELSE BEGIN
-		INSERT INTO Security (orgId, groupId, [key], [enabled]) 
-		VALUES (@orgId, @groupId, @key, @value)
+		INSERT INTO Security (orgId, groupId, [key], [enabled], scope, scopeId) 
+		VALUES (@orgId, @groupId, @key, @value, @scope, @scopeId)
 	END

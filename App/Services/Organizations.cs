@@ -57,7 +57,7 @@ namespace Kandu.Services
         public string Details(int orgId)
         {
             if (!CheckSecurity()) { return AccessDenied(); } //check security
-            var canEdit = CheckSecurity(orgId, Common.Platform.Security.Keys.OrgCanEdit);
+            var canEdit = CheckSecurity(orgId, Common.Platform.Security.Keys.OrgCanEdit, Common.Platform.Security.Scope.Organization, orgId);
             var tabHtml = new StringBuilder();
             var contentHtml = new StringBuilder();
             var view = new View("/Views/Organizations/details.html");
@@ -109,6 +109,22 @@ namespace Kandu.Services
             tabHtml.Append(tab.Render());
             contentHtml.Append("<div class=\"content-members\"></div>\n");
 
+            //load security tab
+            if(CheckSecurity(orgId, Common.Platform.Security.Keys.SecGroupsCanViewAll) ||
+                CheckSecurity(orgId, Common.Platform.Security.Keys.SecGroupCanCreate) ||
+                CheckSecurity(orgId, Common.Platform.Security.Keys.SecGroupCanUpdateKeys) ||
+                CheckSecurity(orgId, Common.Platform.Security.Keys.SecGroupCanAddUsers) ||
+                CheckSecurity(orgId, Common.Platform.Security.Keys.SecGroupCanRemoveUsers) ||
+                CheckSecurity(orgId, Common.Platform.Security.Keys.SecGroupCanEditInfo))
+            {
+                tab.Clear();
+                tab["title"] = "Security";
+                tab["id"] = "security";
+                tab["onclick"] = "S.orgs.details.tabs.select('security')";
+                tabHtml.Append(tab.Render());
+                contentHtml.Append("<div class=\"content-security\"></div>\n");
+            }
+
             //load following tab
             tab.Clear();
             tab["title"] = "Following";
@@ -125,6 +141,7 @@ namespace Kandu.Services
 
         public string Update(int orgId, string name, string description, string website)
         {
+            if(!CheckSecurity(orgId, Common.Platform.Security.Keys.OrgCanEdit, Common.Platform.Security.Scope.Organization, orgId)) { return AccessDenied(); }
             if (website.Length > 0)
             {
                 website = "https://" + website.Replace("http://", "").Replace("https://", "");

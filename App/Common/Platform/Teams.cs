@@ -39,5 +39,22 @@ namespace Kandu.Common.Platform
 
             return html.ToString();
         }
+
+        public static string RenderMembers(Request request, int teamId)
+        {
+            var listItem = new View("/Views/Members/list-item.html");
+            var html = new StringBuilder();
+            var members = Query.Teams.GetMembers(teamId);
+            foreach (var member in members)
+            {
+                if(member.title == "") { member.title = "Member"; }
+                listItem.Clear();
+                listItem.Bind(new { member });
+                listItem["click"] = "S.teams.member.show(" + member.userId + ")";
+                html.Append(listItem.Render());
+            }
+
+            return html.ToString();
+        }
     }
 }

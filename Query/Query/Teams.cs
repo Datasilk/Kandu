@@ -49,9 +49,9 @@ namespace Query
             return Sql.Populate<Models.Team>("Teams_GetList", new { orgId, userId});
         }
 
-        public static List<Models.Team> GetMembers(int teamId)
+        public static List<Models.Member> GetMembers(int teamId)
         {
-            return Sql.Populate<Models.Team>("Team_GetMembers", new { teamId });
+            return Sql.Populate<Models.Member>("Team_GetMembers", new { teamId });
         }
 
         public static void UpdateMember(int teamId, int userId, Roles role)

@@ -1,10 +1,20 @@
 ﻿using System;
+using System.Linq;
 using System.Text.Json;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Http;
 
 namespace Kandu
 {
+
+    public class Security
+    {
+        public string Key { get; set; }
+        public bool Enabled { get; set; }
+        public Common.Platform.Security.Scope Scope { get; set; } = 0;
+        public int ScopeId { get; set; } = 0;
+    }
+
     public class User
     {
         protected HttpContext Context;
@@ -17,7 +27,7 @@ namespace Kandu
         public string displayName { get; set; } = "";
         public bool photo { get; set; } = false;
         public DateTime datecreated { get; set; }
-        public Dictionary<int, Dictionary<string, bool>> Security { get; set; } = new Dictionary<int, Dictionary<string, bool>>();
+        public Dictionary<int, List<Security>> Keys { get; set; } = new Dictionary<int, List<Security>>();
         public bool resetPass { get; set; } = false;
         public bool keepMenuOpen { get; set; }
         public bool allColor { get; set; }
@@ -96,13 +106,25 @@ namespace Kandu
             var keys = Query.Security.AllKeysForUser(userId);
             foreach(var key in keys)
             {
-                if (Security.ContainsKey(key.orgId))
+                if (Keys.ContainsKey(key.orgId))
                 {
-                    Security[key.orgId].Add(key.key, key.enabled);
+                    Keys[key.orgId].Add(new Security
+                    {
+                        Key = key.key,
+                        Enabled = key.enabled,
+                        Scope = Enum.Parse<Common.Platform.Security.Scope>(key.scope.ToString()),
+                        ScopeId = key.scopeId
+                    });
                 }
                 else
                 {
-                    Security.Add(key.orgId, new Dictionary<string, bool>() { { key.key, key.enabled } });
+                    Keys.Add(key.orgId, new List<Security>() {new Security
+                    {
+                        Key = key.key,
+                        Enabled = key.enabled,
+                        Scope = Enum.Parse<Common.Platform.Security.Scope>(key.scope.ToString()),
+                        ScopeId = key.scopeId
+                    }});
                 }
             }
 
@@ -149,17 +171,36 @@ namespace Kandu
             return false;
         }
 
-        public bool CheckSecurity(int orgId, Common.Platform.Security.Keys key)
+        public bool CheckSecurity(int orgId, Common.Platform.Security.Keys key, Common.Platform.Security.Scope scope = Common.Platform.Security.Scope.All, int scopeId = 0)
         {
-            return (Security.ContainsKey(orgId) && (
-                    Security[orgId].ContainsKey(key.ToString()) ? Security[orgId][key.ToString()] :
-                    (Security[orgId].ContainsKey("Owner") ? Security[orgId]["Owner"] : false)
-                )) || false;
+            if (Keys.ContainsKey(orgId))
+            {
+                if(Keys[orgId].Any(a => a.Key == "Owner" && a.Enabled == true)) 
+                { 
+                    //owner of organization
+                    return true; 
+                }
+                if (Keys[orgId].Any(a => a.Key == key.ToString()))
+                {
+                    var orgkeys = Keys[orgId];
+                    if (scope != Common.Platform.Security.Scope.All)
+                    {
+                        //specific scope
+                        return orgkeys.Any(a => a.Key == key.ToString() && a.Enabled == true && (a.Scope == Common.Platform.Security.Scope.All || (a.Scope == scope && a.ScopeId == scopeId)));
+                    }
+                    else
+                    {
+                        //all scopes
+                        return orgkeys.Any(a => a.Key == key.ToString() && a.Enabled == true);
+                    }
+                }
+            }
+            return false;
         }
 
         public bool IsInOrganization(int orgId)
         {
-            return Security.ContainsKey(orgId);
+            return Keys.ContainsKey(orgId);
         }
 
         #region "Helpers"

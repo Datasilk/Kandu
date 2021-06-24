@@ -19,6 +19,12 @@ namespace Query.Models
 
                 [XmlAttribute("value")]
                 public int Value { get; set; }
+
+                [XmlAttribute("scope")]
+                public int Scope { get; set; }
+
+                [XmlAttribute("scopeid")]
+                public int ScopeId { get; set; }
             }
         }
     }

@@ -10,32 +10,16 @@ S.boards = {
             //get team list
             S.boards.add.boardId = id;
             S.boards.add.callback = callback;
-            var hasid = false;
-            if (id != null && id > 0) { hasid = true; }
             if (typeof name == 'function') { name = name(id, orgId);}
-            S.ajax.post('Organizations/List', { security: 'board-create' }, function (data) {
-                var view = new S.view(
-                    $('#template_newboard').html()
-                        .replace('#org-options#',
-                        data.orgs.map(a => {
-                            return '<option value="' + a.orgId + '"' +
-                                (orgId != null ? (a.orgId == orgId ? ' selected' : '') : '') +
-                                '>' + a.name + '</option>';
-                        }).join(''))
-                        .replace('#name#', name ? name : '')
-                        .replace('#color#', '#0094ff')
-                        .replace('#submit-label#', !hasid ? 'Create Board' : 'Update Board')
-                        .replace('#submit-click#', !hasid ? 'S.boards.add.submit()' : 'S.boards.add.submit(\'' + id + '\')')
-                    .replace('#org-name#', orgId ? data.orgs.filter(a => a.orgId == orgId)[0].name : '')
-                    , {});
-                var popup = S.popup.show(!hasid ? 'Create A New Board' : 'Edit Board Settings', view.render(), {
+            S.ajax.post('Boards/RenderForm', { boardId:id, orgId:orgId }, function (html) {
+                var popup = S.popup.show(!id ? 'Create A New Board' : 'Edit Board Settings', html, {
                     width: 430,
                     onClose: function () {
                         if (callback) { callback();}
                     }
                 });
                 S.boards.add.popup = popup;
-
+                    
                 //when orgId is provided
                 if (orgId) {
                     $('.board-form .choose-org').hide();
@@ -60,7 +44,7 @@ S.boards = {
                 });
 
                 //load board details if id is supplied
-                if (hasid) {
+                if (id) {
                     S.ajax.post('Boards/Details', { boardId: id }, function (data) {
                         $('#boardname').val(data.board.name);
                         $('.popup .color-input').css({ 'background-color': data.board.color });
@@ -70,7 +54,7 @@ S.boards = {
                 if (orgId != null && orgId > 0) {
                     $('#orgId').val(orgId);
                 }
-            }, null, true);
+            });
             if (e) { e.cancelBubble = true;}
             return false;
         },

@@ -7,16 +7,14 @@
         show: function (id, orgId, callback) {
             S.teams.add.orgId = orgId;
             S.teams.add.callback = callback;
-            var view = new S.view(
-                $('#template_newteam').html()
-                    .replace('#submit-label#', !id ? 'Create Team' : 'Update Team')
-                    .replace('#submit-click#', !id ? 'S.teams.add.submit()' : 'S.teams.add.submit(\'' + id + '\')')
-                , {});
-            S.teams.add.popup = S.popup.show(!id ? 'Create A New Team' : 'Edit Team', view.render(), {
-                width: 430,
-                onClose: function () {
-                if (callback) { callback(); }
-            }});
+            S.ajax.post('Teams/RenderForm', { teamId: id, orgId: orgId }, (html) => {
+                S.teams.add.popup = S.popup.show(!id ? 'Create A New Team' : 'Edit Team', html, {
+                    width: 430,
+                    onClose: function () {
+                        if (callback) { callback(); }
+                    }
+                });
+            });
         },
 
         hide: function () {
@@ -75,7 +73,7 @@
 
                 //set up tabs
                 $('.team-details .movable > div').hide();
-                $('.team-details .content-boards').show();
+                $('.team-details .content-members').show();
                 $('.team-details .tab-teams').on('click', S.orgs.teams.show);
 
                 //set up custom scrollbars
@@ -120,11 +118,11 @@
         callbacks: [],
 
         listen: function (callback) {
-            S.boards.events.callbacks.push(callback);
+            S.teams.events.callbacks.push(callback);
         },
 
         broadcast: function (action, params) {
-            var c = S.boards.events.callbacks;
+            var c = S.teams.events.callbacks;
             for (var x = 0; x < c.length; x++) {
                 c[x](action, params);
             }

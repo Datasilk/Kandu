@@ -1,0 +1,14 @@
+﻿.team-details{
+    .item .add-icon{padding:14px 0 0 14px;}
+    .item .add-title{padding-top:6px;}
+}
+
+.content-members{padding-top:5px; width:100%;
+    @height:48px;
+    .item{float:left; width:~"calc(33% - 6px)"; height:@height; box-sizing:border-box; margin:3px;}
+    .item > a{width:100%; display:block;}
+    .member-title{font-weight:bold;}
+    .member-subtitle{padding-top:3px;}
+    .item a{height:@height;}
+    &:after{content:''; display:block; clear:both;}
+}
