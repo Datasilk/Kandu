@@ -7,7 +7,7 @@ namespace Kandu.Services
     {
         public string Create(string name, string color, int orgId)
         {
-            if (!User.CheckSecurity(orgId, Common.Platform.Security.Keys.BoardCanCreate)) { return AccessDenied(); } //check security
+            if (!User.CheckSecurity(orgId, Models.Security.Keys.BoardCanCreate)) { return AccessDenied(); } //check security
             try
             {
                 var boardId = Common.Platform.Boards.Create(this, name, color, orgId);
@@ -25,7 +25,7 @@ namespace Kandu.Services
             if(boardId != 0)
             {
                 var board = Query.Boards.GetInfo(boardId);
-                if (!CheckSecurity(board.orgId, Common.Platform.Security.Keys.BoardCanUpdate, Common.Platform.Security.Scope.Board, boardId))
+                if (!CheckSecurity(board.orgId, Models.Security.Keys.BoardCanUpdate, Models.Security.Scope.Board, boardId))
                 {
                     return AccessDenied();
                 }
@@ -43,7 +43,7 @@ namespace Kandu.Services
 
             if(orgId != 0)
             {
-                if (!CheckSecurity(orgId, Common.Platform.Security.Keys.BoardCanUpdate))
+                if (!CheckSecurity(orgId, Models.Security.Keys.BoardCanUpdate))
                 {
                     return AccessDenied();
                 }
@@ -58,7 +58,7 @@ namespace Kandu.Services
                 var opts = new StringBuilder();
                 foreach (var org in orgs)
                 {
-                    if (CheckSecurity(org.orgId, Common.Platform.Security.Keys.BoardCanCreate))
+                    if (CheckSecurity(org.orgId, Models.Security.Keys.BoardCanCreate))
                     {
                         opts.Append("<option value=\"" + org.orgId + "\">" + org.name + "</option>");
                     }
@@ -89,7 +89,7 @@ namespace Kandu.Services
 
         public string Update(int boardId, string name, string color, int orgId)
         {
-            if (!User.CheckSecurity(orgId, Common.Platform.Security.Keys.BoardCanUpdate, Common.Platform.Security.Scope.Board, boardId)) { return AccessDenied(); } //check security
+            if (!User.CheckSecurity(orgId, Models.Security.Keys.BoardCanUpdate, Models.Security.Scope.Board, boardId)) { return AccessDenied(); } //check security
             try
             {
                 Common.Platform.Boards.Update(this, boardId, name, color, orgId);

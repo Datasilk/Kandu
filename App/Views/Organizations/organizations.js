@@ -138,6 +138,7 @@ S.orgs = {
                 $('.org-details .movable > div').hide();
                 $('.org-details .content-boards').show();
                 $('.org-details .tab-teams').on('click', S.orgs.teams.show);
+                $('.org-details .tab-members').on('click', S.orgs.members.show);
                 $('.org-details .tab-security').on('click', S.orgs.security.show);
 
                 //set up buttons
@@ -247,6 +248,37 @@ S.orgs = {
                 S.orgs.details.popup.show();
                 S.popup.resize();
                 S.orgs.teams.refresh();
+            });
+        }
+    },
+
+    members: {
+        show: function () {
+            S.orgs.details.tabs.select('members');
+            var content = $('.org-details .content-members');
+            if (content.html().trim() == '') {
+                //load members search
+                S.members.search.init(S.orgs.details.orgId, '.content-members');
+            }
+        },
+
+        refresh: function () {
+            S.ajax.post('Members/RefreshList', { orgId: S.orgs.details.orgId }, function (result) {
+                $('.content-members').html(result);
+                $('.org-details .btn-add-member').on('click', S.orgs.members.add);
+                S.popup.resize();
+            },
+            (err) => {
+
+            });
+        },
+
+        add: function () {
+            S.orgs.details.popup.hide();
+            S.members.add.show(null, S.orgs.details.orgId, () => {
+                S.orgs.details.popup.show();
+                S.popup.resize();
+                S.orgs.members.refresh();
             });
         }
     },

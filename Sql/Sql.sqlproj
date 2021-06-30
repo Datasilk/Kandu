@@ -171,6 +171,10 @@
     <Build Include="dbo\Stored Procedures\Teams\Team_GetMembers.sql" />
     <Build Include="dbo\Stored Procedures\Security\Security_UpdateGroup.sql" />
     <Build Include="dbo\Stored Procedures\Security\Security_UpdateKey.sql" />
+    <Build Include="dbo\Stored Procedures\Organizations\Organization_GetMembers.sql" />
+    <Build Include="dbo\Stored Procedures\Security\SecurityGroup_GetDetails.sql" />
+    <Build Include="dbo\Stored Procedures\Security\SecurityGroup_GetInfo.sql" />
+    <Build Include="dbo\Stored Procedures\Security\SecurityGroups_GetList.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Sql.publish.xml" />

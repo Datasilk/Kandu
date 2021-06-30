@@ -11,7 +11,7 @@ namespace Kandu
     {
         public string Key { get; set; }
         public bool Enabled { get; set; }
-        public Common.Platform.Security.Scope Scope { get; set; } = 0;
+        public Models.Security.Scope Scope { get; set; } = 0;
         public int ScopeId { get; set; } = 0;
     }
 
@@ -112,7 +112,7 @@ namespace Kandu
                     {
                         Key = key.key,
                         Enabled = key.enabled,
-                        Scope = Enum.Parse<Common.Platform.Security.Scope>(key.scope.ToString()),
+                        Scope = Enum.Parse<Models.Security.Scope>(key.scope.ToString()),
                         ScopeId = key.scopeId
                     });
                 }
@@ -122,7 +122,7 @@ namespace Kandu
                     {
                         Key = key.key,
                         Enabled = key.enabled,
-                        Scope = Enum.Parse<Common.Platform.Security.Scope>(key.scope.ToString()),
+                        Scope = Enum.Parse<Models.Security.Scope>(key.scope.ToString()),
                         ScopeId = key.scopeId
                     }});
                 }
@@ -171,7 +171,7 @@ namespace Kandu
             return false;
         }
 
-        public bool CheckSecurity(int orgId, Common.Platform.Security.Keys key, Common.Platform.Security.Scope scope = Common.Platform.Security.Scope.All, int scopeId = 0)
+        public bool CheckSecurity(int orgId, Models.Security.Keys key, Models.Security.Scope scope = Models.Security.Scope.All, int scopeId = 0)
         {
             if (Keys.ContainsKey(orgId))
             {
@@ -183,10 +183,10 @@ namespace Kandu
                 if (Keys[orgId].Any(a => a.Key == key.ToString()))
                 {
                     var orgkeys = Keys[orgId];
-                    if (scope != Common.Platform.Security.Scope.All)
+                    if (scope != Models.Security.Scope.All)
                     {
                         //specific scope
-                        return orgkeys.Any(a => a.Key == key.ToString() && a.Enabled == true && (a.Scope == Common.Platform.Security.Scope.All || (a.Scope == scope && a.ScopeId == scopeId)));
+                        return orgkeys.Any(a => a.Key == key.ToString() && a.Enabled == true && (a.Scope == Models.Security.Scope.All || (a.Scope == scope && a.ScopeId == scopeId)));
                     }
                     else
                     {

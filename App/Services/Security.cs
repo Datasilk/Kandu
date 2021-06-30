@@ -4,11 +4,18 @@ namespace Kandu.Services
 {
     public class Security : Service
     {
+        public string Create(int orgId, string name)
+        {
+            if (!CheckSecurity(orgId, Models.Security.Keys.SecGroupCanCreate)) { return AccessDenied(); } //check security
+            Query.Security.CreateGroup(orgId, name);
+            return Success();
+        }
+
         public string RefreshList(int orgId)
         {
             if (!IsInOrganization(orgId)) { return AccessDenied(); } //check security
             var html = Common.Platform.Security.RenderList(this, orgId);
-            if (CheckSecurity(orgId, Common.Platform.Security.Keys.SecGroupCanCreate))
+            if (CheckSecurity(orgId, Models.Security.Keys.SecGroupCanCreate))
             {
                 var additem = new View("/Views/Security/add-item.html");
                 var addbutton = additem.Render();
@@ -17,11 +24,36 @@ namespace Kandu.Services
             return html;
         }
 
+        public string RenderGroupForm(int orgId, int groupId)
+        {
+            if (!IsInOrganization(orgId)) { return AccessDenied(); } //check security
+            var view = new View("/Views/Security/new-group.html");
+            if (groupId != 0)
+            {
+                //Edit existing Security Group form
+                var group = Query.Security.GroupDetails(groupId);
+                if (!CheckSecurity(group.orgId, Models.Security.Keys.SecGroupCanCreate, Models.Security.Scope.SecurityGroup, groupId))
+                {
+                    return AccessDenied();
+                }
+                view["name"] = group.name;
+                view["submit-label"] = "Update Security Group";
+                view["submit-click"] = "S.security.add.submit('" + groupId + "')";
+            }
+            else
+            {
+                //Create Security Group form
+                view["submit-label"] = "Create Security Group";
+                view["submit-click"] = "S.security.add.submit()";
+            }
+            return view.Render();
+        }
+
         public string Details (int groupId)
         {
             if (!CheckSecurity()) { return AccessDenied(); } //check security
             var group = Query.Security.GroupInfo(groupId);
-            var canEdit = CheckSecurity(group.orgId, Common.Platform.Security.Keys.SecGroupCanEditInfo, Common.Platform.Security.Scope.SecurityGroup, groupId);
+            var canEdit = CheckSecurity(group.orgId, Models.Security.Keys.SecGroupCanEditInfo, Models.Security.Scope.SecurityGroup, groupId);
             var tabHtml = new StringBuilder();
             var contentHtml = new StringBuilder();
             var view = new View("/Views/Security/details.html");
@@ -31,11 +63,14 @@ namespace Kandu.Services
             //load security keys tab
             tab["title"] = "Security Keys";
             tab["id"] = "keys";
-            tab["onclick"] = "S.teams.details.tabs.select('keys')";
+            tab["onclick"] = "S.security.details.tabs.select('keys')";
             tab.Show("selected");
             tabHtml.Append(tab.Render());
-            //TODO: load security keys
-            contentHtml.Append("<div class=\"content-members\">" + html.ToString() + "</div>");
+            
+            //load all available security keys
+
+
+            contentHtml.Append("<div class=\"content-keys\">" + html.ToString() + "</div>");
 
             view["name"] = group.name;
             view["tabs"] = tabHtml.ToString();

@@ -44,6 +44,15 @@ namespace Query
             return Sql.Populate<Models.Organization>("Organizations_UserIsPartOf", new { userId });
         }
 
+        public static List<Models.Member> GetMembers(int orgId, int page = 1, int length = 10, string search = "", int? excludeTeamId = null)
+        {
+            return Sql.Populate<Models.Member>("Organization_GetMembers", new { orgId, page, length, search, excludeTeamId });
+        }
+
+        public static int GetMembersCount(int orgId, int page = 1, int length = 10, string search = "", int? excludeTeamId = null)
+        {
+            return Sql.ExecuteScalar<int>("Organization_GetMembersCount", new { orgId, page, length, search, excludeTeamId });
+        }
 
     }
 }

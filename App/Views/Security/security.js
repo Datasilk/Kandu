@@ -44,6 +44,76 @@
         }
     },
 
+    details: {
+        popup: null,
+        groupId: null,
+        orgId: null,
+        callback: null,
+
+        show: function (id, orgId, name, callback) {
+            S.security.details.groupId = id;
+            S.security.details.orgId = orgId;
+            S.security.details.callback = callback;
+            if (typeof name == 'function') { name = name(id, orgId); }
+            S.ajax.post('Security/Details', { groupId: id }, function (result) {
+                S.security.details.popup = S.popup.show(name, result, {
+                    width: 700,
+                    onClose: function () {
+                        if (callback) { callback(); }
+                    }
+                });
+                //add events to fields
+                $('.security-form input').on('keyup, change', () => {
+                    $('.security-form a.apply').removeClass('hide');
+                });
+
+                //save button
+                $('.security-form a.apply').on('click', S.security.details.save);
+
+                //set up tabs
+                $('.security-details .movable > div').hide();
+                $('.security-details .content-keys').show();
+                $('.security-details .tab-members').on('click', S.orgs.security.show);
+
+                //set up custom scrollbars
+                S.scrollbar.add('.team-details .tab-content', { touch: true });
+            });
+        },
+
+        hide: function () {
+            S.popup.hide(S.security.details.popup);
+        },
+
+        save: function () {
+            var form = {
+                groupId: S.security.details.groupId,
+                name: $('#teamname').val(),
+                description: $('#team_description').val(),
+            };
+            var msg = $('.popup.show .message');
+            S.ajax.post('Security/Update', form, function () {
+                $('.popup.show .title h5').html('Team ' + form.name);
+                if (S.security.details.callback) {
+                    S.security.details.callback('saved');
+                }
+                S.message.show(msg, null, 'Team updated successfully');
+            }, (err) => {
+                S.message.show(msg, 'error', err.responseText);
+            });
+        },
+
+        tabs: {
+            select: function (id) {
+                $('.team-details .tabs > .tab').removeClass('selected');
+                $('.team-details .tabs > .tab-' + id).addClass('selected');
+                $('.team-details > .tab-content > .movable > div').hide();
+                $('.team-details .content-' + id).show();
+                S.popup.resize();
+            }
+        }
+    },
+
+
     events: {
         callbacks: [],
 

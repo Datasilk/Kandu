@@ -12,6 +12,16 @@ namespace Kandu
         protected List<string> Resources = new List<string>();
         protected bool IsPublicApiRequest { get; set; } = false;
 
+        public virtual Service Instantiate(Request request)
+        {
+            Path = request.Path;
+            PathParts = request.PathParts;
+            Context = request.Context;
+            Parameters = request.Parameters;
+            Init();
+            return this;
+        }
+
         public virtual void Init(){}
 
         public override void Dispose()
@@ -41,7 +51,7 @@ namespace Kandu
             return User.CheckSecurity(boardId);
         }
 
-        public virtual bool CheckSecurity(int orgId, Common.Platform.Security.Keys key, Common.Platform.Security.Scope scope = Common.Platform.Security.Scope.All, int scopeId = 0) {
+        public virtual bool CheckSecurity(int orgId, Models.Security.Keys key, Models.Security.Scope scope = Models.Security.Scope.All, int scopeId = 0) {
             return User.CheckSecurity(orgId, key, scope, scopeId);
         }
 

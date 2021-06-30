@@ -38,7 +38,7 @@ namespace Kandu.Services
             var i = 0;
             list.ForEach((Query.Models.Organization o) =>
             {
-                if(User.CheckSecurity(o.orgId, Common.Platform.Security.Keys.BoardCanCreate))
+                if(User.CheckSecurity(o.orgId, Models.Security.Keys.BoardCanCreate))
                 {
                     html.Append((i > 0 ? "," : "") + "{\"name\":\"" + o.name + "\", \"description\":\"" + o.description + "\",\"orgId\":\"" + o.orgId + "\"}");
                 }
@@ -57,7 +57,7 @@ namespace Kandu.Services
         public string Details(int orgId)
         {
             if (!CheckSecurity()) { return AccessDenied(); } //check security
-            var canEdit = CheckSecurity(orgId, Common.Platform.Security.Keys.OrgCanEdit, Common.Platform.Security.Scope.Organization, orgId);
+            var canEdit = CheckSecurity(orgId, Models.Security.Keys.OrgCanEdit, Models.Security.Scope.Organization, orgId);
             var tabHtml = new StringBuilder();
             var contentHtml = new StringBuilder();
             var view = new View("/Views/Organizations/details.html");
@@ -110,12 +110,12 @@ namespace Kandu.Services
             contentHtml.Append("<div class=\"content-members\"></div>\n");
 
             //load security tab
-            if(CheckSecurity(orgId, Common.Platform.Security.Keys.SecGroupsCanViewAll) ||
-                CheckSecurity(orgId, Common.Platform.Security.Keys.SecGroupCanCreate) ||
-                CheckSecurity(orgId, Common.Platform.Security.Keys.SecGroupCanUpdateKeys) ||
-                CheckSecurity(orgId, Common.Platform.Security.Keys.SecGroupCanAddUsers) ||
-                CheckSecurity(orgId, Common.Platform.Security.Keys.SecGroupCanRemoveUsers) ||
-                CheckSecurity(orgId, Common.Platform.Security.Keys.SecGroupCanEditInfo))
+            if(CheckSecurity(orgId, Models.Security.Keys.SecGroupsCanViewAll) ||
+                CheckSecurity(orgId, Models.Security.Keys.SecGroupCanCreate) ||
+                CheckSecurity(orgId, Models.Security.Keys.SecGroupCanUpdateKeys) ||
+                CheckSecurity(orgId, Models.Security.Keys.SecGroupCanAddUsers) ||
+                CheckSecurity(orgId, Models.Security.Keys.SecGroupCanRemoveUsers) ||
+                CheckSecurity(orgId, Models.Security.Keys.SecGroupCanEditInfo))
             {
                 tab.Clear();
                 tab["title"] = "Security";
@@ -141,7 +141,7 @@ namespace Kandu.Services
 
         public string Update(int orgId, string name, string description, string website)
         {
-            if(!CheckSecurity(orgId, Common.Platform.Security.Keys.OrgCanEdit, Common.Platform.Security.Scope.Organization, orgId)) { return AccessDenied(); }
+            if(!CheckSecurity(orgId, Models.Security.Keys.OrgCanEdit, Models.Security.Scope.Organization, orgId)) { return AccessDenied(); }
             if (website.Length > 0)
             {
                 website = "https://" + website.Replace("http://", "").Replace("https://", "");
