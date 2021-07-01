@@ -29,21 +29,21 @@ namespace Kandu.Services
         public string RefreshList(int orgId, bool btnsInFront = false)
         {
             if (!IsInOrganization(orgId)) { return AccessDenied(); } //check security
-            var html = Common.Platform.Teams.RenderList(this, orgId);
+            var html = "<div class=\"grid-items\">" + Common.Platform.Teams.RenderList(this, orgId);
             if (CheckSecurity(orgId, Models.Security.Keys.TeamCanCreate))
             {
                 var additem = new View("/Views/Teams/add-item.html");
                 var addbutton = additem.Render();
                 html = (btnsInFront == true ? addbutton : "") + html + (btnsInFront == false ? addbutton : "");
             }
-            return html;
+            return html + "</div>";
         }
 
         public string RefreshMembers(int orgId, int teamId)
         {
             if (!IsInOrganization(orgId)) { return AccessDenied(); } //check security
             var team = Query.Teams.GetTeam(teamId);
-            var html = new StringBuilder();
+            var html = new StringBuilder("<div class=\"grid-items\">");
             html.Append(Common.Platform.Teams.RenderMembers(this, teamId));
             if (CheckSecurity(team.orgId, Models.Security.Keys.TeamCanInviteUsers, Models.Security.Scope.Team, teamId))
             {
@@ -51,7 +51,7 @@ namespace Kandu.Services
                 var addbutton = additem.Render();
                 html.Append(addbutton);
             }
-            return html.ToString();
+            return html.ToString() + "</div>";
         }
 
         public string RenderForm(int teamId, int orgId)
@@ -100,7 +100,7 @@ namespace Kandu.Services
             if (!IsInOrganization(orgId)) { return AccessDenied(); } //check security
             var m = new Members();
             m.Instantiate(this);
-            return m.RefreshList(orgId, page, length, search, true, "Search", teamId);
+            return m.RefreshList(orgId, page, length, search, true, "Search", teamId, "", "S.teams.members.add.selectEmail");
         }
 
         public string Details(int teamId)
@@ -128,7 +128,7 @@ namespace Kandu.Services
                 var addbutton = additem.Render();
                 html.Append(addbutton);
             }
-            contentHtml.Append("<div class=\"content-members\">" + html.ToString() + "</div>");
+            contentHtml.Append("<div class=\"content-members grid-items\">" + html.ToString() + "</div>");
 
             view["name"] = team.name;
             view["description"] = team.description;

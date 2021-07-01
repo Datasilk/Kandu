@@ -67,3 +67,12 @@ input[type]:not([type=button]):not([type=submit]):not([type=radio]){border-radiu
     }
     .tab{float:left; padding:5px 15px; margin-right:5px; border-top-left-radius:5px; border-top-right-radius:5px; cursor:pointer;}
 
+ /* grid items */
+ .grid-items{
+     @height:48px;
+    .item{float:left; width:~"calc(33% - 6px)"; height:@height; box-sizing:border-box; margin:3px;}
+    .item > a{width:100%; display:block; height:@height;}
+    &:after{content:''; display:block; clear:both;}
+    .item-title{font-weight:bold;}
+    .item-subtitle{padding-top:3px;}
+}

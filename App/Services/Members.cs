@@ -1,11 +1,12 @@
 ﻿using System.Text;
+using Utility.Strings;
 
 namespace Kandu.Services
 {
     public class Members : Service
     {
 
-        public string RefreshList(int orgId, int page = 1, int length = 10, string search = "", bool canUseEmail = false, string buttonLabel = "Search", int? excludeTeamId = null)
+        public string RefreshList(int orgId, int page = 1, int length = 10, string search = "", bool canUseEmail = false, string buttonLabel = "Search", int? excludeTeamId = null, string onclick = "", string emailOnClick = "")
         {
             if (!IsInOrganization(orgId)) { return AccessDenied(); } //check security
             if (page <= 0) { page = 1; }
@@ -13,12 +14,21 @@ namespace Kandu.Services
             var viewSearch = new View("/Views/Members/search.html");
             var resultsInfo = new View("/Views/Members/results-info.html");
             var useEmail = new View("/Views/Members/use-email.html");
+            var isEmail = search.IsEmail();
+            if (isEmail)
+            {
+                useEmail["email"] = search;
+                useEmail["onclick"] = (emailOnClick != "" ? emailOnClick : "S.members.add.selectEmail") + "(event, '" + search + "')";
+            }
             viewSearch["search"] = search;
             viewSearch["page"] = page.ToString();
             viewSearch["button-label"] = buttonLabel;
             var pagelist = new StringBuilder();
             var count = length > 0 ? Query.Organizations.GetMembersCount(orgId, page, length, search) : 0;
-            var memberslist = length > 0 ? Common.Platform.Members.RenderList(this, orgId, page, length, search) : "";
+            var memberslist = "<div class=\"grid-items\">" + (
+                length > 0 ? Common.Platform.Members.RenderList(this, orgId, page, length, search) : 
+                (canUseEmail == true ? useEmail.Render() : "")
+                ) + "</div>";
             var paging = "";
             resultsInfo["count"] = count.ToString();
             if(count > 0)
@@ -33,7 +43,7 @@ namespace Kandu.Services
                 resultsInfo.Show("plural");
             }
 
-            if (length > 0 && count > length)
+            if (length > 0 && count > page * length)
             {
                 var pagingnum = new View("/Views/Shared/paging-number.html");
                 var pagingbacknext = new View("/Views/Shared/paging-backnext.html");

@@ -398,6 +398,19 @@ namespace Utility.Strings
 
             return false;
         }
+
+        public static bool IsEmail(this string email)
+        {
+            try
+            {
+                var addr = new System.Net.Mail.MailAddress(email);
+                return addr.Address == email;
+            }
+            catch
+            {
+                return false;
+            }
+        }
     }
 
     public static class Dates

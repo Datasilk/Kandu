@@ -9,6 +9,7 @@
 
         init: function (orgId, container) {
             S.members.search.orgId = orgId;
+            //render search form with instructions
             S.members.search.query(orgId, 1, 0, container, '');
         },
 
@@ -23,7 +24,7 @@
                         return false;
                     });
                 } else {
-                    $(container + ' .content-members .members-list').html(html);
+                    $(container + ' .members-list').html(html);
                 }
             });
         },

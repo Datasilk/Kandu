@@ -197,7 +197,15 @@
                 S.teams.members.add.cache = { page: page, length: length, search: search };
                 S.ajax.post('Teams/RefreshInviteList', { orgId: orgId, page: page, length: length, search: search, excludeTeamId: teamId }, (html) => {
                     if (length == 0) {
-                        $('.team-members-form .search-users').html(html);
+                        var memberform = $('.team-members-form .search-users');
+                        memberform.html(html);
+
+                        //change all item onclick attributes
+                        memberform.find('.item > a').foreach((i, a) => {
+                            a.setAttribute('onclick', a.getAttribute('onclick').replace('S.members.details.show(', 'S.teams.members.select(event, '));
+                        });
+
+                        //when user searches
                         $('.team-members-form .search-members form').on('submit', (e) => {
                             e.preventDefault();
                             S.teams.members.add.query(orgId, teamId, 1, 20, $('.team-members-form #search_members').val());
@@ -210,6 +218,11 @@
                         $('.team-members-form .search-users .members-list').html(html);
                     }
                 });
+            },
+
+            selectEmail: function (e, email) {
+                //add email to the list of members
+
             },
 
             submit: function () {
