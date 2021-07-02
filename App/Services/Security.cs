@@ -32,7 +32,7 @@ namespace Kandu.Services
             {
                 //Edit existing Security Group form
                 var group = Query.Security.GroupDetails(groupId);
-                if (!CheckSecurity(group.orgId, Models.Security.Keys.SecGroupCanCreate, Models.Security.Scope.SecurityGroup, groupId))
+                if (!CheckSecurity(group.orgId, Models.Security.Keys.SecGroupCanCreate, Models.Scope.SecurityGroup, groupId))
                 {
                     return AccessDenied();
                 }
@@ -53,7 +53,7 @@ namespace Kandu.Services
         {
             if (!CheckSecurity()) { return AccessDenied(); } //check security
             var group = Query.Security.GroupInfo(groupId);
-            var canEdit = CheckSecurity(group.orgId, Models.Security.Keys.SecGroupCanEditInfo, Models.Security.Scope.SecurityGroup, groupId);
+            var canEdit = CheckSecurity(group.orgId, Models.Security.Keys.SecGroupCanEditInfo, Models.Scope.SecurityGroup, groupId);
             var tabHtml = new StringBuilder();
             var contentHtml = new StringBuilder();
             var view = new View("/Views/Security/details.html");

@@ -6,7 +6,7 @@ namespace Kandu.Services
     public class Members : Service
     {
 
-        public string RefreshList(int orgId, int page = 1, int length = 10, string search = "", bool canUseEmail = false, string buttonLabel = "Search", int? excludeTeamId = null, string onclick = "", string emailOnClick = "")
+        public string RefreshList(int orgId, int page = 1, int length = 10, string search = "", bool canUseEmail = false, string buttonLabel = "Search", int? excludeTeamId = null, string placeholder = "", string onclick = "", string emailOnClick = "")
         {
             if (!IsInOrganization(orgId)) { return AccessDenied(); } //check security
             if (page <= 0) { page = 1; }
@@ -14,7 +14,7 @@ namespace Kandu.Services
             var viewSearch = new View("/Views/Members/search.html");
             var resultsInfo = new View("/Views/Members/results-info.html");
             var useEmail = new View("/Views/Members/use-email.html");
-            var isEmail = search.IsEmail();
+            var isEmail = search != "" ? search.IsEmail() : false;
             if (isEmail)
             {
                 useEmail["email"] = search;
@@ -23,22 +23,23 @@ namespace Kandu.Services
             viewSearch["search"] = search;
             viewSearch["page"] = page.ToString();
             viewSearch["button-label"] = buttonLabel;
+            viewSearch["placeholder"] = placeholder;
             var pagelist = new StringBuilder();
             var count = length > 0 ? Query.Organizations.GetMembersCount(orgId, page, length, search) : 0;
             var memberslist = "<div class=\"grid-items\">" + (
-                length > 0 ? Common.Platform.Members.RenderList(this, orgId, page, length, search) : 
-                (canUseEmail == true ? useEmail.Render() : "")
+                length > 0 && count > 0 ? Common.Platform.Members.RenderList(this, orgId, page, length, search) : 
+                (canUseEmail == true && isEmail ? useEmail.Render() : "")
                 ) + "</div>";
             var paging = "";
             resultsInfo["count"] = count.ToString();
-            if(count > 0)
+            if(count > 0 || (canUseEmail && isEmail))
             {
                 resultsInfo.Show("has-results");
             }else if(count <= 0)
             {
                 resultsInfo.Show("no-results");
             }
-            if(count > 1)
+            if(count > 1 || count <= 0)
             {
                 resultsInfo.Show("plural");
             }

@@ -27,5 +27,25 @@ namespace Query.Models
                 public int ScopeId { get; set; }
             }
         }
+
+        [Serializable]
+        [XmlRoot("invites")]
+        public class Invites
+        {
+            [XmlElement("invite")]
+            public Invite[] List { get; set; }
+
+            public class Invite
+            {
+                [XmlAttribute("id")]
+                public int UserId { get; set; }
+
+                [XmlAttribute("email")]
+                public string Email { get; set; }
+
+                [XmlAttribute("publickey")]
+                public string PublicKey { get; set; }
+            }
+        }
     }
 }

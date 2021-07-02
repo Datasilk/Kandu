@@ -51,7 +51,7 @@ namespace Kandu
             return User.CheckSecurity(boardId);
         }
 
-        public virtual bool CheckSecurity(int orgId, Models.Security.Keys key, Models.Security.Scope scope = Models.Security.Scope.All, int scopeId = 0) {
+        public virtual bool CheckSecurity(int orgId, Models.Security.Keys key, Models.Scope scope = Models.Scope.All, int scopeId = 0) {
             return User.CheckSecurity(orgId, key, scope, scopeId);
         }
 

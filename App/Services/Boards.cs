@@ -25,7 +25,7 @@ namespace Kandu.Services
             if(boardId != 0)
             {
                 var board = Query.Boards.GetInfo(boardId);
-                if (!CheckSecurity(board.orgId, Models.Security.Keys.BoardCanUpdate, Models.Security.Scope.Board, boardId))
+                if (!CheckSecurity(board.orgId, Models.Security.Keys.BoardCanUpdate, Models.Scope.Board, boardId))
                 {
                     return AccessDenied();
                 }
@@ -89,7 +89,7 @@ namespace Kandu.Services
 
         public string Update(int boardId, string name, string color, int orgId)
         {
-            if (!User.CheckSecurity(orgId, Models.Security.Keys.BoardCanUpdate, Models.Security.Scope.Board, boardId)) { return AccessDenied(); } //check security
+            if (!User.CheckSecurity(orgId, Models.Security.Keys.BoardCanUpdate, Models.Scope.Board, boardId)) { return AccessDenied(); } //check security
             try
             {
                 Common.Platform.Boards.Update(this, boardId, name, color, orgId);

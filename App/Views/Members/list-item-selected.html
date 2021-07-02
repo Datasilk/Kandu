@@ -1,0 +1,13 @@
+﻿<div class="row hover item item-{{member.userid}}" data-id="{{member.userid}}">
+    <div class="icon small remove-icon hover-only" onclick="{{remove-onclick}}">
+        <a href="javascript:">
+            <svg viewBox="0 0 32 32">
+                <use xlink:href="#icon-close" x="0" y="0" width="32" height="32"></use>
+            </svg>
+        </a>
+    </div>
+    <span class="col pad-top-sm pad-left member-label">
+        <span class="item-title block">{{member.name}}</span>
+        <span class="item-subtitle">{{member.title}}</span>
+    </span>
+</div>

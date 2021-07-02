@@ -57,7 +57,7 @@ namespace Kandu.Services
         public string Details(int orgId)
         {
             if (!CheckSecurity()) { return AccessDenied(); } //check security
-            var canEdit = CheckSecurity(orgId, Models.Security.Keys.OrgCanEdit, Models.Security.Scope.Organization, orgId);
+            var canEdit = CheckSecurity(orgId, Models.Security.Keys.OrgCanEdit, Models.Scope.Organization, orgId);
             var tabHtml = new StringBuilder();
             var contentHtml = new StringBuilder();
             var view = new View("/Views/Organizations/details.html");
@@ -141,7 +141,7 @@ namespace Kandu.Services
 
         public string Update(int orgId, string name, string description, string website)
         {
-            if(!CheckSecurity(orgId, Models.Security.Keys.OrgCanEdit, Models.Security.Scope.Organization, orgId)) { return AccessDenied(); }
+            if(!CheckSecurity(orgId, Models.Security.Keys.OrgCanEdit, Models.Scope.Organization, orgId)) { return AccessDenied(); }
             if (website.Length > 0)
             {
                 website = "https://" + website.Replace("http://", "").Replace("https://", "");

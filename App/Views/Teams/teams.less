@@ -12,3 +12,19 @@
     .item a{height:@height;}
     &:after{content:''; display:block; clear:both;}
 }
+.row.hover .remove-icon{opacity:0 !important;}
+.row.hover:hover .remove-icon{opacity:0.3 !important;}
+.invite-form{
+    .members-list{overflow-y:auto;}
+    .invited-title{padding:15px 0 10px 0;}
+    .invited-list{padding:0 0 15px 0; overflow-y:auto;
+        .remove-icon{position:absolute; top:16px; right:12px; cursor:pointer; z-index:100;
+            &:hover{opacity:1 !important;}
+        }
+    }
+    .item-email{width:~"calc(50% - 6px)"; padding-right:15px;
+        .add-icon{padding:16px 0 0 9px};
+        .add-label{padding:14px 0 0 10px; max-width:~"calc(100% - 25px)"; cursor:default;}
+        .add-title{text-overflow:ellipsis; overflow:hidden; white-space:nowrap; height:20px;}
+    }
+}

@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Operations Version="1.0" xmlns="http://schemas.microsoft.com/sqlserver/dac/Serialization/2012/02">
+  <Operation Name="Rename Refactor" Key="2f3f7ba7-9f74-4602-989a-df4f1111ee0c" ChangeDateTime="07/01/2021 22:44:57">
+    <Property Name="ElementName" Value="[dbo].[Invitations].[Id]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[Invitations]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="userId" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="539079d2-f0c8-4470-9ee1-e895129a26d5" ChangeDateTime="07/01/2021 22:48:34">
+    <Property Name="ElementName" Value="[dbo].[Invitations].[notes]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[Invitations]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="message" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="8cd4e70e-14d7-4d1f-819f-4e3a0df0db1e" ChangeDateTime="07/01/2021 23:15:58">
+    <Property Name="ElementName" Value="[dbo].[Invitations].[activationkey]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[Invitations]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="publickey" />
+  </Operation>
+</Operations>
