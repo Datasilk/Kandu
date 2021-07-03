@@ -1,14 +1,17 @@
 ﻿<div class="org-details">
     <div class="sub-title">Organization</div>
     <div class="row message hide"><span></span></div>
-    {{view-org}}
-        <p>{{description}}</p>
-        <p>
+    <div class="org-info">
+        <p class="org-description">{{description}}</p>
+        <div class="website-link">
+            {{has-website}}
             <a href="{{website}}" target="_blank">{{website}}</a>
-        </p>
-    {{/view-org}}
+            {{/has-website}}
+        </div>
+    </div>
     {{edit-org}}
-        <div class="org-form">
+        <div class="org-edit-link"><a href="javascript:" onclick="S.orgs.details.editInfo()">Edit Info</a></div>
+        <div class="org-form hide">
             <div class="row hover">
                 <div class="col field">Name</div>
                 <div class="col input expand"><input type="text" id="orgname" placeholder="Datasilk" value="{{name}}"  maxlength="50"/></div>
@@ -23,6 +26,7 @@
             </div>
             <div class="row pad-top text-center buttons">
                 <a href="javascript:" class="button apply hide">Save Changes</a>
+                <a href="javascript:" class="button cancel" onclick="S.orgs.details.cancelEdit()">Cancel</a>
             </div>
         </div>
     {{/edit-org}}

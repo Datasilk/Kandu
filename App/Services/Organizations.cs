@@ -76,6 +76,7 @@ namespace Kandu.Services
             view["name"] = org.name;
             view["description"] = org.description;
             view["website"] = org.website;
+            if(org.website != "") { view.Show("has-website"); }
 
             //load boards tab
             tab["title"] = "Boards";

@@ -73,6 +73,7 @@
     <Folder Include="dbo\Stored Procedures\Organizations" />
     <Folder Include="scripts" />
     <Folder Include="dbo\Stored Procedures\Security" />
+    <Folder Include="dbo\Stored Procedures\Invitations" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="dbo\Tables\Users.sql" />
@@ -175,6 +176,9 @@
     <Build Include="dbo\Stored Procedures\Security\SecurityGroup_GetDetails.sql" />
     <Build Include="dbo\Stored Procedures\Security\SecurityGroup_GetInfo.sql" />
     <Build Include="dbo\Stored Procedures\Security\SecurityGroups_GetList.sql" />
+    <Build Include="dbo\Stored Procedures\Invitations\Invite_People_Batch.sql" />
+    <Build Include="dbo\Stored Procedures\Organizations\Organization_GetMembersCount.sql" />
+    <Build Include="dbo\Tables\Invitations.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Sql.publish.xml" />

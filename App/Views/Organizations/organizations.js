@@ -152,6 +152,18 @@ S.orgs = {
             });
         },
 
+        editInfo: function () {
+            $('.org-details .org-form').removeClass('hide');
+            $('.org-details .org-info').hide();
+            $('.org-edit-link').hide();
+        },
+
+        cancelEdit: function () {
+            $('.org-details .org-form').addClass('hide');
+            $('.org-details .org-info').show();
+            $('.org-edit-link').show();
+        },
+
         save: function () {
             //validate data
             var form = {
@@ -165,12 +177,18 @@ S.orgs = {
                 S.message.show(msg, 'error', 'Please specify an organization name');
                 return;
             }
+            if (form.website != '') {
+                form.website = 'https://' + form.website.replace('http://', '').replace('https://', '');
+            }
 
             S.ajax.post('Organizations/Update', form, (result) => {
                 S.message.show(msg, null, 'Organization details have been updated');
                 $('.org-form a.apply').addClass('hide');
                 S.orgs.list.reload();
                 $('.popup .title > h5').html(form.name);
+                S.orgs.details.cancelEdit();
+                $('.org-details .org-description').html(form.description);
+                $('.org-details .website-link').html(form.website != '' ? '<a href="' + form.website + '" target="_blank">' + form.website + '</a>' : '');
             },
             (err) => {
                 S.message.show(msg, 'error', err.responseText);

@@ -32,9 +32,16 @@ namespace Kandu.Services
                 ) + "</div>";
             var paging = "";
             resultsInfo["count"] = count.ToString();
-            if(count > 0 || (canUseEmail && isEmail))
+            if (count > 0 || (canUseEmail && isEmail))
             {
-                resultsInfo.Show("has-results");
+                if(canUseEmail && isEmail)
+                {
+                    resultsInfo.Show("has-emails");
+                }
+                else
+                {
+                    resultsInfo.Show("has-results");
+                }
             }else if(count <= 0)
             {
                 resultsInfo.Show("no-results");

@@ -45,11 +45,11 @@ AS
 			VALUES (@userId, @scopeId, @scope, @email, @publickey, @message, @invitedBy)
 		END TRY
 		BEGIN CATCH
-			SET @failed += (CASE WHEN @userId > 0 THEN CONVERT(varchar(16), @userId) ELSE @email END) + ','
+			SET @failed = @failed + (CASE WHEN @userId > 0 THEN CONVERT(varchar(16), @userId) ELSE @email END) + ','
 		END CATCH
 		FETCH FROM @cursor INTO @userId, @email, @publickey
 	END
 	CLOSE @cursor
 	DEALLOCATE @cursor
 
-	SELECT @failed AS errors
+	SELECT @failed

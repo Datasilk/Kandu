@@ -70,14 +70,6 @@
                     $('.team-form a.apply').removeClass('hide');
                 });
 
-                //btn add member
-                $('.team-details .btn-add-member').on('click', () => {
-                    S.teams.details.popup.hide();
-                    S.teams.invite.show(orgId, id, name, () => {
-                        S.teams.details.popup.show();
-                    });
-                });
-
                 //save button
                 $('.team-form a.apply').on('click', S.teams.details.save);
 
@@ -88,7 +80,22 @@
 
                 //set up custom scrollbars
                 S.scrollbar.add('.team-details .tab-content', { touch: true });
+
+                //update members tab
+                S.teams.members.updateEvents();
             });
+        },
+
+        editInfo: function () {
+            $('.team-details .team-form').removeClass('hide');
+            $('.team-details .team-info').hide();
+            $('.team-edit-link').hide();
+        },
+
+        cancelEdit: function () {
+            $('.team-details .team-form').addClass('hide');
+            $('.team-details .team-info').show();
+            $('.team-edit-link').show();
         },
 
         hide: function () {
@@ -107,6 +114,8 @@
                 if (S.teams.details.callback) {
                     S.teams.details.callback('saved');
                 }
+                $('.team-details .team-description').html(form.description);
+                S.teams.details.cancelEdit();
                 S.message.show(msg, null, 'Team updated successfully');
             }, (err) => {
                 S.message.show(msg, 'error', err.responseText);
@@ -152,21 +161,24 @@
         refresh: function () {
             S.ajax.post('Teams/RefreshMembers', { orgId: S.orgs.details.orgId }, function (result) {
                 $('.team-details .content-members').html(result);
-                $('.team-details .btn-add-member').on('click', () => {
-                    S.teams.details.popup.hide();
-                    S.teams.invite.show(S.orgs.details.orgId, S.orgs.details.teamId, S.orgs.details.name, (total, failed) => {
-                        S.teams.details.popup.show();
-                        console.log('invited complete!');
-                        S.message.show('.popup.show .message', '', total + ' people invited' +
-                            (failed != null && failed != '' ? ', ' + failed + ' could not be invited' : ''));
-                    });
-                });
-                S.popup.resize();
+                S.teams.members.updateEvents();
             },
             (err) => {
 
             });
         },
+
+        updateEvents: function () {
+            $('.team-details .btn-add-member').on('click', () => {
+                S.teams.details.popup.hide();
+                S.teams.invite.show(S.teams.details.orgId, S.teams.details.teamId, S.teams.details.name, (total, failed) => {
+                    S.teams.details.popup.show();
+                    S.message.show('.popup.show .message', '', total + (total != 1 ? ' people' : ' person') + ' invited' +
+                        (failed != null && failed != '' ? ', ' + failed + ' could not be invited' : ''));
+                });
+            });
+            S.popup.resize();
+        }
     },
 
     invite: {

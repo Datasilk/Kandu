@@ -14,14 +14,14 @@ namespace Kandu.Services
         public string RefreshList(int orgId)
         {
             if (!IsInOrganization(orgId)) { return AccessDenied(); } //check security
-            var html = Common.Platform.Security.RenderList(this, orgId);
+            var html = "<div class=\"grid-items\">" + Common.Platform.Security.RenderList(this, orgId);
             if (CheckSecurity(orgId, Models.Security.Keys.SecGroupCanCreate))
             {
                 var additem = new View("/Views/Security/add-item.html");
                 var addbutton = additem.Render();
                 html = html + addbutton;
             }
-            return html;
+            return html + "</div>";
         }
 
         public string RenderGroupForm(int orgId, int groupId)
