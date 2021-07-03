@@ -2,17 +2,17 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Kandu.Common.Platform
+namespace Kandu.Common
 {
     public static class Organizations
     {
 
-        public static string RenderOrgListModal(Request request)
+        public static string RenderOrgListModal(Core.IRequest request)
         {
             var html = new StringBuilder();
             var section = new View("/Views/Organizations/list.html");
             var item = new View("/Views/Organizations/list-item.html");
-            var orgs = Query.Organizations.UserIsPartOf(request.User.userId);
+            var orgs = Query.Organizations.UserIsPartOf(request.User.UserId);
             foreach(var org in orgs)
             {
                 item.Clear();
@@ -23,13 +23,13 @@ namespace Kandu.Common.Platform
             return section.Render();
         }
 
-        public static int Create(Request request, string name, string description, string website)
+        public static int Create(Core.IRequest request, string name, string description, string website)
         {
             try
             {
                 var id = Query.Organizations.Create(new Query.Models.Organization()
                 {
-                    ownerId = request.User.userId,
+                    ownerId = request.User.UserId,
                     name = name,
                     description = description,
                     website = website,
@@ -40,9 +40,9 @@ namespace Kandu.Common.Platform
                 Teams.Create(request, id, "Managers", "Organization Managers");
 
                 //add "owner" security to current user
-                request.User.Keys.Add(id, new List<Kandu.Security>()
+                request.User.Keys.Add(id, new List<Core.Security>()
                 {
-                    new Kandu.Security()
+                    new Core.Security()
                     {
                         Key = "Owner",
                         Enabled = true

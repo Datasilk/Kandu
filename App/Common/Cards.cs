@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Kandu.Common.Platform
+namespace Kandu.Common
 {
     public static class Cards
     {

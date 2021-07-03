@@ -15,12 +15,12 @@ namespace Kandu.Services
                 { 
                     website = "https://" + website.Replace("http://", "").Replace("https://", "");
                 }
-                var orgsOwned = Query.Organizations.Owned(User.userId);
+                var orgsOwned = Query.Organizations.Owned(User.UserId);
                 if(orgsOwned.Any(a => a.name.ToLower() == name.ToLower()))
                 {
                     return Error("An organization with that name already exists");
                 }
-                var id = Common.Platform.Organizations.Create(this, name, description, website);
+                var id = Common.Organizations.Create(this, name, description, website);
 
                 return id.ToString();
             }
@@ -33,12 +33,12 @@ namespace Kandu.Services
         public string List()
         {
             if (!CheckSecurity()) { return AccessDenied(); } //check security
-            var list = Query.Organizations.UserIsPartOf(User.userId);
+            var list = Query.Organizations.UserIsPartOf(User.UserId);
             var html = new StringBuilder("{\"orgs\":[");
             var i = 0;
             list.ForEach((Query.Models.Organization o) =>
             {
-                if(User.CheckSecurity(o.orgId, Models.Security.Keys.BoardCanCreate))
+                if(User.CheckSecurity(o.orgId, Models.Security.Keys.BoardCanCreate.ToString()))
                 {
                     html.Append((i > 0 ? "," : "") + "{\"name\":\"" + o.name + "\", \"description\":\"" + o.description + "\",\"orgId\":\"" + o.orgId + "\"}");
                 }
@@ -51,13 +51,13 @@ namespace Kandu.Services
         public string RefreshListMenu()
         {
             if (!CheckSecurity()) { return AccessDenied(); } //check security
-            return Common.Platform.Organizations.RenderOrgListModal(this);
+            return Common.Organizations.RenderOrgListModal(this);
         }
 
         public string Details(int orgId)
         {
             if (!CheckSecurity()) { return AccessDenied(); } //check security
-            var canEdit = CheckSecurity(orgId, Models.Security.Keys.OrgCanEdit, Models.Scope.Organization, orgId);
+            var canEdit = CheckSecurity(orgId, Models.Security.Keys.OrgCanEdit.ToString(), Models.Scope.Organization, orgId);
             var tabHtml = new StringBuilder();
             var contentHtml = new StringBuilder();
             var view = new View("/Views/Organizations/details.html");
@@ -84,7 +84,7 @@ namespace Kandu.Services
             tab["onclick"] = "S.orgs.details.tabs.select('boards')";
             tab.Show("selected");
             tabHtml.Append(tab.Render());
-            var html = Common.Platform.Boards.RenderMenu(this, orgId, true, false);
+            var html = Common.Boards.RenderMenu(this, orgId, true, false);
             if(html == "")
             {
                 //no boards
@@ -111,12 +111,12 @@ namespace Kandu.Services
             contentHtml.Append("<div class=\"content-members\"></div>\n");
 
             //load security tab
-            if(CheckSecurity(orgId, Models.Security.Keys.SecGroupsCanViewAll) ||
-                CheckSecurity(orgId, Models.Security.Keys.SecGroupCanCreate) ||
-                CheckSecurity(orgId, Models.Security.Keys.SecGroupCanUpdateKeys) ||
-                CheckSecurity(orgId, Models.Security.Keys.SecGroupCanAddUsers) ||
-                CheckSecurity(orgId, Models.Security.Keys.SecGroupCanRemoveUsers) ||
-                CheckSecurity(orgId, Models.Security.Keys.SecGroupCanEditInfo))
+            if(CheckSecurity(orgId, Models.Security.Keys.SecGroupsCanViewAll.ToString()) ||
+                CheckSecurity(orgId, Models.Security.Keys.SecGroupCanCreate.ToString()) ||
+                CheckSecurity(orgId, Models.Security.Keys.SecGroupCanUpdateKeys.ToString()) ||
+                CheckSecurity(orgId, Models.Security.Keys.SecGroupCanAddUsers.ToString()) ||
+                CheckSecurity(orgId, Models.Security.Keys.SecGroupCanRemoveUsers.ToString()) ||
+                CheckSecurity(orgId, Models.Security.Keys.SecGroupCanEditInfo.ToString()))
             {
                 tab.Clear();
                 tab["title"] = "Security";
@@ -142,12 +142,12 @@ namespace Kandu.Services
 
         public string Update(int orgId, string name, string description, string website)
         {
-            if(!CheckSecurity(orgId, Models.Security.Keys.OrgCanEdit, Models.Scope.Organization, orgId)) { return AccessDenied(); }
+            if(!CheckSecurity(orgId, Models.Security.Keys.OrgCanEdit.ToString(), Models.Scope.Organization, orgId)) { return AccessDenied(); }
             if (website.Length > 0)
             {
                 website = "https://" + website.Replace("http://", "").Replace("https://", "");
             }
-            var orgsOwned = Query.Organizations.Owned(User.userId);
+            var orgsOwned = Query.Organizations.Owned(User.UserId);
             if (orgsOwned.Any(a => a.name.ToLower() == name.ToLower() && a.orgId != orgId))
             {
                 return Error("An organization with that name already exists");

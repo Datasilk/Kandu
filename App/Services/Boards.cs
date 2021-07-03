@@ -7,10 +7,10 @@ namespace Kandu.Services
     {
         public string Create(string name, string color, int orgId)
         {
-            if (!User.CheckSecurity(orgId, Models.Security.Keys.BoardCanCreate)) { return AccessDenied(); } //check security
+            if (!User.CheckSecurity(orgId, Models.Security.Keys.BoardCanCreate.ToString())) { return AccessDenied(); } //check security
             try
             {
-                var boardId = Common.Platform.Boards.Create(this, name, color, orgId);
+                var boardId = Common.Boards.Create(this, name, color, orgId);
                 return Success();
             }catch(ServiceErrorException ex)
             {
@@ -25,7 +25,7 @@ namespace Kandu.Services
             if(boardId != 0)
             {
                 var board = Query.Boards.GetInfo(boardId);
-                if (!CheckSecurity(board.orgId, Models.Security.Keys.BoardCanUpdate, Models.Scope.Board, boardId))
+                if (!CheckSecurity(board.orgId, Models.Security.Keys.BoardCanUpdate.ToString(), Models.Scope.Board, boardId))
                 {
                     return AccessDenied();
                 }
@@ -43,7 +43,7 @@ namespace Kandu.Services
 
             if(orgId != 0)
             {
-                if (!CheckSecurity(orgId, Models.Security.Keys.BoardCanUpdate))
+                if (!CheckSecurity(orgId, Models.Security.Keys.BoardCanUpdate.ToString()))
                 {
                     return AccessDenied();
                 }
@@ -54,11 +54,11 @@ namespace Kandu.Services
             }
             else
             {
-                var orgs = Query.Organizations.UserIsPartOf(User.userId);
+                var orgs = Query.Organizations.UserIsPartOf(User.UserId);
                 var opts = new StringBuilder();
                 foreach (var org in orgs)
                 {
-                    if (CheckSecurity(org.orgId, Models.Security.Keys.BoardCanCreate))
+                    if (CheckSecurity(org.orgId, Models.Security.Keys.BoardCanCreate.ToString()))
                     {
                         opts.Append("<option value=\"" + org.orgId + "\">" + org.name + "</option>");
                     }
@@ -72,7 +72,7 @@ namespace Kandu.Services
         public string RenderList()
         {
             if (!CheckSecurity()) { return AccessDenied(); } //check security
-            return Common.Platform.Boards.RenderList(this);
+            return Common.Boards.RenderList(this);
         }
 
         public string Details(int boardId)
@@ -80,7 +80,7 @@ namespace Kandu.Services
             if (!CheckSecurity()) { return AccessDenied(); } //check security
             try
             {
-                return Common.Platform.Boards.Details(boardId);
+                return Common.Boards.Details(boardId);
             }catch(ServiceErrorException ex)
             {
                 return Error(ex.Message);
@@ -89,10 +89,10 @@ namespace Kandu.Services
 
         public string Update(int boardId, string name, string color, int orgId)
         {
-            if (!User.CheckSecurity(orgId, Models.Security.Keys.BoardCanUpdate, Models.Scope.Board, boardId)) { return AccessDenied(); } //check security
+            if (!User.CheckSecurity(orgId, Models.Security.Keys.BoardCanUpdate.ToString(), Models.Scope.Board, boardId)) { return AccessDenied(); } //check security
             try
             {
-                Common.Platform.Boards.Update(this, boardId, name, color, orgId);
+                Common.Boards.Update(this, boardId, name, color, orgId);
             }
             catch (ServiceDeniedException)
             {
@@ -108,20 +108,20 @@ namespace Kandu.Services
         public string BoardsMenu(int orgId, bool subTitles = false, bool listOnly = true, int sort = 0, bool buttonsInFront = false)
         {
             if (!CheckSecurity()) { return AccessDenied(); } //check security
-            return Common.Platform.Boards.RenderMenu(this, orgId, listOnly, subTitles, sort, buttonsInFront);
+            return Common.Boards.RenderMenu(this, orgId, listOnly, subTitles, sort, buttonsInFront);
         }
 
         public string KeepMenuOpen(bool keepOpen)
         {
             if (!CheckSecurity()) { return AccessDenied(); } //check security
-            Common.Platform.Boards.KeepBoardsMenuOpen(this, keepOpen);
+            Common.Boards.KeepBoardsMenuOpen(this, keepOpen);
             return "";
         }
 
         public string AllColor(bool allColor)
         {
             if (!CheckSecurity()) { return AccessDenied(); } //check security
-            Common.Platform.Boards.UseAllColorScheme(this, allColor);
+            Common.Boards.UseAllColorScheme(this, allColor);
             return "";
         }
     }

@@ -23,7 +23,7 @@ namespace Kandu.Controllers
                 var htmlists = new StringBuilder();
                 foreach(var list in board.lists)
                 {
-                    htmlists.Append(Common.Platform.List.Kanban.RenderList(list, list.cards) + "\n");
+                    htmlists.Append(Common.List.Kanban.RenderList(list, list.cards) + "\n");
                 }
 
                 var colors = new Utility.Colors();

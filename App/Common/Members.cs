@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Text;
 
-namespace Kandu.Common.Platform
+namespace Kandu.Common
 {
     public static class Members //Members of an organization
     {
-        public static string RenderList(Request request, int orgId, int page = 1, int length = 10, string search = "")
+        public static string RenderList(Core.IRequest request, int orgId, int page = 1, int length = 10, string search = "")
         {
             var listItem = new View("/Views/Members/list-item.html");
             var html = new StringBuilder();

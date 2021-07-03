@@ -13,7 +13,7 @@ namespace Kandu.Services
             int id;
             try
             {
-                id = Common.Platform.Lists.Create(boardId, name, sort);
+                id = Common.Lists.Create(boardId, name, sort);
             }catch(ServiceErrorException ex)
             {
                 return Error(ex.Message);
@@ -21,7 +21,7 @@ namespace Kandu.Services
             switch (board.type)
             {
                 case 0: //Kanban;
-                    return Common.Platform.List.Kanban.RenderList(
+                    return Common.List.Kanban.RenderList(
                         new Query.Models.List() { boardId = boardId, name = name, sort = sort, listId = id },
                         new List<Query.Models.Card>()
                     );
@@ -36,7 +36,7 @@ namespace Kandu.Services
 
             try
             {
-                Common.Platform.Lists.Archive(listId);
+                Common.Lists.Archive(listId);
             }
             catch (ServiceErrorException ex)
             {

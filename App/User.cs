@@ -3,35 +3,28 @@ using System.Linq;
 using System.Text.Json;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Http;
+using Kandu.Core;
 
 namespace Kandu
 {
 
-    public class Security
-    {
-        public string Key { get; set; }
-        public bool Enabled { get; set; }
-        public Models.Scope Scope { get; set; } = 0;
-        public int ScopeId { get; set; } = 0;
-    }
-
-    public class User
+    public class User: IUser
     {
         protected HttpContext Context;
 
         //fields saved into user session
-        public int userId { get; set; } = 0;
-        public string visitorId { get; set; } = "";
-        public string email { get; set; } = "";
-        public string name { get; set; } = "";
-        public string displayName { get; set; } = "";
-        public bool photo { get; set; } = false;
-        public DateTime datecreated { get; set; }
-        public Dictionary<int, List<Security>> Keys { get; set; } = new Dictionary<int, List<Security>>();
-        public bool resetPass { get; set; } = false;
-        public bool keepMenuOpen { get; set; }
-        public bool allColor { get; set; }
-        public List<int> boards { get; set; } = new List<int>();
+        public int UserId { get; set; } = 0;
+        public string VisitorId { get; set; } = "";
+        public string Email { get; set; } = "";
+        public string Name { get; set; } = "";
+        public string DisplayName { get; set; } = "";
+        public bool Photo { get; set; } = false;
+        public DateTime DateCreated { get; set; }
+        public Dictionary<int, List<Core.Security>> Keys { get; set; } = new Dictionary<int, List<Core.Security>>();
+        public bool ResetPass { get; set; } = false;
+        public bool KeepMenuOpen { get; set; }
+        public bool AllColor { get; set; }
+        public List<int> Boards { get; set; } = new List<int>();
 
         //private fields
         protected bool changed = false;
@@ -46,13 +39,13 @@ namespace Kandu
             }
             else
             {
-                user = new User().SetContext(context);
+                user = (User)new User().SetContext(context);
             }
             user.Init(context);
             return user;
         }
 
-        public User SetContext(HttpContext context)
+        public IUser SetContext(HttpContext context)
         {
             Context = context;
             return this;
@@ -62,14 +55,14 @@ namespace Kandu
         {
             //generate visitor id
             Context = context;
-            if (visitorId == "" || visitorId == null)
+            if (VisitorId == "" || VisitorId == null)
             {
-                visitorId = NewId();
+                VisitorId = NewId();
                 changed = true;
             }
             
             //check for persistant cookie
-            if (userId <= 0 && context.Request.Cookies.ContainsKey("authId"))
+            if (UserId <= 0 && context.Request.Cookies.ContainsKey("authId"))
             {
                 var user = Query.Users.AuthenticateUser(context.Request.Cookies["authId"]);
                 if (user != null)
@@ -80,27 +73,14 @@ namespace Kandu
             }
         }
 
-        public void Save(bool changed = false)
-        {
-            if (this.changed == true && changed == false)
-            {
-                Context.Session.Set("user", GetBytes(JsonSerializer.Serialize<User>(this)));
-                this.changed = false;
-            }
-            if (changed == true)
-            {
-                this.changed = true;
-            }
-        }
-
         public void LogIn(int userId, string email, string name, DateTime datecreated, string displayName = "", bool photo = false)
         {
-            this.userId = userId;
-            this.email = email;
-            this.photo = photo;
-            this.name = name;
-            this.displayName = displayName;
-            this.datecreated = datecreated;
+            this.UserId = userId;
+            this.Email = email;
+            this.Photo = photo;
+            this.Name = name;
+            this.DisplayName = displayName;
+            this.DateCreated = datecreated;
 
             //load security keys for user
             var keys = Query.Security.AllKeysForUser(userId);
@@ -130,11 +110,11 @@ namespace Kandu
 
             //load Kandu-specific properties for user from database
             var user = Query.Users.GetInfo(userId);
-            keepMenuOpen = user.keepmenu;
-            allColor = user.allcolor;
+            KeepMenuOpen = user.keepmenu;
+            AllColor = user.allcolor;
 
-            boards = Query.Boards.GetBoardsForMember(userId);
-            if (boards == null) { boards = new List<int>(); }
+            Boards = Query.Boards.GetBoardsForMember(userId);
+            if (Boards == null) { Boards = new List<int>(); }
 
             //create persistant cookie
             var auth = Query.Users.CreateAuthToken(userId);
@@ -151,27 +131,40 @@ namespace Kandu
 
         public void LogOut()
         {
-            userId = 0;
-            email = "";
-            name = "";
-            photo = false;
+            UserId = 0;
+            Email = "";
+            Name = "";
+            Photo = false;
             changed = true;
             Context.Response.Cookies.Delete("authId");
             Save();
         }
 
+        public void Save(bool changed = false)
+        {
+            if (this.changed == true && changed == false)
+            {
+                Context.Session.Set("user", GetBytes(JsonSerializer.Serialize<User>(this)));
+                this.changed = false;
+            }
+            if (changed == true)
+            {
+                this.changed = true;
+            }
+        }
+
         public bool CheckSecurity(int boardId)
         {
             //check Kandu-specific security settings
-            if (userId <= 0) { return false; }
-            if (boards.Contains(boardId))
+            if (UserId <= 0) { return false; }
+            if (Boards.Contains(boardId))
             {
                 return true;
             }
             return false;
         }
 
-        public bool CheckSecurity(int orgId, Models.Security.Keys key, Models.Scope scope = Models.Scope.All, int scopeId = 0)
+        public bool CheckSecurity(int orgId, string key, Models.Scope scope = Models.Scope.All, int scopeId = 0)
         {
             if (Keys.ContainsKey(orgId))
             {
@@ -180,18 +173,18 @@ namespace Kandu
                     //owner of organization
                     return true; 
                 }
-                if (Keys[orgId].Any(a => a.Key == key.ToString()))
+                if (Keys[orgId].Any(a => a.Key == key))
                 {
                     var orgkeys = Keys[orgId];
                     if (scope != Models.Scope.All)
                     {
                         //specific scope
-                        return orgkeys.Any(a => a.Key == key.ToString() && a.Enabled == true && (a.Scope == Models.Scope.All || (a.Scope == scope && a.ScopeId == scopeId)));
+                        return orgkeys.Any(a => a.Key == key && a.Enabled == true && (a.Scope == Models.Scope.All || (a.Scope == scope && a.ScopeId == scopeId)));
                     }
                     else
                     {
                         //all scopes
-                        return orgkeys.Any(a => a.Key == key.ToString() && a.Enabled == true);
+                        return orgkeys.Any(a => a.Key == key && a.Enabled == true);
                     }
                 }
             }

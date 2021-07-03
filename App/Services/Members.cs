@@ -27,7 +27,7 @@ namespace Kandu.Services
             var pagelist = new StringBuilder();
             var count = length > 0 ? Query.Organizations.GetMembersCount(orgId, page, length, search) : 0;
             var memberslist = "<div class=\"grid-items\">" + (
-                length > 0 && count > 0 ? Common.Platform.Members.RenderList(this, orgId, page, length, search) : 
+                length > 0 && count > 0 ? Common.Members.RenderList(this, orgId, page, length, search) : 
                 (canUseEmail == true && isEmail ? useEmail.Render() : "")
                 ) + "</div>";
             var paging = "";

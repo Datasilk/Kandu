@@ -7,7 +7,7 @@
             //check security
             if(PathParts.Length < 2) { return Error(); }
             var boardId = int.Parse(PathParts[1]);
-            if (User.userId == 0) { return AccessDenied<Login>(); }
+            if (User.UserId == 0) { return AccessDenied<Login>(); }
             if (!User.CheckSecurity(boardId)) { return AccessDenied<Login>(); }
 
             //add client-side dependencies
@@ -25,7 +25,7 @@
             //add custom javascript for User Settings & Board info
             Scripts.Append("<script language=\"javascript\">" + 
                 "S.board.id=" + board.boardId + ";" + 
-                (User.allColor ? "S.head.allColor();" : "") + 
+                (User.AllColor ? "S.head.allColor();" : "") + 
                 "</script>");
 
             //choose which Lists Type to render
@@ -33,11 +33,13 @@
             {
                 default: 
                 case Query.Models.Board.BoardType.kanban: //kanban
-                    page = new Kanban();
-                    page.Context = Context;
-                    page.Parameters = Parameters;
-                    page.Path = Path;
-                    page.PathParts = PathParts;
+                    page = new Kanban
+                    {
+                        Context = Context,
+                        Parameters = Parameters,
+                        Path = Path,
+                        PathParts = PathParts
+                    };
                     page.Init();
                     break;
             }
@@ -50,8 +52,8 @@
             view["color-dark"] = colors.ChangeHexBrightness(board.color, (float)-0.3);
 
             //transfer resources from page
-            Scripts.Append(page.Scripts.ToString());
-            Css.Append(page.Css.ToString());
+            Scripts.Append(page.Scripts);
+            Css.Append(page.Css);
 
             //render board lists
             view["content"] = page.Render();

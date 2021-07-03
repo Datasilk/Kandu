@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Kandu.Common.Platform.Card
+namespace Kandu.Common.Card
 {
     public static class Kanban
     {

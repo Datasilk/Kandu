@@ -45,7 +45,7 @@ namespace Kandu.Controllers.Imports
                         var boardType = Context.Request.Query.ContainsKey("type") ? int.Parse(Context.Request.Query["type"]) : 0;
                         var sort = 0;
                         var sortCard = 0;
-                        var bgColor = board.prefs.backgroundColor != null ? board.prefs.backgroundColor : board.prefs.backgroundBottomColor;
+                        var bgColor = board.prefs.backgroundColor ?? board.prefs.backgroundBottomColor;
                         if (bgColor == null)
                         {
                             bgColor = board.prefs.backgroundTopColor;
@@ -57,11 +57,11 @@ namespace Kandu.Controllers.Imports
                             color = bgColor,
                             datecreated = board.actions.Last().date,
                             lastmodified = board.dateLastActivity,
-                            orgId = User.userId,
+                            orgId = User.UserId,
                             favorite = board.pinned,
                             type = (Query.Models.Board.BoardType)boardType
 
-                        }, User.userId, merge);
+                        }, User.UserId, merge);
 
                         if (!Utility.Objects.IsEmpty(boardId))
                         {
@@ -84,7 +84,7 @@ namespace Kandu.Controllers.Imports
                                     {
                                         if (card.closed == false)
                                         {
-                                            var cardDate = board.actions.FindLast((a) => a.data != null ? (a.data.card != null ? (a.data.card.id != null ? a.data.card.id == card.id : false) : false) : false);
+                                            var cardDate = board.actions.FindLast((a) => a.data != null && (a.data.card != null && (a.data.card.id != null && a.data.card.id == card.id)));
                                             Query.Cards.Import(new Query.Models.Card()
                                             {
                                                 boardId = boardId,
@@ -118,12 +118,12 @@ namespace Kandu.Controllers.Imports
                 }
 
                 //show upload form in iframe
-                return Server.LoadFileFromCache("/Views/Import/Trello/trello.html");
+                return Cache.LoadFile("/Views/Import/Trello/trello.html");
             }
             else
             {
                 //show upload form in iframe
-                return Server.LoadFileFromCache("/Views/Import/Trello/trello.html");
+                return Cache.LoadFile("/Views/Import/Trello/trello.html");
             }
         }
     }

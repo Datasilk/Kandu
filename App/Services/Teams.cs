@@ -9,15 +9,15 @@ namespace Kandu.Services
     {
         public string Create(int orgId, string name, string description = "")
         {
-            if (!CheckSecurity(orgId, Models.Security.Keys.TeamCanCreate)) { return AccessDenied(); } //check security
-            Common.Platform.Teams.Create(this, orgId, name, description);
+            if (!CheckSecurity(orgId, Models.Security.Keys.TeamCanCreate.ToString())) { return AccessDenied(); } //check security
+            Common.Teams.Create(this, orgId, name, description);
             return Success();
         }
 
         public string List(int orgId)
         {
             if (!IsInOrganization(orgId)) { return AccessDenied(); } //check security
-            var list = Query.Teams.GetList(orgId, User.userId);
+            var list = Query.Teams.GetList(orgId, User.UserId);
             var html = new StringBuilder("{\"teams\":[");
             var i = 0;
             list.ForEach((Query.Models.Team t) =>
@@ -32,8 +32,8 @@ namespace Kandu.Services
         public string RefreshList(int orgId, bool btnsInFront = false)
         {
             if (!IsInOrganization(orgId)) { return AccessDenied(); } //check security
-            var html = "<div class=\"grid-items\">" + Common.Platform.Teams.RenderList(this, orgId);
-            if (CheckSecurity(orgId, Models.Security.Keys.TeamCanCreate))
+            var html = "<div class=\"grid-items\">" + Common.Teams.RenderList(this, orgId);
+            if (CheckSecurity(orgId, Models.Security.Keys.TeamCanCreate.ToString()))
             {
                 var additem = new View("/Views/Teams/add-item.html");
                 var addbutton = additem.Render();
@@ -47,8 +47,8 @@ namespace Kandu.Services
             if (!IsInOrganization(orgId)) { return AccessDenied(); } //check security
             var team = Query.Teams.GetTeam(teamId);
             var html = new StringBuilder("<div class=\"grid-items\">");
-            html.Append(Common.Platform.Teams.RenderMembers(this, teamId));
-            if (CheckSecurity(team.orgId, Models.Security.Keys.TeamCanInviteUsers, Models.Scope.Team, teamId))
+            html.Append(Common.Teams.RenderMembers(this, teamId));
+            if (CheckSecurity(team.orgId, Models.Security.Keys.TeamCanInviteUsers.ToString(), Models.Scope.Team, teamId))
             {
                 var additem = new View("/Views/Members/add-item.html");
                 var addbutton = additem.Render();
@@ -65,7 +65,7 @@ namespace Kandu.Services
             {
                 //Create Team form
                 var team = Query.Teams.GetTeam(teamId);
-                if (!CheckSecurity(team.orgId, Models.Security.Keys.TeamCanCreate, Models.Scope.Team, teamId))
+                if (!CheckSecurity(team.orgId, Models.Security.Keys.TeamCanCreate.ToString(), Models.Scope.Team, teamId))
                 {
                     return AccessDenied();
                 }
@@ -86,7 +86,7 @@ namespace Kandu.Services
         {
             if (!CheckSecurity()) { return AccessDenied(); } //check security
             var team = Query.Teams.GetTeam(teamId);
-            var canEdit = CheckSecurity(team.orgId, Models.Security.Keys.TeamCanEditInfo, Models.Scope.Team, teamId);
+            var canEdit = CheckSecurity(team.orgId, Models.Security.Keys.TeamCanEditInfo.ToString(), Models.Scope.Team, teamId);
             var tabHtml = new StringBuilder();
             var contentHtml = new StringBuilder();
             var view = new View("/Views/Teams/details.html");
@@ -100,8 +100,8 @@ namespace Kandu.Services
             tab.Show("selected");
             tabHtml.Append(tab.Render());
 
-            html.Append(Common.Platform.Teams.RenderMembers(this, teamId));
-            if (CheckSecurity(team.orgId, Models.Security.Keys.TeamCanInviteUsers, Models.Scope.Team, teamId))
+            html.Append(Common.Teams.RenderMembers(this, teamId));
+            if (CheckSecurity(team.orgId, Models.Security.Keys.TeamCanInviteUsers.ToString(), Models.Scope.Team, teamId))
             {
                 var additem = new View("/Views/Members/add-item.html");
                 var addbutton = additem.Render();
@@ -127,7 +127,7 @@ namespace Kandu.Services
         public string Update(int teamId, string name, string description)
         {
             var team = Query.Teams.GetTeam(teamId);
-            if (!CheckSecurity(team.orgId, Models.Security.Keys.TeamCanEditInfo, Models.Scope.Team, teamId)) { return AccessDenied(); } //check security
+            if (!CheckSecurity(team.orgId, Models.Security.Keys.TeamCanEditInfo.ToString(), Models.Scope.Team, teamId)) { return AccessDenied(); } //check security
             Query.Teams.UpdateTeam(new Query.Models.Team()
             {
                 teamId = teamId,
@@ -147,7 +147,7 @@ namespace Kandu.Services
             //Invite People to Team form
             var view = new View("/Views/Teams/invite.html");
             var team = Query.Teams.GetTeam(teamId);
-            if (!CheckSecurity(team.orgId, Models.Security.Keys.TeamCanInviteUsers, Models.Scope.Team, teamId) || orgId != team.orgId)
+            if (!CheckSecurity(team.orgId, Models.Security.Keys.TeamCanInviteUsers.ToString(), Models.Scope.Team, teamId) || orgId != team.orgId)
             {
                 return AccessDenied();
             }
@@ -193,7 +193,7 @@ namespace Kandu.Services
         {
             if (!IsInOrganization(orgId)) { return AccessDenied(); } //check security
             var team = Query.Teams.GetTeam(teamId);
-            if (!CheckSecurity(team.orgId, Models.Security.Keys.TeamCanInviteUsers, Models.Scope.Team, teamId) || orgId != team.orgId)
+            if (!CheckSecurity(team.orgId, Models.Security.Keys.TeamCanInviteUsers.ToString(), Models.Scope.Team, teamId) || orgId != team.orgId)
             {
                 return AccessDenied();
             }
@@ -221,7 +221,7 @@ namespace Kandu.Services
             }
 
             //save invitations into the database and retrieve any failed invitations
-            var failed = Query.Invitations.InvitePeople(User.userId, teamId, Models.Scope.Team, message, emails.Select(a => new Query.Models.Xml.Invites.Invite()
+            var failed = Query.Invitations.InvitePeople(User.UserId, teamId, Models.Scope.Team, message, emails.Select(a => new Query.Models.Xml.Invites.Invite()
             {
                 UserId = a.userId,
                 Email = a.email,

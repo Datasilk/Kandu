@@ -7,7 +7,6 @@ namespace Utility
     {
         public string FromHexToRgba(string backgroundColor, double backgroundOpacity)
         {
-            var converter = new ColorConverter();
             var color = FromHex(backgroundColor);
             var r = Convert.ToInt16(color.R);
             var g = Convert.ToInt16(color.G);
@@ -26,7 +25,7 @@ namespace Utility
             return "#" + color.R.ToString("X2") + color.G.ToString("X2") + color.B.ToString("X2");
         }
 
-        public Color ChangeColorBrightness(Color color, float correctionFactor)
+        public Color ChangeBrightness(Color color, float correctionFactor)
         {
             float red = color.R;
             float green = color.G;
@@ -51,7 +50,7 @@ namespace Utility
 
         public string ChangeHexBrightness(string hex, float correctionFactor)
         {
-            return FromColorToHex(ChangeColorBrightness(FromHex(hex), correctionFactor));
+            return FromColorToHex(ChangeBrightness(FromHex(hex), correctionFactor));
         }
     }
 }

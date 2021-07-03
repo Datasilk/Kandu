@@ -4,7 +4,7 @@
     {
         public override string Render(string body = "")
         {
-            if(User.userId > 0)
+            if(User.UserId > 0)
             {
                 //redirect to dashboard
                 return base.Render(Redirect("/boards/"));
@@ -13,14 +13,14 @@
             //check for database reset
             var view = new View("/Views/Login/login.html");
 
-            if(Server.environment == Server.Environment.development && Server.hasAdmin == false)
+            if(App.Environment == Environment.development && Server.HasAdmin == false)
             {
                 //load new administrator form
                 view = new View("/Views/Login/new-admin.html");
                 view["title"] = "Create an administrator account";
                 Scripts.Append("<script src=\"/js/views/login/new-admin.js?v=" + Server.Version + "\"></script>");
             }
-            else if (Server.environment == Server.Environment.development && User.resetPass == true)
+            else if (App.Environment == Environment.development && User.ResetPass == true)
             {
                 //load new password form (for admin only)
                 view = new View("/Views/Login/new-pass.html");

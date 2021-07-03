@@ -26,12 +26,12 @@
 
         public string SaveAdminPassword(string password)
         {
-            if (Server.resetPass == true)
+            if (Server.ResetPass == true)
             {
                 var update = false; //security check
                 var emailAddr = "";
                 var adminId = 1;
-                if (Server.resetPass == true)
+                if (Server.ResetPass == true)
                 {
                     //securely change admin password
                     //get admin email address from database
@@ -41,7 +41,7 @@
                 if (update == true)
                 {
                     Query.Users.UpdatePassword(adminId, EncryptPassword(emailAddr, password));
-                    Server.resetPass = false;
+                    Server.ResetPass = false;
                 }
                 return Success();
             }
@@ -50,7 +50,7 @@
 
         public string CreateAdminAccount(string name, string email, string password)
         {
-            if (Server.hasAdmin == false && Server.environment == Server.Environment.development)
+            if (Server.HasAdmin == false && App.Environment == Environment.development)
             {
                 Query.Users.CreateUser(new Query.Models.User()
                 {
@@ -58,8 +58,8 @@
                     email = email,
                     password = EncryptPassword(email, password)
                 });
-                Server.hasAdmin = true;
-                Server.resetPass = false;
+                Server.HasAdmin = true;
+                Server.ResetPass = false;
                 return "success";
             }
             return Error();
@@ -73,8 +73,8 @@
                 email = email,
                 password = EncryptPassword(email, password)
             });
-            Server.hasAdmin = true;
-            Server.resetPass = false;
+            Server.HasAdmin = true;
+            Server.ResetPass = false;
             return "success";
         }
 
@@ -83,15 +83,14 @@
             User.LogOut();
         }
 
-        private string EncryptPassword(string email, string password)
+        private static string EncryptPassword(string email, string password)
         {
-            var bCrypt = new BCrypt.Net.BCrypt();
-            return BCrypt.Net.BCrypt.HashPassword(email + Server.salt + password, Server.bcrypt_workfactor);
+            return BCrypt.Net.BCrypt.HashPassword(email + Server.Salt + password, Server.BcryptWorkFactor);
         }
 
-        private bool DecryptPassword(string email, string password, string encrypted)
+        private static bool DecryptPassword(string email, string password, string encrypted)
         {
-            return BCrypt.Net.BCrypt.Verify(email + Server.salt + password, encrypted);
+            return BCrypt.Net.BCrypt.Verify(email + Server.Salt + password, encrypted);
         }
     }
 }

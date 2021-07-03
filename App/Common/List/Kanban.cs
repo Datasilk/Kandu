@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Text;
 
-namespace Kandu.Common.Platform.List
+namespace Kandu.Common.List
 {
     public static class Kanban
     {

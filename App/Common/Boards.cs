@@ -4,11 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Text.Json;
 
-namespace Kandu.Common.Platform
+namespace Kandu.Common
 {
     public static class Boards
     {
-        public static int Create(Request request, string name, string color, int orgId)
+        public static int Create(Core.IRequest request, string name, string color, int orgId)
         {
             try
             {
@@ -17,10 +17,10 @@ namespace Kandu.Common.Platform
                     name = name,
                     color = color,
                     orgId = orgId
-                }, request.User.userId);
+                }, request.User.UserId);
 
                 //add board Id to user's permissions for boards
-                request.User.boards.Add(id);
+                request.User.Boards.Add(id);
                 request.User.Save(true);
 
                 return id;
@@ -30,10 +30,10 @@ namespace Kandu.Common.Platform
             }   
         }
 
-        public static void Update(Request request, int boardId, string name, string color, int orgId)
+        public static void Update(Core.IRequest request, int boardId, string name, string color, int orgId)
         {
             //check if user has access to board
-            if (!Query.Boards.MemberExists(request.User.userId, boardId)) {
+            if (!Query.Boards.MemberExists(request.User.UserId, boardId)) {
                 throw new ServiceDeniedException();
             }
 
@@ -77,11 +77,11 @@ namespace Kandu.Common.Platform
             }
         }
 
-        public static string RenderList(Request request)
+        public static string RenderList(Core.IRequest request)
         {
             var createView = new View("/Views/Boards/create-board.html");
             var orgView = new View("/Views/Boards/org-head.html");
-            var boards = Query.Boards.GetList(request.User.userId);
+            var boards = Query.Boards.GetList(request.User.UserId);
             var html = new StringBuilder();
             var item = new View("/Views/Boards/list-item.html");
             var orgId = 0;
@@ -118,13 +118,13 @@ namespace Kandu.Common.Platform
             return html.ToString();
         }
 
-        public static string RenderMenu(Request request, int orgId = 0, bool listOnly = false, bool showSubTitle = true, int sort = 0, bool btnsInFront = false)
+        public static string RenderMenu(Core.IRequest request, int orgId = 0, bool listOnly = false, bool showSubTitle = true, int sort = 0, bool btnsInFront = false)
         {
             var html = new StringBuilder();
             var htm = new StringBuilder();
             var menu = new View("/Views/Board/menu.html");
             var item = new View("/Views/Board/menu-item.html");
-            var boards = Query.Boards.GetList(request.User.userId, orgId, (Query.Boards.BoardsSort)sort);
+            var boards = Query.Boards.GetList(request.User.UserId, orgId, (Query.Boards.BoardsSort)sort);
             var favs = boards.Where((a) => { return a.favorite; });
 
             // Favorite Boards //////////////////////////////////////////
@@ -187,7 +187,7 @@ namespace Kandu.Common.Platform
             if(menu["items"] != "")
             {
                 //add new board button
-                if (request.User.CheckSecurity(orgId, Models.Security.Keys.BoardCanCreate))
+                if (request.User.CheckSecurity(orgId, Models.Security.Keys.BoardCanCreate.ToString()))
                 {
                     var additem = new View("/Views/Boards/add-item.html");
                     menu["items"] = btnsInFront ? (additem.Render() + menu["items"]) : (menu["items"] + additem.Render());
@@ -204,17 +204,17 @@ namespace Kandu.Common.Platform
             return html.ToString();
         }
 
-        public static void KeepBoardsMenuOpen(Request request, bool keepOpen)
+        public static void KeepBoardsMenuOpen(Core.IRequest request, bool keepOpen)
         {
-            Query.Users.KeepMenuOpen(request.User.userId, keepOpen);
-            request.User.keepMenuOpen = keepOpen;
+            Query.Users.KeepMenuOpen(request.User.UserId, keepOpen);
+            request.User.KeepMenuOpen = keepOpen;
             request.User.Save(true);
         }
 
-        public static void UseAllColorScheme(Request request, bool allColor)
+        public static void UseAllColorScheme(Core.IRequest request, bool allColor)
         {
-            Query.Users.AllColor(request.User.userId, allColor);
-            request.User.allColor = allColor;
+            Query.Users.AllColor(request.User.UserId, allColor);
+            request.User.AllColor = allColor;
             request.User.Save(true);
         }
     }

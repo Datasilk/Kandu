@@ -14,7 +14,7 @@ namespace Kandu.Services
             Query.Models.Card card;
             try
             {
-                card = Common.Platform.Cards.Create(boardId, listId, name, description, dateDue, colors);
+                card = Common.Cards.Create(boardId, listId, name, description, dateDue, colors);
             }catch(ServiceErrorException ex)
             {
                 return Error(ex.Message);
@@ -92,7 +92,7 @@ namespace Kandu.Services
             switch (card.boardType)
             {
                 case Query.Models.Board.BoardType.kanban:
-                    return Common.Platform.Card.Kanban.RenderCard(card);
+                    return Common.Card.Kanban.RenderCard(card);
             }
             return "";
         }

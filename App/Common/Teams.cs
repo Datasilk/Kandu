@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Text;
 
-namespace Kandu.Common.Platform
+namespace Kandu.Common
 {
     public static class Teams
     {
-        public static int Create(Request request, int orgId, string name, string description = "")
+        public static int Create(Core.IRequest request, int orgId, string name, string description = "")
         {
             try
             {
@@ -14,7 +14,7 @@ namespace Kandu.Common.Platform
                     orgId = orgId,
                     name = name,
                     description = description
-                }, request.User.userId);
+                }, request.User.UserId);
             }
             catch (Exception)
             {
@@ -22,11 +22,11 @@ namespace Kandu.Common.Platform
             }
         }
 
-        public static string RenderList(Request request, int orgId, bool showMembers = true)
+        public static string RenderList(Core.IRequest request, int orgId, bool showMembers = true)
         {
             var listItem = new View("/Views/Teams/list-item.html");
             var html = new StringBuilder();
-            var teams = Query.Teams.GetList(orgId, request.User.userId);
+            var teams = Query.Teams.GetList(orgId, request.User.UserId);
             foreach(var team in teams)
             {
                 listItem.Clear();
@@ -40,7 +40,7 @@ namespace Kandu.Common.Platform
             return html.ToString();
         }
 
-        public static string RenderMembers(Request request, int teamId)
+        public static string RenderMembers(Core.IRequest request, int teamId)
         {
             var listItem = new View("/Views/Members/list-item.html");
             var html = new StringBuilder();

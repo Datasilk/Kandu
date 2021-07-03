@@ -1,10 +1,10 @@
 ﻿using System.Text;
 
-namespace Kandu.Common.Platform
+namespace Kandu.Common
 {
     public static class Security
     {
-        public static string RenderList(Request request, int orgId)
+        public static string RenderList(Core.IRequest request, int orgId)
         {
             var listItem = new View("/Views/Security/list-item.html");
             var html = new StringBuilder();

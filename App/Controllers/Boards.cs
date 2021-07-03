@@ -4,7 +4,7 @@
     {
         public override string Render(string body = "")
         {
-            if(User.userId == 0)
+            if(User.UserId == 0)
             {
                 //load login page
                 var page = new Login();
@@ -18,7 +18,7 @@
             //load boards list
             var view = new View("/Views/Boards/boards.html");
 
-            view["list"] = Common.Platform.Boards.RenderList(this);
+            view["list"] = Common.Boards.RenderList(this);
 
             //load page resources
             AddScript("/js/dashboard.js?v=" + Server.Version);

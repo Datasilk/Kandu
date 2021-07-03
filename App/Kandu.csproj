@@ -8,13 +8,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Content\**" />
     <Compile Remove="Core\Test\**" />
-    <Content Remove="Content\**" />
     <Content Remove="Core\Test\**" />
-    <EmbeddedResource Remove="Content\**" />
     <EmbeddedResource Remove="Core\Test\**" />
-    <None Remove="Content\**" />
     <None Remove="Core\Test\**" />
   </ItemGroup>
 
@@ -105,16 +101,14 @@
 
   <ItemGroup>
     <PackageReference Include="BCrypt.Net-Core" Version="1.6.0" />
-    <PackageReference Include="Datasilk.Core.Mvc" Version="1.0.7" />
+    <PackageReference Include="dotless.Core" Version="1.6.7" />
+    <PackageReference Include="MailKit" Version="2.13.0" />
+    <PackageReference Include="MimeKit" Version="2.13.0" />
     <PackageReference Include="SixLabors.ImageSharp" Version="1.0.3" />
   </ItemGroup>
 
   <ItemGroup>
     <DotNetCliToolReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Tools" Version="1.0.1" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\Query\Query.csproj" />
   </ItemGroup>
 
   <ItemGroup>
@@ -164,7 +158,13 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Content\emails\" />
+    <Folder Include="Vendors\" />
     <Folder Include="Views\Board\Timeline\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Core\Core.csproj" />
   </ItemGroup>
 
 </Project>

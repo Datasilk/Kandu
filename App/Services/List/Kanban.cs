@@ -6,7 +6,7 @@
         {
             var list = Query.Lists.GetDetails(listId);
             if (!User.CheckSecurity(list.boardId)) { return AccessDenied(); }
-            return Common.Platform.List.Kanban.RenderList(list, Query.Cards.GetList(list.boardId, listId, 1, 100));
+            return Common.List.Kanban.RenderList(list, Query.Cards.GetList(list.boardId, listId, 1, 100));
         }
 
         public string Move(int boardId, int[] listIds)
