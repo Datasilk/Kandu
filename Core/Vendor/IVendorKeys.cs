@@ -1,6 +1,4 @@
-﻿using Kandu.Core;
-
-namespace Kandu.Vendor
+﻿namespace Kandu.Vendor
 {
     /// <summary>
     /// A list of security keys that is used by the vendor plugin. 
@@ -14,6 +12,6 @@ namespace Kandu.Vendor
         /// security keys in Kandu's security role manager UI.
         /// </summary>
         string Vendor { get; set; }
-        Security[] Keys { get; set; }
+        SecurityKey[] Keys { get; set; }
     }
 }

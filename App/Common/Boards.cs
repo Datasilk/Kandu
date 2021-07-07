@@ -187,7 +187,7 @@ namespace Kandu.Common
             if(menu["items"] != "")
             {
                 //add new board button
-                if (request.User.CheckSecurity(orgId, Models.Security.Keys.BoardCanCreate.ToString()))
+                if (request.User.CheckSecurity(orgId, Security.Keys.BoardCanCreate.ToString()))
                 {
                     var additem = new View("/Views/Boards/add-item.html");
                     menu["items"] = btnsInFront ? (additem.Render() + menu["items"]) : (menu["items"] + additem.Render());

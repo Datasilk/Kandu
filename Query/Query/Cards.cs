@@ -16,8 +16,10 @@ namespace Query
                     card.layout,
                     card.colors,
                     card.name,
+                    card.type,
                     datedue = card.datedue == null ? DateTime.Now.AddYears(-100) : card.datedue,
-                    card.description
+                    card.description,
+                    card.json
                 }
             );
         }
@@ -33,8 +35,10 @@ namespace Query
                     card.layout,
                     card.colors,
                     card.name,
+                    card.type,
                     datedue = card.datedue == null ? DateTime.Now.AddYears(-100) : card.datedue,
                     card.description,
+                    card.json,
                     merge
                 }
             );
@@ -97,6 +101,13 @@ namespace Query
         {
             Sql.ExecuteNonQuery("Card_UpdateDescription",
                 new { boardId, cardId, description }
+            );
+        }
+
+        public static void UpdateJson(int boardId, int cardId, string json)
+        {
+            Sql.ExecuteNonQuery("Card_UpdateJson",
+                new { boardId, cardId, json }
             );
         }
     }

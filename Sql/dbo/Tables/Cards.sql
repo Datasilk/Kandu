@@ -9,6 +9,8 @@
     [datecreated] DATETIME NOT NULL DEFAULT GETDATE(), 
     [datedue] DATETIME NULL , 
     [name] NVARCHAR(MAX) NOT NULL, 
-    [colors] NVARCHAR(128) NOT NULL DEFAULT '',
-    [description] NVARCHAR(MAX) NOT NULL DEFAULT ''
+    [type] VARCHAR(16) NOT NULL DEFAULT '', --used for plugins
+    [colors] VARCHAR(128) NOT NULL DEFAULT '',
+    [description] NVARCHAR(MAX) NOT NULL DEFAULT '', 
+    [json] NVARCHAR(MAX) NOT NULL DEFAULT '' -- mainly used for plugins
 )

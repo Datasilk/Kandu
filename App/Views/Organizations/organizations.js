@@ -140,6 +140,8 @@ S.orgs = {
                 $('.org-details .tab-teams').on('click', S.orgs.teams.show);
                 $('.org-details .tab-members').on('click', S.orgs.members.show);
                 $('.org-details .tab-security').on('click', S.orgs.security.show);
+                $('.org-details .tab-settings').on('click', S.orgs.settings.show);
+                $('.org-details .tab-theme').on('click', S.orgs.theme.show);
 
                 //set up buttons
                 $('.org-details .btn-add-board').on('click', S.orgs.boards.add);
@@ -312,7 +314,7 @@ S.orgs = {
         },
 
         refresh: function () {
-            S.ajax.post('Security/RefreshList', { orgId: S.orgs.details.orgId }, function (result) {
+            S.ajax.post('SecurityGroups/RefreshList', { orgId: S.orgs.details.orgId }, function (result) {
                 $('.content-security').html(result);
                 $('.org-details .btn-add-security-group').on('click', S.orgs.security.add);
                 S.popup.resize();
@@ -328,6 +330,90 @@ S.orgs = {
                 S.orgs.details.popup.show();
                 S.orgs.boards.refresh();
             });
+        }
+    },
+
+    settings: {
+        show: function () {
+            S.orgs.details.tabs.select('settings');
+            var content = $('.org-details .content-settings');
+            if (content.html().trim() == '') {
+                //load organization settings
+                S.orgs.settings.refresh();
+            }
+        },
+
+        refresh: function () {
+            S.ajax.post('Organizations/RefreshSettings', { orgId: S.orgs.details.orgId }, function (result) {
+                var content = $('.org-details .content-settings');
+                content.html(result);
+                var savebtn = $('.org-details .btn-save-settings');
+                content.find('select, input').on('keyup, change', () => {
+                    savebtn.removeClass('hide');
+                });
+                S.popup.resize();
+            },
+                (err) => {
+
+            });
+        },
+
+        save: function () {
+            var savebtn = $('.org-details .btn-save-settings');
+            savebtn.addClass('hide');
+            var data = {
+                orgId: S.orgs.details.orgId,
+                parameters: JSON.stringify($('.org-details .content-settings').find('select, input, textarea').map((i, a) => {
+                    console.log(a);
+                    a = $(a);
+                    console.log(a);
+                    return [a.attr('id'), a.val()];
+                }))
+            };
+            console.log(data);
+            S.ajax.post('Organizations/SaveSettings', data, function (result) {
+                var content = $('.org-details .content-settings');
+                content.html(result);
+                var savebtn = $('.org-details .btn-save-settings');
+                content.find('select, input').on('keyup, change', () => {
+                    savebtn.removeClass('hide');
+                });
+                S.popup.resize();
+            },
+                (err) => {
+                    S.message('.org-details .content-settings .message', err.responseText);
+            });
+        }
+    },
+
+    theme: {
+        show: function () {
+            S.orgs.details.tabs.select('theme');
+            var content = $('.org-details .content-theme');
+            if (content.html().trim() == '') {
+                //load organization theme
+                S.orgs.theme.refresh();
+            }
+        },
+
+        refresh: function () {
+            S.ajax.post('Organizations/RefreshTheme', { orgId: S.orgs.details.orgId }, function (result) {
+                var content = $('.org-details .content-theme');
+                content.html(result);
+                var savebtn = $('.org-details .btn-save-theme');
+                content.find('select, input').on('keyup, change', () => {
+                    savebtn.removeClass('hide');
+                });
+                S.popup.resize();
+            },
+                (err) => {
+
+                });
+        },
+
+        save: function () {
+            var savebtn = $('.org-details .btn-save-theme');
+            savebtn.addClass('hide');
         }
     }
 };

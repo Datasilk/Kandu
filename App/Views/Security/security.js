@@ -7,7 +7,7 @@
         show: function (id, orgId, callback) {
             S.security.add.orgId = orgId;
             S.security.add.callback = callback;
-            S.ajax.post('Security/RenderForm', { groupId: id, orgId: orgId }, (html) => {
+            S.ajax.post('SecurityGroups/RenderForm', { groupId: id, orgId: orgId }, (html) => {
                 S.security.add.popup = S.popup.show(!id ? 'Create A New Security Group' : 'Edit Security Group', html, {
                     width: 430,
                     onClose: function () {
@@ -28,7 +28,7 @@
                 S.message.show(msg, 'error', 'Please specify a security group name');
                 return;
             }
-            S.ajax.post('Security/Create', { orgId: S.security.add.orgId, name: name },
+            S.ajax.post('SecurityGroups/Create', { orgId: S.security.add.orgId, name: name },
                 function (data) {
                     S.security.add.hide();
                     if (S.security.add.callback) {
@@ -55,7 +55,7 @@
             S.security.details.orgId = orgId;
             S.security.details.callback = callback;
             if (typeof name == 'function') { name = name(id, orgId); }
-            S.ajax.post('Security/Details', { groupId: id }, function (result) {
+            S.ajax.post('SecurityGroups/Details', { groupId: id }, function (result) {
                 S.security.details.popup = S.popup.show(name, result, {
                     width: 700,
                     onClose: function () {
@@ -91,7 +91,7 @@
                 description: $('#team_description').val(),
             };
             var msg = $('.popup.show .message');
-            S.ajax.post('Security/Update', form, function () {
+            S.ajax.post('SecurityGroups/Update', form, function () {
                 $('.popup.show .title h5').html('Team ' + form.name);
                 if (S.security.details.callback) {
                     S.security.details.callback('saved');

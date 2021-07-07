@@ -10,5 +10,6 @@ namespace Query.Models
         public DateTime datecreated { get; set; }
         public string description { get; set; }
         public int totalMembers { get; set; }
+        public int? groupId { get; set; } //default security group for new team members
     }
 }

@@ -4,8 +4,10 @@
 	@layout int = 0,
 	@colors nvarchar(128),
 	@name nvarchar(MAX),
+	@type varchar(16),
 	@datedue datetime = NULL,
 	@description nvarchar(MAX) = '',
+	@json nvarchar(MAX) = '',
 	@merge bit = 0
 AS
 	DECLARE @oldId int = 0, @create bit = 1
@@ -16,13 +18,13 @@ AS
 		/* card already exists */
 		IF @merge = 1 BEGIN
 			/* merge */
-			UPDATE Cards SET colors=@colors, datedue=@datedue, description=@description
+			UPDATE Cards SET [type]=@type, colors=@colors, datedue=@datedue, [description]=@description, [json]=@json
 			SET @create = 0
 		END
 	END
 
 	IF @create = 1 BEGIN
-		INSERT INTO #tmp EXEC Card_Create @listId=@listId, @boardId=@boardId, @layout=@layout, @colors=@colors, @name=@name, @datedue=@datedue, @description=@description
+		INSERT INTO #tmp EXEC Card_Create @listId=@listId, @boardId=@boardId, @layout=@layout, @colors=@colors, @name=@name, @type=@type, @datedue=@datedue, @description=@description, @json=@json
 		SELECT @oldId=id FROM #tmp
 	END
 

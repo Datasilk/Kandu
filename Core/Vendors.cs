@@ -22,7 +22,7 @@ namespace Kandu.Core
         public string Name { get; set; }
         public string Description { get; set; }
         public string Icon { get; set; }
-        public Vendor.Version Version { get; set; }
+        public Kandu.Vendor.Version Version { get; set; }
         public string DLL { get; set; }
         public string Assembly { get; set; }
         public string Path { get; set; }

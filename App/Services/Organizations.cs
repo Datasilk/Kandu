@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
@@ -38,7 +39,7 @@ namespace Kandu.Services
             var i = 0;
             list.ForEach((Query.Models.Organization o) =>
             {
-                if(User.CheckSecurity(o.orgId, Models.Security.Keys.BoardCanCreate.ToString()))
+                if(User.CheckSecurity(o.orgId, Security.Keys.BoardCanCreate.ToString()))
                 {
                     html.Append((i > 0 ? "," : "") + "{\"name\":\"" + o.name + "\", \"description\":\"" + o.description + "\",\"orgId\":\"" + o.orgId + "\"}");
                 }
@@ -57,7 +58,7 @@ namespace Kandu.Services
         public string Details(int orgId)
         {
             if (!CheckSecurity()) { return AccessDenied(); } //check security
-            var canEdit = CheckSecurity(orgId, Models.Security.Keys.OrgCanEdit.ToString(), Models.Scope.Organization, orgId);
+            var canEdit = CheckSecurity(orgId, Security.Keys.OrgCanEditInfo.ToString(), Models.Scope.Organization, orgId);
             var tabHtml = new StringBuilder();
             var contentHtml = new StringBuilder();
             var view = new View("/Views/Organizations/details.html");
@@ -111,12 +112,12 @@ namespace Kandu.Services
             contentHtml.Append("<div class=\"content-members\"></div>\n");
 
             //load security tab
-            if(CheckSecurity(orgId, Models.Security.Keys.SecGroupsCanViewAll.ToString()) ||
-                CheckSecurity(orgId, Models.Security.Keys.SecGroupCanCreate.ToString()) ||
-                CheckSecurity(orgId, Models.Security.Keys.SecGroupCanUpdateKeys.ToString()) ||
-                CheckSecurity(orgId, Models.Security.Keys.SecGroupCanAddUsers.ToString()) ||
-                CheckSecurity(orgId, Models.Security.Keys.SecGroupCanRemoveUsers.ToString()) ||
-                CheckSecurity(orgId, Models.Security.Keys.SecGroupCanEditInfo.ToString()))
+            if(CheckSecurity(orgId, Security.Keys.SecGroupsCanViewAll.ToString()) ||
+                CheckSecurity(orgId, Security.Keys.SecGroupCanCreate.ToString()) ||
+                CheckSecurity(orgId, Security.Keys.SecGroupCanUpdateKeys.ToString()) ||
+                CheckSecurity(orgId, Security.Keys.SecGroupCanAddUsers.ToString()) ||
+                CheckSecurity(orgId, Security.Keys.SecGroupCanRemoveUsers.ToString()) ||
+                CheckSecurity(orgId, Security.Keys.SecGroupCanEditInfo.ToString()))
             {
                 tab.Clear();
                 tab["title"] = "Security";
@@ -126,14 +127,27 @@ namespace Kandu.Services
                 contentHtml.Append("<div class=\"content-security\"></div>\n");
             }
 
-            //load following tab
-            tab.Clear();
-            tab["title"] = "Following";
-            tab["id"] = "following";
-            tab["onclick"] = "S.orgs.details.tabs.select('following')";
-            tabHtml.Append(tab.Render());
-            contentHtml.Append("<div class=\"content-following\"></div>\n");
+            if(CheckSecurity(orgId, Security.Keys.OrgCanEditSettings.ToString()))
+            {
+                //load settings tab
+                tab.Clear();
+                tab["title"] = "Settings";
+                tab["id"] = "settings";
+                tab["onclick"] = "S.orgs.details.tabs.select('settings')";
+                tabHtml.Append(tab.Render());
+                contentHtml.Append("<div class=\"content-settings pad-top\"></div>\n");
+            }
 
+            if (CheckSecurity(orgId, Security.Keys.OrgCanEditTheme.ToString()))
+            {
+                //load theme tab
+                tab.Clear();
+                tab["title"] = "Theme";
+                tab["id"] = "theme";
+                tab["onclick"] = "S.orgs.details.tabs.select('theme')";
+                tabHtml.Append(tab.Render());
+                contentHtml.Append("<div class=\"content-theme pad-top\"></div>\n");
+            }
 
             view["tabs"] = tabHtml.ToString();
             view["content"] = contentHtml.ToString();
@@ -142,7 +156,7 @@ namespace Kandu.Services
 
         public string Update(int orgId, string name, string description, string website)
         {
-            if(!CheckSecurity(orgId, Models.Security.Keys.OrgCanEdit.ToString(), Models.Scope.Organization, orgId)) { return AccessDenied(); }
+            if(!CheckSecurity(orgId, Security.Keys.OrgCanEditInfo.ToString(), Models.Scope.Organization, orgId)) { return AccessDenied(); }
             if (website.Length > 0)
             {
                 website = "https://" + website.Replace("http://", "").Replace("https://", "");
@@ -169,5 +183,53 @@ namespace Kandu.Services
                 return Error();
             }
         }
+
+        #region "Organization Settings"
+
+        public string RefreshSettings(int orgId)
+        {
+            if (!CheckSecurity(orgId, Security.Keys.OrgCanEditSettings.ToString())) { return AccessDenied(); } //check security
+            var org = Query.Organizations.GetInfo(orgId);
+            var groups = Query.Security.GetGroups(orgId, User.UserId);
+            var view = new View("/Views/Organizations/settings.html");
+            view.Bind(new { org });
+            if (org.groupId == null || org.groupId <= 0)
+            {
+                view["groups"] = "<option value=\"0\" selected>Select A Security Group...</option>\n";
+            }
+            view["groups"] += string.Join("\n", groups.Select(a => "<option value=\"" + a.groupId + "\">" + a.name + "</option>"));
+            return view.Render();
+        }
+
+        public string SaveSettings(int orgId, Dictionary<string, string> parameters)
+        {
+            if (!CheckSecurity(orgId, Security.Keys.OrgCanEditSettings.ToString())) { return AccessDenied(); } //check security
+
+            try
+            {
+
+            }
+            catch (Exception)
+            {
+                return Error();
+            }
+            return Success();
+        }
+
+        #endregion
+
+        #region "Organization Theme"
+
+        public string RefreshTheme(int orgId)
+        {
+            if (!CheckSecurity(orgId, Security.Keys.OrgCanEditTheme.ToString())) { return AccessDenied(); } //check security
+            var org = Query.Organizations.GetInfo(orgId);
+            var groups = Query.Security.GetGroups(orgId, User.UserId);
+            var view = new View("/Views/Organizations/theme.html");
+            view.Bind(new { org });
+            return view.Render();
+        }
+
+        #endregion
     }
 }

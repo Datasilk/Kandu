@@ -2,11 +2,11 @@
 
 namespace Kandu.Services
 {
-    public class Security : Service
+    public class SecurityGroups : Service
     {
         public string Create(int orgId, string name)
         {
-            if (!CheckSecurity(orgId, Models.Security.Keys.SecGroupCanCreate.ToString())) { return AccessDenied(); } //check security
+            if (!CheckSecurity(orgId, Security.Keys.SecGroupCanCreate.ToString())) { return AccessDenied(); } //check security
             Query.Security.CreateGroup(orgId, name);
             return Success();
         }
@@ -14,8 +14,8 @@ namespace Kandu.Services
         public string RefreshList(int orgId)
         {
             if (!IsInOrganization(orgId)) { return AccessDenied(); } //check security
-            var html = "<div class=\"grid-items\">" + Common.Security.RenderList(this, orgId);
-            if (CheckSecurity(orgId, Models.Security.Keys.SecGroupCanCreate.ToString()))
+            var html = "<div class=\"grid-items\">" + Common.SecurityGroups.RenderList(this, orgId);
+            if (CheckSecurity(orgId, Security.Keys.SecGroupCanCreate.ToString()))
             {
                 var additem = new View("/Views/Security/add-item.html");
                 var addbutton = additem.Render();
@@ -32,7 +32,7 @@ namespace Kandu.Services
             {
                 //Edit existing Security Group form
                 var group = Query.Security.GroupDetails(groupId);
-                if (!CheckSecurity(group.orgId, Models.Security.Keys.SecGroupCanCreate.ToString(), Models.Scope.SecurityGroup, groupId))
+                if (!CheckSecurity(group.orgId, Security.Keys.SecGroupCanCreate.ToString(), Models.Scope.SecurityGroup, groupId))
                 {
                     return AccessDenied();
                 }
@@ -53,7 +53,7 @@ namespace Kandu.Services
         {
             if (!CheckSecurity()) { return AccessDenied(); } //check security
             var group = Query.Security.GroupInfo(groupId);
-            var canEdit = CheckSecurity(group.orgId, Models.Security.Keys.SecGroupCanEditInfo.ToString(), Models.Scope.SecurityGroup, groupId);
+            var canEdit = CheckSecurity(group.orgId, Security.Keys.SecGroupCanEditInfo.ToString(), Models.Scope.SecurityGroup, groupId);
             var tabHtml = new StringBuilder();
             var contentHtml = new StringBuilder();
             var view = new View("/Views/Security/details.html");

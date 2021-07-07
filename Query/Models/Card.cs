@@ -19,9 +19,11 @@ namespace Query.Models
         public DateTime datecreated { get; set; }
         public DateTime? datedue { get; set; }
         public string name { get; set; }
+        public string type { get; set; }
         public string colors { get; set; }
         public string description { get; set; }
         public string listName { get; set; }
         public bool listArchived { get; set; }
+        public string json { get; set; }
     }
 }

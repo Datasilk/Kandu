@@ -29,11 +29,19 @@ namespace Query
             return null;
         }
 
-        public static void UpdateTeam(Models.Team team)
+        public static void Update(Models.Team team)
         {
             Sql.ExecuteNonQuery(
                 "Team_Update",
                 new { team.teamId, team.orgId, team.name, team.description }
+            );
+        }
+
+        public static void UpdateSettings(int orgId, int teamId, int groupId)
+        {
+            Sql.ExecuteNonQuery(
+                "Team_UpdateSettings",
+                new { teamId, orgId, groupId }
             );
         }
 

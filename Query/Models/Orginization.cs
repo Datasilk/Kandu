@@ -6,6 +6,7 @@ namespace Query.Models
     {
         public int orgId { get; set; }
         public int ownerId { get; set; }
+        public int? groupId { get; set; } //default group Id for new members
         public string name { get; set; }
         public DateTime datecreated { get; set; }
         public string website { get; set; }

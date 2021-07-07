@@ -40,9 +40,9 @@ namespace Kandu.Common
                 Teams.Create(request, id, "Managers", "Organization Managers");
 
                 //add "owner" security to current user
-                request.User.Keys.Add(id, new List<Core.Security>()
+                request.User.Keys.Add(id, new List<SecurityKey>()
                 {
-                    new Core.Security()
+                    new SecurityKey()
                     {
                         Key = "Owner",
                         Enabled = true

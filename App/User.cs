@@ -20,7 +20,7 @@ namespace Kandu
         public string DisplayName { get; set; } = "";
         public bool Photo { get; set; } = false;
         public DateTime DateCreated { get; set; }
-        public Dictionary<int, List<Core.Security>> Keys { get; set; } = new Dictionary<int, List<Core.Security>>();
+        public Dictionary<int, List<SecurityKey>> Keys { get; set; } = new Dictionary<int, List<SecurityKey>>();
         public bool ResetPass { get; set; } = false;
         public bool KeepMenuOpen { get; set; }
         public bool AllColor { get; set; }
@@ -88,7 +88,7 @@ namespace Kandu
             {
                 if (Keys.ContainsKey(key.orgId))
                 {
-                    Keys[key.orgId].Add(new Security
+                    Keys[key.orgId].Add(new SecurityKey
                     {
                         Key = key.key,
                         Enabled = key.enabled,
@@ -98,7 +98,7 @@ namespace Kandu
                 }
                 else
                 {
-                    Keys.Add(key.orgId, new List<Security>() {new Security
+                    Keys.Add(key.orgId, new List<SecurityKey>() {new SecurityKey
                     {
                         Key = key.key,
                         Enabled = key.enabled,

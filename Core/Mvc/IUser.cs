@@ -13,7 +13,7 @@ namespace Kandu.Core
         string DisplayName { get; set; }
         bool Photo { get; set; }
         DateTime DateCreated { get; set; }
-        Dictionary<int, List<Security>> Keys { get; set; }
+        Dictionary<int, List<SecurityKey>> Keys { get; set; }
         bool ResetPass { get; set; } 
         bool KeepMenuOpen { get; set; }
         bool AllColor { get; set; }

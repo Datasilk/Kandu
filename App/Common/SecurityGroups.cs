@@ -2,7 +2,7 @@
 
 namespace Kandu.Common
 {
-    public static class Security
+    public static class SecurityGroups
     {
         public static string RenderList(Core.IRequest request, int orgId)
         {

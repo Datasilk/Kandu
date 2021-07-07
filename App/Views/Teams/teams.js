@@ -77,6 +77,7 @@
                 $('.team-details .movable > div').hide();
                 $('.team-details .content-members').show();
                 $('.team-details .tab-members').on('click', S.teams.members.show);
+                $('.team-details .tab-settings').on('click', S.teams.settings.show);
 
                 //set up custom scrollbars
                 S.scrollbar.add('.team-details .tab-content', { touch: true });
@@ -159,7 +160,7 @@
         },
 
         refresh: function () {
-            S.ajax.post('Teams/RefreshMembers', { orgId: S.orgs.details.orgId }, function (result) {
+            S.ajax.post('Teams/RefreshMembers', { orgId: S.orgs.details.orgId, teamId: S.teams.details.teamId }, function (result) {
                 $('.team-details .content-members').html(result);
                 S.teams.members.updateEvents();
             },
@@ -178,6 +179,47 @@
                 });
             });
             S.popup.resize();
+        }
+    },
+
+    settings: {
+        show: function () {
+            S.teams.details.tabs.select('settings');
+            var content = $('.team-details .content-settings');
+            if (content.html().trim() == '') {
+                //load team settings
+                S.teams.settings.refresh();
+            }
+        },
+
+        refresh: function () {
+            S.ajax.post('Teams/RefreshSettings', { orgId: S.orgs.details.orgId, teamId: S.teams.details.teamId }, function (result) {
+                $('.team-details .content-settings').html(result);
+            },
+            (err) => {
+
+            });
+        },
+
+        save: function () {
+            var savebtn = $('.team-details .btn-save-settings');
+            savebtn.addClass('hide');
+            var data = {
+                orgId: S.orgs.details.orgId,
+
+            };
+            S.ajax.post('Teams/SaveSettings', data, function (result) {
+                var content = $('.team-details .content-settings');
+                content.html(result);
+                var savebtn = $('.team-details .btn-save-settings');
+                content.find('select, input').on('keyup, change', () => {
+                    savebtn.removeClass('hide');
+                });
+                S.popup.resize();
+            },
+                (err) => {
+
+                });
         }
     },
 
