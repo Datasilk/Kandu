@@ -33,7 +33,8 @@ namespace Kandu.Common
                     name = name,
                     description = description,
                     website = website,
-                    isprivate = false
+                    isprivate = false,
+                    cardtype = "" //empty by default
                 });
 
                 //create new team for organization

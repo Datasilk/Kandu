@@ -1,28 +1,30 @@
-﻿namespace Kandu.Core.Vendor
+﻿using System;
+using System.Collections.Generic;
+
+namespace Kandu.Vendor
 {
-    public enum PartialViews
+    public static class PartialViews
     {
-        OrganizationHeader,
-        OrganizationInfo,
-        OrganizationAboveTabs,
-        OrganizationSettings,
-        OrganizationTheme,
-        TeamHeader,
-        TeamInfo,
-        TeamAboveTabs,
-        TeamSettings,
-        UserHeader,
-        UserInfo,
-        UserAboveTabs,
-        UserEmailSettings,
-        BoardSideMenu,
-        CardHeader,
-        CardAboveDescription,
-        CardBelowDescription,
-        CardAboveComments,
-        CardBelowComments,
-        CardFooter,
-        CardSidebarTop,
-        CardSidebarBottom
+        public enum Container
+        {
+            None,
+            TitleMenu,
+            Accordion
+        }
+
+        public static void Save(Core.IRequest request, Dictionary<string, string> parameters, PartialViewKeys type)
+        {
+            Core.Delegates.PartialViews.Save(request, parameters, type);
+        }
+
+        public static string Render(Core.IRequest request, PartialViewKeys type, Container container)
+        {
+            return Core.Delegates.PartialViews.Render(request, type, container);
+        }
+
+        public static string RenderForm(Core.IRequest request, PartialViewKeys type, Container container)
+        {
+            return Core.Delegates.PartialViews.RenderForm(request, type, container);
+        }
     }
 }

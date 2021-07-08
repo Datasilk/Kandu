@@ -162,23 +162,34 @@ namespace Kandu.Services
             view.Bind(new { team });
             if(team.groupId == null || team.groupId <= 0)
             {
-                view["groups"] = "<option value=\"0\" selected>Select A Security Group...</option>\n";
+                view["groups"] = "<option value=\"0\">Select A Security Group...</option>\n";
             }
-            view["groups"] += string.Join("\n", groups.Select(a => "<option value=\"" + a.groupId + "\">" + a.name + "</option>"));
+            view["groups"] += string.Join("\n", groups.Select(a => "<option value=\"" + a.groupId + "\"" + (team.groupId == a.groupId ? " selected" : "") + ">" + a.name + "</option>"));
             return view.Render();
         }
 
         public string SaveSettings(int orgId, int teamId, Dictionary<string, string> parameters)
         {
             if (!CheckSecurity(orgId, Security.Keys.TeamCanEditSettings.ToString(), Models.Scope.Team, teamId)) { return AccessDenied(); } //check security
-
+            var groupId = 0;
+            if (parameters.ContainsKey("team_groupid")) int.TryParse(parameters["team_groupid"], out groupId);
             try
             {
-
+                //save org settings
+                Query.Teams.UpdateSettings(orgId, teamId, groupId);
             }
             catch (Exception)
             {
-                return Error();
+                return Error("Error saving team settings");
+            }
+            try
+            {
+                //send parameters to all related Partial Views 
+                Common.PartialViews.Save(this, parameters, Vendor.PartialViewKeys.Team_Settings);
+            }
+            catch (Exception)
+            {
+                return Error("Error saving plugin data for team settings");
             }
             return Success();
         }

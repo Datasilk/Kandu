@@ -8,7 +8,7 @@ namespace Kandu.Common
 {
     public static class Boards
     {
-        public static int Create(Core.IRequest request, string name, string color, int orgId)
+        public static int Create(Core.IRequest request, string name, string color, int orgId, string cardtype)
         {
             try
             {
@@ -16,7 +16,8 @@ namespace Kandu.Common
                 {
                     name = name,
                     color = color,
-                    orgId = orgId
+                    orgId = orgId,
+                    cardtype = cardtype
                 }, request.User.UserId);
 
                 //add board Id to user's permissions for boards
@@ -24,13 +25,13 @@ namespace Kandu.Common
                 request.User.Save(true);
 
                 return id;
-            }catch (Exception ex)
+            }catch (Exception)
             {
                 throw new ServiceErrorException("Error creating new board");
             }   
         }
 
-        public static void Update(Core.IRequest request, int boardId, string name, string color, int orgId)
+        public static void Update(Core.IRequest request, int boardId, string name, string color, int orgId, string cardtype)
         {
             //check if user has access to board
             if (!Query.Boards.MemberExists(request.User.UserId, boardId)) {
@@ -45,7 +46,8 @@ namespace Kandu.Common
                     name = name,
                     boardId = boardId,
                     color = color,
-                    orgId = orgId
+                    orgId = orgId,
+                    cardtype = cardtype
                 });
             }
             catch(Exception)
@@ -118,17 +120,18 @@ namespace Kandu.Common
             return html.ToString();
         }
 
-        public static string RenderMenu(Core.IRequest request, int orgId = 0, bool listOnly = false, bool showSubTitle = true, int sort = 0, bool btnsInFront = false)
+        public static string RenderSideBar(Core.IRequest request, int orgId = 0, bool listOnly = false, bool showSubTitle = true, int sort = 0, bool btnsInFront = false)
         {
             var html = new StringBuilder();
             var htm = new StringBuilder();
+            var sidebar = new View("/Views/Board/sidebar.html");
             var menu = new View("/Views/Board/menu.html");
             var item = new View("/Views/Board/menu-item.html");
             var boards = Query.Boards.GetList(request.User.UserId, orgId, (Query.Boards.BoardsSort)sort);
             var favs = boards.Where((a) => { return a.favorite; });
 
             // Favorite Boards //////////////////////////////////////////
-            if (favs.Count() > 0)
+            if (favs.Any())
             {
                 menu["title"] = "Starred Boards";
                 menu["id"] = "favs";
@@ -149,7 +152,7 @@ namespace Kandu.Common
             }
 
             // Boards (sorted by organization, favorite, alphabetical) //////////////////////////////////////////
-            if (boards.Count() > 0)
+            if (boards.Any())
             {
                 var isnewOrg = true;
                 htm = new StringBuilder();
@@ -157,9 +160,10 @@ namespace Kandu.Common
                 {
                     if (board.orgId != orgId)
                     {
-                        if (orgId > 0)
+                        if (orgId > 0 && htm.ToString() != "")
                         {
                             menu["items"] = htm.ToString();
+                            htm.Clear();
                             html.Append(menu.Render());
                         }
                         isnewOrg = true;
@@ -200,8 +204,8 @@ namespace Kandu.Common
                 }
                 html.Append(menu.Render());
             }
-
-            return html.ToString();
+            sidebar["items"] = html.ToString();
+            return sidebar.Render();
         }
 
         public static void KeepBoardsMenuOpen(Core.IRequest request, bool keepOpen)

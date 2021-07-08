@@ -85,7 +85,7 @@ namespace Kandu.Services
             tab["onclick"] = "S.orgs.details.tabs.select('boards')";
             tab.Show("selected");
             tabHtml.Append(tab.Render());
-            var html = Common.Boards.RenderMenu(this, orgId, true, false);
+            var html = Common.Boards.RenderSideBar(this, orgId, true, false);
             if(html == "")
             {
                 //no boards
@@ -197,21 +197,44 @@ namespace Kandu.Services
             {
                 view["groups"] = "<option value=\"0\" selected>Select A Security Group...</option>\n";
             }
-            view["groups"] += string.Join("\n", groups.Select(a => "<option value=\"" + a.groupId + "\">" + a.name + "</option>"));
+            view["groups"] += string.Join("\n", groups.Select(a => "<option value=\"" + a.groupId + "\"" + (org.groupId == a.groupId ? " selected" : "") + ">" + a.name + "</option>"));
+
+            //default card type
+            var html = new StringBuilder();
+            var cards = new List<string>() { "Basic" };
+            cards.AddRange(Core.Vendors.Cards.Keys);
+            html.Append("<option value=\"\">No Default</option>\n");
+            foreach (var key in cards)
+            {
+                html.Append("<option value=\"" + key + "\" " + (org.cardtype == key ? "selected" : "") + ">" + key + "</option>\n");
+            }
+            view["cardtypes"] = html.ToString();
             return view.Render();
         }
 
         public string SaveSettings(int orgId, Dictionary<string, string> parameters)
         {
             if (!CheckSecurity(orgId, Security.Keys.OrgCanEditSettings.ToString())) { return AccessDenied(); } //check security
-
+            var groupId = 0;
+            var cardtype = parameters.ContainsKey("org_cardtype") ? parameters["org_cardtype"] : "";
+            if (parameters.ContainsKey("org_groupid")) int.TryParse(parameters["org_groupid"], out groupId);
             try
             {
-
+                //save org settings
+                Query.Organizations.UpdateSettings(orgId, groupId, cardtype);
             }
             catch (Exception)
             {
-                return Error();
+                return Error("Error saving organization settings");
+            }
+            try
+            {
+                //send parameters to all related Partial Views 
+                Common.PartialViews.Save(this, parameters, Vendor.PartialViewKeys.Organization_Settings);
+            }
+            catch (Exception)
+            {
+                return Error("Error saving plugin data for organization settings");
             }
             return Success();
         }

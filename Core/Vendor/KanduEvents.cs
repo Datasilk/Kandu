@@ -1,7 +1,7 @@
 ﻿namespace Kandu.Vendor
 {
     /// <summary>
-    /// A set of special events raised by Saber, for example, when a user account is created or permanently deleted.
+    /// A set of special events raised by Kandu, for example, when a user account is created or permanently deleted.
     /// </summary>
     public abstract class KanduEvents
     {

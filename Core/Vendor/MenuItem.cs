@@ -1,4 +1,4 @@
-﻿namespace Kandu.Core.Vendor
+﻿namespace Kandu.Vendor
 {
     public class MenuItem
     {

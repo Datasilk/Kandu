@@ -1,0 +1,52 @@
+
+<svg xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" preserveAspectRatio="none" x="0px" y="0px" width="64px" height="64px" viewBox="0 0 64 64">
+<defs>
+<g id="menu_0_Layer1_0_FILL">
+<path fill="#FFFFFF" stroke="none" d="
+M 62.8 48.15
+Q 61.65 47 60 47
+L 4 47
+Q 2.35 47 1.15 48.15 0 49.35 0 51
+L 0 53
+Q 0 54.65 1.15 55.8 2.35 57 4 57
+L 60 57
+Q 61.65 57 62.8 55.8 64 54.65 64 53
+L 64 51
+Q 64 49.35 62.8 48.15
+M 64 31
+Q 64 29.35 62.8 28.15 61.65 27 60 27
+L 4 27
+Q 2.35 27 1.15 28.15 0 29.35 0 31
+L 0 33
+Q 0 34.65 1.15 35.8 2.35 37 4 37
+L 60 37
+Q 61.65 37 62.8 35.8 64 34.65 64 33
+L 64 31
+M 64 11
+Q 64 9.35 62.8 8.15 61.65 7 60 7
+L 4 7
+Q 2.35 7 1.15 8.15 0 9.35 0 11
+L 0 13
+Q 0 14.65 1.15 15.8 2.35 17 4 17
+L 60 17
+Q 61.65 17 62.8 15.8 64 14.65 64 13
+L 64 11 Z"/>
+</g>
+
+<g id="menu_0_Layer0_0_FILL">
+<path fill="#FFFFFF" fill-opacity="0" stroke="none" d="
+M 64 64
+L 64 0 0 0 0 64 64 64 Z"/>
+</g>
+</defs>
+
+<g transform="matrix( 1, 0, 0, 1, 0,0) ">
+<g transform="matrix( 1, 0, 0, 1, 0,0) ">
+<use xlink:href="#menu_0_Layer1_0_FILL"/>
+</g>
+
+<g transform="matrix( 1, 0, 0, 1, 0,0) ">
+<use xlink:href="#menu_0_Layer0_0_FILL"/>
+</g>
+</g>
+</svg>

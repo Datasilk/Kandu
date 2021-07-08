@@ -36,7 +36,7 @@ namespace Kandu
             return view.Render();
         }
 
-        public void LoadHeader(ref View view, HasMenu hasMenu = HasMenu.None)
+        public new void LoadHeader(ref View view, HasMenu hasMenu = HasMenu.None)
         {
             if(User.UserId > 0)
             {
@@ -60,7 +60,7 @@ namespace Kandu
                 {
                     //show drop down menu for board
                     view.Child("header").Show("boards");
-                    view.Child("header")["boards-menu"] = Common.Boards.RenderMenu(this);
+                    view.Child("header")["boards-menu"] = Common.Boards.RenderSideBar(this);
 
                     if (User.KeepMenuOpen == true)
                     {

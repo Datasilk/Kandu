@@ -70,7 +70,7 @@
     <Content Include="Views\Board\menu-item.html">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Views\Board\menu.html">
+    <Content Include="Views\Board\sidebar.html">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Views\Card\Kanban\Type\card.html">

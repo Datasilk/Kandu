@@ -9,7 +9,7 @@ namespace Query
         {
             return Sql.ExecuteScalar<int>(
                 "Board_Create",
-                new {board.orgId, board.teamId, userId, board.name, board.favorite, board.color }
+                new {board.orgId, board.teamId, userId, board.name, board.favorite, board.color, board.cardtype }
             );
         }
 
@@ -17,7 +17,7 @@ namespace Query
         {
             Sql.ExecuteNonQuery(
                 "Board_Update",
-                new { board.boardId, board.orgId, board.name, board.color }
+                new { board.boardId, board.orgId, board.name, board.color, board.cardtype }
             );
         }
 

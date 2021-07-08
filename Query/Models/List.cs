@@ -8,6 +8,7 @@ namespace Query.Models
         public int boardId { get; set; }
         public string name { get; set; }
         public int sort { get; set; }
+        public string cardtype { get; set; }
         public List<Card> cards { get; set; }
     }
 }

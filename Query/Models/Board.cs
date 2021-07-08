@@ -23,6 +23,7 @@ namespace Query.Models
         public string teamName { get; set; }
         public string teamDescription { get; set; }
         public string color { get; set; }
+        public string cardtype { get; set; }
         public DateTime datecreated { get; set; }
         public DateTime lastmodified { get; set; }
         public List<List> lists { get; set; }

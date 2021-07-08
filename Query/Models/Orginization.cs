@@ -15,5 +15,6 @@ namespace Query.Models
         public bool photo { get; set; }
         public bool enabled { get; set; }
         public bool isprivate { get; set; }
+        public string cardtype { get; set; }
     }
 }

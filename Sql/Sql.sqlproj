@@ -179,6 +179,10 @@
     <Build Include="dbo\Stored Procedures\Invitations\Invite_People_Batch.sql" />
     <Build Include="dbo\Stored Procedures\Organizations\Organization_GetMembersCount.sql" />
     <Build Include="dbo\Tables\Invitations.sql" />
+    <Build Include="dbo\Stored Procedures\Cards\Card_UpdateJson.sql" />
+    <Build Include="dbo\Stored Procedures\Organizations\Organization_UpdateSettings.sql" />
+    <Build Include="dbo\Stored Procedures\Security\SecurityGroups_GetListForUser.sql" />
+    <Build Include="dbo\Stored Procedures\Teams\Team_UpdateSettings.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Sql.publish.xml" />

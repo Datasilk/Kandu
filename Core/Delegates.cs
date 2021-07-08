@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Net.Mail;
+using Kandu.Vendor;
 
 namespace Kandu.Core
 {
@@ -20,6 +21,13 @@ namespace Kandu.Core
         public static class Log
         {
             public static Action<int, string, string, string, string> Error { get; set; }
+        }
+
+        public static class PartialViews
+        {
+            public static Func<IRequest, PartialViewKeys, Vendor.PartialViews.Container, string> Render { get; set; }
+            public static Func<IRequest, PartialViewKeys, Vendor.PartialViews.Container, string> RenderForm { get; set; }
+            public static Action<IRequest, Dictionary<string, string>, PartialViewKeys> Save { get; set; }
         }
     }
 }

@@ -1,6 +1,4 @@
-﻿//NOTE: S.boards is available from all dashboard pages
-
-S.boards = {
+﻿S.boards = {
     add: {
         popup: null,
         boardId: null,
@@ -67,18 +65,18 @@ S.boards = {
             S.popup.hide(S.boards.add.popup);
         },
 
-        submit: function (id) {
+        submit: function (orgId, id) {
             var hasid = false;
             var name = $('#boardname').val();
             var color = S.util.color.rgbToHex($('.popup .color-input').css('background-color')).replace('#','');
-            var orgId = $('#orgId').val();
+            var cardtype = $('#cardtype').val();
             var msg = $('.popup.show .message');
             if (id > 0) { hasid = true;}
             if (name == '' || name == null) {
                 S.message.show(msg, 'error', 'Please specify a board name');
                 return;
             }
-            var form = { name: name, color: color, orgId: orgId };
+            var form = { name: name, color: color, orgId: orgId, cardtype: cardtype };
             if (hasid) { form.boardId = id; }
             S.ajax.post(hasid ? 'Boards/Update' : 'Boards/Create', form,
                 function (data) {

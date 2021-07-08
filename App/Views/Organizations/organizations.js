@@ -361,27 +361,21 @@ S.orgs = {
         save: function () {
             var savebtn = $('.org-details .btn-save-settings');
             savebtn.addClass('hide');
+            var obj = new Object();
+            $('.org-details .content-settings').find('select, input, textarea').map((i, a) => {
+                a = $(a);
+                obj[a.attr('id')] = a.val();
+            });
             var data = {
                 orgId: S.orgs.details.orgId,
-                parameters: JSON.stringify($('.org-details .content-settings').find('select, input, textarea').map((i, a) => {
-                    console.log(a);
-                    a = $(a);
-                    console.log(a);
-                    return [a.attr('id'), a.val()];
-                }))
+                parameters: JSON.stringify(obj)
             };
             console.log(data);
             S.ajax.post('Organizations/SaveSettings', data, function (result) {
-                var content = $('.org-details .content-settings');
-                content.html(result);
-                var savebtn = $('.org-details .btn-save-settings');
-                content.find('select, input').on('keyup, change', () => {
-                    savebtn.removeClass('hide');
-                });
-                S.popup.resize();
+                S.message.show('.org-details .content-settings .message', null, 'Organization settings have been saved');
             },
                 (err) => {
-                    S.message('.org-details .content-settings .message', err.responseText);
+                    S.message.show('.org-details .content-settings .message', 'error', err.responseText);
             });
         }
     },

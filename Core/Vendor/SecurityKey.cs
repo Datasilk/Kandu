@@ -7,11 +7,11 @@
         /// </summary>
         public string Value { get; set; }
         /// <summary>
-        /// The label displayed in Saber's security role manager UI.
+        /// The label displayed in Kandu's security role manager UI.
         /// </summary>
         public string Label { get; set; }
         /// <summary>
-        /// The description displayed in Saber's security role manager UI.
+        /// The description displayed in Kandu's security role manager UI.
         /// </summary>
         public string Description { get; set; }
     }

@@ -1,16 +1,16 @@
-﻿using System;
+﻿using System.Collections.Generic;
 using System.Text;
 
 namespace Kandu.Services
 {
     public class Boards : Service
     {
-        public string Create(string name, string color, int orgId)
+        public string Create(string name, string color, int orgId, string cardtype = "")
         {
             if (!User.CheckSecurity(orgId, Security.Keys.BoardCanCreate.ToString())) { return AccessDenied(); } //check security
             try
             {
-                var boardId = Common.Boards.Create(this, name, color, orgId);
+                var boardId = Common.Boards.Create(this, name, color, orgId, cardtype);
                 return Success();
             }catch(ServiceErrorException ex)
             {
@@ -22,9 +22,11 @@ namespace Kandu.Services
         {
             if (!CheckSecurity()) { return AccessDenied(); } //check security
             var view = new View("/Views/Board/new-board.html");
+            var defaultCardType = "";
             if(boardId != 0)
             {
                 var board = Query.Boards.GetInfo(boardId);
+                defaultCardType = board.cardtype;
                 if (!CheckSecurity(board.orgId, Security.Keys.BoardCanUpdate.ToString(), Models.Scope.Board, boardId))
                 {
                     return AccessDenied();
@@ -32,13 +34,13 @@ namespace Kandu.Services
                 view["name"] = board.name;
                 view["color"] = "#0094ff";
                 view["submit-label"] = "Update Board";
-                view["submit-click"] = "S.boards.add.submit('" + boardId + "')";
+                view["submit-click"] = "S.boards.add.submit(" + orgId + ", " + boardId + ")";
             }
             else
             {
                 view["color"] = "#0094ff";
                 view["submit-label"] = "Create Board";
-                view["submit-click"] = "S.boards.add.submit()";
+                view["submit-click"] = "S.boards.add.submit(" + orgId + ")";
             }
 
             if(orgId != 0)
@@ -66,6 +68,16 @@ namespace Kandu.Services
                 view["org-options"] = opts.ToString();
                 view.Show("no-id");
             }
+
+            //TODO: get card types from vendors
+            var cardTypes = new List<string>() { "Basic" };
+            var html = new StringBuilder();
+            foreach(var card in cardTypes)
+            {
+                html.Append("<option value=\"" + card + "\"" + (defaultCardType == card ? " selected" : "") + ">" + card + "</option>");
+            }
+            view["cardtypes"] = html.ToString();
+
             return view.Render();
         }
 
@@ -87,12 +99,12 @@ namespace Kandu.Services
             }
         }
 
-        public string Update(int boardId, string name, string color, int orgId)
+        public string Update(int boardId, string name, string color, int orgId, string cardtype)
         {
             if (!User.CheckSecurity(orgId, Security.Keys.BoardCanUpdate.ToString(), Models.Scope.Board, boardId)) { return AccessDenied(); } //check security
             try
             {
-                Common.Boards.Update(this, boardId, name, color, orgId);
+                Common.Boards.Update(this, boardId, name, color, orgId, cardtype);
             }
             catch (ServiceDeniedException)
             {
@@ -108,7 +120,7 @@ namespace Kandu.Services
         public string BoardsMenu(int orgId, bool subTitles = false, bool listOnly = true, int sort = 0, bool buttonsInFront = false)
         {
             if (!CheckSecurity()) { return AccessDenied(); } //check security
-            return Common.Boards.RenderMenu(this, orgId, listOnly, subTitles, sort, buttonsInFront);
+            return Common.Boards.RenderSideBar(this, orgId, listOnly, subTitles, sort, buttonsInFront);
         }
 
         public string KeepMenuOpen(bool keepOpen)

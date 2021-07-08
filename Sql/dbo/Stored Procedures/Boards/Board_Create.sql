@@ -4,11 +4,12 @@
 	@userId int,
 	@name nvarchar(64),
 	@favorite bit = 0,
-	@color nvarchar(6) = ''
+	@color nvarchar(6) = '',
+	@cardtype varchar(16)
 AS
 	DECLARE @boardId int = NEXT VALUE FOR SequenceBoards
-	INSERT INTO Boards (boardId, orgId, [name], color)
-	VALUES (@boardId, @orgId, @name, @color)
+	INSERT INTO Boards (boardId, orgId, [name], color, cardtype)
+	VALUES (@boardId, @orgId, @name, @color, @cardtype)
 
 	IF (@teamId IS NOT NULL AND @teamId > 0) BEGIN
 		INSERT INTO BoardTeams (boardId, teamId) VALUES (@boardId, @teamId)

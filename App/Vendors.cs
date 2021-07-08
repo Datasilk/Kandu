@@ -519,5 +519,34 @@ namespace Kandu.Common
             Core.Vendors.EventHandlers.Add(instance);
         }
         #endregion
+
+        #region "Partial Views"
+        public static void GetPartialViewsFromFileSystem()
+        {
+            foreach (var assembly in Assemblies)
+            {
+                foreach (var type in assembly.Value.ExportedTypes.Where(a => a.GetTypeInfo().IsSubclassOf(typeof(KanduEvents))))
+                {
+                    GetPartialViewsFromType(type);
+                }
+            }
+        }
+
+        public static void GetPartialViewsFromType(Type type)
+        {
+            if (type == null) { return; }
+            if (type.Equals(typeof(KanduEvents))) { return; }
+            var instance = (IVendorPartialView)Activator.CreateInstance(type);
+            Core.Vendors.PartialViewsUnsorted.Add(instance);
+            var area = instance.Area;
+            if (!Core.Vendors.PartialViews.ContainsKey(area))
+            {
+                Core.Vendors.PartialViews[area] = new List<IVendorPartialView>();
+            }
+            Core.Vendors.PartialViews[area].Add(instance);
+
+
+        }
+        #endregion
     }
 }

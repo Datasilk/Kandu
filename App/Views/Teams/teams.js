@@ -194,7 +194,13 @@
 
         refresh: function () {
             S.ajax.post('Teams/RefreshSettings', { orgId: S.orgs.details.orgId, teamId: S.teams.details.teamId }, function (result) {
-                $('.team-details .content-settings').html(result);
+                var content = $('.team-details .content-settings');
+                content.html(result);
+                var savebtn = $('.team-details .btn-save-settings');
+                content.find('select, input').on('keyup, change', () => {
+                    savebtn.removeClass('hide');
+                });
+                S.popup.resize();
             },
             (err) => {
 
@@ -204,21 +210,21 @@
         save: function () {
             var savebtn = $('.team-details .btn-save-settings');
             savebtn.addClass('hide');
+            var obj = new Object();
+            $('.team-details .content-settings').find('select, input, textarea').map((i, a) => {
+                a = $(a);
+                obj[a.attr('id')] = a.val();
+            });
             var data = {
                 orgId: S.orgs.details.orgId,
-
+                teamId: S.teams.details.teamId,
+                parameters: JSON.stringify(obj)
             };
             S.ajax.post('Teams/SaveSettings', data, function (result) {
-                var content = $('.team-details .content-settings');
-                content.html(result);
-                var savebtn = $('.team-details .btn-save-settings');
-                content.find('select, input').on('keyup, change', () => {
-                    savebtn.removeClass('hide');
-                });
-                S.popup.resize();
+                S.message.show('.team-details .content-settings .message', null, 'Team settings have been saved');
             },
                 (err) => {
-
+                    S.message.show('.team-details .content-settings .message', 'error', err.responseText);
                 });
         }
     },

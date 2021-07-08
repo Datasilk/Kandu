@@ -46,7 +46,7 @@ namespace Kandu
             services.AddHttpsRedirection(options => { });
 
             //try deleting Vendors that are marked for uninstallation
-            Common.Vendors.DeleteVendors();
+            Vendors.DeleteVendors();
 
             //get list of assemblies for Vendor related functionality
             if (!assemblies.Contains(Assembly.GetExecutingAssembly()))
@@ -59,7 +59,7 @@ namespace Kandu
             }
 
             //get a list of DLLs in the Vendors folder (if any)
-            var vendorDLLs = Common.Vendors.LoadDLLs();
+            var vendorDLLs = Vendors.LoadDLLs();
 
             //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
             //get list of vendor classes that inherit IVendorInfo interface
@@ -70,11 +70,11 @@ namespace Kandu
                     .Where(type => typeof(Vendor.IVendorInfo).IsAssignableFrom(type) && !type.IsInterface && !type.IsAbstract).ToList();
                 foreach (var type in types)
                 {
-                    Common.Vendors.GetInfoFromType(type);
+                    Vendors.GetInfoFromType(type);
                 }
             }
             //get list of DLLs that contain the IVendorInfo interface
-            Common.Vendors.GetInfoFromFileSystem();
+            Vendors.GetInfoFromFileSystem();
             var vendorCount = Core.Vendors.Details.Where(a => a.Version != "").Count();
             Console.WriteLine("Found " + vendorCount + " Vendor" + (vendorCount != 1 ? "s" : ""));
 
@@ -91,7 +91,7 @@ namespace Kandu
                 }
             }
             //get list of DLLs that contain the IVendorStartup interface
-            Common.Vendors.GetStartupsFromFileSystem();
+            Vendors.GetStartupsFromFileSystem();
             Console.WriteLine("Found " + Core.Vendors.Startups.Count + " Vendor Startup Class" + (Core.Vendors.Startups.Count != 1 ? "es" : ""));
 
             //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -103,12 +103,28 @@ namespace Kandu
                     .Where(type => typeof(Vendor.IVendorController).IsAssignableFrom(type) && !type.IsInterface && !type.IsAbstract).ToList();
                 foreach (var type in types)
                 {
-                    Common.Vendors.GetControllerFromType(type);
+                    Vendors.GetControllerFromType(type);
                 }
             }
             //get list of DLLs that contain the IVendorController interface
-            Common.Vendors.GetControllersFromFileSystem();
+            Vendors.GetControllersFromFileSystem();
             Console.WriteLine("Found " + Core.Vendors.Controllers.Count + " Vendor Controller" + (Core.Vendors.Controllers.Count != 1 ? "s" : ""));
+
+            //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            //get list of vendor classes that inherit IVendorPartialView interface
+            foreach (var assembly in assemblies)
+            {
+                //get a list of interfaces from the assembly
+                var types = assembly.GetTypes()
+                    .Where(type => typeof(Vendor.IVendorPartialView).IsAssignableFrom(type) && !type.IsInterface && !type.IsAbstract).ToList();
+                foreach (var type in types)
+                {
+                    Vendors.GetPartialViewsFromType(type);
+                }
+            }
+            //get list of DLLs that contain the IVendorController interface
+            Vendors.GetPartialViewsFromFileSystem();
+            Console.WriteLine("Found " + Core.Vendors.Controllers.Count + " Vendor Partial View" + (Core.Vendors.PartialViewsUnsorted.Count != 1 ? "s" : ""));
 
             //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
             //get list of vendor classes that inherit IVendorKeys interface
@@ -123,7 +139,7 @@ namespace Kandu
                 }
             }
             //get list of DLLs that contain the IVendorKeys interface
-            Common.Vendors.GetSecurityKeysFromFileSystem();
+            Vendors.GetSecurityKeysFromFileSystem();
             var totalKeys = 0;
             foreach (var chain in Core.Vendors.Keys)
             {
@@ -140,11 +156,11 @@ namespace Kandu
                     .Where(type => typeof(Vendor.IVendorEmailClient).IsAssignableFrom(type) && !type.IsInterface && !type.IsAbstract).ToList();
                 foreach (var type in types)
                 {
-                    Common.Vendors.GetEmailClientsFromType(type);
+                    Vendors.GetEmailClientsFromType(type);
                 }
             }
             //get list of DLLs that contain the IVendorEmailClient interface
-            Common.Vendors.GetEmailClientsFromFileSystem();
+            Vendors.GetEmailClientsFromFileSystem();
             Console.WriteLine("Found " + Core.Vendors.EmailClients.Count + " Vendor Email Client" + (Core.Vendors.EmailClients.Count != 1 ? "s" : ""));
 
             
@@ -157,11 +173,11 @@ namespace Kandu
                     .Where(type => typeof(Vendor.KanduEvents).IsAssignableFrom(type) && !type.IsInterface && !type.IsAbstract).ToList();
                 foreach (var type in types)
                 {
-                    Common.Vendors.GetKanduEventsFromType(type);
+                    Vendors.GetKanduEventsFromType(type);
                 }
             }
             //get list of DLLs that contain the IVendorKeys interface
-            Common.Vendors.GetKanduEventsFromFileSystem();
+            Vendors.GetKanduEventsFromFileSystem();
             Console.WriteLine("Found " + Core.Vendors.EventHandlers.Count + " Vendor" + (Core.Vendors.EventHandlers.Count != 1 ? "s" : "") + " That listen to Kandu Events");
 
             //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -268,6 +284,9 @@ namespace Kandu
             //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
             //Run any services required after initializing all vendor plugins but before configuring vendor startup services
             Core.Delegates.Email.Send = Email.Send;
+            Core.Delegates.PartialViews.Render = PartialViews.Render;
+            Core.Delegates.PartialViews.RenderForm = PartialViews.RenderForm;
+            Core.Delegates.PartialViews.Save = PartialViews.Save;
             //Core.Delegates.Log.Error = Query.Logs.LogError;
 
             //execute Configure method for all vendors that use IVendorStartup interface

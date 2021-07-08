@@ -1,4 +1,4 @@
-﻿namespace Kandu.Core.Vendor
+﻿namespace Kandu.Vendor
 {
     public interface IVendorCard
     {
@@ -12,25 +12,25 @@
         /// method will be executed once per page view
         /// </summary>
         /// <param name="request"></param>
-        public void Init(IRequest request) { }
+        public void Init(Core.IRequest request) { }
 
         /// <summary>
         /// Render the card in a list
         /// </summary>
         /// <returns></returns>
-        public string Render(IRequest request);
+        public string Render(Core.IRequest request);
 
         /// <summary>
         /// Render a form within the card details popup modal above the card description
         /// </summary>
         /// <returns></returns>
-        public string RenderForm(IRequest request);
+        public string RenderForm(Core.IRequest request);
 
         /// <summary>
         /// Render content at the top of the side panel below the Card Type dropdown list
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
-        public string RenderSidePanel(IRequest request);
+        public string RenderSidePanel(Core.IRequest request);
     }
 }

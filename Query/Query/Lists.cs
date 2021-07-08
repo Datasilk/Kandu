@@ -8,7 +8,7 @@ namespace Query
         {
             return Sql.ExecuteScalar<int>(
                 "List_Create",
-                new { list.boardId, list.name, list.sort }
+                new { list.boardId, list.name, list.sort, list.cardtype }
             );
         }
 

@@ -14,6 +14,13 @@ namespace Kandu.Core
         public static Dictionary<string, IVendorEmailClient> EmailClients { get; set; } = new Dictionary<string, IVendorEmailClient>();
         public static Dictionary<string, EmailType> EmailTypes { get; set; } = new Dictionary<string, EmailType>();
         public static List<KanduEvents> EventHandlers { get; set; } = new List<KanduEvents>();
+
+        //Partial Views
+        public static List<IVendorPartialView> PartialViewsUnsorted { get; set; } = new List<IVendorPartialView>();
+        public static Dictionary<PartialViewKeys, List<IVendorPartialView>> PartialViews { get; set; } = new Dictionary<PartialViewKeys, List<IVendorPartialView>>();
+
+        //Cards
+        public static Dictionary<string, IVendorCard> Cards = new Dictionary<string, IVendorCard>();
     }
 
     public class VendorInfo : IVendorInfo
@@ -22,7 +29,7 @@ namespace Kandu.Core
         public string Name { get; set; }
         public string Description { get; set; }
         public string Icon { get; set; }
-        public Kandu.Vendor.Version Version { get; set; }
+        public Vendor.Version Version { get; set; }
         public string DLL { get; set; }
         public string Assembly { get; set; }
         public string Path { get; set; }

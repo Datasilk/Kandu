@@ -39,6 +39,14 @@
         </div>
     </div>
     {{/has-id}}
+    
+    <div class="row hover cardtype">
+        <div class="col field long">Default Card</div>
+        <div class="col input">
+            <select id="cardtype">{{cardtypes}}</select>  
+        </div>
+    </div>
+
     <div class="row pad-top text-center">
         <a href="javascript:" class="button apply" onclick="{{submit-click}}">{{submit-label}}</a>
         <a href="javascript:" class="button cancel" onclick="S.boards.add.hide()">Cancel</a>

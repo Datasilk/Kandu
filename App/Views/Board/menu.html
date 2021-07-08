@@ -1,42 +1,18 @@
-﻿<div class="bg-for-boards-menu hide"><div class="dark-area">&nbsp;</div></div>
-<div class="boards-menu bg has-top-arrow hide">
-    <div class="scroll-container">
-        <div class="movable">
-            <div class="items">
-                <div class="row menu-section id-{{id}}">
-                    <div class="row section-bar hover">
-                        <div class="col pad-sm">
-                            <a href="javascript:" class="icon small">
-                                <svg viewBox="0 0 32 32">
-                                    <use xlink:href="#icon-{{icon}}" x="0" y="0" width="32" height="32"></use>
-                                </svg>
-                            </a>
-                        </div>
-                        <div class="col pad-sm">
-                            <div class="title">{{title}}</div>
-                        </div>
-                        <div class="col right pad-sm">
-                            {{expander "/Views/Shared/expander.html"}}
-                        </div>
-                    </div>
-                    <div class="list">{{items}}</div>
-                </div>
-            </div>
-            <div class="row hover pad">
-                <a href="javascript:" class="btn-new-board">Create a new board</a>
-            </div>
-            <div class="row hover pad">
-                <a href="javascript:" class="btn-always-show">Pin this menu</a>
-            </div>
-
-            <div class="row hover pad">
-                <a href="javascript:" class="btn-all-color">Colorize Lists</a>
-            </div>
-
-            <div class="row hover pad">
-                <a href="javascript:" class="btn-import-trello">Import from Trello</a>
-            </div>
+﻿<div class="row menu-section id-{{id}}">
+    <div class="row section-bar hover">
+        <div class="col pad-sm">
+            <a href="javascript:" class="icon small">
+                <svg viewBox="0 0 32 32">
+                    <use xlink:href="#icon-{{icon}}" x="0" y="0" width="32" height="32"></use>
+                </svg>
+            </a>
+        </div>
+        <div class="col pad-sm">
+            <div class="title">{{title}}</div>
+        </div>
+        <div class="col right pad-sm">
+            {{expander "/Views/Shared/expander.html"}}
         </div>
     </div>
-    
+    <div class="list">{{items}}</div>
 </div>

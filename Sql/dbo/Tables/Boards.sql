@@ -9,4 +9,5 @@
     [datecreated] DATETIME NOT NULL DEFAULT GETDATE(), 
     [lastmodified] DATETIME NOT NULL DEFAULT GETDATE(), 
     [type] INT NOT NULL DEFAULT 0, /* 0 = kanban, 1 = timeline, 2 = photo gallery */
+    [cardtype] VARCHAR(16) NOT NULL DEFAULT '' --default card type to use when creating a new card
 )

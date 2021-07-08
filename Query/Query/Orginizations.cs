@@ -6,12 +6,17 @@ namespace Query
     {
         public static int Create(Models.Organization org)
         {
-            return Sql.ExecuteScalar<int>("Organization_Create", new { org.ownerId, org.name, org.website, org.description, org.isprivate });
+            return Sql.ExecuteScalar<int>("Organization_Create", new { org.ownerId, org.name, org.website, org.description, org.isprivate, org.cardtype });
         }
 
         public static void Update(Models.Organization org)
         {
             Sql.ExecuteNonQuery("Organization_Update", new { org.orgId, org.name, org.website, org.description });
+        }
+
+        public static void UpdateSettings(int orgId, int groupId, string cardtype)
+        {
+            Sql.ExecuteNonQuery("Organization_UpdateSettings", new { orgId, groupId, cardtype });
         }
 
         public static  void Disable(int orgId)
