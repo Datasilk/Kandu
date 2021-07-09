@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text;
 
 namespace Kandu.Common.Card
 {
@@ -7,22 +8,22 @@ namespace Kandu.Common.Card
         public static string RenderCard(Query.Models.Card card)
         {
             var useLayout = false;
-            View cardscaff;
+            View cardview;
             if(card.name.IndexOf("----") == 0)
             {
                 //separator
-                cardscaff = new View("/Views/Card/Kanban/Type/separator.html");
+                cardview = new View("/Views/Card/Kanban/Type/separator.html");
             }
             else if(card.name.IndexOf("# ") == 0)
             {
                 //header
-                cardscaff = new View("/Views/Card/Kanban/Type/header.html");
-                cardscaff["name"] = card.name.TrimStart(new char[] { '#', ' ' });
+                cardview = new View("/Views/Card/Kanban/Type/header.html");
+                cardview["name"] = card.name.TrimStart(new char[] { '#', ' ' });
             }
             else
             {
                 //card
-                cardscaff = new View("/Views/Card/Kanban/Type/card.html");
+                cardview = new View("/Views/Card/Kanban/Type/card.html");
                 useLayout = true;
             }
             
@@ -49,14 +50,14 @@ namespace Kandu.Common.Card
                 view["colors"] = "";
 
                 //render custom design inside card container
-                cardscaff["layout"] = view.Render();
+                cardview["layout"] = view.Render();
             }
 
             //load card container
-            cardscaff["id"] = card.cardId.ToString();
+            cardview["id"] = card.cardId.ToString();
 
             //render card container
-            return cardscaff.Render();
+            return cardview.Render();
         }
 
         public static Tuple<Query.Models.Card, string> Details(int boardId, int cardId)
@@ -79,6 +80,17 @@ namespace Kandu.Common.Card
             {
                 throw new ServiceErrorException("Error loading card details");
             }
+        }
+
+        public static string RenderCardsForMember(int userId, int orgId = 0)
+        {
+            var html = new StringBuilder();
+            var cards = Query.Cards.AssignedToMember(userId, orgId);
+            foreach (var card in cards)
+            {
+                html.Append(RenderCard(card) + "\n");
+            }
+            return html.ToString();
         }
     }
 }

@@ -5,7 +5,7 @@
 	@ids nvarchar(MAX)
 AS
 	/* first, update card listId */
-	UPDATE Cards SET listId=@listId WHERE cardId=@cardId
+	UPDATE Cards SET listId=@listId, datemodified=GETUTCDATE() WHERE cardId=@cardId
 
 	/* next, sort cards for list */
 	SELECT * INTO #cards FROM dbo.SplitArray(@ids,',')

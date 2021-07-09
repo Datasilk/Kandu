@@ -43,7 +43,14 @@ WHILE @@FETCH_STATUS = 0 BEGIN
 		CLOSE @cursor2
 		DEALLOCATE @cursor2
 	END
+
 	FETCH NEXT FROM @cursor INTO @userId, @name
 END
 CLOSE @cursor
 DEALLOCATE @cursor
+
+--update cards
+UPDATE c SET userIdCreated = o.ownerId
+FROM Cards c
+JOIN Boards b ON b.boardId=c.boardId
+JOIN Organizations o ON o.orgId=b.orgId

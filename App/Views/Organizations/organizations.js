@@ -278,19 +278,22 @@ S.orgs = {
             var content = $('.org-details .content-members');
             if (content.html().trim() == '') {
                 //load members search
-                S.members.search.init(S.orgs.details.orgId, '.content-members');
+                S.members.search.init(S.orgs.details.orgId, '.content-members', 'S.orgs.members.details.show');
             }
         },
-
+         
         refresh: function () {
-            S.ajax.post('Members/RefreshList', { orgId: S.orgs.details.orgId }, function (result) {
-                $('.content-members').html(result);
-                $('.org-details .btn-add-member').on('click', S.orgs.members.add);
-                S.popup.resize();
-            },
-            (err) => {
+            S.members.search.query(S.orgs.details.orgId, 1, 20, '.content-members', '', 'S.orgs.members.details.show');
+        },
 
-            });
+        details: {
+            show: function (userId, name) {
+                S.orgs.details.popup.hide();
+                S.user.details.show(userId, S.orgs.details.orgId, name, () => {
+                    S.orgs.details.popup.show();
+                    S.popup.resize();
+                });
+            }
         },
 
         add: function () {

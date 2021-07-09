@@ -50,7 +50,7 @@ namespace Kandu.Common
                 if(member.title == "") { member.title = "Member"; }
                 listItem.Clear();
                 listItem.Bind(new { member });
-                listItem["click"] = "S.teams.member.show(" + member.userId + ")";
+                listItem["click"] = "S.teams.members.details.show(" + member.userId + ", '" + member.name + "')";
                 html.Append(listItem.Render());
             }
 

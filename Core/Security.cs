@@ -12,6 +12,7 @@ namespace Kandu
             OrgCanEditInfo, //edit organization name, website, description fields
             OrgCanEditSettings, //edit organization settings
             OrgCanEditTheme, //edit organization theme
+            OrgCanViewMemberEmailAddr, //can view email addresses for organization members
             SecGroupsCanViewAll, //can view all security groups for an organization
             SecGroupCanView, //can view a specific security group for an organization (uses scope & scopeId)
             SecGroupCanCreate, //can create a new security group for an organization

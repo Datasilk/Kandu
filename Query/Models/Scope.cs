@@ -8,6 +8,7 @@
         Team = 3,
         Board = 4,
         List = 5,
-        Card = 6
+        Card = 6,
+        User = 7
     }
 }

@@ -5,7 +5,7 @@ namespace Kandu.Common
     public static class User
     {
 
-        public static string RenderUserMenu(Core.IRequest request)
+        public static string RenderUserMenu()
         {
             var html = new StringBuilder();
             var section = new View("/Views/User/menu.html");

@@ -114,10 +114,6 @@ namespace Kandu.Services
             {
                 view.Show("can-edit");
             }
-            else
-            {
-                view.Show("no-edit");
-            }
             return view.Render();
         }
 

@@ -75,11 +75,19 @@ namespace Query
             );
         }
 
-        public static List<Models.Card> GetList(int boardId, int listId = 0, int start = 1, int length = 2000)
+        public static List<Models.Card> GetList(int boardId, int listId = 0, int start = 1, int length = 2000, bool archivedOnly = false)
         {
             return Sql.Populate<Models.Card>(
-                "Card_GetList",
-                new { boardId, listId, start, length }
+                "Cards_GetList",
+                new { boardId, listId, start, length, archivedOnly }
+            );
+        }
+
+        public static List<Models.Card> AssignedToMember(int userId, int orgId = 0, int start = 1, int length = 20, bool archivedOnly = false)
+        {
+            return Sql.Populate<Models.Card>(
+                "Cards_AssignedToMember",
+                new { userId, orgId, start, length, archivedOnly }
             );
         }
 

@@ -3,4 +3,5 @@
 	@cardId int,
 	@json nvarchar(MAX)
 AS
-	UPDATE Cards SET [json]=@json WHERE cardId=@cardId AND boardId=@boardId
+	UPDATE Cards SET [json]=@json, datemodified=GETUTCDATE() WHERE cardId=@cardId AND boardId=@boardId
+	EXEC Board_Modified @boardId=@boardId

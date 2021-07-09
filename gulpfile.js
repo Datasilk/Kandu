@@ -97,6 +97,7 @@ paths.working = {
             paths.app + 'views/teams/teams.js',
             paths.app + 'views/members/members.js',
             paths.app + 'views/security/security.js',
+            paths.app + 'views/user/user.js',
             paths.app + 'views/boards/boards.js',
             paths.app + 'views/shared/header.js'
         ],
@@ -105,6 +106,7 @@ paths.working = {
             paths.webroot + 'css/views/teams/teams.css',
             paths.webroot + 'css/views/members/members.css',
             paths.webroot + 'css/views/security/security.css',
+            paths.webroot + 'css/views/user/user.css',
             paths.webroot + 'css/views/boards/boards.css',
             paths.webroot + 'css/views/shared/header.css'
         ]

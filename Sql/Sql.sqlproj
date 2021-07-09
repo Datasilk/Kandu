@@ -183,6 +183,7 @@
     <Build Include="dbo\Stored Procedures\Organizations\Organization_UpdateSettings.sql" />
     <Build Include="dbo\Stored Procedures\Security\SecurityGroups_GetListForUser.sql" />
     <Build Include="dbo\Stored Procedures\Teams\Team_UpdateSettings.sql" />
+    <Build Include="dbo\Stored Procedures\Cards\Cards_AssignedToMember.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Sql.publish.xml" />

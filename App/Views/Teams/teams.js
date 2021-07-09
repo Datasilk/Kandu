@@ -160,7 +160,7 @@
         },
 
         refresh: function () {
-            S.ajax.post('Teams/RefreshMembers', { orgId: S.orgs.details.orgId, teamId: S.teams.details.teamId }, function (result) {
+            S.ajax.post('Teams/RefreshMembers', { orgId: S.orgs.details.orgId, teamId: S.teams.details.teamId, onclick:'S.teams.members.details.show' }, function (result) {
                 $('.team-details .content-members').html(result);
                 S.teams.members.updateEvents();
             },
@@ -179,6 +179,15 @@
                 });
             });
             S.popup.resize();
+        },
+
+        details: {
+            show: function (userId, name) {
+                S.teams.details.popup.hide();
+                S.user.details.show(userId, S.teams.details.orgId, name, () => {
+                    S.teams.details.popup.show();
+                });
+            }
         }
     },
 

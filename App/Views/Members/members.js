@@ -7,20 +7,21 @@
             search: '',
         },
 
-        init: function (orgId, container) {
+        init: function (orgId, container, onclick) {
             S.members.search.orgId = orgId;
             //render search form with instructions
-            S.members.search.query(orgId, 1, 0, container, '');
+            S.members.search.query(orgId, 1, 0, container, '', onclick);
         },
 
-        query: function (orgId, page, length, container, search) {
-            S.members.search.cache = { page: page, length: length, search: search };
-            S.ajax.post('Members/RefreshList', { orgId: orgId, page: page, length: length, search: search }, (html) => {
+        query: function (orgId, page, length, container, search, onclick) {
+            S.members.search.cache = { page: page, length: length, search: search, onclick };
+            S.ajax.post('Members/RefreshList', { orgId: orgId, page: page, length: length, search: search, onclick:onclick }, (html) => {
                 if (length == 0) {
                     $(container).html(html);
+                    S.popup.resize();
                     $(container + ' .search-members form').on('submit', (e) => {
                         e.preventDefault();
-                        S.members.search.query(orgId, 1, 20, container, $(container + ' #search_members').val());
+                        S.members.search.query(orgId, 1, 20, container, $(container + ' #search_members').val(), onclick);
                         return false;
                     });
                 } else {

@@ -21,4 +21,6 @@ AS
 		SELECT @oldId=id FROM #tmp
 	END
 
+	EXEC Board_Modified @boardId=@boardId
+
 	SELECT @oldId
