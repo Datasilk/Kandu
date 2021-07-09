@@ -3,7 +3,8 @@
 	@cardId int
 AS
 	/* [0] Card Info */
-	SELECT c.*, l.[name] AS listName, l.archived AS listArchived, b.type AS boardType
+	SELECT c.*, l.[name] AS listName, l.archived AS listArchived, 
+	b.[type] AS boardType, b.[name] AS boardName, b.color AS boardColor
 	FROM Cards c
 	LEFT JOIN Lists l ON l.listId=c.listId
 	LEFT JOIN Boards b ON b.boardId=@boardId

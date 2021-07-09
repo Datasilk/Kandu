@@ -131,6 +131,11 @@
             $('.user-menu').addClass('hide');
             $('.bg-for-user-menu').addClass('hide');
             S.orgs.list.hide();
+        },
+
+        details: function (id, orgId, name) {
+            S.head.user.hide();
+            S.user.details.show(id, orgId, name);
         }
     }, 
 

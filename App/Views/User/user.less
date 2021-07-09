@@ -2,10 +2,12 @@
 
 }
 
-.content-cards{
-    &.kanban .list {width:100%; position:relative; height:auto;
+.content-cards{margin-top:10px;
+    h6{font-size:1rem;}
+    &.kanban .list {width:100%; position:relative; height:auto; padding:10px 0;
         .items{float:none;}
-        .item{float:none; width:315px; margin:4px 0;}
+        .item{float:none; width:312px; margin:4px 0;}
         .drag{float:left; padding:0 5px;}
+        &:after{content:''; display:block; clear:both;}
     }
 }

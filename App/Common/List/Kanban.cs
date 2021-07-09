@@ -1,11 +1,12 @@
 ﻿using System.Collections.Generic;
 using System.Text;
+using Kandu.Core;
 
 namespace Kandu.Common.List
 {
     public static class Kanban
     {
-        public static string RenderList(Query.Models.List list, List<Query.Models.Card> cards)
+        public static string RenderList(IRequest request, Query.Models.List list, List<Query.Models.Card> cards)
         {
             //load html templates
             var view = new View("/Views/List/Kanban/list.html");
@@ -14,7 +15,7 @@ namespace Kandu.Common.List
             //set up each card
             foreach (var card in cards)
             {
-                html.Append(Card.Kanban.RenderCard(card));
+                html.Append(Card.Kanban.RenderCard(request, card));
             }
 
             //set up list

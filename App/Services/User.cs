@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using System;
+using System.Text;
 
 namespace Kandu.Services
 {
@@ -14,7 +15,7 @@ namespace Kandu.Services
                 var user = Query.Users.AuthenticateUser(email, encrypted);
                 if (user != null)
                 {
-                    User.LogIn(user.userId, user.email, user.name, user.datecreated, "", user.photo);
+                    User.LogIn(user.userId, user.orgId, user.email, user.name, user.datecreated, "", user.photo);
                     User.Save(true);
 
                     if (user.lastboard == 0)
@@ -108,7 +109,6 @@ namespace Kandu.Services
             var contentHtml = new StringBuilder();
             var view = new View("/Views/User/details.html");
             var tab = new View("/Views/Shared/tab.html");
-            var html = new StringBuilder();
 
             //load cards tab
             tab["title"] = "Cards";
@@ -116,8 +116,7 @@ namespace Kandu.Services
             tab["onclick"] = "S.user.details.tabs.select('cards')";
             tab.Show("selected");
             tabHtml.Append(tab.Render());
-            html.Append(Common.Card.Kanban.RenderCardsForMember(userId, orgId));
-            contentHtml.Append("<div class=\"content-cards kanban\"><div class=\"list\"><div class=\"items\">" + html.ToString() + "</div></div></div>");
+            contentHtml.Append("<div class=\"content-cards kanban\">" + RenderCards(orgId, userId, 1, 20) + "</div>");
 
             //load boards tab
             tab.Clear();
@@ -159,6 +158,42 @@ namespace Kandu.Services
             }
             view["tabs"] = tabHtml.ToString();
             view["content"] = contentHtml.ToString();
+            return view.Render();
+        }
+
+        public string RenderCards(int orgId, int userId, int start = 1, int length = 20)
+        {
+            if (!CheckSecurity()) { return AccessDenied(); } //check security
+            var view = new View("/Views/User/cards.html");
+            var user = Query.Users.GetInfo(userId);
+            view["username"] = user.name;
+            var cards = Common.Card.Kanban.RenderCardsForMember(this, userId, orgId, start, length);
+            if(cards.Count > 0)
+            {
+                var html = new StringBuilder();
+                html.Append("<div class=\"col six\"><div class=\"list\"><div class=\"items\">");
+                for (var x = 0; x < cards.Count / 2; x++)
+                {
+                    html.Append(cards[x]);
+                }
+                html.Append("</div></div></div>");
+                if (cards.Count > 1)
+                {
+                    html.Append("<div class=\"col six\"><div class=\"list\"><div class=\"items\">");
+                    for (var x = cards.Count / 2; x < cards.Count; x++)
+                    {
+                        html.Append(cards[x]);
+                    }
+                    html.Append("</div></div></div>");
+                }
+                view["cards"] = html.ToString();
+            }
+            else
+            {
+                //no cards found
+                view.Show("no-cards");
+            }
+            
             return view.Render();
         }
         #endregion

@@ -92,7 +92,7 @@ namespace Kandu.Services
             switch (card.boardType)
             {
                 case Query.Models.Board.BoardType.kanban:
-                    return Common.Card.Kanban.RenderCard(card);
+                    return Common.Card.Kanban.RenderCard(this, card);
             }
             return "";
         }

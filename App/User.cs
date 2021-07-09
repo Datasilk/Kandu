@@ -15,6 +15,7 @@ namespace Kandu
         //fields saved into user session
         public int UserId { get; set; } = 0;
         public string VisitorId { get; set; } = "";
+        public int OrgId { get; set; }
         public string Email { get; set; } = "";
         public string Name { get; set; } = "";
         public string DisplayName { get; set; } = "";
@@ -68,12 +69,12 @@ namespace Kandu
                 if (user != null)
                 {
                     //persistant cookie was valid, log in
-                    LogIn(user.userId, user.email, user.name, user.datecreated, "", user.photo);
+                    LogIn(user.userId, user.orgId, user.email, user.name, user.datecreated, "", user.photo);
                 }
             }
         }
 
-        public void LogIn(int userId, string email, string name, DateTime datecreated, string displayName = "", bool photo = false)
+        public void LogIn(int userId, int orgId, string email, string name, DateTime datecreated, string displayName = "", bool photo = false)
         {
             this.UserId = userId;
             this.Email = email;

@@ -51,9 +51,9 @@ namespace Query
             );
         }
 
-        public static Models.Card GetDetails(int boardId, int cardId)
+        public static Models.CardBoard GetDetails(int boardId, int cardId)
         {
-            var list = Sql.Populate<Models.Card>(
+            var list = Sql.Populate<Models.CardBoard>(
                 "Card_GetDetails",
                 new { boardId, cardId }
             );
@@ -83,9 +83,9 @@ namespace Query
             );
         }
 
-        public static List<Models.Card> AssignedToMember(int userId, int orgId = 0, int start = 1, int length = 20, bool archivedOnly = false)
+        public static List<Models.CardBoard> AssignedToMember(int userId, int orgId = 0, int start = 1, int length = 20, bool archivedOnly = false)
         {
-            return Sql.Populate<Models.Card>(
+            return Sql.Populate<Models.CardBoard>(
                 "Cards_AssignedToMember",
                 new { userId, orgId, start, length, archivedOnly }
             );

@@ -1,5 +1,6 @@
 ﻿S.kanban = {
     init: function () {
+        if ($('.body > .kanban').length == 0) { return; }
         $('.btn-add-list').on('click', S.kanban.list.create.show);
         $('.kanban .lists .btn-close').on('click', S.kanban.list.create.cancel);
         $('.form-new-list > form').on('submit', function (e) {
@@ -37,6 +38,19 @@
         $(window).on('resize', S.kanban.list.resize);
         $(window).on('scroll', S.kanban.list.resize);
         S.kanban.list.resize();
+
+        //load card if card is in URL hash
+        var hash = S.util.url.hash.params();
+        console.log(hash);
+        if (hash.length > 0) {
+            var param = hash.filter(a => a.key == 'card');
+            if (param.length > 0) {
+                param = param[0];
+                var e = { target: $('.item.id-' + param.value)[0] };
+                console.log(e);
+                S.kanban.card.details(e);
+            }
+        }
     },
 
     scroll: {
@@ -472,6 +486,7 @@
 
     card: {
         selected: null,
+        boardId: null,
 
         create: {
             show: function (listid) {
@@ -571,13 +586,21 @@
             return S.util.element.getClassId(elem, 'id-');
         },
 
-        details: function (e) {
+        getBoardId: function (elem) {
+            if (!elem.hasClass('item')) { elem = elem.parents('.item').first(); }
+            return elem.attr('data-board-id');
+        },
+
+        details: function (e, callback) {
             if (S.kanban.card.drag.dragging == true) { return; }
             var elem = $(e.target);
 
             var id = S.kanban.card.getId(elem);
+            var boardId = S.kanban.card.getBoardId(elem);
+            S.kanban.card.boardId = boardId;
+
             var data = {
-                boardId: S.board.id,
+                boardId: boardId,
                 cardId: id
             };
             S.kanban.card.selected = {
@@ -585,12 +608,17 @@
                 listId: S.util.element.getClassId(elem.parents('.list'), 'id-'),
                 elem: $('.board .list .item.id-' + id)
             };
-            var popup = S.popup.show("", S.loader(), { width: 350 });
+            var popup = S.popup.show("", S.loader(), {width: 350});
             S.ajax.post('Card/Kanban/Details', data,
                 function (d) {
                     var card = d.split('|', 2);
                     S.popup.hide(popup);
-                    S.popup.show(card[0], card[1], { width: '90%', maxWidth: 750 });
+                    S.popup.show(card[0], card[1], {
+                        width: '90%', maxWidth: 750,
+                        onClose: function () {
+                            if (callback) { callback(); }
+                        }
+                    });
                     $('.popup .card-field-title').on('click', S.kanban.card.title.edit);
                     $('.popup .btn-archive a').off('click').on('click', S.kanban.card.archive);
                     $('.popup .btn-restore a').off('click').on('click', S.kanban.card.restore);
@@ -601,6 +629,7 @@
                     S.kanban.card.description.markdown();
                     S.kanban.card.title.edit();
                     S.kanban.card.title.cancel();
+                    S.popup.resize();
                 },
                 function () {
                     S.message.show('.board .message', "error", S.message.error.generic);
@@ -788,7 +817,7 @@
                                 });
                                 S.kanban.list.resize(listId);
 
-                                S.ajax.post('Card/Kanban/Move', { boardId: S.board.id, listId: listId, cardId: S.util.element.getClassId(item.elem), cardIds: cards });
+                                S.ajax.post('Card/Kanban/Move', { boardId: S.kanban.card.boardId, listId: listId, cardId: S.util.element.getClassId(item.elem), cardIds: cards });
                             }
                             setTimeout(function () { S.kanban.card.drag.dragging = false; }, 100);
                         },
@@ -843,7 +872,7 @@
 
         archive: function () {
             var data = {
-                boardId: S.board.id,
+                boardId: S.kanban.card.boardId,
                 cardId: S.kanban.card.selected.id
             };
             S.ajax.post('Cards/Archive', data,
@@ -870,7 +899,7 @@
 
         restore: function () {
             var data = {
-                boardId: S.board.id,
+                boardId: S.kanban.card.boardId,
                 cardId: S.kanban.card.selected.id
             };
             S.ajax.post('Cards/Restore', data,
@@ -897,7 +926,7 @@
 
         delete: function () {
             var data = {
-                boardId: S.board.id,
+                boardId: S.kanban.card.boardId,
                 cardId: S.kanban.card.selected.id
             };
             S.ajax.post('Cards/Delete', data,
@@ -971,7 +1000,7 @@
                 S.kanban.card.title.cancel();
                 if (input.val().trim() == S.kanban.card.title.cached) { return false; }
                 var data = {
-                    boardId: S.board.id,
+                    boardId: S.kanban.card.boardId,
                     cardId: S.kanban.card.selected.id,
                     name: input.val()
                 };
@@ -1045,7 +1074,7 @@
 
             update: function (e) {
                 var data = {
-                    boardId: S.board.id,
+                    boardId: S.kanban.card.boardId,
                     cardId: S.kanban.card.selected.id,
                     description: $('#card_description').val()
                 };

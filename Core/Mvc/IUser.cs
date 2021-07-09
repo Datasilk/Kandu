@@ -7,6 +7,7 @@ namespace Kandu.Core
     public interface IUser
     {
         int UserId { get; set; }
+        int OrgId { get; set; }
         string VisitorId { get; set; }
         string Email { get; set; }
         string Name { get; set; }
@@ -20,7 +21,7 @@ namespace Kandu.Core
         List<int> Boards { get; set; }
 
         IUser SetContext(HttpContext context);
-        void LogIn(int userId, string email, string name, DateTime datecreated, string displayName = "", bool photo = false);
+        void LogIn(int userId, int orgId, string email, string name, DateTime datecreated, string displayName = "", bool photo = false);
         void LogOut();
         void Save(bool changed = false);
 

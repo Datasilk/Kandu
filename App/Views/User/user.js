@@ -19,6 +19,8 @@
                         if (callback) { callback(); }
                     }
                 });
+
+
                 //add events to fields
                 $('.user-form input').on('keyup, change', () => {
                     $('.user-form a.apply').removeClass('hide');
@@ -37,6 +39,12 @@
 
                 //set up custom scrollbars
                 S.scrollbar.add('.user-details .tab-content', { touch: true });
+
+                //load kanban css & js for card styling & card details
+                S.boards.loadKanbanCss();
+                S.boards.loadKanbanJs(() => {
+                    S.user.cards.init();
+                });
             });
         },
 
@@ -81,6 +89,19 @@
                 $('.user-details .content-' + id).show();
                 S.popup.resize();
             }
+        }
+    },
+
+    cards: {
+        init: function () {
+            //add click event to cards
+            $('.user-details .content-cards .item').on('click', (e) => {
+                S.user.details.popup.hide();
+                S.kanban.card.details(e, () => {
+                    S.user.details.popup.show();
+                    S.popup.resize();
+                });
+            });
         }
     },
 

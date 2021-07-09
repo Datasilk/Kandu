@@ -93,6 +93,7 @@ paths.working = {
 
     dashboard: {
         js: [
+            paths.scripts + 'utility.js',
             paths.app + 'views/organizations/organizations.js',
             paths.app + 'views/teams/teams.js',
             paths.app + 'views/members/members.js',

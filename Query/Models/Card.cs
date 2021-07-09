@@ -6,7 +6,8 @@ namespace Query.Models
     {
         public enum CardLayout : int
         {
-            generic = 0
+            generic = 0,
+            custom = 1
         }
 
         public int cardId { get; set; }
@@ -25,5 +26,11 @@ namespace Query.Models
         public string listName { get; set; }
         public bool listArchived { get; set; }
         public string json { get; set; }
+    }
+
+    public class CardBoard: Card
+    {
+        public string boardColor { get; set; }
+        public string boardName { get; set; }
     }
 }

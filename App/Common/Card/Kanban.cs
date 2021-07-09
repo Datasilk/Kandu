@@ -1,11 +1,12 @@
 ﻿using System;
-using System.Text;
+using System.Collections.Generic;
+using Kandu.Core;
 
 namespace Kandu.Common.Card
 {
     public static class Kanban
     {
-        public static string RenderCard(Query.Models.Card card)
+        public static string RenderCard(IRequest request, Query.Models.Card card, string boardColor = "", string boardName = "")
         {
             var useLayout = false;
             View cardview;
@@ -19,6 +20,12 @@ namespace Kandu.Common.Card
                 //header
                 cardview = new View("/Views/Card/Kanban/Type/header.html");
                 cardview["name"] = card.name.TrimStart(new char[] { '#', ' ' });
+            }
+            else if(card.layout == Query.Models.Card.CardLayout.custom && card.type != "" && Core.Vendors.Cards.ContainsKey(card.type))
+            {
+                //custom card from vendor plugin
+                var vendor = Core.Vendors.Cards[card.type];
+                return vendor.Render(request);
             }
             else
             {
@@ -49,7 +56,15 @@ namespace Kandu.Common.Card
                 
                 view["colors"] = "";
 
+                if(boardColor != "")
+                {
+                    view.Show("has-board-color");
+                    view["board-color"] = "#" + boardColor;
+                    view["board-name"] = boardName;
+                }
+
                 //render custom design inside card container
+                cardview["boardid"] = card.boardId.ToString();
                 cardview["layout"] = view.Render();
             }
 
@@ -66,6 +81,11 @@ namespace Kandu.Common.Card
             {
                 var card = Query.Cards.GetDetails(boardId, cardId);
                 var view = new View("/Views/Card/Kanban/details.html");
+                view["card-id"] = cardId.ToString();
+                view["board-id"] = boardId.ToString();
+                view["board-url"] = Boards.GetUrl(boardId, card.boardName);
+                view["board-name"] = card.boardName;
+                view["board-color"] = card.boardColor;
                 view["title"] = card.name;
                 view["list-name"] = card.listName;
                 view["description"] = card.description;
@@ -82,15 +102,18 @@ namespace Kandu.Common.Card
             }
         }
 
-        public static string RenderCardsForMember(int userId, int orgId = 0)
+        public static List<string> RenderCardsForMember(IRequest request, int userId, int orgId = 0, int start = 1, int length = 20)
         {
-            var html = new StringBuilder();
-            var cards = Query.Cards.AssignedToMember(userId, orgId);
+            var html = new List<string>();
+            var cards = Query.Cards.AssignedToMember(userId, orgId, start, length);
+            var x = 0;
             foreach (var card in cards)
             {
-                html.Append(RenderCard(card) + "\n");
+                x++;
+                if (x > length) break;
+                html.Add(RenderCard(request, card, card.boardColor, card.boardName) + "\n");
             }
-            return html.ToString();
+            return html;
         }
     }
 }

@@ -8,6 +8,11 @@ namespace Kandu.Common
 {
     public static class Boards
     {
+        public static string GetUrl(int boardId, string name)
+        {
+            return Uri.EscapeUriString("/board/" + boardId + "/" + name.Replace(" ", "-").ToLower());
+        }
+
         public static int Create(Core.IRequest request, string name, string color, int orgId, string cardtype)
         {
             try
@@ -110,7 +115,7 @@ namespace Kandu.Common
                 item["id"] = b.boardId.ToString();
                 item["orgId"] = orgId.ToString();
                 item["type"] = b.type.ToString();
-                item["url"] = Uri.EscapeUriString("/board/" + b.boardId + "/" + b.name.Replace(" ", "-").ToLower());
+                item["url"] = GetUrl(b.boardId, b.name);
                 html.Append(item.Render());
             });
             createView["onclick"] = "S.boards.add.show(null, null, '', " + orgId + ")";

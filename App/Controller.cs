@@ -70,7 +70,7 @@ namespace Kandu
                 }
 
                 //load user menu
-                view.Child("header")["user-menu"] = Common.User.RenderUserMenu();
+                view.Child("header")["user-menu"] = Common.User.RenderUserMenu(this);
                 
                 //load organization templates
                 view.Child("header")["org-menu"] = Common.Organizations.RenderOrgListModal(this);

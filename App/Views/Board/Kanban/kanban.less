@@ -48,6 +48,7 @@ body{overflow:hidden; overscroll-behavior-x: contain;}
             .checkmark{display:inline-block; padding:0 5px 0 0; position:relative; top:2px;
                 svg{width:16px; height:16px;}
             }
+            .board-color{width:7px; height:44px; border-radius:5px; float:left; margin:0 10px 0 0;}
         }
         .list-items{position:relative;}
         .movable{position:relative; max-width:224px;}
@@ -104,6 +105,9 @@ body{overflow:hidden; overscroll-behavior-x: contain;}
 /* card details popup /////////////////////////// */
 .box .popup{
     .title{max-width:~"calc(100% - 30px)";}
+    .card-sub-title{
+        .board-color{width:10px; height:18px; margin:0 0 0 5px; display:inline-block; position:relative; top:3px; border-radius:4px;}
+    }
     .card-field-title{position:absolute; top:9px; left:9px; width:~"calc(100% - 48px)";
         textarea{font-size:1.3rem !important; line-height:1.25; overflow:hidden;}
         .textarea-clone{opacity:0; position:absolute; z-index:-1; width:100%; height:0px; top:0;

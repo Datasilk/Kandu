@@ -5,7 +5,7 @@
         public string LoadCardHtml(Query.Models.Card card)
         {
             if (!CheckSecurity()) { return AccessDenied(); }
-            return Common.Card.Kanban.RenderCard(card);
+            return Common.Card.Kanban.RenderCard(this, card);
         }
 
         public string Details(int boardId, int cardId)

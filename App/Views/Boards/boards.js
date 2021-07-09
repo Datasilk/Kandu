@@ -176,5 +176,20 @@
                 S.boards.colorPicker.callback(color);
             }
         }
+    },
+
+    loadKanbanCss: function () {
+        S.util.css.load('/css/views/board/kanban/kanban.css', 'kanban_css');
+    },
+
+    loadKanbanJs: function (callback) {
+        if ($('script[src]').filter((i, a) => {
+            console.log(a);
+            return a.getAttribute('src').indexOf('/js/views/board/board.js') >= 0;
+        }).length > 0) {
+            if (callback) { callback();}
+            return;
+        }
+        S.util.js.load('/js/views/board/kanban/kanban.js', 'kanban_js', callback);
     }
 };

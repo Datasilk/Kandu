@@ -21,7 +21,7 @@ namespace Kandu.Services
             switch (board.type)
             {
                 case 0: //Kanban;
-                    return Common.List.Kanban.RenderList(
+                    return Common.List.Kanban.RenderList(this,
                         new Query.Models.List() { boardId = boardId, name = name, sort = sort, listId = id },
                         new List<Query.Models.Card>()
                     );
