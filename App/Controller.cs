@@ -73,7 +73,7 @@ namespace Kandu
                 view.Child("header")["user-menu"] = Common.User.RenderUserMenu(this);
                 
                 //load organization templates
-                view.Child("header")["org-menu"] = Common.Organizations.RenderOrgListModal(this);
+                view.Child("header")["org-menu"] = Common.Organizations.RenderList(this);
                 view.Child("header")["org-templates"] = Cache.LoadFile("/Views/Organizations/templates.html"); ;
             }
             else

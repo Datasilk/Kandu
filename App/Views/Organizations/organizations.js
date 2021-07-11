@@ -114,7 +114,7 @@ S.orgs = {
         popup: null,
         orgId: null,
 
-        show: function (id, title) {
+        show: function (id, title, callback) {
             S.ajax.post('Organizations/Details', { orgId: id }, (result) => {
                 S.orgs.details.orgId = id;
                 S.orgs.details.popup = S.popup.show(title, result, {
@@ -124,7 +124,8 @@ S.orgs = {
                         var content = $('.org-details .tab-content');
                         var rect = content[0].getBoundingClientRect();
                         content.css({ 'max-height': (win.h - rect.top - 40) + 'px' });
-                    }
+                    },
+                    onClose: callback
                 });
                 //add events to fields
                 $('.org-form input').on('keyup, change', () => {

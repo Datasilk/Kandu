@@ -251,6 +251,18 @@ namespace Kandu.Services
             return view.Render();
         }
 
+        public string RefreshBoards(int userId)
+        {
+            if (!CheckSecurity()) { return AccessDenied(); } //check security
+            return Common.Boards.RenderList(this);
+        }
+
+        public string RefreshOrganizations(int userId)
+        { 
+            if (!CheckSecurity()) { return AccessDenied(); } //check security
+            return Common.Organizations.RenderListItems(this, "S.user.orgs.details");
+        }
+
         public string RefreshAccount(int userId)
         {
             if (userId != User.UserId) { return AccessDenied(); } //check security

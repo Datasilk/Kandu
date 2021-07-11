@@ -107,19 +107,55 @@
 
     boards: {
         show: function () {
+            var content = $('.user-details .content-boards');
+            if (content.html().trim() == '') {
+                //load user account
+                S.user.boards.refresh();
+            }
+        },
 
-        }
+        refresh: function () {
+            S.ajax.post('User/RefreshBoards', { userId: S.user.details.userId }, function (result) {
+                var content = $('.user-details .content-boards');
+                content.html(result);
+                S.popup.resize();
+            },
+                (err) => {
+
+                });
+        },
     },
 
     orgs: {
         show: function () {
+            var content = $('.user-details .content-orgs');
+            if (content.html().trim() == '') {
+                //load user account
+                S.user.orgs.refresh();
+            }
+        },
 
+        refresh: function () {
+            S.ajax.post('User/RefreshOrganizations', { userId: S.user.details.userId }, function (result) {
+                var content = $('.user-details .content-orgs');
+                content.html(result);
+                S.popup.resize();
+            },
+            (err) => {
+
+            });
+        },
+
+        details: function (orgId, title) {
+            S.user.details.popup.hide();
+            S.orgs.details.show(orgId, title, () => {
+                S.user.details.popup.show();
+            });
         }
     },
 
     account: {
         show: function () {
-            S.teams.details.tabs.select('account');
             var content = $('.user-details .content-account');
             if (content.html().trim() == '') {
                 //load user account
@@ -137,9 +173,9 @@
                 });
                 S.popup.resize();
             },
-                (err) => {
+            (err) => {
 
-                });
+            });
         },
 
         changeEmail: function () {

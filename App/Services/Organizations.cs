@@ -52,7 +52,7 @@ namespace Kandu.Services
         public string RefreshListMenu()
         {
             if (!CheckSecurity()) { return AccessDenied(); } //check security
-            return Common.Organizations.RenderOrgListModal(this);
+            return Common.Organizations.RenderList(this);
         }
 
         public string Details(int orgId)

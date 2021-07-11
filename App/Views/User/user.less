@@ -8,6 +8,24 @@
     }
 }
 
+.content-orgs{
+    .org-item{float:left; width:~"calc(33% - 6px)";}
+}
+
 .content-account{
     .col.field.long{width:140px;}
+}
+
+.content-boards{
+    .board{float:left; width:~"calc(33% - 8px)"; height:72px; margin:5px; border-radius:5px; color:#fff; cursor:pointer;
+        a{color:#fff !important; padding:5px 15px; text-overflow:ellipsis; overflow:hidden; white-space:normal; display:inline-block;}
+        a:active, a:hover{text-decoration:none;}
+        .options{display:none;}
+    }
+    .org-head{width:100%; 
+        h1{font-size:1.7rem;}
+    }
+    .org-boards{
+        &:after{content:''; display:block; clear:both;}
+    }
 }

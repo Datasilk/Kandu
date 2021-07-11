@@ -1,29 +1,36 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using Kandu.Core;
 
 namespace Kandu.Common
 {
     public static class Organizations
     {
 
-        public static string RenderOrgListModal(Core.IRequest request)
+        public static string RenderList(IRequest request, string onclick = "S.orgs.details.show")
         {
-            var html = new StringBuilder();
             var section = new View("/Views/Organizations/list.html");
-            var item = new View("/Views/Organizations/list-item.html");
-            var orgs = Query.Organizations.UserIsPartOf(request.User.UserId);
-            foreach(var org in orgs)
-            {
-                item.Clear();
-                item.Bind(new { org });
-                html.Append(item.Render());
-            }
-            section["list"] = html.ToString();
+            section["list"] = RenderListItems(request, onclick);
             return section.Render();
         }
 
-        public static int Create(Core.IRequest request, string name, string description, string website)
+        public static string RenderListItems(IRequest request, string onclick = "S.orgs.details.show")
+        {
+            var html = new StringBuilder();
+            var item = new View("/Views/Organizations/list-item.html");
+            var orgs = Query.Organizations.UserIsPartOf(request.User.UserId);
+            foreach (var org in orgs)
+            {
+                item.Clear();
+                item.Bind(new { org });
+                item["onclick"] = (onclick != "" ? onclick : "S.orgs.details.show") + "(" + org.orgId + ", '" + org.name + "')";
+                html.Append(item.Render());
+            }
+            return html.ToString();
+        }
+
+        public static int Create(IRequest request, string name, string description, string website)
         {
             try
             {
