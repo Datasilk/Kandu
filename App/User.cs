@@ -197,6 +197,72 @@ namespace Kandu
             return Keys.ContainsKey(orgId);
         }
 
+        public void ValidatePassword(string password)
+        {
+            //set default settings
+            var minChars = 6;
+            var maxChars = 24;
+            var minNumbers = 1;
+            var minUppercase = 1;
+            var minSpecialChars = 0;
+            var noSpaces = false;
+
+            //validate password
+            if (password.Length < minChars)
+            {
+                throw new Exception("Password must be at least " + minChars + " characters in length");
+            }
+            if (password.Length > maxChars)
+            {
+                throw new Exception("Password must be less than " + (maxChars + 1) + " characters in length");
+            }
+            char lastchar = char.MaxValue;
+            var numbers = 0;
+            var uppercase = 0;
+            var special = 0;
+            var spaces = 0;
+            var consecutives = 0;
+            var maxconsecutives = 0;
+            for (var x = 0; x < password.Length; x++)
+            {
+                var p = password[x];
+                if (lastchar == p)
+                {
+                    consecutives++;
+                    if (consecutives > maxconsecutives)
+                    {
+                        maxconsecutives = consecutives;
+                    }
+                }
+                else if (consecutives > 0)
+                {
+                    consecutives = 0;
+                }
+                if (char.IsNumber(p)) { numbers++; }
+                else if (char.IsUpper(p)) { uppercase++; }
+                else if (p == ' ') { spaces++; }
+                else if (char.IsLetter(p)) { }
+                else { special++; }
+            }
+
+            if (numbers < minNumbers)
+            {
+                throw new Exception("Password must contain at least " + minNumbers + " number" + (minNumbers > 1 ? "s" : ""));
+            }
+            if (numbers < minUppercase)
+            {
+                throw new Exception("Password must contain at least " + minUppercase + " uppercase letter" + (minUppercase > 1 ? "s" : ""));
+            }
+            if (numbers < minSpecialChars)
+            {
+                throw new Exception("Password must contain at least " + minSpecialChars + " special character" + (minSpecialChars > 1 ? "s" : ""));
+            }
+            if (noSpaces && spaces > 0)
+            {
+                throw new Exception("Password cannot contain spaces");
+            }
+        }
+
         #region "Helpers"
 
         private static string GetString(byte[] bytes)

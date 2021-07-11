@@ -1,0 +1,35 @@
+﻿<div class="row hover">
+    <div class="col field long">Your Name</div>
+    <div class="col input"><input type="text" id="user_name" maxlength="64" value="{{user.name}}" /></div>
+</div>
+<div class="row hover change-email">
+    <div class="col field long">Email</div>
+    <div class="col text">{{user.email}}</div>
+    <div class="col text right"><a href="javascript:" onclick="S.user.account.changeEmail()">change email</a></div>
+</div>
+<div class="row hover hide update-email">
+    <div class="col field long">Email</div>
+    <div class="col input"><input type="email" id="user_email" value="{{user.email}}" maxlength="64" placeholder="nemo.1998@hotmail.com" /></div>
+    <div class="col text right"><a href="javacript:" onclick="S.user.account.cancelEmail()">cancel</a></div>
+</div>
+<div class="row hover hide new-pass current-pass">
+    <div class="col field long">Current Password</div>
+    <div class="col input"><input type="password" id="oldpass" maxlength="24" /></div>
+</div>
+<div class="row hover change-pass">
+    <div class="col field long">Password</div>
+    <div class="col text">******</div>
+    <div class="col text right"><a href="javacript:" onclick="S.user.account.changePass()">change password</a></div>
+</div>
+<div class="row hover hide new-pass">
+    <div class="col field long">New Password</div>
+    <div class="col input"><input type="password" id="newpass1" maxlength="24" /></div>
+</div>
+<div class="row hover hide new-pass">
+    <div class="col field long">New Password</div>
+    <div class="col input"><input type="password" id="newpass2" maxlength="24" /></div>
+    <div class="col text right"><a href="javacript:" onclick="S.user.account.cancelPass()">cancel</a></div>
+</div>
+<div class="row buttons pad-top text-center">
+    <a href="javascript:" class="button apply btn-save-account hide" onclick="S.user.account.save()">Save Changes</a>
+</div>

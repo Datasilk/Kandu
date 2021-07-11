@@ -57,10 +57,17 @@ namespace Query
             );
         }
 
-        public static void UpdateEmail(int userId, string email)
+        public static void UpdateEmail(int userId, string email, string password)
         {
             Sql.ExecuteNonQuery("User_UpdateEmail",
-                new { userId, email }
+                new { userId, email, password }
+            );
+        }
+
+        public static void UpdateName(int userId, string name)
+        {
+            Sql.ExecuteNonQuery("User_UpdateName",
+                new { userId, name }
             );
         }
 

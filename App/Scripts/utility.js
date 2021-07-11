@@ -15,4 +15,4 @@ S.util.url = {
             return arr;
         }
     }
-}
+};

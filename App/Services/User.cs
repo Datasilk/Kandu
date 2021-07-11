@@ -9,21 +9,25 @@ namespace Kandu.Services
         public string Authenticate(string email, string password)
         {
             var encrypted = Query.Users.GetPassword(email);
-            if (!DecryptPassword(email, password, encrypted)) { return Error(); }
+            try
             {
-                //password verified by Bcrypt
-                var user = Query.Users.AuthenticateUser(email, encrypted);
-                if (user != null)
-                {
-                    User.LogIn(user.userId, user.orgId, user.email, user.name, user.datecreated, "", user.photo);
-                    User.Save(true);
+                if (!DecryptPassword(email, password, encrypted)) { return Error(); }
+            }
+            catch (Exception)
+            {
+                return Error();
+            }
+            var user = Query.Users.AuthenticateUser(email, encrypted);
+            if (user != null)
+            {
+                User.LogIn(user.userId, user.orgId, user.email, user.name, user.datecreated, "", user.photo);
+                User.Save(true);
 
-                    if (user.lastboard == 0)
-                    {
-                        return "boards";
-                    }
-                    return "board/" + user.lastboard + "/" + user.lastboardName.Replace(" ", "-").ToLower();
+                if (user.lastboard == 0)
+                {
+                    return "boards";
                 }
+                return "board/" + user.lastboard + "/" + user.lastboardName.Replace(" ", "-").ToLower();
             }
             return Error("Incorrect email and/or password");
         }
@@ -56,6 +60,26 @@ namespace Kandu.Services
         {
             if (Server.HasAdmin == false && App.Environment == Environment.development)
             {
+                //validate email
+                if (!Utility.Strings.Validation.IsEmail(email))
+                {
+                    return Error("Please provide a valid email address");
+                }
+                //validate password strength
+                try
+                {
+                    User.ValidatePassword(password);
+                }
+                catch (Exception ex)
+                {
+                    return Error(ex.Message);
+                }
+                //check name
+                if (string.IsNullOrEmpty(name))
+                {
+                    return Error("Please provide your name");
+                }
+
                 Query.Users.CreateUser(new Query.Models.User()
                 {
                     name = name,
@@ -71,6 +95,25 @@ namespace Kandu.Services
 
         public string CreateAccount(string name, string email, string password)
         {
+            //validate email
+            if (!Utility.Strings.Validation.IsEmail(email)) { 
+                return Error("Please provide a valid email address"); 
+            }
+            //validate password strength
+            try
+            {
+                User.ValidatePassword(password);
+            }catch(Exception ex)
+            {
+                return Error(ex.Message);
+            }
+            //check name
+            if (string.IsNullOrEmpty(name))
+            {
+                return Error("Please provide your name");
+            }
+
+            //finally, create user
             Query.Users.CreateUser(new Query.Models.User()
             {
                 name = name,
@@ -134,6 +177,17 @@ namespace Kandu.Services
             tabHtml.Append(tab.Render());
             contentHtml.Append("<div class=\"content-orgs pad-top\"></div>");
 
+            //load account tab
+            if(userId == User.UserId)
+            {
+                tab.Clear();
+                tab["title"] = "Account";
+                tab["id"] = "account";
+                tab["onclick"] = "S.user.details.tabs.select('account')";
+                tabHtml.Append(tab.Render());
+                contentHtml.Append("<div class=\"content-account pad-top\"></div>");
+            }
+
             //load security tab
             tab.Clear();
             tab["title"] = "Security Groups";
@@ -144,7 +198,7 @@ namespace Kandu.Services
 
             //load email settings tab
             tab.Clear();
-            tab["title"] = "Email Settings";
+            tab["title"] = "Emails";
             tab["id"] = "email-settings";
             tab["onclick"] = "S.user.details.tabs.select('email-settings')";
             tabHtml.Append(tab.Render());
@@ -195,6 +249,67 @@ namespace Kandu.Services
             }
             
             return view.Render();
+        }
+
+        public string RefreshAccount(int userId)
+        {
+            if (userId != User.UserId) { return AccessDenied(); } //check security
+            var view = new View("/Views/User/account.html");
+            var user = Query.Users.GetInfo(userId);
+            view.Bind(new { user });
+            return view.Render();
+        }
+
+        public string UpdateInfo(int userId, string name, string email, string oldpass, string newpass1, string newpass2)
+        {
+            if (!CheckSecurity()) { return AccessDenied(); } //check security
+            if(userId == User.UserId)
+            {
+                //only users can change their own user information
+                var user = Query.Users.GetInfo(userId);
+
+                if (email != "" && user.email != email)
+                {
+                    //validate email
+                    if (!Utility.Strings.Validation.IsEmail(email))
+                    {
+                        return Error("Please provide a valid email address");
+                    }
+                    //authenticate user
+                    if (!DecryptPassword(user.email, oldpass, user.password)) { 
+                        return Error("Incorrect password"); 
+                    }
+
+                    Query.Users.UpdateEmail(userId, email, EncryptPassword(email, oldpass));
+                }
+
+                if(newpass1 != "")
+                {
+                    //authenticate user
+                    if (!DecryptPassword(user.email, oldpass, user.password))
+                    {
+                        return Error("Incorrect password");
+                    }
+                    //update password
+                    if (newpass1 != newpass2) { return Error("Passwords do not match"); }
+                    try
+                    {
+                        User.ValidatePassword(newpass1);
+                    }
+                    catch (Exception ex)
+                    {
+                        return Error(ex.Message);
+                    }
+                    Query.Users.UpdatePassword(userId, EncryptPassword(email, newpass1));
+                }
+
+                //update other info
+                if(name != "" && name != user.name)
+                {
+                    Query.Users.UpdateName(userId, name);
+                }
+            }
+            return Success();
         }
         #endregion
     }

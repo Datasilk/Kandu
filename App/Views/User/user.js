@@ -20,7 +20,6 @@
                     }
                 });
 
-
                 //add events to fields
                 $('.user-form input').on('keyup, change', () => {
                     $('.user-form a.apply').removeClass('hide');
@@ -34,6 +33,7 @@
                 $('.user-details .content-cards').show();
                 $('.user-details .tab-boards').on('click', S.user.boards.show);
                 $('.user-details .tab-orgs').on('click', S.user.orgs.show);
+                $('.user-details .tab-account').on('click', S.user.account.show);
                 $('.user-details .tab-security').on('click', S.user.security.show);
                 $('.user-details .tab-email-settings').on('click', S.user.email.show);
 
@@ -114,6 +114,81 @@
     orgs: {
         show: function () {
 
+        }
+    },
+
+    account: {
+        show: function () {
+            S.teams.details.tabs.select('account');
+            var content = $('.user-details .content-account');
+            if (content.html().trim() == '') {
+                //load user account
+                S.user.account.refresh();
+            }
+        },
+
+        refresh: function () {
+            S.ajax.post('User/RefreshAccount', { orgId: S.orgs.details.orgId, userId: S.user.details.userId }, function (result) {
+                var content = $('.user-details .content-account');
+                content.html(result);
+                var savebtn = $('.user-details .btn-save-account');
+                content.find('select, input').on('keyup, change', () => {
+                    savebtn.removeClass('hide');
+                });
+                S.popup.resize();
+            },
+                (err) => {
+
+                });
+        },
+
+        changeEmail: function () {
+            $('.change-email').hide();
+            $('.update-email').removeClass('hide');
+            $('.current-pass').removeClass('hide');
+
+        },
+
+        changePass: function () {
+            $('.change-pass').hide();
+            $('.new-pass').removeClass('hide');
+        },
+
+        cancelEmail: function () {
+            $('.change-email').show();
+            $('.update-email').addClass('hide');
+            if ($('.new-pass').hasClass('hide')) {
+                $('.current-pass').addClass('hide');
+            }
+        },
+
+        cancelPass: function () {
+            $('.change-pass').show();
+            $('.new-pass').addClass('hide');
+            if (!$('.update-email').hasClass('hide')) {
+                $('.current-pass').removeClass('hide');
+            }
+        },
+
+        save: function () {
+            var msg = $('.popup.show .message');
+            var data = {
+                userId: S.user.details.userId,
+                name: $('#user_name').val(),
+                email: $('#user_email').val(),
+                oldpass: $('#oldpass').val(),
+                newpass1: $('#newpass1').val(),
+                newpass2: $('#newpass2').val()
+            }
+            S.ajax.post('User/UpdateInfo', data, 
+                function (data) {
+                    S.message.show(msg, null, 'Account settings were updated successfully');
+                },
+                function (e) {
+                    S.message.show(msg, 'error', e.responseText);
+                    return;
+                }
+            );
         }
     },
 
