@@ -32,7 +32,7 @@
                 $('.user-details .movable > div').hide();
                 $('.user-details .content-cards').show();
                 $('.user-details .tab-boards').on('click', S.user.boards.show);
-                $('.user-details .tab-orgs').on('click', S.user.orgs.show);
+                $('.user-details .tab-teams').on('click', S.user.teams.show);
                 $('.user-details .tab-account').on('click', S.user.account.show);
                 $('.user-details .tab-security').on('click', S.user.security.show);
                 $('.user-details .tab-email-settings').on('click', S.user.email.show);
@@ -126,18 +126,18 @@
         },
     },
 
-    orgs: {
+    teams: {
         show: function () {
-            var content = $('.user-details .content-orgs');
+            var content = $('.user-details .content-teams');
             if (content.html().trim() == '') {
                 //load user account
-                S.user.orgs.refresh();
+                S.user.teams.refresh();
             }
         },
 
         refresh: function () {
-            S.ajax.post('User/RefreshOrganizations', { userId: S.user.details.userId }, function (result) {
-                var content = $('.user-details .content-orgs');
+            S.ajax.post('User/RefreshTeams', { userId: S.user.details.userId }, function (result) {
+                var content = $('.user-details .content-teams');
                 content.html(result);
                 S.popup.resize();
             },
@@ -230,13 +230,50 @@
 
     security: {
         show: function () {
+            var content = $('.user-details .content-security');
+            console.log(content);
+            if (content.html().trim() == '') {
+                //load security groups
+                S.user.security.refresh();
+            }
+        },
 
+        refresh: function () {
+            S.ajax.post('SecurityGroups/RefreshListForUser', { userId: S.user.details.userId }, function (result) {
+                $('.user-details .content-security').html(result);
+                S.popup.resize();
+            },
+            (err) => {
+
+            });
+        },
+
+        details: function (groupId, name) {
+            S.user.details.popup.hide();
+            S.security.details.show(groupId, name, () => {
+                S.user.details.popup.show();
+            });
         }
     },
 
     email: {
         show: function () {
+            var content = $('.user-details .content-email-settings');
+            console.log(content);
+            if (content.html().trim() == '') {
+                //load email settings
+                S.user.email.refresh();
+            }
+        },
 
-        }
+        refresh: function () {
+            S.ajax.post('User/RefreshEmailSettings', { userId: S.user.details.userId }, function (result) {
+                $('.user-details .content-email-settings').html(result);
+                S.popup.resize();
+            },
+                (err) => {
+
+                });
+        },
     },
 };

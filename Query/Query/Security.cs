@@ -45,9 +45,14 @@ namespace Query
             return Sql.Populate<Models.SecurityGroup>("SecurityGroups_GetList", new { orgId });
         }
 
-        public static List<Models.SecurityGroup> GetGroups(int orgId, int userId)
+        public static List<Models.SecurityGroup> GetGroups(int orgId, int spUserId)
         {
-            return Sql.Populate<Models.SecurityGroup>("SecurityGroups_GetListForUser", new { orgId, userId });
+            return Sql.Populate<Models.SecurityGroup>("SecurityGroups_GetListForUser", new { orgId, spUserId });
+        }
+
+        public static List<Models.SecurityGroup> GetGroupsForUser(int spUserId, int userId)
+        {
+            return Sql.Populate<Models.SecurityGroup>("SecurityGroups_GetListForUser", new { orgId = 0, spUserId, userId });
         }
 
         public static Models.SecurityGroup GroupInfo(int groupId)

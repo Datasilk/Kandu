@@ -119,7 +119,6 @@ paths.compiled = {
     platform: paths.webroot + 'js/platform.js',
     js: paths.webroot + 'js/',
     css: paths.webroot + 'css/',
-    app: paths.webroot + 'css/',
     themes: paths.webroot + 'css/themes/'
 };
 
@@ -196,7 +195,7 @@ gulp.task('less:app', function () {
             path.extname = path.extname.toLowerCase();
         }));
     if(prod == true){ p = p.pipe(cleancss({compatibility: 'ie8'})); }
-    return p.pipe(gulp.dest(paths.compiled.app, { overwrite: true }));
+    return p.pipe(gulp.dest(paths.compiled.css, { overwrite: true }));
 });
 
 gulp.task('less:platform', function () {
@@ -230,7 +229,7 @@ gulp.task('css:app', function () {
             path.extname = path.extname.toLowerCase();
         }));
     if (prod == true) { p = p.pipe(cleancss({ compatibility: 'ie8' })); }
-    return p.pipe(gulp.dest(paths.compiled.app, { overwrite: true }));
+    return p.pipe(gulp.dest(paths.compiled.css, { overwrite: true }));
 });
 
 gulp.task('css:utility', function () {
@@ -278,14 +277,60 @@ gulp.task('watch', function () {
     
     //watch app JS
     var pathjs = [paths.working.js.app, ...paths.working.exclude.app.map(a => a + '*.js')];
-    gulp.watch(pathjs, gulp.series('js:app'));
-
-    //watch dashboard JS
-    gulp.watch(paths.working.dashboard.js, gulp.series('js:dashboard'));
+    var watchAppJs = gulp.watch(pathjs);
+    watchAppJs.on('change', (path) => {
+        //only copy JS files that were changed in the app folder
+        path = path.replace(/\\/g, '/');
+        var tasks = [];
+        var p = gulp.src(path, { base: 'App' });
+        if (prod == true) { p = p.pipe(uglify()); }
+        p.pipe(gulp.dest(paths.compiled.js, { overwrite: true }));
+        tasks.push(p);
+        var newpath = path.toLowerCase().replace(/\\/g, '/');
+        console.log('copying ' + path + ' to ' + newpath);
+        if (paths.working.dashboard.js.filter(a => a.toLowerCase() == newpath)) {
+            //recompile dashboard.js since a related js file was updated
+            console.log('updating dashboard.js');
+            var p2 = gulp.src(paths.working.dashboard.js, { base: '.' })
+                .pipe(concat(paths.compiled.js + 'dashboard.js'));
+            if (prod == true) { p2 = p2.pipe(uglify()); }
+            p2.pipe(gulp.dest('.', { overwrite: true }));
+            tasks.push(p2);
+        }
+        return merge(tasks);
+    });
 
     //watch app LESS
     var pathless = [...paths.working.less.app, ...paths.working.exclude.app.map(a => a + '*.less')];
-    gulp.watch(pathless, gulp.series('less:app', 'less:dashboard'));
+    var watchAppLess = gulp.watch(pathless);
+    watchAppLess.on('change', (path) => {
+        //only copy LESS files that were changed in the app folder
+        path = path.replace(/\\/g, '/');
+        var tasks = [];
+        var p = gulp.src(path, { base: 'App' })
+            .pipe(less())
+            .pipe(rename(function (path) {
+                path.dirname = path.dirname.toLowerCase();
+                path.basename = path.basename.toLowerCase();
+                path.extname = path.extname.toLowerCase();
+            }));
+        if (prod == true) { p = p.pipe(cleancss({ compatibility: 'ie8' })); }
+        p.pipe(gulp.dest(paths.compiled.css, { overwrite: true }));
+        tasks.push(p);
+
+        var newpath = path.toLowerCase().replace(paths.app.toLowerCase(), paths.webroot.toLowerCase() + 'css/').replace('.less', '.css');
+        console.log('copying ' + path + ' to ' + newpath);
+        if (paths.working.dashboard.css.filter(a => a.toLowerCase() == newpath).length > 0) {
+            //recompile dashboard.css since a related CSS file was updated
+            console.log('updating dashboard.css');
+            var p2 = gulp.src(paths.working.dashboard.css, { base: '.' })
+                .pipe(concat(paths.compiled.css + 'dashboard.css'));
+            if (prod == true) { p2 = p2.pipe(uglify()); }
+            p2.pipe(gulp.dest('.', { overwrite: true }));
+            tasks.push(p2);
+        }
+        return merge(tasks);
+    });
 
     //watch platform LESS
     gulp.watch([
@@ -304,8 +349,8 @@ gulp.task('watch', function () {
     ], gulp.series('less:utility'));
 
     //watch app CSS
-    var pathcss = [paths.working.css.app, ...paths.working.exclude.app.map(a => a + '*.css')];
-    gulp.watch(pathcss, gulp.series('css:app'));
+    //var pathcss = [paths.working.css.app, ...paths.working.exclude.app.map(a => a + '*.css')];
+    //gulp.watch(pathcss, gulp.series('css:app'));
     
     //watch utility CSS
     gulp.watch([

@@ -158,13 +158,13 @@ S.orgs = {
         editInfo: function () {
             $('.org-details .org-form').removeClass('hide');
             $('.org-details .org-info').hide();
-            $('.org-edit-link').hide();
+            $('.org-details .org-edit-link').hide();
         },
 
         cancelEdit: function () {
             $('.org-details .org-form').addClass('hide');
             $('.org-details .org-info').show();
-            $('.org-edit-link').show();
+            $('.org-details .org-edit-link').show();
         },
 
         save: function () {
@@ -213,7 +213,7 @@ S.orgs = {
         refresh: function () {
             S.popup.resize();
             S.ajax.post('Boards/BoardsMenu', { orgId: S.orgs.details.orgId, listOnly:true }, (result) => {
-                $('.content-boards').html(result);
+                $('.org-details .content-boards').html(result);
                 $('.org-details .btn-add-board').on('click', S.orgs.boards.add);
                 S.popup.resize();
             },
@@ -243,7 +243,7 @@ S.orgs = {
 
         refresh: function () {
             S.ajax.post('Teams/RefreshList', { orgId: S.orgs.details.orgId }, function (result) {
-                $('.content-teams').html(result);
+                $('.org-details .content-teams').html(result);
                 $('.org-details .btn-add-team').on('click', S.orgs.teams.add);
                 S.popup.resize();
             },
@@ -279,12 +279,12 @@ S.orgs = {
             var content = $('.org-details .content-members');
             if (content.html().trim() == '') {
                 //load members search
-                S.members.search.init(S.orgs.details.orgId, '.content-members', 'S.orgs.members.details.show');
+                S.members.search.init(S.orgs.details.orgId, '.org-details .content-members', 'S.orgs.members.details.show');
             }
         },
          
         refresh: function () {
-            S.members.search.query(S.orgs.details.orgId, 1, 20, '.content-members', '', 'S.orgs.members.details.show');
+            S.members.search.query(S.orgs.details.orgId, 1, 20, '.org-details .content-members', '', 'S.orgs.members.details.show');
         },
 
         details: {
@@ -319,7 +319,7 @@ S.orgs = {
 
         refresh: function () {
             S.ajax.post('SecurityGroups/RefreshList', { orgId: S.orgs.details.orgId }, function (result) {
-                $('.content-security').html(result);
+                $('.org-details .content-security').html(result);
                 $('.org-details .btn-add-security-group').on('click', S.orgs.security.add);
                 S.popup.resize();
             },

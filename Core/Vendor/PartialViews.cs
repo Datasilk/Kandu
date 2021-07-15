@@ -12,19 +12,19 @@ namespace Kandu.Vendor
             Accordion
         }
 
-        public static void Save(Core.IRequest request, Dictionary<string, string> parameters, PartialViewKeys type)
+        public static void Save(Core.IRequest request, Dictionary<string, string> parameters, PartialViewKeys type, Dictionary<string, object> data)
         {
-            Core.Delegates.PartialViews.Save(request, parameters, type);
+            Core.Delegates.PartialViews.Save(request, parameters, type, data);
         }
 
-        public static string Render(Core.IRequest request, PartialViewKeys type, Container container)
+        public static string Render(Core.IRequest request, PartialViewKeys type, Dictionary<string, object> data, Container container)
         {
-            return Core.Delegates.PartialViews.Render(request, type, container);
+            return Core.Delegates.PartialViews.Render(request, type, data, container);
         }
 
-        public static string RenderForm(Core.IRequest request, PartialViewKeys type, Container container)
+        public static string RenderForm(Core.IRequest request, PartialViewKeys type, Dictionary<string, object> data, Container container)
         {
-            return Core.Delegates.PartialViews.RenderForm(request, type, container);
+            return Core.Delegates.PartialViews.RenderForm(request, type, data, container);
         }
     }
 }

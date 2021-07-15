@@ -209,6 +209,8 @@ namespace Kandu.Services
                 html.Append("<option value=\"" + key + "\" " + (org.cardtype == key ? "selected" : "") + ">" + key + "</option>\n");
             }
             view["cardtypes"] = html.ToString();
+
+            //TODO: Render vendor plugin partial views for organization settings 
             return view.Render();
         }
 
@@ -230,7 +232,11 @@ namespace Kandu.Services
             try
             {
                 //send parameters to all related Partial Views 
-                Common.PartialViews.Save(this, parameters, Vendor.PartialViewKeys.Organization_Settings);
+                var data = new Dictionary<string, object>()
+                {
+                    {"orgId", orgId }
+                };
+                Common.PartialViews.Save(this, parameters, Vendor.PartialViewKeys.Organization_Settings, data);
             }
             catch (Exception)
             {

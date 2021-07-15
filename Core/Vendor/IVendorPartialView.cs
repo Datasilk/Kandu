@@ -20,47 +20,22 @@ namespace Kandu.Vendor
         List<MenuItem> MenuItems { get; set; }
 
         /// <summary>
-        /// Will always be available to you unless you have selected an Area related to Application
-        /// </summary>
-        int OrganizationId { get; set; }
-
-        /// <summary>
-        /// Board object will be populated when selecting an Area related to Teams
-        /// </summary>
-        Query.Models.Team Team { get; set; }
-
-        /// <summary>
-        /// Board object will be populated when selecting an Aea related to Organizations
-        /// </summary>
-        Query.Models.Organization Organization { get; set; }
-
-        /// <summary>
-        /// Board object will be populated when selecting an Area related to Boards
-        /// </summary>
-        Query.Models.Board Board { get; set; }
-
-        /// <summary>
-        /// Cards list will be populated when selecting an Area related to Cards and Boards
-        /// </summary>
-        List<Query.Models.Card> Cards { get; set; }
-
-        /// <summary>
         /// Used to render the partial view HTML outside of a form
         /// </summary>
         /// <returns></returns>
-        string Render(Core.IRequest request);
+        string Render(Core.IRequest request, Dictionary<string, object> data);
 
         /// <summary>
         /// Used to render the partial view HTML within a form. Use only if the partial view is part of a form, otherwise use Render() instead
         /// </summary>
         /// <returns></returns>
-        string RenderForm(Core.IRequest request);
+        string RenderForm(Core.IRequest request, Dictionary<string, object> data);
 
         /// <summary>
         /// If partial view is inside an HTML form, you will 
         /// have the chance to save the user's input data
         /// </summary>
         /// <param name="parameters"></param>
-        void Save(Core.IRequest request, Dictionary<string, string> parameters);
+        void Save(Core.IRequest request, Dictionary<string, string> parameters, Dictionary<string, object> data);
     }
 }

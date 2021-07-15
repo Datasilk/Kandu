@@ -9,19 +9,27 @@ namespace Kandu.Common
 {
     public static class PartialViews
     {
+        public static List<IVendorPartialView> GetList(PartialViewKeys type)
+        {
+            if (Core.Vendors.PartialViews.ContainsKey(type))
+            {
+                return Core.Vendors.PartialViews[type];
+            }
+            return new List<IVendorPartialView>();
+        }
 
-        public static void Save(Core.IRequest request, Dictionary<string, string> parameters, PartialViewKeys type)
+        public static void Save(Core.IRequest request, Dictionary<string, string> parameters, PartialViewKeys type, Dictionary<string, object> data)
         {
             if (Core.Vendors.PartialViews.ContainsKey(type))
             {
                 foreach (var partialview in Core.Vendors.PartialViews[type])
                 {
-                    partialview.Save(request, parameters);
+                    partialview.Save(request, parameters, data);
                 }
             }
         }
 
-        public static string Render(Core.IRequest request, PartialViewKeys type, Vendor.PartialViews.Container container = Vendor.PartialViews.Container.None)
+        public static string Render(Core.IRequest request, PartialViewKeys type, Dictionary<string, object> data, Vendor.PartialViews.Container container = Vendor.PartialViews.Container.None)
         {
             if (Core.Vendors.PartialViews.ContainsKey(type))
             {
@@ -32,10 +40,10 @@ namespace Kandu.Common
                     foreach (var partialview in Core.Vendors.PartialViews[type])
                     {
                         view.Clear();
-                        view["content"] = partialview.Render(request);
+                        view["content"] = partialview.Render(request, data);
                         view["title"] = partialview.Title;
                         view["id"] = partialview.Title.ToLower().ReplaceOnlyAlphaNumeric(true, false, true).Replace(" ", "-");
-                        view["menu"] = "";
+                        view["menu"] = RenderMenu(partialview);
                         html.Append(view.Render());
                     }
                 }
@@ -43,7 +51,7 @@ namespace Kandu.Common
                 {
                     foreach (var partialview in Core.Vendors.PartialViews[type])
                     {
-                        html.Append(partialview.Render(request));
+                        html.Append(partialview.Render(request, data));
                     }
                 }
                 return html.ToString();
@@ -51,7 +59,7 @@ namespace Kandu.Common
             return "";
         }
 
-        public static string RenderForm(Core.IRequest request, PartialViewKeys type, Vendor.PartialViews.Container container)
+        public static string RenderForm(Core.IRequest request, PartialViewKeys type, Dictionary<string, object> data, Vendor.PartialViews.Container container)
         {
             if (Core.Vendors.PartialViews.ContainsKey(type))
             {
@@ -62,10 +70,10 @@ namespace Kandu.Common
                     foreach (var partialview in Core.Vendors.PartialViews[type])
                     {
                         view.Clear();
-                        view["content"] = partialview.RenderForm(request);
+                        view["content"] = partialview.RenderForm(request, data);
                         view["title"] = partialview.Title;
                         view["id"] = partialview.Title.ToLower().ReplaceOnlyAlphaNumeric(true, false, true).Replace(" ", "-");
-                        view["menu"] = "";
+                        view["menu"] = RenderMenu(partialview);
                         html.Append(view.Render());
                     }
                 }
@@ -73,7 +81,7 @@ namespace Kandu.Common
                 {
                     foreach (var partialview in Core.Vendors.PartialViews[type])
                     {
-                        html.Append(partialview.RenderForm(request));
+                        html.Append(partialview.RenderForm(request, data));
                     }
                 }
                 return html.ToString();

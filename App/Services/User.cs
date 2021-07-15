@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Text;
+using System.Linq;
 
 namespace Kandu.Services
 {
@@ -169,13 +171,13 @@ namespace Kandu.Services
             tabHtml.Append(tab.Render());
             contentHtml.Append("<div class=\"content-boards pad-top\"></div>");
 
-            //load organizations tab
+            //load teams tab
             tab.Clear();
-            tab["title"] = "Organizations";
-            tab["id"] = "orgs";
-            tab["onclick"] = "S.user.details.tabs.select('orgs')";
+            tab["title"] = "Teams";
+            tab["id"] = "teams";
+            tab["onclick"] = "S.user.details.tabs.select('teams')";
             tabHtml.Append(tab.Render());
-            contentHtml.Append("<div class=\"content-orgs pad-top\"></div>");
+            contentHtml.Append("<div class=\"content-teams pad-top\"></div>");
 
             //load account tab
             if(userId == User.UserId)
@@ -257,10 +259,37 @@ namespace Kandu.Services
             return Common.Boards.RenderList(this);
         }
 
-        public string RefreshOrganizations(int userId)
+        public string RefreshTeams(int userId)
         { 
             if (!CheckSecurity()) { return AccessDenied(); } //check security
-            return Common.Organizations.RenderListItems(this, "S.user.orgs.details");
+            var listItem = new View("/Views/Teams/list-item.html");
+            var titlebar = new View("/Views/Organizations/title-bar.html");
+            var html = new StringBuilder();
+            var teams = Query.Teams.GetAllForUser(User.UserId, userId).OrderBy(a => a.orgId).ThenBy(a => a.groupId);
+            var lastOrgId = 0;
+            foreach (var team in teams)
+            {
+                if (lastOrgId != team.orgId)
+                {
+                    if (lastOrgId > 0) { html.Append("</div>"); }
+                    lastOrgId = team.orgId;
+                    titlebar.Clear();
+                    titlebar["org-name"] = team.orgName;
+                    titlebar["org-id"] = team.orgId.ToString();
+                    if (team.ownerId == userId) { titlebar.Show("is-owner"); }
+                    html.Append(titlebar.Render() + "\n<div class=\"grid-items\">");
+                }
+                listItem.Clear();
+                listItem.Bind(new { team });
+                listItem.Show("subtitle");
+                if (team.totalMembers != 1) { listItem.Show("plural"); }
+                listItem["click"] = "S.user.teams.details(" + team.teamId + ", '" + team.name.Replace("'", "\\'").Replace("\"", "&quot;") + "')";
+                listItem.Show("subtitle");
+                html.Append(listItem.Render());
+            }
+            html.Append("</div>");
+
+            return html.ToString();
         }
 
         public string RefreshAccount(int userId)
@@ -269,6 +298,31 @@ namespace Kandu.Services
             var view = new View("/Views/User/account.html");
             var user = Query.Users.GetInfo(userId);
             view.Bind(new { user });
+            return view.Render();
+        }
+
+        public string RefreshEmailSettings(int userId)
+        {
+            if (userId != User.UserId) { return AccessDenied(); } //check security
+            var view = new View("/Views/User/email-settings.html");
+            var html = new StringBuilder();
+
+            //get email settings from plugins
+            var partials = Common.PartialViews.GetList(Vendor.PartialViewKeys.User_EmailSettings);
+            if(partials.Count > 0)
+            {
+                //render each partial view
+                var data = new Dictionary<string, object>()
+                {
+                    {"userId", userId }
+                };
+                foreach (var partial in partials)
+                {
+                    html.Append(partial.Render(this, data));
+                }
+            }
+            
+            view.Show("no-settings");
             return view.Render();
         }
 

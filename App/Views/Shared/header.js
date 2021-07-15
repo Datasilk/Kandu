@@ -122,6 +122,7 @@
     user: {
         menuBg: $('.bg-for-user-menu'),
         show: function () {
+            S.popup.hide();
             $('.user-menu').removeClass('hide');
             $('.bg-for-user-menu').removeClass('hide');
             S.scrollbar.update($('.boards-menu'));
@@ -174,4 +175,9 @@
     }
 }
 
+//force popup modal to stick to the top of the window at 70px
+S.popup.global.stickyTop = 0;
+S.popup.global.offsetHeight = 44;
+
+//initialize head class
 S.head.init();

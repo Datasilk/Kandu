@@ -6,7 +6,7 @@ body{width:100%; position:relative; overflow-x:hidden; font-weight:400;}
 
 *{box-sizing:border-box;}
 
-body > .bg.for-popup{background-color:rgba(0,0,0,0.5) !important; position:absolute; top:0; right:0; bottom:0; left:0; z-index:7777;}
+body > .bg.for-popup{background-color:rgba(0,0,0,0.5) !important; position:absolute; top:44px; right:0; bottom:0; left:0; z-index:7777;}
 .for-popup{
     & > .popup{position:relative; min-width:200px; z-index:5000; max-height:100%; max-width:100%; 
                overflow-y:auto; overflow-x:hidden; padding:20px 20px 30px 20px;
@@ -75,4 +75,10 @@ input[type]:not([type=button]):not([type=submit]):not([type=radio]){border-radiu
     &:after{content:''; display:block; clear:both;}
     .item-title{font-weight:bold;}
     .item-subtitle{padding-top:3px;}
+}
+
+ /* title bar */
+.title-bar{padding:5px; cursor:default;
+    h5{display:inline-block !important; font-size:1.2rem;}
+    .owner{padding:5px 5px 0 0;}
 }

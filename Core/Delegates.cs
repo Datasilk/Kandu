@@ -25,9 +25,9 @@ namespace Kandu.Core
 
         public static class PartialViews
         {
-            public static Func<IRequest, PartialViewKeys, Vendor.PartialViews.Container, string> Render { get; set; }
-            public static Func<IRequest, PartialViewKeys, Vendor.PartialViews.Container, string> RenderForm { get; set; }
-            public static Action<IRequest, Dictionary<string, string>, PartialViewKeys> Save { get; set; }
+            public static Func<IRequest, PartialViewKeys, Dictionary<string, object>, Vendor.PartialViews.Container, string> Render { get; set; }
+            public static Func<IRequest, PartialViewKeys, Dictionary<string, object>, Vendor.PartialViews.Container, string> RenderForm { get; set; }
+            public static Action<IRequest, Dictionary<string, string>, PartialViewKeys, Dictionary<string, object>> Save { get; set; }
         }
     }
 }

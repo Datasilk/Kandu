@@ -45,10 +45,6 @@
         /// <summary>
         /// inside the info content & info form (uses Render() & RenderForm())
         /// </summary>
-        User_Info, 
-        /// <summary>
-        /// above tabs and below info form
-        /// </summary>
         User_AboveTabs,
         /// <summary>
         /// inside the email settings tab below all native email settings

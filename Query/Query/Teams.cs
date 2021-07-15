@@ -57,6 +57,11 @@ namespace Query
             return Sql.Populate<Models.Team>("Teams_GetList", new { orgId, userId});
         }
 
+        public static List<Models.Team> GetAllForUser(int spUserId, int userId)
+        {
+            return Sql.Populate<Models.Team>("Teams_GetAllForUser", new { spUserId, userId });
+        }
+
         public static List<Models.Member> GetMembers(int teamId)
         {
             return Sql.Populate<Models.Member>("Team_GetMembers", new { teamId });

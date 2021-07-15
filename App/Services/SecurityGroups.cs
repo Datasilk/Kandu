@@ -14,7 +14,7 @@ namespace Kandu.Services
         public string RefreshList(int orgId)
         {
             if (!IsInOrganization(orgId)) { return AccessDenied(); } //check security
-            var html = "<div class=\"grid-items\">" + Common.SecurityGroups.RenderList(this, orgId);
+            var html = "<div class=\"grid-items\">" + Common.SecurityGroups.RenderList( orgId);
             if (CheckSecurity(orgId, Security.Keys.SecGroupCanCreate.ToString()))
             {
                 var additem = new View("/Views/Security/add-item.html");
@@ -22,6 +22,12 @@ namespace Kandu.Services
                 html = html + addbutton;
             }
             return html + "</div>";
+        }
+
+        public string RefreshListForUser(int userId)
+        {
+            if (!CheckSecurity()) { return AccessDenied(); } //check security
+            return Common.SecurityGroups.RenderListForUser(this, userId);
         }
 
         public string RenderGroupForm(int orgId, int groupId)

@@ -181,7 +181,12 @@ namespace Kandu.Services
             try
             {
                 //send parameters to all related Partial Views 
-                Common.PartialViews.Save(this, parameters, Vendor.PartialViewKeys.Team_Settings);
+                var data = new Dictionary<string, object>()
+                {
+                    {"orgId", orgId },
+                    {"teamId", teamId }
+                };
+                Common.PartialViews.Save(this, parameters, Vendor.PartialViewKeys.Team_Settings, data);
             }
             catch (Exception)
             {

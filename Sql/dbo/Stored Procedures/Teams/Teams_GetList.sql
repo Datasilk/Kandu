@@ -18,9 +18,12 @@ BEGIN
 	) SET @hasAllAccess = 1
 
 
-	SELECT DISTINCT t.*, (SELECT COUNT(*) FROM TeamMembers tm2 WHERE tm2.teamId=t.teamId) AS totalMembers
+	SELECT DISTINCT t.*, o.[name] AS orgName, sg.[name] AS groupName,
+	(SELECT COUNT(*) FROM TeamMembers tm2 WHERE tm2.teamId=t.teamId) AS totalMembers
 	FROM Teams t
 	LEFT JOIN TeamMembers tm ON tm.teamId=t.teamId AND tm.userId=@userId
+	LEFT JOIN Organizations o ON o.orgId=t.orgId
+	LEFT JOIN SecurityGroups sg ON sg.groupId = t.groupId
 	WHERE 
 	(
 		(@orgId > 0 AND t.orgId = @orgId)
