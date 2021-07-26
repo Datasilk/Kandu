@@ -7,6 +7,7 @@ namespace Kandu
 
         public enum Keys
         {
+            AppOwner, //owner of the Kandu application
             Owner, //owner of an organization
             User, //user of an organization
             OrgCanEditInfo, //edit organization name, website, description fields

@@ -11,21 +11,62 @@ namespace Kandu.Common
     {
         public static List<IVendorEmailClient> Clients { get; set; } = new List<IVendorEmailClient>()
         {
+            new Smtps(),
             new Smtp()
         };
 
+        private static List<IVendorEmailClient> _vendorClients { get; set; }
+
+        public static List<IVendorEmailClient> VendorClients { 
+            get  {
+                if(_vendorClients == null)
+                {
+                    _vendorClients = new List<IVendorEmailClient>();
+                    _vendorClients.AddRange(Email.Clients);
+                    _vendorClients.AddRange(Core.Vendors.EmailClients.Values.OrderBy(a => a.Name));
+                }                
+                return _vendorClients;
+            } 
+        }
+
+        public static List<EmailType> VendorActions
+        {
+            get
+            {
+                var emailActions = new List<EmailType>();
+                emailActions.AddRange(Types);
+                emailActions.AddRange(Core.Vendors.EmailTypes.Values);
+                return emailActions;
+            }
+        }
+
+        private class Action : Query.Models.EmailClientAction
+        {
+            public EmailType VendorAction { get; set; }
+        }
+
+        private static Dictionary<string, Query.Models.EmailClientAction> _actions { get; set; }
+        public static Query.Models.EmailClientAction GetActionConfig(string type)
+        {
+            if(_actions == null)
+            {
+                _actions = Query.EmailActions.GetList().ToDictionary(a => a.key, a => a);
+            }
+            if (_actions.ContainsKey(type)) { return _actions[type]; }
+            return null;
+        }
+
+
         public static void Send(MailMessage message, string type)
         {
-            var config = Settings.Load();
-            var action = config.Email.Actions.Where(a => a.Type == type).FirstOrDefault();
+            var action = GetActionConfig(type);
             if(action == null)
             {
                 //log error, could not send email
                 //Query.Logs.LogError(0, "", "Email.Send", "Could not find Email Action Type \"" + type + "\"", "");
                 return;
             }
-            var client = Clients.Where(a => a.Key == action.Client).FirstOrDefault() ??
-                Core.Vendors.EmailClients.Values.Where(a => a.Key == action.Client).FirstOrDefault();
+            var client = VendorClients.Where(a => a.Key == action.key).FirstOrDefault();
             if (client == null)
             {
                 //log error, could not send email
@@ -33,7 +74,7 @@ namespace Kandu.Common
                 return;
             }
             var _msg = "";
-            client.Send(message, delegate() {
+            client.Send(action.config, message, delegate() {
                 //only get RFC 2822 message if vendor plugin specifically requests it
                 if (string.IsNullOrEmpty(_msg))
                 {
@@ -48,7 +89,7 @@ namespace Kandu.Common
             return MimeMessage.CreateFromMailMessage(message).ToString();
         }
 
-        public static List<EmailType> Types = new List<EmailType>()
+        private static readonly List<EmailType> Types = new List<EmailType>()
         {
             new EmailType()
             {
@@ -68,14 +109,17 @@ namespace Kandu.Common
             }
         };
 
-        public class Smtp : IVendorEmailClient
+        public class Smtps : IVendorEmailClient
         {
-            public string Key { get; set; } = "smtp";
-            public string Name { get; set; } = "SMTP Server";
+            public string Key { get; set; } = "smtps";
+            public string Name { get; set; } = "SMTPS Server";
+
+            public void Init() { }
+
             public Dictionary<string, EmailClientParameter> Parameters { get; set; } = new Dictionary<string, EmailClientParameter>()
             {
                 {
-                    "domain", 
+                    "domain",
                     new EmailClientParameter()
                     {
                         Name = "Host",
@@ -90,33 +134,6 @@ namespace Kandu.Common
                         Name = "Port",
                         DataType = EmailClientDataType.Number,
                         Description = "Port number where your email server resides. Default is port 25."
-                    }
-                },
-                {
-                    "ssl",
-                    new EmailClientParameter()
-                    {
-                        Name = "Use SSL",
-                        DataType = EmailClientDataType.Boolean,
-                        Description = "Whether or not the connection to your email server uses SSL."
-                    }
-                },
-                {
-                    "from",
-                    new EmailClientParameter()
-                    {
-                        Name = "From Address",
-                        DataType = EmailClientDataType.Text,
-                        Description = "The email address used to send emails to your users with on behalf of your website."
-                    }
-                },
-                {
-                    "from-name",
-                    new EmailClientParameter()
-                    {
-                        Name = "From Name",
-                        DataType = EmailClientDataType.Text,
-                        Description = "The name of the person sending emails on behalf of your website."
                     }
                 },
                 {
@@ -139,53 +156,103 @@ namespace Kandu.Common
                 }
             };
 
-            public Dictionary<string, string> GetConfig()
-            {
-                var config = Settings.Load();
-                return new Dictionary<string, string>()
-                {
-                    { "domain", config.Email.Smtp.Domain },
-                    { "port", config.Email.Smtp.Port.ToString() },
-                    { "ssl", config.Email.Smtp.SSL ? "1" : "0" },
-                    { "from", config.Email.Smtp.From },
-                    { "from-name", config.Email.Smtp.FromName },
-                    { "user", config.Email.Smtp.Username },
-                    { "pass", config.Email.Smtp.Password }
-                };
-            }
-
-            public void Init()
-            {
-                
-            }
-
-            public void SaveConfig(Dictionary<string, string> parameters)
-            {
-                var config = Settings.Load();
-                int.TryParse(parameters["port"], out var port);
-                var ssl = parameters["ssl"] ?? "";
-                var pass = parameters["pass"] ?? "";
-                config.Email.Smtp.Domain = parameters["domain"] ?? "";
-                config.Email.Smtp.Port = port;
-                config.Email.Smtp.SSL = ssl.ToLower() == "true";
-                config.Email.Smtp.From = parameters["from"];
-                config.Email.Smtp.FromName = parameters["from-name"];
-                config.Email.Smtp.Username = parameters["user"];
-                if (pass != "" && pass.Any(a => a != '*'))
-                {
-                    config.Email.Smtp.Password = parameters["pass"];
-                }
-                Settings.Save(config);
-            }
-
-            public void Send(MailMessage message, Func<string> GetRFC2822)
+            public void Send(Dictionary<string, string> config, MailMessage message, Func<string> GetRFC2822)
             {
                 try
                 {
-                    var config = Settings.Load().Email.Smtp;
                     var client = new MailKit.Net.Smtp.SmtpClient();
                     var msg = new MimeMessage();
-                    msg.From.Add(new MailboxAddress(config.FromName, config.From));
+                    msg.From.Add(new MailboxAddress(message.From.DisplayName, message.From.Address));
+                    foreach (var to in message.To)
+                    {
+                        msg.To.Add(new MailboxAddress(to.DisplayName, to.Address));
+                    }
+                    msg.Subject = message.Subject;
+
+                    msg.Body = new TextPart("html")
+                    {
+                        Text = message.Body
+                    };
+
+                    client.Connect(config["domain"], config.ContainsKey("port") && config["port"] != "" ?
+                        int.Parse(config["port"]) : 0, config["ssl"] == "1");
+
+                    //disable the XOAUTH2 authentication mechanism.
+                    client.AuthenticationMechanisms.Remove("XOAUTH2");
+                    client.Authenticate(config["user"], config["pass"]);
+                    client.Send(msg);
+                    client.Disconnect(true);
+                }
+                catch (Exception)
+                {
+                    //Query.Logs.LogError(0, "", "Email.Smtp.Send", ex.Message, ex.StackTrace);
+                }
+            }
+        }
+
+        public class Smtp : IVendorEmailClient
+        {
+            public string Key { get; set; } = "smtp";
+            public string Name { get; set; } = "SMTP Server";
+
+            public void Init() { }
+
+            public Dictionary<string, EmailClientParameter> Parameters { get; set; } = new Dictionary<string, EmailClientParameter>()
+            {
+                {
+                    "domain", 
+                    new EmailClientParameter()
+                    {
+                        Name = "Host",
+                        DataType = EmailClientDataType.Text,
+                        Description = "The remote domain name or IP address where your email server resides."
+                    }
+                },
+                {
+                    "port",
+                    new EmailClientParameter()
+                    {
+                        Name = "Port",
+                        DataType = EmailClientDataType.Number,
+                        Description = "Port number where your email server resides. Default is port 25."
+                    }
+                },
+                {
+                    "user",
+                    new EmailClientParameter()
+                    {
+                        Name = "Username / Email",
+                        DataType = EmailClientDataType.Text,
+                        Description = "The username or email used to authenticate before sending an email via SMTP."
+                    }
+                },
+                {
+                    "pass",
+                    new EmailClientParameter()
+                    {
+                        Name = "Password",
+                        DataType = EmailClientDataType.Password,
+                        Description = "The password used to authenticate before sending an email via SMTP."
+                    }
+                },
+                {
+                    "ssl",
+                    new EmailClientParameter()
+                    {
+                        Name = "Use SSL",
+                        DataType = EmailClientDataType.Boolean,
+                        Description = "Whether or not the connection to your email server uses SSL."
+                    }
+                }
+            };
+
+            public void Send(Dictionary<string, string> config, MailMessage message, Func<string> GetRFC2822)
+            {
+                try
+                {
+                    var client = new MailKit.Net.Smtp.SmtpClient();
+                    var msg = new MimeMessage();
+                    msg.From.Add(new MailboxAddress(message.From.DisplayName, message.From.Address));
                     foreach(var to in message.To)
                     {
                         msg.To.Add(new MailboxAddress(to.DisplayName, to.Address));
@@ -197,14 +264,16 @@ namespace Kandu.Common
                         Text = message.Body
                     };
 
-                    client.Connect(config.Domain, config.Port, config.SSL);
+                    client.Connect(config["domain"], config.ContainsKey("port") && config["port"] != "" ? 
+                        int.Parse(config["port"]) : 0, config["ssl"] == "1");
+
                     //disable the XOAUTH2 authentication mechanism.
                     client.AuthenticationMechanisms.Remove("XOAUTH2");
-                    client.Authenticate(config.Username, config.Password);
+                    client.Authenticate(config["user"], config["pass"]);
                     client.Send(msg);
                     client.Disconnect(true);
                 }
-                catch(Exception ex)
+                catch(Exception)
                 {
                     //Query.Logs.LogError(0, "", "Email.Smtp.Send", ex.Message, ex.StackTrace);
                 }

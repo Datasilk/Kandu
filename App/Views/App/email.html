@@ -1,0 +1,21 @@
+﻿<div class="row pad-top">
+    <div class="row title-bar pad margin-bottom">
+        <div class="col bold"><h5>Email Clients</h5></div>
+        <div class="col right" style="padding:4px 7px 0 0;">
+            <a href="javascript:" class="icon small btn-add-client" onclick="S.kandu.email.add.show()">
+                <svg viewBox="0 0 32 32">
+                    <use xlink:href="#icon-add" x="0" y="0" width="32" height="32"></use>
+                </svg>
+            </a>
+        </div>
+    </div>
+    <div class="row email-clients pad-bottom-lg">
+        {{clients}}
+    </div>
+    <div class="row title-bar pad margin-bottom">
+        <div class="col bold"><h5>Email Actions</h5></div>
+    </div>
+    <div class="row email-actions">
+        {{actions}}
+    </div>
+</div>

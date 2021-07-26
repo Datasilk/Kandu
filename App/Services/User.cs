@@ -283,7 +283,7 @@ namespace Kandu.Services
                 listItem.Bind(new { team });
                 listItem.Show("subtitle");
                 if (team.totalMembers != 1) { listItem.Show("plural"); }
-                listItem["click"] = "S.user.teams.details(" + team.teamId + ", '" + team.name.Replace("'", "\\'").Replace("\"", "&quot;") + "')";
+                listItem["click"] = "S.user.teams.details(" + team.orgId + ", " + team.teamId + ", '" + team.name.Replace("'", "\\'").Replace("\"", "&quot;") + "')";
                 listItem.Show("subtitle");
                 html.Append(listItem.Render());
             }

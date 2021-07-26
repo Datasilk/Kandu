@@ -92,9 +92,12 @@ namespace Kandu.Services
             html.Append(Common.Teams.RenderMembers(this, teamId));
             if (CheckSecurity(team.orgId, Security.Keys.TeamCanInviteUsers.ToString(), Models.Scope.Team, teamId))
             {
-                var additem = new View("/Views/Members/add-item.html");
-                var addbutton = additem.Render();
-                html.Append(addbutton);
+                if (team.groupId != null && team.groupId > 0)
+                {
+                    var additem = new View("/Views/Members/add-item.html");
+                    var addbutton = additem.Render();
+                    html.Append(addbutton);
+                }
             }
             contentHtml.Append("<div class=\"content-members grid-items\">" + html.ToString() + "</div>");
 
@@ -139,9 +142,12 @@ namespace Kandu.Services
             html.Append(Common.Teams.RenderMembers(this, teamId));
             if (CheckSecurity(team.orgId, Security.Keys.TeamCanInviteUsers.ToString(), Models.Scope.Team, teamId))
             {
-                var additem = new View("/Views/Members/add-item.html");
-                var addbutton = additem.Render();
-                html.Append(addbutton);
+                if (team.groupId != null && team.groupId > 0)
+                {
+                    var additem = new View("/Views/Members/add-item.html");
+                    var addbutton = additem.Render();
+                    html.Append(addbutton);
+                }
             }
             return html.ToString() + "</div>";
         }
@@ -219,7 +225,7 @@ namespace Kandu.Services
             if (!IsInOrganization(orgId)) { return AccessDenied(); } //check security
             var m = new Members();
             m.Instantiate(this);
-            return m.RefreshList(orgId, page, length, search, true, "Search", teamId, "search by name or email address", "", "S.teams.invite.selectEmail");
+            return m.RefreshList(orgId, page, length, search, true, "Search", teamId, "search by name or email address", "S.teams.invite.select", "S.teams.invite.selectEmail");
         }
 
         public string RenderMemberSelectedItem(int orgId, int userId)

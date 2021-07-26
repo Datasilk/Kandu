@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace Query
 {
@@ -8,7 +9,7 @@ namespace Query
         {
             var inviteList = new Models.Xml.Invites() { List = invites.ToArray() };
             var errors = Sql.ExecuteScalar<string>("Invite_People_Batch", new { invitedBy, scopeId, scope = (int)scope, message, invites = Common.Serializer.ToXmlDocument(inviteList).OuterXml });
-            return string.IsNullOrEmpty(errors) ? new string[] { } : errors.Split(",");
+            return string.IsNullOrEmpty(errors) ? new string[] { } : errors.Split(",", StringSplitOptions.RemoveEmptyEntries);
         }
     }
 }

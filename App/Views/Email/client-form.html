@@ -1,0 +1,41 @@
+﻿<div class="client-form">
+    <div class="row">
+        <div class="col six">
+            <div class="row field">Email Client</div>
+            <div class="row input">
+                {{is-new}}
+                <select id="email_client">{{client-options}}</select>
+                {{/is-new}}
+                {{edit}}
+                <input type="hidden" id="email_client" value="{{clientid}}" />
+                <span>{{client-label}}</span>
+                {{/edit}}
+            </div>
+        </div>
+        <div class="col six">
+            <div class="row field">Label</div>
+            <div class="row input">
+                <input type="text" id="email_label" placeholder="My Email Client" value="{{label}}" />
+            </div>
+        </div>
+    </div>
+    {{parameters}}
+    <div class="row pad-top buttons text-center">
+        <div class="col pad-right">
+            {{is-new}}
+            <button class="btn-add apply" onclick="S.kandu.email.add.submit()">Create Email Client</button>
+            {{/is-new}}
+            {{edit}}
+            <button class="btn-save apply" onclick="S.kandu.email.add.submit()">Save Changes</button>
+            {{/edit}}
+        </div>
+        <div class="col">
+            <button class="btn-cancel cancel" onclick="S.kandu.email.add.cancel()">Cancel</button>
+        </div>
+        {{edit}}
+        <div class="col pad-left-lg">
+            <button class="btn-remove remove" onclick="S.kandu.email.clients.remove({{clientid}})">Save Changes</button>
+        </div>
+        {{/edit}}
+    </div>
+</div>

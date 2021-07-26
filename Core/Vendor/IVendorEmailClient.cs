@@ -27,28 +27,16 @@ namespace Kandu.Vendor
         Dictionary<string, EmailClientParameter> Parameters { get; set; }
 
         /// <summary>
-        /// Executed when Kandu starts running to give the email client a chance to load a config file into memory
+        /// Executed when Kandu starts running to give the email client a chance to do stuff
         /// </summary>
         void Init();
 
         /// <summary>
-        /// Load email client config JSON file into memory
-        /// </summary>
-        /// <returns>Key/value pairs of configuration data for email client parameters</returns>
-        Dictionary<string, string> GetConfig();
-
-        /// <summary>
-        /// Executed when Kandu saves the config data for your email client parameters. 
-        /// You should save your parameters to a JSON config file using this method.
-        /// </summary>
-        /// <param name="parameters"></param>
-        void SaveConfig(Dictionary<string, string> parameters);
-
-        /// <summary>
         /// Executed when Kandu is requesting to send an email via your email client
         /// </summary>
+        /// <param name="config">the user configuration for this email client based on the given Parameters dictionary</param>
         /// <param name="message">Mail Message which includes all information about the email; to, from, subject, body, etc.</param>
         /// <param name="GetRFC2822">The RFC 2822 formatted email. Some clients require that it be Base64 URL encoded.</param>
-        void Send(MailMessage message, Func<string> GetRFC2822);
+        void Send(Dictionary<string, string> config, MailMessage message, Func<string> GetRFC2822);
     }
 }

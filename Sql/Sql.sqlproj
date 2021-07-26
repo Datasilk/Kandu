@@ -74,6 +74,8 @@
     <Folder Include="scripts" />
     <Folder Include="dbo\Stored Procedures\Security" />
     <Folder Include="dbo\Stored Procedures\Invitations" />
+    <Folder Include="dbo\Stored Procedures\EmailActions" />
+    <Folder Include="dbo\Stored Procedures\EmailClients" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="dbo\Tables\Users.sql" />
@@ -184,6 +186,16 @@
     <Build Include="dbo\Stored Procedures\Security\SecurityGroups_GetListForUser.sql" />
     <Build Include="dbo\Stored Procedures\Teams\Team_UpdateSettings.sql" />
     <Build Include="dbo\Stored Procedures\Cards\Cards_AssignedToMember.sql" />
+    <Build Include="dbo\Stored Procedures\EmailActions\EmailAction_GetInfo.sql" />
+    <Build Include="dbo\Stored Procedures\EmailActions\EmailAction_Save.sql" />
+    <Build Include="dbo\Stored Procedures\EmailActions\EmailActions_GetList.sql" />
+    <Build Include="dbo\Stored Procedures\EmailClients\EmailClient_GetConfig.sql" />
+    <Build Include="dbo\Stored Procedures\EmailClients\EmailClient_Save.sql" />
+    <Build Include="dbo\Stored Procedures\EmailClients\EmailClients_GetList.sql" />
+    <Build Include="dbo\Stored Procedures\Teams\Teams_GetAllForUser.sql" />
+    <Build Include="dbo\Tables\EmailActions.sql" />
+    <Build Include="dbo\Tables\EmailClients.sql" />
+    <Build Include="dbo\Stored Procedures\Users\User_UpdateName.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Sql.publish.xml" />

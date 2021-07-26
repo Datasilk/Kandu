@@ -23,6 +23,11 @@
         public EmailClientDataType DataType { get; set; } = EmailClientDataType.Text;
 
         /// <summary>
+        /// Determines if the parameter is a required field that must be filled out by the user
+        /// </summary>
+        public bool Required { get; set; } = true;
+
+        /// <summary>
         /// Short summary of what the parameter is used for
         /// </summary>
         public string Description { get; set; } = "";

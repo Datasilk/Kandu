@@ -419,7 +419,7 @@ namespace Kandu.Common
             if (type.Equals(typeof(IVendorEmailClient))) { return; }
             var details = GetDetails(type, DLL);
             var instance = (IVendorEmailClient)Activator.CreateInstance(type);
-            if(instance.Key == "smtp") { return; } //skip internal email client
+            if(instance.Key == "smtp" || instance.Key == "smtps") { return; } //skip internal email client
             details.EmailClients.Add(instance.Key, instance);
             Core.Vendors.EmailClients.Add(instance.Key, instance);
             instance.Init();

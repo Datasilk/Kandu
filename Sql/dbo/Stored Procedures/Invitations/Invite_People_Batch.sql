@@ -12,6 +12,8 @@
 		</invites>
 	*/
 AS
+SET NOCOUNT ON
+
 	DECLARE @hdoc INT
 	DECLARE @cols TABLE (
 		[userId] int,
@@ -34,7 +36,7 @@ AS
 	) AS x
 
 	DECLARE @cursor CURSOR,
-	@userId int, @email nvarchar(64), @publickey varchar(16), @failed varchar(MAX)
+	@userId int, @email nvarchar(64), @publickey varchar(16), @failed varchar(MAX) = ''
 	SET @cursor = CURSOR FOR
 	SELECT userId, email, publickey FROM @cols
 	OPEN @cursor
@@ -45,7 +47,7 @@ AS
 			VALUES (@userId, @scopeId, @scope, @email, @publickey, @message, @invitedBy)
 		END TRY
 		BEGIN CATCH
-			SET @failed = @failed + (CASE WHEN @userId > 0 THEN CONVERT(varchar(16), @userId) ELSE @email END) + ','
+			SET @failed += (CASE WHEN @userId > 0 THEN (SELECT [name] FROM Users WHERE userId=@userId) ELSE @email END) + ','
 		END CATCH
 		FETCH FROM @cursor INTO @userId, @email, @publickey
 	END

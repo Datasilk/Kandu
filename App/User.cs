@@ -197,6 +197,11 @@ namespace Kandu
             return Keys.ContainsKey(orgId);
         }
 
+        public bool IsAppOwner()
+        {
+            return UserId == 1 || (Keys.ContainsKey(0) && Keys[0].Any(a => a.Key == Security.Keys.AppOwner.ToString() && a.Enabled == true));
+        }
+
         public void ValidatePassword(string password)
         {
             //set default settings

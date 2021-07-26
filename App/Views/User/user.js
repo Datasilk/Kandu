@@ -146,9 +146,9 @@
             });
         },
 
-        details: function (orgId, title) {
+        details: function (orgId, teamId, title) {
             S.user.details.popup.hide();
-            S.orgs.details.show(orgId, title, () => {
+            S.teams.details.show(teamId, orgId, title, () => {
                 S.user.details.popup.show();
             });
         }

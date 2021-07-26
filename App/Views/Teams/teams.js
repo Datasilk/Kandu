@@ -160,7 +160,7 @@
         },
 
         refresh: function () {
-            S.ajax.post('Teams/RefreshMembers', { orgId: S.orgs.details.orgId, teamId: S.teams.details.teamId, onclick:'S.teams.members.details.show' }, function (result) {
+            S.ajax.post('Teams/RefreshMembers', { orgId: S.teams.details.orgId, teamId: S.teams.details.teamId, onclick:'S.teams.members.details.show' }, function (result) {
                 $('.team-details .content-members').html(result);
                 S.teams.members.updateEvents();
             },
@@ -175,7 +175,7 @@
                 S.teams.invite.show(S.teams.details.orgId, S.teams.details.teamId, S.teams.details.name, (total, failed) => {
                     S.teams.details.popup.show();
                     S.message.show('.popup.show .message', '', total + (total != 1 ? ' people' : ' person') + ' invited' +
-                        (failed != null && failed != '' ? ', ' + failed + ' could not be invited' : ''));
+                        (failed != null ? ', ' + failed.join(', ') + ' could not be invited' : ''));
                 });
             });
             S.popup.resize();
@@ -202,7 +202,7 @@
         },
 
         refresh: function () {
-            S.ajax.post('Teams/RefreshSettings', { orgId: S.orgs.details.orgId, teamId: S.teams.details.teamId }, function (result) {
+            S.ajax.post('Teams/RefreshSettings', { orgId: S.teams.details.orgId, teamId: S.teams.details.teamId }, function (result) {
                 var content = $('.team-details .content-settings');
                 content.html(result);
                 var savebtn = $('.team-details .btn-save-settings');
@@ -225,12 +225,13 @@
                 obj[a.attr('id')] = a.val();
             });
             var data = {
-                orgId: S.orgs.details.orgId,
+                orgId: S.teams.details.orgId,
                 teamId: S.teams.details.teamId,
                 parameters: JSON.stringify(obj)
             };
             S.ajax.post('Teams/SaveSettings', data, function (result) {
                 S.message.show('.team-details .content-settings .message', null, 'Team settings have been saved');
+                S.teams.members.refresh();
             },
                 (err) => {
                     S.message.show('.team-details .content-settings .message', 'error', err.responseText);
@@ -308,7 +309,7 @@
             });
         },
 
-        select: function (e, id) {
+        select: function (id, name) {
             S.ajax.post('Teams/RenderMemberSelectedItem', { orgId: S.teams.invite.orgId, userId: id }, (html) => {
                 $('.invited-list').removeClass('hide').prepend(html);
                 $('.invited-title').removeClass('hide');
@@ -370,8 +371,14 @@
                         S.teams.events.broadcast('people-invited');
                     }
                 },
-                function () {
-                    S.message.show(msg, 'error', S.message.error.generic);
+                function (err) {
+                    S.popup.hide(S.teams.invite.popup);
+                    var notinvited = err.responseText.split(',');
+                    if (S.teams.invite.callback) {
+                        var invited = data.people.length - notinvited.length;
+                        S.teams.invite.callback(invited, notinvited);
+                        S.teams.events.broadcast('people-invited', { invited: invited, notinvited: notinvited });
+                    }
                     return;
                 }
             );

@@ -33,7 +33,10 @@ AS
 	JOIN #sec s ON s.groupId = su.groupId
 	JOIN SecurityGroups sg ON sg.groupId = s.groupId
 	JOIN Organizations o ON o.orgId=sg.orgId
-	WHERE su.userId = @userId
+	WHERE (
+		(@userId IS NOT NULL AND su.userId = @userId)
+		OR @userId IS NULL OR @userId = 0
+	)
 	AND (
 		(@orgId IS NOT NULL AND @orgId > 0 AND sg.orgId=@orgId)
 		OR @orgId IS NULL OR @orgId = 0

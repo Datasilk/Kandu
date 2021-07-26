@@ -288,7 +288,7 @@ gulp.task('watch', function () {
         tasks.push(p);
         var newpath = path.toLowerCase().replace(/\\/g, '/');
         console.log('copying ' + path + ' to ' + newpath);
-        if (paths.working.dashboard.js.filter(a => a.toLowerCase() == newpath)) {
+        if (paths.working.dashboard.js.filter(a => a.toLowerCase() == newpath).length > 0) {
             //recompile dashboard.js since a related js file was updated
             console.log('updating dashboard.js');
             var p2 = gulp.src(paths.working.dashboard.js, { base: '.' })
