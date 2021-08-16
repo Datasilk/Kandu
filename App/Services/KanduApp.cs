@@ -374,7 +374,7 @@ namespace Kandu.Services
                         (item == emailClients[0] ? " selected" : "") :
                         (item.clientId == (config != null ? config.clientId : 0) ? " selected" : "")
                     ) +
-                    ">" + (vendorClient?.Name ?? "[Unknown client]") + ": " + item.label + "</option>");
+                    ">" + (vendorClient?.Name ?? "[Unknown client]") + " - " + item.label + "</option>");
             }
             view["client-options"] = clientoptions.ToString();
             if (config != null) { view.Bind(config); }
