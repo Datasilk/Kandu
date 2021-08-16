@@ -1,33 +1,5 @@
-﻿<div class="col six email-action" data-id="{{action.key}}">
+﻿<div class="col six email-action" onclick="{{action.onclick}}">
     <div class="row hover pointer pad">
         <h6>{{action.name}} Email</h6>
-    </div>
-    <div class="details hide">
-        <div class="row hover">
-            <div class="col field">Email Client</div>
-            <div class="col input">
-                <select id="emailaction_{{action.key}}">{{action.options}}</select>
-            </div>
-        </div>
-        <div class="row hover">
-            <div class="col field">Sender Name</div>
-            <div class="col input">
-                <input type="text" id="emailaction_{{action.key}}_fromname" value="{{action.fromname}}" spellcheck="false" />
-            </div>
-        </div>
-        <div class="row hover">
-            <div class="col field">Sender Email</div>
-            <div class="col input">
-                <input type="text" id="emailaction_{{action.key}}_fromaddress" value="{{action.fromaddress}}" spellcheck="false" />
-            </div>
-        </div>
-        {{user-subject}}
-        <div class="row hover">
-            <div class="col field">Subject</div>
-            <div class="col input">
-                <input type="text" id="emailaction_{{action.key}}_subject" value="{{action.subject}}" spellcheck="false" />
-            </div>
-        </div>
-        {{/user-subject}}
     </div>
 </div>

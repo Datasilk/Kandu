@@ -7,6 +7,7 @@ namespace Kandu
     {
         public override IController FromControllerRoutes(HttpContext context, Parameters parameters, string name)
         {
+            if (App.Environment == Environment.development) { ViewCache.Clear(); }
             switch (name)
             {
                 case "": case "home": return new Controllers.Home();
@@ -20,6 +21,7 @@ namespace Kandu
 
         public override IService FromServiceRoutes(HttpContext context, Parameters parameters, string name)
         {
+            if(App.Environment == Environment.development) { ViewCache.Clear(); }
             return null;
         }
     }

@@ -1,0 +1,46 @@
+﻿<div class="row hover">
+    <div class="col field long">Email Client</div>
+    <div class="col input">
+        <select id="action_clientId">{{client-options}}</select>
+    </div>
+</div>
+<div class="row">
+    <div class="col six tablet-sm-twelve">
+        <div class="row hover">
+            <div class="col field long">Sender Name</div>
+            <div class="col input short expand">
+                <input type="text" id="action_fromname" value="{{fromname}}" spellcheck="false" />
+            </div>
+        </div>
+    </div>
+    <div class="col six tablet-sm-twelve">
+        <div class="row hover">
+            <div class="col field long">Sender Email</div>
+            <div class="col input short expand">
+                <input type="text" id="action_fromaddress" value="{{fromaddress}}" spellcheck="false" />
+            </div>
+        </div>
+    </div>
+</div>
+{{user-subject}}
+<div class="row hover">
+    <div class="col field long">Subject</div>
+    <div class="col input short expand">
+        <input type="text" id="action_subject" value="{{subject}}" spellcheck="false" />
+    </div>
+</div>
+{{/user-subject}}
+{{user-body}}
+<div class="row field">Email Body Text</div>
+<div class="row input pad-bottom">
+    <textarea id="action_body_text">{{bodytext}}</textarea>
+</div>
+<div class="row field">Email Body HTML</div>
+<div class="row input pad-bottom">
+    <textarea id="action_body_html">{{bodyhtml}}</textarea>
+</div>
+{{/user-body}}
+<div class="row pad-top buttons text-right">
+    <div class="col"><button class="cancel" onclick="S.kandu.email.action.cancel()">Cancel</button></div>
+    <div class="col pad-left"><button class="apply" onclick="S.kandu.email.action.save()">Save Email Action</button></div>
+</div>

@@ -6,9 +6,9 @@ namespace Query
 {
     public class EmailActions
     {
-        public static void Save(string action, string clientId, string label, string subject)
+        public static void Save(string action, int clientId, string subject, string fromName, string fromAddress, string bodyText, string bodyHtml)
         {
-            Sql.ExecuteNonQuery("EmailAction_Save", new { action, clientId, label, subject });
+            Sql.ExecuteNonQuery("EmailAction_Save", new { action, clientId, subject, fromName, fromAddress, bodyText, bodyHtml });
         }
 
         public static List<Models.EmailClientAction> GetList()

@@ -97,7 +97,8 @@ namespace Kandu.Common
                 Name = "Sign Up",
                 Description = "",
                 TemplateFile = "signup.html",
-                UserDefinedSubject = true
+                UserDefinedSubject = true,
+                UserDefinedBody = true
             },
             new EmailType()
             {
@@ -105,7 +106,8 @@ namespace Kandu.Common
                 Name = "Update Password",
                 Description = "",
                 TemplateFile = "update-pass.html",
-                UserDefinedSubject = true
+                UserDefinedSubject = true,
+                UserDefinedBody = true
             }
         };
 
@@ -124,7 +126,8 @@ namespace Kandu.Common
                     {
                         Name = "Host",
                         DataType = EmailClientDataType.Text,
-                        Description = "The remote domain name or IP address where your email server resides."
+                        Description = "The remote domain name or IP address where your email server resides.",
+                        Placeholder = "mail.myserver.com"
                     }
                 },
                 {
@@ -133,7 +136,8 @@ namespace Kandu.Common
                     {
                         Name = "Port",
                         DataType = EmailClientDataType.Number,
-                        Description = "Port number where your email server resides. Default is port 25."
+                        Description = "Port number where your email server resides. Default is port 587.",
+                        Placeholder = "587"
                     }
                 },
                 {
@@ -205,7 +209,8 @@ namespace Kandu.Common
                     {
                         Name = "Host",
                         DataType = EmailClientDataType.Text,
-                        Description = "The remote domain name or IP address where your email server resides."
+                        Description = "The remote domain name or IP address where your email server resides.",
+                        Placeholder = "mail.myserver.com"
                     }
                 },
                 {
@@ -214,7 +219,8 @@ namespace Kandu.Common
                     {
                         Name = "Port",
                         DataType = EmailClientDataType.Number,
-                        Description = "Port number where your email server resides. Default is port 25."
+                        Description = "Port number where your email server resides. Default is port 587.",
+                        Placeholder = "587"
                     }
                 },
                 {

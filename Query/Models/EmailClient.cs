@@ -4,7 +4,7 @@ namespace Query.Models
 {
     public class EmailClient
     {
-        public string clientId { get; set; }
+        public int clientId { get; set; }
         public string key { get; set; }
         public string label { get; set; }
         public string config_json { get; set; }

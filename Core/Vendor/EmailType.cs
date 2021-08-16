@@ -23,11 +23,12 @@
         public bool UserDefinedSubject { get; set; }
 
         /// <summary>
-        /// Name of the HTML template file used for this email message type. All HTML templates are located in the /Content/emails/ folder.
-        /// In your vendor plugin folder, create the folder /emails/ and include that folder in the publishToPlatform method located in your
-        /// gulpfile.js file. When your plugin is installed within Kandu, all HTML files within your /emails/ folder will be copied to
-        /// Kandu's /Content/emails/ folder, so make sure your HTML filenames are unique to your plugin so they do not overwrite HTML files
-        /// that already exist in the /Content/emails/ folder.
+        /// If true, allows the user to define a custom body text & body HTML for emails sent using this message type.
+        /// </summary>
+        public bool UserDefinedBody{ get; set; }
+
+        /// <summary>
+        /// Name of the HTML template file used for this email message type, e.g. "/Vendors/My-Plugin/my-email-type.html" and rendered as a View
         /// </summary>
         public string TemplateFile { get; set; }
     }

@@ -20,7 +20,6 @@ namespace Kandu
 
         public override string Render(string body = "")
         {
-            if (App.Environment == Environment.development) { ViewCache.Clear(); }
             Scripts.Append("<script language=\"javascript\">S.svg.load('/themes/default/icons.svg?v=" + Server.Version + "');</script>");
             var view = new View("/Views/Shared/layout.html");
             view["title"] = Title;

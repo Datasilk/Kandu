@@ -30,5 +30,10 @@ namespace Query
         {
             Sql.ExecuteNonQuery("EmailClient_Save", new { clientId, key, label, config = JsonSerializer.Serialize(config) });
         }
+
+        public static void Remove(string clientId)
+        {
+            Sql.ExecuteNonQuery("EmailClient_Remove", new { clientId });
+        }
     }
 }

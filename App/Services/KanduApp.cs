@@ -53,7 +53,7 @@ namespace Kandu.Services
             return view.Render();
         }
 
-        #region "Email Clients & Actions"
+        #region "Email Clients"
         public string RefreshEmail()
         {
             if (!User.IsAppOwner()) { return AccessDenied(); }
@@ -114,7 +114,7 @@ namespace Kandu.Services
                             (config?.clientId == a.clientId ? " selected=\"selected\"" : "") +
                             ">" + emailClients.Where(b => b.Key == a.key).FirstOrDefault()?.Name + ": " + a.label + "</option>"
                             )),
-                        onclick = "S.kandu.email.action.details(" + (config?.clientId ?? "") + ")"
+                        onclick = "S.kandu.email.action.details('" + action.Key + "')"
                     }
                 });
                 if (action.UserDefinedSubject) { viewEmailAction.Show("user-subject"); }
@@ -151,7 +151,8 @@ namespace Kandu.Services
                 if (config == null) { return Error("Could not find configuration for email client ID " + id); }
                 var client = Common.Email.VendorClients.Where(a => a.Key == config.key).FirstOrDefault();
                 if (client == null) { return Error("Could not find vendor for email client key \"" + key + "\""); }
-                view["clientId"] = client.Key;
+                view["clientId"] = config.clientId.ToString();
+                view["key"] = client.Key;
                 view["client-label"] = client.Name;
                 view["label"] = config.label;
                 view["parameters"] = LoadEmailClientParameters(client, config);
@@ -195,6 +196,7 @@ namespace Kandu.Services
                 html.Append("<div class=\"col six\">");
                 var value = (savedClient != null && savedClient.config.ContainsKey(param.Key) ? savedClient.config[param.Key] : param.Value.DefaultValue).Replace("\"", "&quot;");
                 var idattr = " id=\"" + client.Key + "_" + param.Key + "\"";
+                var placeholder = !string.IsNullOrEmpty(param.Value.Placeholder) ? " placeholder=\"" + param.Value.Placeholder + "\"" : "";
                 switch (param.Value.DataType)
                 {
                     case Vendor.EmailClientDataType.Boolean:
@@ -206,21 +208,22 @@ namespace Kandu.Services
                 switch (param.Value.DataType)
                 {
                     case Vendor.EmailClientDataType.Text:
-                        html.Append("<div class=\"row input\"><input type=\"text\"" + idattr + " value=\"" + value + "\"/></div>");
+                        html.Append("<div class=\"row input\"><input type=\"text\"" + idattr + " value=\"" + value + "\"" + placeholder + "/></div>");
                         break;
                     case Vendor.EmailClientDataType.UserOrEmail:
-                        html.Append("<div class=\"row input\"><input type=\"text\"" + idattr + " value=\"" + value + "\" autocomplete=\"new-email\"/></div>");
+                        html.Append("<div class=\"row input\"><input type=\"text\"" + idattr + " value=\"" + value + "\"" + placeholder + " autocomplete=\"new-email\"/></div>");
                         break;
                     case Vendor.EmailClientDataType.Password:
                         html.Append("<div class=\"row input\"><input type=\"password\"" + idattr + " value=\"" + (value != "" ? "********" : "") + "\" autocomplete=\"new-password\"/></div>");
                         break;
                     case Vendor.EmailClientDataType.Number:
-                        html.Append("<div class=\"row input\"><input type=\"number\"" + idattr + " value=\"" + value + "\"/></div>");
+                        html.Append("<div class=\"row input\"><input type=\"number\"" + idattr + " value=\"" + value + "\"" + placeholder + "/></div>");
                         break;
                     case Vendor.EmailClientDataType.List:
                         html.Append("<div class=\"row input\"><select" + idattr + ">" +
-                            string.Join("", param.Value.ListOptions?.Select(a => "<option value=\"" + a + "\">" + a + "</option>") ?? new string[] { "" }) +
-                            "</select></div>");
+                            string.Join("", param.Value.ListOptions?.Select(a => "<option value=\"" + a + 
+                                (param.Value.DefaultValue == a ? " selected" : "") + 
+                                "\">" + a + "</option>") ?? new string[] { "" }) + "</select></div>");
                         break;
                     case Vendor.EmailClientDataType.Boolean:
                         html.Append("<div class=\"row input\"><input type=\"checkbox\"" + idattr + (value == "1" || value.ToLower() == "true" ? " checked=\"checked\"" : "") + " />" +
@@ -269,7 +272,7 @@ namespace Kandu.Services
             //validate parameters
             try
             {
-                ValidateEmailClientParameters(parameters, client);
+                ValidateEmailClientParameters(parameters, client, Query.EmailClients.GetConfig(clientId));
             }
             catch (Exception ex)
             {
@@ -281,8 +284,9 @@ namespace Kandu.Services
             return Success();
         }
 
-        private void ValidateEmailClientParameters(Dictionary<string, string> parameters, Vendor.IVendorEmailClient client)
+        private void ValidateEmailClientParameters(Dictionary<string, string> parameters, Vendor.IVendorEmailClient client, Query.Models.EmailClient emailClient = null)
         {
+            var changes = new List<KeyValuePair<string, string>>();
             foreach (var item in parameters)
             {
                 if (!client.Parameters.ContainsKey(item.Key))
@@ -290,10 +294,30 @@ namespace Kandu.Services
                     throw new Exception("Could not find parameter " + item.Key);
                 }
                 var param = client.Parameters[item.Key];
-                if (param.Required == true && string.IsNullOrEmpty(item.Value))
+                if (param.Required == true && string.IsNullOrEmpty(item.Value) && param.DataType != Vendor.EmailClientDataType.Password)
                 {
                     throw new Exception(param.Name + " is required");
                 }
+                if(param.DataType == Vendor.EmailClientDataType.Password)
+                {
+                    //find password placeholder
+                    if(item.Value.Replace("*", "") == "")
+                    {
+                        if(emailClient != null && emailClient.config.ContainsKey(item.Key))
+                        {
+                            //no password change
+                            changes.Add( new KeyValuePair<string, string>(item.Key, emailClient.config[item.Key]));
+                        }
+                        else
+                        {
+                            //no password
+                            changes.Add(new KeyValuePair<string, string>(item.Key, ""));
+                        }
+                        
+                    }
+                }
+
+                //check boolean parameters for valid values
                 if (param.DataType == Vendor.EmailClientDataType.Boolean)
                 {
                     if (item.Value != "True" && item.Value != "False")
@@ -301,7 +325,82 @@ namespace Kandu.Services
                         throw new Exception(param.Name + " is not valid");
                     }
                 }
+
+                //make chamges to parameters list
+                foreach (var change in changes)
+                {
+                    parameters[change.Key] = change.Value;
+                }
             }
+        }
+
+        public string RemoveEmailClient(string clientId)
+        {
+            if (!User.IsAppOwner()) { return AccessDenied(); }
+            try
+            {
+                Query.EmailClients.Remove(clientId);
+            }catch(Exception)
+            {
+                return Error("An error occurred when trying to remove the email client, ID " + clientId);
+            }
+            return Success();
+        }
+        #endregion
+
+        #region "Email Actions"
+
+        public string RenderEmailActionForm(string key = "")
+        {
+            if (!User.IsAppOwner()) { return AccessDenied(); }
+
+            //generate email action form
+            var view = new View("/Views/Email/action-form.html");
+            var action = Common.Email.VendorActions.Where(a => a.Key == key).FirstOrDefault();
+            if (action == null)
+            {
+                return Error("Could not find email action \"" + key + "\"");
+            }
+            var config = Query.EmailActions.GetInfo(key);
+            var emailClients = Common.Email.VendorClients;
+            var clients = Query.EmailClients.GetList();
+            var clientoptions = new StringBuilder();
+            foreach (var item in clients)
+            {
+                var vendorClient = emailClients.Where(a => a.Key == item.key).FirstOrDefault();
+                clientoptions.Append("<option value=\"" + item.clientId + "\"" +
+                    (
+                        string.IsNullOrEmpty(key) ?
+                        (item == emailClients[0] ? " selected" : "") :
+                        (item.clientId == (config != null ? config.clientId : 0) ? " selected" : "")
+                    ) +
+                    ">" + (vendorClient?.Name ?? "[Unknown client]") + ": " + item.label + "</option>");
+            }
+            view["client-options"] = clientoptions.ToString();
+            if (config != null) { view.Bind(config); }
+            if(action.UserDefinedSubject == true)
+            {
+                view.Show("user-subject");
+            }
+            if (action.UserDefinedBody == true)
+            {
+                view.Show("user-body");
+            }
+            return view.Render();
+        }
+
+        public string UpdateEmailAction(string key, int clientId, string fromName, string fromAddress, string subject, string bodyText, string bodyHtml)
+        {
+            if (!User.IsAppOwner()) { return AccessDenied(); }
+            try
+            {
+                Query.EmailActions.Save(key, clientId, subject, fromName, fromAddress, bodyText, bodyHtml);
+            }
+            catch (Exception ex)
+            {
+                return Error("Error saving email action");
+            }
+            return Success();
         }
         #endregion
 

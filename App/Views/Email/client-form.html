@@ -4,10 +4,10 @@
             <div class="row field">Email Client</div>
             <div class="row input">
                 {{is-new}}
-                <select id="email_client">{{client-options}}</select>
+                <select id="email_key">{{client-options}}</select>
                 {{/is-new}}
                 {{edit}}
-                <input type="hidden" id="email_client" value="{{clientid}}" />
+                <input type="hidden" id="email_key" value="{{key}}" />
                 <span>{{client-label}}</span>
                 {{/edit}}
             </div>
@@ -33,8 +33,8 @@
             <button class="btn-cancel cancel" onclick="S.kandu.email.add.cancel()">Cancel</button>
         </div>
         {{edit}}
-        <div class="col pad-left-lg">
-            <button class="btn-remove remove" onclick="S.kandu.email.clients.remove({{clientid}})">Save Changes</button>
+        <div class="col right pad-right">
+            <button class="btn-remove delete" onclick="S.kandu.email.clients.remove({{clientid}})">Remove</button>
         </div>
         {{/edit}}
     </div>

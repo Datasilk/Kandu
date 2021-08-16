@@ -101,10 +101,10 @@
             },
 
             setup: function () {
-                var email_client = $('.popup.show .client-form #email_client');
+                var email_client = $('.popup.show .client-form #email_key');
                 S.kandu.email.add.client = email_client.val();
                 if (email_client.attr('type') != 'hidden') {
-                    email_client.on('click', () => {
+                    email_client.on('change', () => {
                         var val = email_client.val();
                         if (val != S.kandu.email.add.client) {
                             S.kandu.email.add.client = val;
@@ -122,14 +122,14 @@
             submit: function () {
                 var data = {
                     clientId: S.kandu.email.add.id,
-                    key: $('#email_client').val(),
+                    key: $('#email_key').val(),
                     label: $('#email_label').val(),
                     parameters: {}
                 };
                 var inputs = $('.popup.show .client-form').find('input, select');
                 for (var x = 0; x < inputs.length; x++) {
                     var input = $(inputs[x]);
-                    if (['email_client', 'email_label'].indexOf(input.attr('id')) < 0) {
+                    if (['email_key', 'email_label'].indexOf(input.attr('id')) < 0) {
                         var val = input.val();
                         if (input.attr('type') == 'checkbox') {
                             val = input[0].checked == true ? 'True' : 'False';
@@ -138,13 +138,10 @@
                     }
                 }
 
-                console.log(data);
-
-                S.ajax.post((data.id == '' ? 'KanduApp/CreateEmailClient' : 'KanduApp/UpdateEmailClient'),
+                S.ajax.post((data.clientId == '' ? 'KanduApp/CreateEmailClient' : 'KanduApp/UpdateEmailClient'),
                     data, function (result) {
-                    S.kandu.details.popup.show();
-                    S.popup.hide(S.kandu.email.add.popup);
-                    S.kandu.email.refresh();
+                        S.kandu.email.refresh();
+                        S.kandu.email.add.cancel();
                 },
                 (err) => {
 
@@ -158,11 +155,58 @@
                     'and any email actions that rely on this email client will no longer work and will need to be updated')) {
                     S.ajax.post('KanduApp/RemoveEmailClient', { clientId: id }, function (result) {
                         S.kandu.email.refresh();
+                        S.kandu.email.add.cancel();
                     },
                     (err) => {
 
                     });
                 }
+            }
+        },
+
+        action: {
+            popup: null,
+            client: null,
+            key: null,
+
+            details: function (key) {
+                S.kandu.email.action.key = key;
+                S.ajax.post('KanduApp/RenderEmailActionForm', { key: key }, function (result) {
+                    S.kandu.details.popup.hide();
+                    S.kandu.email.action.popup = S.popup.show('Update Email Action', result, {
+                        width: 700,
+                        onClose: () => {
+                            S.kandu.details.popup.show();
+                        }
+                    });
+                },
+                (err) => {
+
+                });
+            },
+
+            save: function () {
+                var data = {
+                    key: S.kandu.email.action.key,
+                    clientId: parseInt($('#action_clientId').val()),
+                    subject: $('#action_subject').val(),
+                    fromName: $('#action_fromname').val(),
+                    fromAddress: $('#action_fromaddress').val(),
+                    bodyText: $('#action_body_text').val(),
+                    bodyHtml: $('#action_body_html').val()
+                };
+                S.ajax.post('KanduApp/UpdateEmailAction', data, function (result) {
+                    S.kandu.email.refresh();
+                    S.kandu.email.action.cancel();
+                },
+                (err) => {
+
+                });
+            },
+
+            cancel: function () {
+                S.kandu.details.popup.show();
+                S.popup.hide(S.kandu.email.action.popup);
             }
         }
     },

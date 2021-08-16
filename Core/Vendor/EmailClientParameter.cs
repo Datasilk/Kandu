@@ -38,6 +38,11 @@
         public string DefaultValue { get; set; } = "";
 
         /// <summary>
+        /// The placeholder to display within the field to use as an example of what kind of data user should input
+        /// </summary>
+        public string Placeholder { get; set; } = "";
+
+        /// <summary>
         /// If DataType = List, define a list of option values to select from
         /// </summary>
         public string[] ListOptions { get; set; }
