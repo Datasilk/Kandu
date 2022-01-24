@@ -248,9 +248,9 @@
             });
         },
 
-        details: function (groupId, name) {
+        details: function (groupId, orgId, name) {
             S.user.details.popup.hide();
-            S.security.details.show(groupId, name, () => {
+            S.security.details.show(groupId, orgId, name, () => {
                 S.user.details.popup.show();
             });
         }

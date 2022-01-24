@@ -61,6 +61,7 @@ namespace Kandu.Services
             if (!CheckSecurity()) { return AccessDenied(); } //check security
             var group = Query.Security.GroupInfo(groupId);
             var canEdit = CheckSecurity(group.orgId, Security.Keys.SecGroupCanEditInfo.ToString(), Models.Scope.SecurityGroup, groupId);
+            var canUpdateKeys = CheckSecurity(group.orgId, Security.Keys.SecGroupCanUpdateKeys.ToString(), Models.Scope.SecurityGroup, groupId);
             var tabHtml = new StringBuilder();
             var contentHtml = new StringBuilder();
             var view = new View("/Views/Security/details.html");
@@ -75,7 +76,7 @@ namespace Kandu.Services
             tabHtml.Append(tab.Render());
 
             //load all available security keys
-            contentHtml.Append("<div class=\"row pad-top content-keys\">" + Common.SecurityGroups.RenderKeys(this, groupId) + "</div>");
+            contentHtml.Append("<div class=\"row pad-top content-keys\">" + Common.SecurityGroups.RenderKeys(this, groupId, canUpdateKeys) + "</div>");
 
             view["name"] = group.name;
             view["tabs"] = tabHtml.ToString();
@@ -108,6 +109,16 @@ namespace Kandu.Services
             var canEdit = CheckSecurity(group.orgId, Security.Keys.SecGroupCanEditInfo.ToString(), Models.Scope.SecurityGroup, groupId);
             if (!canEdit) { return AccessDenied(); }
             Query.Security.UpdateKey(group.orgId, groupId, key, ischecked, scope, scopeid);
+            return Success();
+        }
+
+        public string RemoveKey(int groupId, string key, int scope, int scopeId)
+        {
+            if (!CheckSecurity()) { return AccessDenied(); } //check security
+            var group = Query.Security.GroupInfo(groupId);
+            var canEdit = CheckSecurity(group.orgId, Security.Keys.SecGroupCanEditInfo.ToString(), Models.Scope.SecurityGroup, groupId);
+            if (!canEdit) { return AccessDenied(); }
+            Query.Security.RemoveKey(group.orgId, groupId, key, scope, scopeId);
             return Success();
         }
     }

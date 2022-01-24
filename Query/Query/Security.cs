@@ -40,6 +40,11 @@ namespace Query
             Sql.ExecuteNonQuery("Security_UpdateKey", new { orgId, groupId, key, value, scope, scopeId });
         }
 
+        public static void RemoveKey(int orgId, int groupId, string key, int scope = 0, int scopeId = 0)
+        {
+            Sql.ExecuteNonQuery("Security_RemoveKey", new { orgId, groupId, key, scope, scopeId });
+        }
+
         public static List<Models.SecurityGroup> GetGroups(int orgId)
         {
             return Sql.Populate<Models.SecurityGroup>("SecurityGroups_GetList", new { orgId });

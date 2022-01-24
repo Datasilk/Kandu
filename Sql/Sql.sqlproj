@@ -198,6 +198,7 @@
     <Build Include="dbo\Stored Procedures\Users\User_UpdateName.sql" />
     <Build Include="dbo\Sequences\SequenceEmailClients.sql" />
     <Build Include="dbo\Stored Procedures\EmailClients\EmailClient_Remove.sql" />
+    <Build Include="dbo\Stored Procedures\Security\Security_RemoveKey.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Sql.publish.xml" />

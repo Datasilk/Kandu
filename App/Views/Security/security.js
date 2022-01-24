@@ -84,9 +84,30 @@
         },
 
         saveKey: function (e) {
+            console.log(e);
             var checkbox = $(e.target);
-            S.ajax.post('SecurityGroups/SaveKey', { groupId: id, key:checkbox.attr('name').replace('key-',''), checked: checkbox[0].checked ? 1 : 0 }, function (result) {
+            var key = checkbox.attr('name').replace('key-', '');
+            var id = checkbox.attr('data-id');
+            S.ajax.post('SecurityGroups/SaveKey', { groupId: id, key:key, checked: checkbox[0].checked ? 1 : 0 }, function (result) {
 
+            });
+        },
+
+        removeKey: function (e, groupId, key, scope, scopeId) {
+            if (!confirm('Do you really want to remove this key from your security group?')) { return; }
+            var form = {
+                groupId: groupId,
+                key: key,
+                scope: scope,
+                scopeId: scopeId
+            };
+            var msg = $('.popup.show .message');
+            S.ajax.post('SecurityGroups/RemoveKey', form, function () {
+                var target = $(e.target);
+                if (!target.hasClass('key')) { target = target.parents('.key').first(); }
+                target.remove();
+            }, (err) => {
+                S.message.show(msg, 'error', err.responseText);
             });
         },
 

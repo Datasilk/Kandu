@@ -46,7 +46,7 @@ namespace Kandu.Common
                 listItem.Clear();
                 listItem.Bind(new { group });
                 if (group.totalkeys != 1) { listItem.Show("plural"); }
-                listItem["click"] = "S.user.security.details(" + group.groupId + ", '" + group.name.Replace("'", "\\'").Replace("\"", "&quot;") + "')";
+                listItem["click"] = "S.user.security.details(" + group.groupId + ", " + group.orgId + ", '" + group.name.Replace("'", "\\'").Replace("\"", "&quot;") + "')";
                 listItem.Show("subtitle");
                 html.Append(listItem.Render());
             }
@@ -55,17 +55,36 @@ namespace Kandu.Common
             return html.ToString();
         }
 
-        public static string RenderKeys(IRequest request, int groupId)
+        public static string RenderKeys(IRequest request, int groupId, bool canUpdate)
         {
             var viewKey = new View("/Views/Security/key.html");
             var html = new StringBuilder();
             var group = Query.Security.GroupDetails(groupId);
+
+            if (canUpdate)
+            {
+                var additem = new View("/Views/Security/add-key.html");
+                var addbutton = additem.Render();
+                html.Append(addbutton);
+            }
+
             foreach (var key in group.Keys)
             {
                 viewKey.Clear();
-                viewKey["id"] = key.key;
+                viewKey["key"] = key.key;
                 viewKey["title"] = key.key;
+                viewKey["groupid"] = groupId.ToString();
+                viewKey["scope"] = key.scope.ToString();
+                viewKey["scopeid"] = key.scopeId.ToString();
                 viewKey["checked"] = key.enabled == true ? "checked" : "";
+                if (canUpdate)
+                {
+                    viewKey.Show("can-update");
+                }
+                else
+                {
+                    viewKey.Show("cant-update");
+                }
                 html.Append(viewKey.Render());
             }
 
