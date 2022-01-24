@@ -16,7 +16,7 @@ namespace Kandu.Common
                 listItem.Clear();
                 listItem.Bind(new { group });
                 if (group.totalkeys != 1) { listItem.Show("plural"); }
-                listItem["click"] = "S.orgs.security.details(" + group.groupId + ", '" + group.name.Replace("'", "\\'").Replace("\"", "&quot;") + "')";
+                listItem["click"] = "S.orgs.security.details(" + group.groupId + ", " + orgId + ", '" + group.name.Replace("'", "\\'").Replace("\"", "&quot;") + "')";
                 listItem.Show("subtitle");
                 html.Append(listItem.Render());
             }
@@ -51,6 +51,23 @@ namespace Kandu.Common
                 html.Append(listItem.Render());
             }
             html.Append("</div>");
+
+            return html.ToString();
+        }
+
+        public static string RenderKeys(IRequest request, int groupId)
+        {
+            var viewKey = new View("/Views/Security/key.html");
+            var html = new StringBuilder();
+            var group = Query.Security.GroupDetails(groupId);
+            foreach (var key in group.Keys)
+            {
+                viewKey.Clear();
+                viewKey["id"] = key.key;
+                viewKey["title"] = key.key;
+                viewKey["checked"] = key.enabled == true ? "checked" : "";
+                html.Append(viewKey.Render());
+            }
 
             return html.ToString();
         }

@@ -7,11 +7,12 @@
         show: function (id, orgId, callback) {
             S.security.add.orgId = orgId;
             S.security.add.callback = callback;
-            S.ajax.post('SecurityGroups/RenderForm', { groupId: id, orgId: orgId }, (html) => {
+            S.ajax.post('SecurityGroups/RenderGroupForm', { groupId: id, orgId: orgId }, (html) => {
                 S.security.add.popup = S.popup.show(!id ? 'Create A New Security Group' : 'Edit Security Group', html, {
                     width: 430,
+                    backButton:true,
                     onClose: function () {
-                        if (callback) { callback(); }
+                        if (callback) { callback(false); }
                     }
                 });
             });
@@ -31,8 +32,10 @@
             S.ajax.post('SecurityGroups/Create', { orgId: S.security.add.orgId, name: name },
                 function (data) {
                     S.security.add.hide();
-                    if (S.security.add.callback) {
-                        S.security.add.callback();
+                    var callback = S.security.add.callback;
+                    if (callback) {
+                        S.orgs.security.refresh();
+                        callback(true);
                         S.security.events.broadcast('security-group-added');
                     }
                 },
@@ -50,25 +53,21 @@
         orgId: null,
         callback: null,
 
-        show: function (id, orgId, name, callback) {
+        show: function (id, orgId, title, callback) {
             S.security.details.groupId = id;
             S.security.details.orgId = orgId;
             S.security.details.callback = callback;
-            if (typeof name == 'function') { name = name(id, orgId); }
+            if (typeof title == 'function') { title = title(id, orgId); }
             S.ajax.post('SecurityGroups/Details', { groupId: id }, function (result) {
-                S.security.details.popup = S.popup.show(name, result, {
+                S.security.details.popup = S.popup.show(title, result, {
                     width: 700,
+                    backButton:true,
                     onClose: function () {
                         if (callback) { callback(); }
                     }
                 });
-                //add events to fields
-                $('.security-form input').on('keyup, change', () => {
-                    $('.security-form a.apply').removeClass('hide');
-                });
-
-                //save button
-                $('.security-form a.apply').on('click', S.security.details.save);
+                //set up key check event
+                $('.security-details .key').on('input', S.security.details.saveKey);
 
                 //set up tabs
                 $('.security-details .movable > div').hide();
@@ -76,7 +75,7 @@
                 $('.security-details .tab-members').on('click', S.orgs.security.show);
 
                 //set up custom scrollbars
-                S.scrollbar.add('.team-details .tab-content', { touch: true });
+                S.scrollbar.add('.security-details .tab-content', { touch: true });
             });
         },
 
@@ -84,19 +83,26 @@
             S.popup.hide(S.security.details.popup);
         },
 
+        saveKey: function (e) {
+            var checkbox = $(e.target);
+            S.ajax.post('SecurityGroups/SaveKey', { groupId: id, key:checkbox.attr('name').replace('key-',''), checked: checkbox[0].checked ? 1 : 0 }, function (result) {
+
+            });
+        },
+
         save: function () {
             var form = {
                 groupId: S.security.details.groupId,
-                name: $('#teamname').val(),
-                description: $('#team_description').val(),
+                name: $('#groupname').val()
             };
             var msg = $('.popup.show .message');
             S.ajax.post('SecurityGroups/Update', form, function () {
-                $('.popup.show .title h5').html('Team ' + form.name);
+                $('.popup.show .title h5').html(form.name);
+                S.orgs.security.refresh();
                 if (S.security.details.callback) {
                     S.security.details.callback('saved');
                 }
-                S.message.show(msg, null, 'Team updated successfully');
+                S.message.show(msg, null, 'Security Group updated successfully');
             }, (err) => {
                 S.message.show(msg, 'error', err.responseText);
             });

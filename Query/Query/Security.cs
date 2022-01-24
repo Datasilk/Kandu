@@ -35,7 +35,7 @@ namespace Query
             Sql.ExecuteNonQuery("Security_UpdateGroup", new { groupId, name });
         }
 
-        public static void UpdateKey(int orgId, int groupId, string key, string value, int scope = 0, int scopeId = 0)
+        public static void UpdateKey(int orgId, int groupId, string key, bool value, int scope = 0, int scopeId = 0)
         {
             Sql.ExecuteNonQuery("Security_UpdateKey", new { orgId, groupId, key, value, scope, scopeId });
         }

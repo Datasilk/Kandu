@@ -330,10 +330,14 @@ S.orgs = {
 
         add: function () {
             S.orgs.details.popup.hide();
-            S.security.add.show(null, null, '', S.orgs.details.orgId, () => {
+            S.security.add.show('', S.orgs.details.orgId, () => {
                 S.orgs.details.popup.show();
                 S.orgs.boards.refresh();
             });
+        },
+
+        details: function (id, orgId, title, callback) {
+            S.security.details.show(id, orgId, title, callback);
         }
     },
 

@@ -14,14 +14,14 @@ namespace Kandu.Services
         public string RefreshList(int orgId)
         {
             if (!IsInOrganization(orgId)) { return AccessDenied(); } //check security
-            var html = "<div class=\"grid-items\">" + Common.SecurityGroups.RenderList( orgId);
+            var html = Common.SecurityGroups.RenderList(orgId);
             if (CheckSecurity(orgId, Security.Keys.SecGroupCanCreate.ToString()))
             {
                 var additem = new View("/Views/Security/add-item.html");
                 var addbutton = additem.Render();
-                html = html + addbutton;
+                html = addbutton + html;
             }
-            return html + "</div>";
+            return "<div class=\"grid-items\">" + html + "</div>";
         }
 
         public string RefreshListForUser(int userId)
@@ -32,6 +32,7 @@ namespace Kandu.Services
 
         public string RenderGroupForm(int orgId, int groupId)
         {
+            //form for creating a new security group
             if (!IsInOrganization(orgId)) { return AccessDenied(); } //check security
             var view = new View("/Views/Security/new-group.html");
             if (groupId != 0)
@@ -72,11 +73,9 @@ namespace Kandu.Services
             tab["onclick"] = "S.security.details.tabs.select('keys')";
             tab.Show("selected");
             tabHtml.Append(tab.Render());
-            
+
             //load all available security keys
-
-
-            contentHtml.Append("<div class=\"content-keys\">" + html.ToString() + "</div>");
+            contentHtml.Append("<div class=\"row pad-top content-keys\">" + Common.SecurityGroups.RenderKeys(this, groupId) + "</div>");
 
             view["name"] = group.name;
             view["tabs"] = tabHtml.ToString();
@@ -90,6 +89,26 @@ namespace Kandu.Services
                 view.Show("no-edit");
             }
             return view.Render();
+        }
+
+        public string Update(int groupId, string name)
+        {
+            if (!CheckSecurity()) { return AccessDenied(); } //check security
+            var group = Query.Security.GroupInfo(groupId);
+            var canEdit = CheckSecurity(group.orgId, Security.Keys.SecGroupCanEditInfo.ToString(), Models.Scope.SecurityGroup, groupId);
+            if (!canEdit) { return AccessDenied(); }
+            Query.Security.UpdateGroup(groupId, name);
+            return Success();
+        }
+
+        public string SaveKey(int groupId, string key, bool ischecked, int scope, int scopeid)
+        {
+            if (!CheckSecurity()) { return AccessDenied(); } //check security
+            var group = Query.Security.GroupInfo(groupId);
+            var canEdit = CheckSecurity(group.orgId, Security.Keys.SecGroupCanEditInfo.ToString(), Models.Scope.SecurityGroup, groupId);
+            if (!canEdit) { return AccessDenied(); }
+            Query.Security.UpdateKey(group.orgId, groupId, key, ischecked, scope, scopeid);
+            return Success();
         }
     }
 }
