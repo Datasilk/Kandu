@@ -64,6 +64,7 @@ namespace Kandu.Common
             if (canUpdate)
             {
                 var additem = new View("/Views/Security/add-key.html");
+                additem["groupid"] = groupId.ToString();
                 var addbutton = additem.Render();
                 html.Append(addbutton);
             }

@@ -1,6 +1,6 @@
 ﻿<div class="col four key key-{{key}}">
     <div class="row hover pad">
-        <input type="checkbox" name="key-{{key}}" data-id="{{groupid}}" {{checked}} {{cant-update}}disabled{{/cant-update}}/>
+        <input type="checkbox" id="key-{{key}}" data-id="{{groupid}}" {{checked}} {{cant-update}}disabled{{/cant-update}}/>
         <label for="key-{{key}}">{{title}}</label>
         {{can-update}}
         <div class="col right icon small icon-close" onclick="S.security.details.removeKey(event, {{groupid}}, '{{key}}', {{scope}}, {{scopeid}})">

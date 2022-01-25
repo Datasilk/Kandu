@@ -92,14 +92,19 @@ namespace Kandu.Common
             var html = new StringBuilder();
             var item = new View("/Views/Boards/list-item.html");
             var orgId = 0;
+            var canCreate = false;
             boards.ForEach((Query.Models.Board b) => {
                 //check organization
                 if (orgId != b.orgId)
                 {
+                    canCreate = request.CheckSecurity(orgId, Security.Keys.BoardCanCreate.ToString());
                     if (orgId > 0)
                     {
-                        createView["onclick"] = "S.boards.add.show(null, null, '', " + orgId + ")";
-                        html.Append(createView.Render());
+                        if (canCreate)
+                        {
+                            createView["onclick"] = "S.boards.add.show(null, null, '', " + orgId + ")";
+                            html.Append(createView.Render());
+                        }
                         html.Append("</div>");
                     } 
                     orgView.Clear();
@@ -118,8 +123,11 @@ namespace Kandu.Common
                 item["url"] = GetUrl(b.boardId, b.name);
                 html.Append(item.Render());
             });
-            createView["onclick"] = "S.boards.add.show(null, null, '', " + orgId + ")";
-            html.Append(createView.Render());
+            if (request.CheckSecurity(orgId, Security.Keys.BoardCanCreate.ToString()))
+            {
+                createView["onclick"] = "S.boards.add.show(null, null, '', " + orgId + ")";
+                html.Append(createView.Render());
+            }
             html.Append("</div>");
 
             return html.ToString();

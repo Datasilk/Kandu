@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Text;
 using Datasilk.Core.Web;
+using Kandu.Models;
 
 namespace Kandu.Core
 {
@@ -38,11 +39,6 @@ namespace Kandu.Core
             {
                 User.Save();
             }
-        }
-
-        public virtual bool CheckSecurity(string key = "")
-        {
-            return true;
         }
 
         public string AccessDenied<T>() where T : Datasilk.Core.Web.IController
@@ -104,5 +100,15 @@ namespace Kandu.Core
         }
 
         public void LoadHeader(ref View view, HasMenu hasMenu = HasMenu.None) { }
+
+        public virtual bool CheckSecurity(int boardId)
+        {
+            return User.CheckSecurity(boardId);
+        }
+
+        public virtual bool CheckSecurity(int orgId, string key, Models.Scope scope = Models.Scope.All, int scopeId = 0)
+        {
+            return User.CheckSecurity(orgId, key, scope, scopeId);
+        }
     }
 }

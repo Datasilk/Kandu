@@ -1,4 +1,5 @@
 ﻿using System.Text;
+using System.Linq;
 
 namespace Kandu.Services
 {
@@ -100,6 +101,26 @@ namespace Kandu.Services
             if (!canEdit) { return AccessDenied(); }
             Query.Security.UpdateGroup(groupId, name);
             return Success();
+        }
+
+        public string ShowAddKey(int groupId)
+        {
+            if (!CheckSecurity()) { return AccessDenied(); } //check security
+            var group = Query.Security.GroupDetails(groupId);
+            var canEdit = CheckSecurity(group.orgId, Security.Keys.SecGroupCanEditInfo.ToString(), Models.Scope.SecurityGroup, groupId);
+            var canUpdateKeys = CheckSecurity(group.orgId, Security.Keys.SecGroupCanUpdateKeys.ToString(), Models.Scope.SecurityGroup, groupId);
+            if (!canUpdateKeys) { return AccessDenied(); }
+            var view = new View("/Views/Security/new-key.html");
+            var html = new StringBuilder();
+            var keys = group.Keys.Select(a => a.key);
+            var allkeys = Core.Vendors.Keys.SelectMany(a => a.Keys).ToList();
+            allkeys.Add(new Vendor.SecurityKey() { Label = "Owner", Value = "Owner" });
+            allkeys.Add(new Vendor.SecurityKey() { Label = "Test", Value = "Test" });
+            view["name"] = group.name;
+            view["key-options"] = string.Join('\n',
+                allkeys.Where(a => !keys.Any(b => b == a.Value))
+                .Select(a => "<option value=\"" + a.Value + "\">" + a.Label + "</option>"));
+            return view.Render();
         }
 
         public string SaveKey(int groupId, string key, bool ischecked, int scope, int scopeid)

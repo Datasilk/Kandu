@@ -66,7 +66,7 @@
                         if (callback) { callback(); }
                     }
                 });
-                //set up key check event
+                //set up security key events
                 $('.security-details .key').on('input', S.security.details.saveKey);
 
                 //set up tabs
@@ -83,12 +83,32 @@
             S.popup.hide(S.security.details.popup);
         },
 
+        addKey: {
+            show: function (id, callback) {
+                S.ajax.post('SecurityGroups/ShowAddKey', { groupId: id }, function (result) {
+                    S.security.details.popup = S.popup.show('Add Security Key', result, {
+                        width: 700,
+                        backButton: true,
+                        onClose: function () {
+                            if (callback) { callback(); }
+                        }
+                    });
+
+                    //set up events
+                });
+            },
+
+            submit: function () {
+
+            }
+        },
+
         saveKey: function (e) {
             console.log(e);
             var checkbox = $(e.target);
             var key = checkbox.attr('name').replace('key-', '');
             var id = checkbox.attr('data-id');
-            S.ajax.post('SecurityGroups/SaveKey', { groupId: id, key:key, checked: checkbox[0].checked ? 1 : 0 }, function (result) {
+            S.ajax.post('SecurityGroups/SaveKey', { groupId: id, key:key, ischecked: checkbox[0].checked }, function (result) {
 
             });
         },

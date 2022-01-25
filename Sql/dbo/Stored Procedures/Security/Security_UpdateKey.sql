@@ -6,7 +6,7 @@
 	@scope int,
 	@scopeId int
 AS
-	IF EXISTS(SELECT * FROM Security WHERE orgId=@orgId AND groupId=@groupId AND [key]=@key) BEGIN
+	IF EXISTS(SELECT * FROM Security WHERE orgId=@orgId AND groupId=@groupId AND [key]=@key AND scope=@scope AND scopeId=@scopeId) BEGIN
 		UPDATE Security SET [enabled] = @value, scope=@scope, scopeId=@scopeId 
 		WHERE orgId=orgId AND groupId=@groupId AND [key]=@key
 	END ELSE BEGIN
