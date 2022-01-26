@@ -14,27 +14,27 @@
 
         //validate name
         if (name == '') {
-            S.message.show(msg, 'error', 'You must provide your name');
+            S.util.message(msg, 'error', 'You must provide your name');
             return;
         }
 
         //validate email
         if (!S.login.validateEmail(email)) {
-            S.message.show(msg, 'error', 'You must provide a valid email address');
+            S.util.message(msg, 'error', 'You must provide a valid email address');
             return;
         }
 
         //validate password
         if (pass == '' || pass2 == '') {
-            S.message.show(msg, 'error', 'You must type in your password twice');
+            S.util.message(msg, 'error', 'You must type in your password twice');
             return;
         }
         if (pass != pass2) {
-            S.message.show(msg, 'error', 'Your passwords do not match'); 
+            S.util.message(msg, 'error', 'Your passwords do not match'); 
             return;
         }
         if (pass.length < 8) {
-            S.message.show(msg, 'error', 'Your password must be at least 8 characters long');
+            S.util.message(msg, 'error', 'Your password must be at least 8 characters long');
             return;
         }
 
@@ -49,10 +49,10 @@
                 window.location.reload();
             } else {
                 //show error message
-                S.message.show(msg, 'error', 'An error occurred while trying to create your account');
+                S.util.message(msg, 'error', 'An error occurred while trying to create your account');
             }
         }, function () {
-            S.message.show(msg, 'error', 'An error occurred while trying to create your account');
+            S.util.message(msg, 'error', 'An error occurred while trying to create your account');
         });
     },
 

@@ -478,7 +478,7 @@
                     $('.list.id-' + listid).remove();
                 },
                 function () {
-                    S.message.show('.board .message', "error", S.message.error.generic);
+                    S.util.message('.board .message', "error", S.message.error.generic);
                 }
             );
         }
@@ -575,7 +575,7 @@
                         S.kanban.card.drag.init($(nodes[nodes.length - 1]).children()[0]);
                     },
                     function () {
-                        S.message.show('.board .message', "error", S.message.error.generic);
+                        S.util.message('.board .message', "error", S.message.error.generic);
                     }
                 );
             }
@@ -632,7 +632,7 @@
                     S.popup.resize();
                 },
                 function () {
-                    S.message.show('.board .message', "error", S.message.error.generic);
+                    S.util.message('.board .message', "error", S.message.error.generic);
                 }
             );
 
@@ -888,11 +888,11 @@
                         S.kanban.list.resize(S.kanban.card.selected.listId);
 
                     } else {
-                        S.message.show('.board .message', "error", S.message.error.generic);
+                        S.util.message('.board .message', "error", S.message.error.generic);
                     }
                 },
                 function () {
-                    S.message.show('.board .message', "error", S.message.error.generic);
+                    S.util.message('.board .message', "error", S.message.error.generic);
                 }
             );
         },
@@ -915,11 +915,11 @@
                         S.kanban.list.resize(S.kanban.card.selected.listId);
 
                     } else {
-                        S.message.show('.board .message', "error", S.message.error.generic);
+                        S.util.message('.board .message', "error", S.message.error.generic);
                     }
                 },
                 function () {
-                    S.message.show('.board .message', "error", S.message.error.generic);
+                    S.util.message('.board .message', "error", S.message.error.generic);
                 }
             );
         },
@@ -932,14 +932,14 @@
             S.ajax.post('Cards/Delete', data,
                 function (d) {
                     if (d == 'success') {
-                        S.message.show('.board .message', "alert", 'The selected card has been permanently deleted from this board');
+                        S.util.message('.board .message', "alert", 'The selected card has been permanently deleted from this board');
                         S.popup.hide();
                     } else {
-                        S.message.show('.board .message', "error", S.message.error.generic);
+                        S.util.message('.board .message', "error", S.message.error.generic);
                     }
                 },
                 function () {
-                    S.message.show('.board .message', "error", S.message.error.generic);
+                    S.util.message('.board .message', "error", S.message.error.generic);
                 }
             );
         },
@@ -1010,11 +1010,11 @@
                             //replace existing card with updated card
                             S.kanban.card.replace(d);
                         } else {
-                            S.message.show('.board .message', "error", S.message.error.generic);
+                            S.util.message('.board .message', "error", S.message.error.generic);
                         }
                     },
                     function () {
-                        S.message.show('.board .message', "error", S.message.error.generic);
+                        S.util.message('.board .message', "error", S.message.error.generic);
                     }
                 );
                 if (e.preventDefault) { e.preventDefault(); }
@@ -1088,11 +1088,11 @@
                             S.kanban.card.description.markdown();
                             S.kanban.card.description.hide();
                         } else {
-                            S.message.show('.board .message', "error", S.message.error.generic);
+                            S.util.message('.board .message', "error", S.message.error.generic);
                         }
                     },
                     function () {
-                        S.message.show('.board .message', "error", S.message.error.generic);
+                        S.util.message('.board .message', "error", S.message.error.generic);
                     }
                 );
                 e.preventDefault();

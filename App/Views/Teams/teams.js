@@ -24,9 +24,9 @@
         submit: function () {
             var name = $('#teamname').val();
             var description = $('#description').val() || '';
-            var msg = $('.popup.show .message');
+            var msg = $('.popup.show .messages');
             if (name == '' || name == null) {
-                S.message.show(msg, 'error', 'Please specify a team name');
+                S.util.message(msg, 'error', 'Please specify a team name');
                 return;
             }
             S.ajax.post('Teams/Create', { orgId: S.teams.add.orgId, name: name, description: description },
@@ -38,7 +38,7 @@
                     }
                 },
                 function () {
-                    S.message.show(msg, 'error', S.message.error.generic);
+                    S.util.message(msg, 'error', S.message.error.generic);
                     return;
                 }
             );
@@ -109,7 +109,7 @@
                 name: $('#teamname').val(),
                 description: $('#team_description').val(),
             };
-            var msg = $('.popup.show .message');
+            var msg = $('.popup.show .messages');
             S.ajax.post('Teams/Update', form, function () {
                 $('.popup.show .title h5').html('Team ' + form.name);
                 if (S.teams.details.callback) {
@@ -117,9 +117,9 @@
                 }
                 $('.team-details .team-description').html(form.description);
                 S.teams.details.cancelEdit();
-                S.message.show(msg, null, 'Team updated successfully');
+                S.util.message(msg, null, 'Team updated successfully');
             }, (err) => {
-                S.message.show(msg, 'error', err.responseText);
+                S.util.message(msg, 'error', err.responseText);
             });
         },
 
@@ -174,7 +174,7 @@
                 S.teams.details.popup.hide();
                 S.teams.invite.show(S.teams.details.orgId, S.teams.details.teamId, S.teams.details.name, (total, failed) => {
                     S.teams.details.popup.show();
-                    S.message.show('.popup.show .message', '', total + (total != 1 ? ' people' : ' person') + ' invited' +
+                    S.util.message('.popup.show .messages', '', total + (total != 1 ? ' people' : ' person') + ' invited' +
                         (failed != null ? ', ' + failed.join(', ') + ' could not be invited' : ''));
                 });
             });
@@ -230,11 +230,11 @@
                 parameters: JSON.stringify(obj)
             };
             S.ajax.post('Teams/SaveSettings', data, function (result) {
-                S.message.show('.team-details .content-settings .message', null, 'Team settings have been saved');
+                S.util.message('.team-details .content-settings .message', null, 'Team settings have been saved');
                 S.teams.members.refresh();
             },
                 (err) => {
-                    S.message.show('.team-details .content-settings .message', 'error', err.responseText);
+                    S.util.message('.team-details .content-settings .message', 'error', err.responseText);
                 });
         }
     },

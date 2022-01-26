@@ -11,15 +11,15 @@
         var msglbl = $('.login .message > span');
         //validate password
         if (pass == '' || pass2 == '') {
-            S.message.show(msg, 'error', 'You must type in your password twice');
+            S.util.message(msg, 'error', 'You must type in your password twice');
             return;
         }
         if (pass != pass2) {
-            S.message.show(msg, 'error', 'Your passwords do not match'); 
+            S.util.message(msg, 'error', 'Your passwords do not match'); 
             return;
         }
         if (pass.length < 8) {
-            S.message.show(msg, 'error', 'Your password must be at least 8 characters long');
+            S.util.message(msg, 'error', 'Your password must be at least 8 characters long');
             return;
         }
 
@@ -34,7 +34,7 @@
                 window.location.reload();
             } else {
                 //show error message
-                S.message.show(msg, 'error', 'An error occurred while trying to update your password');
+                S.util.message(msg, 'error', 'An error occurred while trying to update your password');
             }
         });
     },

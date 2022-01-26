@@ -69,7 +69,7 @@
                 userId: S.user.details.userId,
                 name: $('#displayname').val(),
             };
-            var msg = $('.popup.show .message');
+            var msg = $('.popup.show .messages');
             S.ajax.post('User/Update', form, function () {
                 $('.popup.show .title h5').html(form.name);
                 if (S.user.details.callback) {
@@ -77,7 +77,7 @@
                 }
                 S.user.details.cancelEdit();
             }, (err) => {
-                S.message.show(msg, 'error', err.responseText);
+                S.util.message(msg, 'error', err.responseText);
             });
         },
 
@@ -207,7 +207,7 @@
         },
 
         save: function () {
-            var msg = $('.popup.show .message');
+            var msg = $('.popup.show .messages');
             var data = {
                 userId: S.user.details.userId,
                 name: $('#user_name').val(),
@@ -218,10 +218,10 @@
             }
             S.ajax.post('User/UpdateInfo', data, 
                 function (data) {
-                    S.message.show(msg, null, 'Account settings were updated successfully');
+                    S.util.message(msg, null, 'Account settings were updated successfully');
                 },
                 function (e) {
-                    S.message.show(msg, 'error', e.responseText);
+                    S.util.message(msg, 'error', e.responseText);
                     return;
                 }
             );

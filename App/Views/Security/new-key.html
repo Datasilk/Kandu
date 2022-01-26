@@ -1,10 +1,36 @@
-﻿<div class="add-security-key">
+﻿<style>
+    .add-security-key .tooltip:after{left:18%;}
+</style>
+<div class="add-security-key">
     <div class="sub-title">Add Security Key To Group "{{name}}"</div>
     <div class="security-form">
-        <div class="row message hide"><span></span></div>
+        <div class="row messages hide"><span></span></div>
         <div class="row margin-bottom">
-            <div class="row field long">Security Key</div>
-            <div class="row hover input"><select id="security_keys">{{key-options}}</select></div>    
+            <div class="col four">
+                <div class="row field long">Security Key</div>
+                <div class="row hover input"><select id="security_keys">{{key-options}}</select></div>  
+            </div>
+            <div class="col three">
+                <div class="row field long">Scope</div>
+                <div class="row hover input">
+                    <select id="security_scope">
+                        <option value="0" selected>All</option>
+                        <option value="1">Organization</option>
+                        <option value="2">Security Group</option>
+                        <option value="3">Team</option>
+                        <option value="4">Board</option>
+                        <option value="5">List</option>
+                        <option value="6">Card</option>
+                    </select>
+                </div>  
+            </div>
+            <div class="col five scope-id" style="display:none">
+                <div class="row field long">Scope Item</div>
+                <div class="row hover input"><select id="security_scopeId"></select></div>  
+            </div>
+        </div>
+        <div class="row margin-bottom">
+            <div class="col key-description tooltip"></div>
         </div>
         <div class="row pad-top text-center buttons">
             <a href="javascript:" class="button apply">Add Key</a>

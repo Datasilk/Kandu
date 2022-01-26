@@ -40,8 +40,8 @@ S.orgs = {
                     });
                 },
                 function (err) {
-                    var msg = $('.popup.show .message');
-                    S.message.show(msg, 'error', err.responseText);
+                    var msg = $('.popup.show .messages');
+                    S.util.message(msg, 'error', err.responseText);
                     return;
                 }
             );
@@ -89,10 +89,10 @@ S.orgs = {
                 description: $('#org_description').val(),
                 website: $('#org_website').val()
             };
-            var msg = $('.popup.show .message');
+            var msg = $('.popup.show .messages');
             if (id > 0) { hasid = true; }
             if (form.name == '' || form.name == null) {
-                S.message.show(msg, 'error', 'Please specify an organization name');
+                S.util.message(msg, 'error', 'Please specify an organization name');
                 return;
             }
             if (hasid) { form.orgId = id; }
@@ -103,7 +103,7 @@ S.orgs = {
                     if (callback) { callback(true, orgId); }
                 },
                 function (err) {
-                    S.message.show(msg, 'error', err.responseText);
+                    S.util.message(msg, 'error', err.responseText);
                     return;
                 }
             );
@@ -175,9 +175,9 @@ S.orgs = {
                 description: $('#org_description').val(),
                 website: $('#org_website').val()
             };
-            var msg = $('.popup.show .message');
+            var msg = $('.popup.show .messages');
             if (form.name == '' || form.name == null) {
-                S.message.show(msg, 'error', 'Please specify an organization name');
+                S.util.message(msg, 'error', 'Please specify an organization name');
                 return;
             }
             if (form.website != '') {
@@ -185,7 +185,7 @@ S.orgs = {
             }
 
             S.ajax.post('Organizations/Update', form, (result) => {
-                S.message.show(msg, null, 'Organization details have been updated');
+                S.util.message(msg, null, 'Organization details have been updated');
                 $('.org-form a.apply').addClass('hide');
                 S.orgs.list.reload();
                 $('.popup .title > h5').html(form.name);
@@ -194,7 +194,7 @@ S.orgs = {
                 $('.org-details .website-link').html(form.website != '' ? '<a href="' + form.website + '" target="_blank">' + form.website + '</a>' : '');
             },
             (err) => {
-                S.message.show(msg, 'error', err.responseText);
+                S.util.message(msg, 'error', err.responseText);
             });
         },
 
@@ -380,10 +380,10 @@ S.orgs = {
             };
             console.log(data);
             S.ajax.post('Organizations/SaveSettings', data, function (result) {
-                S.message.show('.org-details .content-settings .message', null, 'Organization settings have been saved');
+                S.util.message('.org-details .content-settings .message', null, 'Organization settings have been saved');
             },
                 (err) => {
-                    S.message.show('.org-details .content-settings .message', 'error', err.responseText);
+                    S.util.message('.org-details .content-settings .message', 'error', err.responseText);
             });
         }
     },

@@ -114,20 +114,29 @@ namespace Kandu.Services
             var html = new StringBuilder();
             var keys = group.Keys.Select(a => a.key);
             var allkeys = Core.Vendors.Keys.SelectMany(a => a.Keys).ToList();
-            allkeys.Add(new Vendor.SecurityKey() { Label = "Owner", Value = "Owner" });
-            allkeys.Add(new Vendor.SecurityKey() { Label = "Test", Value = "Test" });
             view["name"] = group.name;
             view["key-options"] = string.Join('\n',
                 allkeys.Where(a => !keys.Any(b => b == a.Value))
-                .Select(a => "<option value=\"" + a.Value + "\">" + a.Label + "</option>"));
+                .Select(a => "<option value=\"" + a.Value + "\" data-title=\""
+                            + a.Description + "\">" + a.Label + "</option>"));
             return view.Render();
+        }
+
+        public string AddKey(int groupId, string key, int scope, int scopeId)
+        {
+            if (!CheckSecurity()) { return AccessDenied(); } //check security
+            var group = Query.Security.GroupInfo(groupId);
+            var canEdit = CheckSecurity(group.orgId, Security.Keys.SecGroupCanUpdateKeys.ToString(), Models.Scope.SecurityGroup, groupId);
+            if (!canEdit) { return AccessDenied(); }
+            Query.Security.UpdateKey(group.orgId, groupId, key, true, scope, scopeId);
+            return Success();
         }
 
         public string SaveKey(int groupId, string key, bool ischecked, int scope, int scopeid)
         {
             if (!CheckSecurity()) { return AccessDenied(); } //check security
             var group = Query.Security.GroupInfo(groupId);
-            var canEdit = CheckSecurity(group.orgId, Security.Keys.SecGroupCanEditInfo.ToString(), Models.Scope.SecurityGroup, groupId);
+            var canEdit = CheckSecurity(group.orgId, Security.Keys.SecGroupCanUpdateKeys.ToString(), Models.Scope.SecurityGroup, groupId);
             if (!canEdit) { return AccessDenied(); }
             Query.Security.UpdateKey(group.orgId, groupId, key, ischecked, scope, scopeid);
             return Success();
@@ -137,10 +146,31 @@ namespace Kandu.Services
         {
             if (!CheckSecurity()) { return AccessDenied(); } //check security
             var group = Query.Security.GroupInfo(groupId);
-            var canEdit = CheckSecurity(group.orgId, Security.Keys.SecGroupCanEditInfo.ToString(), Models.Scope.SecurityGroup, groupId);
+            var canEdit = CheckSecurity(group.orgId, Security.Keys.SecGroupCanUpdateKeys.ToString(), Models.Scope.SecurityGroup, groupId);
             if (!canEdit) { return AccessDenied(); }
             Query.Security.RemoveKey(group.orgId, groupId, key, scope, scopeId);
             return Success();
+        }
+
+        public string GetKeys(int groupId, string key, int scope, int scopeId)
+        {
+            if (!CheckSecurity()) { return AccessDenied(); } //check security
+            var group = Query.Security.GroupInfo(groupId);
+            var canEdit = CheckSecurity(group.orgId, Security.Keys.SecGroupCanUpdateKeys.ToString(), Models.Scope.SecurityGroup, groupId);
+            if (!canEdit) { return AccessDenied(); }
+            //Query.Security.RemoveKey(group.orgId, groupId, key, scope, scopeId);
+            return Success();
+        }
+
+        public string GetScopeItems(int groupId, string key, int scope)
+        {
+            if (!CheckSecurity()) { return AccessDenied(); } //check security
+            var group = Query.Security.GroupInfo(groupId);
+            var canEdit = CheckSecurity(group.orgId, Security.Keys.SecGroupCanUpdateKeys.ToString(), Models.Scope.SecurityGroup, groupId);
+            if (!canEdit) { return AccessDenied(); }
+            if(scope == 0) { return ""; }
+            return string.Join("", Query.Security.GetScopeItems(group.orgId, groupId, key, scope)
+                .Select(a => "<option value=\"" + a.id + "\">" + a.title + "</option>\n"));
         }
     }
 }

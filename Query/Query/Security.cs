@@ -45,6 +45,11 @@ namespace Query
             Sql.ExecuteNonQuery("Security_RemoveKey", new { orgId, groupId, key, scope, scopeId });
         }
 
+        public static List<Models.ScopeItem> GetScopeItems(int orgId, int groupId, string key, int scope = 0)
+        {
+            return Sql.Populate<Models.ScopeItem>("Security_GetScopeItems", new { orgId, groupId, key, scope });
+        }
+
         public static List<Models.SecurityGroup> GetGroups(int orgId)
         {
             return Sql.Populate<Models.SecurityGroup>("SecurityGroups_GetList", new { orgId });

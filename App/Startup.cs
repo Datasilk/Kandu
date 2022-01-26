@@ -87,7 +87,7 @@ namespace Kandu
                     .Where(type => typeof(Vendor.IVendorStartup).IsAssignableFrom(type) && !type.IsInterface && !type.IsAbstract).ToList();
                 foreach (var type in types)
                 {
-                    Common.Vendors.GetStartupFromType(type);
+                    Vendors.GetStartupFromType(type);
                 }
             }
             //get list of DLLs that contain the IVendorStartup interface
@@ -135,7 +135,7 @@ namespace Kandu
                     .Where(type => typeof(Vendor.IVendorKeys).IsAssignableFrom(type) && !type.IsInterface && !type.IsAbstract).ToList();
                 foreach (var type in types)
                 {
-                    Common.Vendors.GetSecurityKeysFromType(type);
+                    Vendors.GetSecurityKeysFromType(type);
                 }
             }
             //get list of DLLs that contain the IVendorKeys interface
@@ -279,7 +279,7 @@ namespace Kandu
             Server.HasAdmin = Query.Users.HasAdmin();
 
             //check vendor versions which may run SQL migration scripts
-            Common.Vendors.CheckVersions();
+            Vendors.CheckVersions();
 
             //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
             //Run any services required after initializing all vendor plugins but before configuring vendor startup services

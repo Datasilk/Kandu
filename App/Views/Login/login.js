@@ -8,7 +8,7 @@
 
         S.ajax.post('User/Authenticate', data, function (d) {
             if (d) {
-                S.message.show(msg, '', 'Login success! Redirecting...');
+                S.util.message(msg, '', 'Login success! Redirecting...');
                 window.location.href = d;
             }
         }, function (err) {

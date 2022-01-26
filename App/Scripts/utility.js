@@ -16,3 +16,18 @@ S.util.url = {
         }
     }
 };
+
+S.util.message = function (elem, type, msg) {
+    if (!elem || elem == '') { elem = '.messages:nth-child(1)'; }
+    var container = $(elem);
+    var div = document.createElement('div');
+    div.className = 'message' + (type != null ? ' ' + type : '');
+    div.innerHTML = template_message.innerHTML.replace('##text##', msg);
+    container.removeClass('hide').append(div);
+    $(div).find('.close-btn').on('click', (e) => {
+        $(div).remove();
+        if (container.children().length == 0) {
+            container.addClass('hide');
+        }
+    });
+};

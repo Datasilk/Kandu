@@ -70,10 +70,10 @@
             var name = $('#boardname').val();
             var color = S.util.color.rgbToHex($('.popup .color-input').css('background-color')).replace('#','');
             var cardtype = $('#cardtype').val();
-            var msg = $('.popup.show .message');
+            var msg = $('.popup.show .messages');
             if (id > 0) { hasid = true;}
             if (name == '' || name == null) {
-                S.message.show(msg, 'error', 'Please specify a board name');
+                S.util.message(msg, 'error', 'Please specify a board name');
                 return;
             }
             var form = { name: name, color: color, orgId: orgId, cardtype: cardtype };
@@ -91,7 +91,7 @@
                     }
                 },
                 function () {
-                    S.message.show(msg, 'error', S.message.error.generic);
+                    S.util.message(msg, 'error', S.message.error.generic);
                     return;
                 }
             );
