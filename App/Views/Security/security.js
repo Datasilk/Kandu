@@ -118,8 +118,29 @@
                     description.html(option.attr('data-title'));
 
                     elem.on('input', () => {
+                        //user changed security key
                         option = $(elem[0].options[elem[0].selectedIndex]);
                         description.html(option.attr('data-title'));
+                        var str = option.attr('data-scopes');
+                        if (str != null && str != '') {
+                            var scopes = str.split(',');
+                            var elemscope = $('#security_scope');
+                            elemscope.find('option').removeAttr('selected').hide();
+                            for (var x = 0; x < scopes.length; x++) {
+                                var scopetype = scopes[x];
+                                var option = elemscope.find('option[value="' + scopetype + '"]');
+                                if (x == 0) {
+                                    option.val(scopetype);
+                                    option.attr('selected', 'selected');
+                                    S.security.details.getScopeItems(id);
+                                }
+                                option.show();
+                            }
+                            $('.add-security-key .scope').show();
+                        } else {
+                            $('.add-security-key .scope').hide();
+                            $('.add-security-key .scope-id').hide();
+                        }
                     });
 
                     $('#security_scope').on('input', () => { S.security.details.getScopeItems(id); });

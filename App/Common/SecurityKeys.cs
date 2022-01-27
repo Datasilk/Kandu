@@ -12,7 +12,7 @@ namespace Kandu.Common
             {
                 Label = "Application Owner",
                 Value = "AppOwner",
-                Description = "Owner of the Kandu application with full, site-wide Administrator privilages",
+                Description = "Owner of the Kandu application with full, site-wide Administrator privilages"
             },
             new Vendor.SecurityKey()
             {
@@ -32,25 +32,42 @@ namespace Kandu.Common
             {
                 Label = "Edit Organization Info",
                 Value = "OrgCanEditInfo",
-                Description = "Can edit an organization's name, website & description fields"
+                Description = "Can edit an organization's name, website & description fields",
+                ScopeTypes = new Vendor.Security.ScopeTypes[]
+                {
+                    Kandu.Vendor.Security.ScopeTypes.Organization
+                }
             },
             new Vendor.SecurityKey()
             {
                 Label = "Edit Organization Settings",
                 Value = "OrgCanEditSettings",
-                Description = "Can edit an organization's settings"
+                Description = "Can edit an organization's settings",
+                ScopeTypes = new Vendor.Security.ScopeTypes[]
+                {
+                    Kandu.Vendor.Security.ScopeTypes.Organization
+                }
             },
             new Vendor.SecurityKey()
             {
                 Label = "Edit Organization Theme",
                 Value = "OrgCanEditTheme",
-                Description = "Can edit an organization's theme"
+                Description = "Can edit an organization's theme",
+                ScopeTypes = new Vendor.Security.ScopeTypes[]
+                {
+                    Kandu.Vendor.Security.ScopeTypes.Organization
+                }
             },
             new Vendor.SecurityKey()
             {
                 Label = "View Member Email Address",
                 Value = "OrgCanViewMemberEmailAddr",
-                Description = "Can view an organization member's email address"
+                Description = "Can view an organization member's email address",
+                ScopeTypes = new Vendor.Security.ScopeTypes[]
+                {
+                    Kandu.Vendor.Security.ScopeTypes.Organization,
+                    Kandu.Vendor.Security.ScopeTypes.Team
+                }
             },
             new Vendor.SecurityKey()
             {
@@ -62,7 +79,11 @@ namespace Kandu.Common
             {
                 Label = "View Security Group",
                 Value = "SecGroupCanView",
-                Description = "Can view a specific security group"
+                Description = "Can view a specific security group",
+                ScopeTypes = new Vendor.Security.ScopeTypes[]
+                {
+                    Kandu.Vendor.Security.ScopeTypes.SecurityGroup
+                }
             },
             new Vendor.SecurityKey()
             {
@@ -74,25 +95,41 @@ namespace Kandu.Common
             {
                 Label = "Edit Security Group Info",
                 Value = "SecGroupCanEditInfo",
-                Description = "Can edit information about a security group"
+                Description = "Can edit information about a security group",
+                ScopeTypes = new Vendor.Security.ScopeTypes[]
+                {
+                    Kandu.Vendor.Security.ScopeTypes.SecurityGroup
+                }
             },
             new Vendor.SecurityKey()
             {
                 Label = "Add Users To Security Groups",
                 Value = "SecGroupCanAddUsers",
-                Description = "Can add new users to a specific security group"
+                Description = "Can add new users to a specific security group",
+                ScopeTypes = new Vendor.Security.ScopeTypes[]
+                {
+                    Kandu.Vendor.Security.ScopeTypes.SecurityGroup
+                }
             },
             new Vendor.SecurityKey()
             {
                 Label = "Add Security Group Keys",
                 Value = "SecGroupCanUpdateKeys",
-                Description = "Can add & update security keys for a specific security group"
+                Description = "Can add & update security keys for a specific security group",
+                ScopeTypes = new Vendor.Security.ScopeTypes[]
+                {
+                    Kandu.Vendor.Security.ScopeTypes.SecurityGroup
+                }
             },
             new Vendor.SecurityKey()
             {
                 Label = "Remove Security Group Users",
                 Value = "SecGroupCanRemoveUsers",
-                Description = "Can remove users from a specific security group"
+                Description = "Can remove users from a specific security group",
+                ScopeTypes = new Vendor.Security.ScopeTypes[]
+                {
+                    Kandu.Vendor.Security.ScopeTypes.SecurityGroup
+                }
             },
             new Vendor.SecurityKey()
             {
@@ -104,7 +141,11 @@ namespace Kandu.Common
             {
                 Label = "View Team",
                 Value = "TeamCanView",
-                Description = "Can view a specific team in your organization"
+                Description = "Can view a specific team in your organization",
+                ScopeTypes = new Vendor.Security.ScopeTypes[]
+                {
+                    Kandu.Vendor.Security.ScopeTypes.Team
+                }
             },
             new Vendor.SecurityKey()
             {
@@ -116,37 +157,61 @@ namespace Kandu.Common
             {
                 Label = "Edit Team Info",
                 Value = "TeamCanEditInfo",
-                Description = "Can edit information about a specific team"
+                Description = "Can edit information about a specific team",
+                ScopeTypes = new Vendor.Security.ScopeTypes[]
+                {
+                    Kandu.Vendor.Security.ScopeTypes.Team
+                }
             },
             new Vendor.SecurityKey()
             {
                 Label = "Edit Team Settings",
                 Value = "TeamCanEditSettings",
-                Description = "Can edit settings for a specific team"
+                Description = "Can edit settings for a specific team",
+                ScopeTypes = new Vendor.Security.ScopeTypes[]
+                {
+                    Kandu.Vendor.Security.ScopeTypes.Team
+                }
             },
             new Vendor.SecurityKey()
             {
                 Label = "Invite Users To Team",
                 Value = "TeamCanInviteUsers",
-                Description = "Can invite users to join a specific team"
+                Description = "Can invite users to join a specific team",
+                ScopeTypes = new Vendor.Security.ScopeTypes[]
+                {
+                    Kandu.Vendor.Security.ScopeTypes.Team
+                }
             },
             new Vendor.SecurityKey()
             {
                 Label = "Remove Users From Team",
                 Value = "TeamCanRemoveUsers",
-                Description = "Can remove users from a specific team"
+                Description = "Can remove users from a specific team",
+                ScopeTypes = new Vendor.Security.ScopeTypes[]
+                {
+                    Kandu.Vendor.Security.ScopeTypes.Team
+                }
             },
             new Vendor.SecurityKey()
             {
                 Label = "Assign Roles To Team Users",
                 Value = "TeamCanAssignRoles",
-                Description = "Can assign a role to users from a specific team"
+                Description = "Can assign a role to users from a specific team",
+                ScopeTypes = new Vendor.Security.ScopeTypes[]
+                {
+                    Kandu.Vendor.Security.ScopeTypes.Team
+                }
             },
             new Vendor.SecurityKey()
             {
                 Label = "Assign Boards To Team Users",
                 Value = "TeamCanAssignBoards",
-                Description = "Can assign boards to users from a specific team"
+                Description = "Can assign boards to users from a specific team",
+                ScopeTypes = new Vendor.Security.ScopeTypes[]
+                {
+                    Kandu.Vendor.Security.ScopeTypes.Team
+                }
             },
             new Vendor.SecurityKey()
             {
@@ -158,7 +223,11 @@ namespace Kandu.Common
             {
                 Label = "View Board",
                 Value = "BoardCanView",
-                Description = "Can view a specific board in your organization"
+                Description = "Can view a specific board in your organization",
+                ScopeTypes = new Vendor.Security.ScopeTypes[]
+                {
+                    Kandu.Vendor.Security.ScopeTypes.Board
+                }
             },
             new Vendor.SecurityKey()
             {
@@ -170,13 +239,21 @@ namespace Kandu.Common
             {
                 Label = "Update Board",
                 Value = "BoardCanUpdate",
-                Description = "Can update cards & lists for a specific board"
+                Description = "Can update cards & lists for a specific board",
+                ScopeTypes = new Vendor.Security.ScopeTypes[]
+                {
+                    Kandu.Vendor.Security.ScopeTypes.Board
+                }
             },
             new Vendor.SecurityKey()
             {
                 Label = "Remove Board Comments",
                 Value = "BoardCanRemoveComment",
-                Description = "Can remove any comment created in a specific board"
+                Description = "Can remove any comment created in a specific board",
+                ScopeTypes = new Vendor.Security.ScopeTypes[]
+                {
+                    Kandu.Vendor.Security.ScopeTypes.Board
+                }
             }
         };
     }

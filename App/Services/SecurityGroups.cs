@@ -117,8 +117,9 @@ namespace Kandu.Services
             view["name"] = group.name;
             view["key-options"] = string.Join('\n',
                 allkeys.Where(a => !keys.Any(b => b == a.Value))
-                .Select(a => "<option value=\"" + a.Value + "\" data-title=\""
-                            + a.Description + "\">" + a.Label + "</option>"));
+                .Select(a => "<option value=\"" + a.Value + "\" data-title=\"" + a.Description + "\"" + 
+                        (a.ScopeTypes != null ? " data-scopes=\"" + string.Join(',', a.ScopeTypes.Select(a => (int)a)) + "\"" : "") +
+                        ">" + a.Label + "</option>"));
             return view.Render();
         }
 
