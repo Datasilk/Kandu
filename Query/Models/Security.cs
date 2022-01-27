@@ -9,7 +9,9 @@ namespace Query.Models
         public string key { get; set; }
         public bool enabled { get; set; }
         public int scope { get; set; }
-        public int scopeId { get; set; }
+        public int scopeId { get; set; } = 0;
+        public string scopeType { get; set; } = "";
+        public string scopeItem { get; set; } = "";
     }
 
     public class SecurityGroup

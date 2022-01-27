@@ -12,7 +12,7 @@ namespace Kandu.Common
             {
                 Label = "Application Owner",
                 Value = "AppOwner",
-                Description = "Owner of the Kandu application with full, site-wide Administrator privilages"
+                Description = "Owner of the Kandu application with full, site-wide Administrator privilages",
             },
             new Vendor.SecurityKey()
             {

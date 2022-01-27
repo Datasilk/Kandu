@@ -65,13 +65,20 @@
 
         load: function (id, title, callback) {
             S.ajax.post('SecurityGroups/Details', { groupId: id }, function (result) {
-                S.security.details.popup = S.popup.show(title, result, {
-                    width: 700,
-                    backButton: true,
-                    onClose: function () {
-                        if (callback) { callback(); }
-                    }
-                });
+                if (!S.security.details.popup) {
+                    S.security.details.popup = S.popup.show(title, result, {
+                        width: 700,
+                        backButton: true,
+                        onClose: function () {
+                            S.security.details.popup = null;
+                            if (callback) { callback(); }
+                        }
+                    });
+                } else {
+                    //popup already exists
+                    S.security.details.popup.html(result);
+                }
+
                 //set up security key events
                 $('.security-details .key').on('input', S.security.details.saveKey);
 
@@ -82,6 +89,7 @@
 
                 //set up custom scrollbars
                 S.scrollbar.add('.security-details .tab-content', { touch: true });
+                
             });
         },
 

@@ -189,6 +189,11 @@ namespace Kandu
                     }
                 }
             }
+            //check if user is application owner (if all else fails)
+            if (Keys.Any(a => a.Value.Any(b => b.Key == "AppOwner" && b.Enabled == true)))
+            {
+                return true;
+            }
             return false;
         }
 

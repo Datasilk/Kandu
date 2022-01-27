@@ -152,16 +152,6 @@ namespace Kandu.Services
             return Success();
         }
 
-        public string GetKeys(int groupId, string key, int scope, int scopeId)
-        {
-            if (!CheckSecurity()) { return AccessDenied(); } //check security
-            var group = Query.Security.GroupInfo(groupId);
-            var canEdit = CheckSecurity(group.orgId, Security.Keys.SecGroupCanUpdateKeys.ToString(), Models.Scope.SecurityGroup, groupId);
-            if (!canEdit) { return AccessDenied(); }
-            //Query.Security.RemoveKey(group.orgId, groupId, key, scope, scopeId);
-            return Success();
-        }
-
         public string GetScopeItems(int groupId, string key, int scope)
         {
             if (!CheckSecurity()) { return AccessDenied(); } //check security

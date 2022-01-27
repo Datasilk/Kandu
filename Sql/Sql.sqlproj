@@ -200,6 +200,7 @@
     <Build Include="dbo\Stored Procedures\EmailClients\EmailClient_Remove.sql" />
     <Build Include="dbo\Stored Procedures\Security\Security_RemoveKey.sql" />
     <Build Include="dbo\Stored Procedures\Security\Security_GetScopeItems.sql" />
+    <Build Include="dbo\Stored Procedures\Security\Security_GetScopesForKeys.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Sql.publish.xml" />

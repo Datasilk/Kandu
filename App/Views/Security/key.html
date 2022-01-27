@@ -1,13 +1,22 @@
-﻿<div class="col four key key-{{key}}">
+﻿<div class="col six key key-{{key}}" title="{{description}}">
     <div class="row hover pad">
-        <input type="checkbox" id="key-{{key}}" data-id="{{groupid}}" {{checked}} {{cant-update}}disabled{{/cant-update}}/>
-        <label for="key-{{key}}">{{title}}</label>
-        {{can-update}}
-        <div class="col right icon small icon-close" onclick="S.security.details.removeKey(event, {{groupid}}, '{{key}}', {{scope}}, {{scopeid}})">
-            <svg viewBox="0 0 32 32">
-                <use xlink:href="#icon-close" x="0" y="0" width="32" height="32"></use>
-            </svg>
+        <div class="row">
+            <input type="checkbox" id="key-{{key}}" data-id="{{groupid}}" {{checked}} {{cant-update}}disabled{{/cant-update}}/>
+            <label for="key-{{key}}">{{title}}</label>
+            {{can-update}}
+            <div class="col right icon small icon-close" onclick="S.security.details.removeKey(event, {{groupid}}, '{{key}}', {{scope}}, {{scopeid}})">
+                <svg viewBox="0 0 32 32">
+                    <use xlink:href="#icon-close" x="0" y="0" width="32" height="32"></use>
+                </svg>
+            </div>
+            {{/can-update}} 
         </div>
-        {{/can-update}} 
+        {{show-scope}}
+        <div class="row pad-top-sm">
+            <div class="col pad-left scope">
+                {{scopeType}}: {{scopeItem}}
+            </div>
+        </div>
+        {{/show-scope}}
     </div>
 </div>

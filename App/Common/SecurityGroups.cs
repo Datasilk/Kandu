@@ -60,6 +60,8 @@ namespace Kandu.Common
             var viewKey = new View("/Views/Security/key.html");
             var html = new StringBuilder();
             var group = Query.Security.GroupDetails(groupId);
+            var allkeys = Core.Vendors.Keys.SelectMany(a => a.Keys).ToList();
+            var scopes = Query.Security.GetScopesForKeys(groupId);
 
             if (canUpdate)
             {
@@ -71,9 +73,23 @@ namespace Kandu.Common
 
             foreach (var key in group.Keys)
             {
+
                 viewKey.Clear();
+                var keyInfo = allkeys.Where(a => a.Value == key.key).FirstOrDefault();
+                if (key.scope > 0 && key.scopeId > 0)
+                {
+                    var scope = scopes.Where(a => a.scopeId == key.scopeId && a.scope == key.scope).FirstOrDefault();
+                    if(scope != null)
+                    {
+                        viewKey["scopetype"] = scope.scopeType;
+                        viewKey["scopeitem"] = scope.scopeItem;
+                        viewKey.Show("show-scope");
+                    }
+                }
                 viewKey["key"] = key.key;
-                viewKey["title"] = key.key;
+                viewKey["title"] = keyInfo?.Label ?? key.key;
+                viewKey["description"] = keyInfo?.Description ?? key.key;
+                viewKey["tooltip"] = keyInfo?.Description ?? key.key;
                 viewKey["groupid"] = groupId.ToString();
                 viewKey["scope"] = key.scope.ToString();
                 viewKey["scopeid"] = key.scopeId.ToString();
