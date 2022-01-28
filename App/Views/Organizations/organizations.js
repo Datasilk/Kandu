@@ -284,7 +284,7 @@ S.orgs = {
         },
          
         refresh: function () {
-            S.members.search.query(S.orgs.details.orgId, 1, 20, '.org-details .content-members', '', 'S.orgs.members.details.show');
+            S.members.search.query(S.orgs.details.orgId, 1, 20, '.org-details .content-members', $('#search_members').val(), 'S.orgs.members.details.show');
         },
 
         details: {
@@ -295,15 +295,6 @@ S.orgs = {
                     S.popup.resize();
                 });
             }
-        },
-
-        add: function () {
-            S.orgs.details.popup.hide();
-            S.members.add.show(null, S.orgs.details.orgId, () => {
-                S.orgs.details.popup.show();
-                S.popup.resize();
-                S.orgs.members.refresh();
-            });
         }
     },
 

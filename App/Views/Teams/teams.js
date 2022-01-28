@@ -77,6 +77,7 @@
                 $('.team-details .movable > div').hide();
                 $('.team-details .content-members').show();
                 $('.team-details .tab-members').on('click', S.teams.members.show);
+                $('.team-details .tab-invites').on('click', S.teams.invites.show);
                 $('.team-details .tab-settings').on('click', S.teams.settings.show);
 
                 //set up custom scrollbars
@@ -188,6 +189,32 @@
                     S.teams.details.popup.show();
                 });
             }
+        }
+    },
+
+    invites: {
+        show: function () {
+            S.teams.details.tabs.select('invites');
+            var content = $('.team-details .content-invites');
+            if (content.html().trim() == '') {
+                //load team settings
+                S.teams.invites.refresh();
+            }
+        },
+
+        refresh: function () {
+            S.ajax.post('Teams/RefreshInvites', { orgId: S.teams.details.orgId, teamId: S.teams.details.teamId }, function (result) {
+                var content = $('.team-details .content-invites');
+                content.html(result);
+                var savebtn = $('.team-details .btn-save-invites');
+                content.find('select, input').on('keyup, change', () => {
+                    savebtn.removeClass('hide');
+                });
+                S.popup.resize();
+            },
+            (err) => {
+
+            });
         }
     },
 

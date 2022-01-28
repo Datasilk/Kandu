@@ -76,7 +76,7 @@
                     });
                 } else {
                     //popup already exists
-                    S.security.details.popup.html(result);
+                    S.security.details.popup.find('.popup-body').html(result);
                 }
 
                 //set up security key events

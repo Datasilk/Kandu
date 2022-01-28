@@ -106,18 +106,16 @@ namespace Kandu.Services
         public string ShowAddKey(int groupId)
         {
             if (!CheckSecurity()) { return AccessDenied(); } //check security
-            var group = Query.Security.GroupDetails(groupId);
+            var group = Query.Security.GroupInfo(groupId);
             var canEdit = CheckSecurity(group.orgId, Security.Keys.SecGroupCanEditInfo.ToString(), Models.Scope.SecurityGroup, groupId);
             var canUpdateKeys = CheckSecurity(group.orgId, Security.Keys.SecGroupCanUpdateKeys.ToString(), Models.Scope.SecurityGroup, groupId);
             if (!canUpdateKeys) { return AccessDenied(); }
             var view = new View("/Views/Security/new-key.html");
             var html = new StringBuilder();
-            var keys = group.Keys.Select(a => a.key);
             var allkeys = Core.Vendors.Keys.SelectMany(a => a.Keys).ToList();
             view["name"] = group.name;
             view["key-options"] = string.Join('\n',
-                allkeys.Where(a => !keys.Any(b => b == a.Value))
-                .Select(a => "<option value=\"" + a.Value + "\" data-title=\"" + a.Description + "\"" + 
+                allkeys.Select(a => "<option value=\"" + a.Value + "\" data-title=\"" + a.Description + "\"" + 
                         (a.ScopeTypes != null ? " data-scopes=\"" + string.Join(',', a.ScopeTypes.Select(a => (int)a)) + "\"" : "") +
                         ">" + a.Label + "</option>"));
             return view.Render();

@@ -89,7 +89,10 @@ namespace Kandu.Services
             tab["onclick"] = "S.teams.details.tabs.select('members')";
             tab.Show("selected");
             tabHtml.Append(tab.Render());
-            html.Append(Common.Teams.RenderMembers(this, teamId));
+            if (team.groupId != null && team.groupId > 0) 
+            { 
+                html.Append(Common.Teams.RenderMembers(this, teamId));
+            }
             if (CheckSecurity(team.orgId, Security.Keys.TeamCanInviteUsers.ToString(), Models.Scope.Team, teamId))
             {
                 if (team.groupId != null && team.groupId > 0)
@@ -98,8 +101,20 @@ namespace Kandu.Services
                     var addbutton = additem.Render();
                     html.Append(addbutton);
                 }
+                else
+                {
+                    html.Append("<div class=\"row pad text-center\"><p>Please set a default security group for your team before adding members.</p></div>");
+                }
             }
             contentHtml.Append("<div class=\"content-members grid-items\">" + html.ToString() + "</div>");
+
+            //load invites tab
+            tab.Clear();
+            tab["title"] = "Invites";
+            tab["id"] = "invites";
+            tab["onclick"] = "S.teams.details.tabs.select('invites')";
+            tabHtml.Append(tab.Render());
+            contentHtml.Append("<div class=\"content-invites pad-top\"></div>");
 
             //load settings tab
             tab.Clear();

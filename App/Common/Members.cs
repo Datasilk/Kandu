@@ -14,7 +14,7 @@ namespace Kandu.Common
             {
                 listItem.Clear();
                 listItem.Bind(new { member });
-                listItem["click"] = (onclick != "" ? onclick : "S.user.details.show") + "(" + member.userId + ", '" + member.name + "')";
+                listItem["click"] = (onclick != "" ? onclick : "S.user.details.show") + "(" + member.userId + ", " + orgId + ", '" + member.name + "')";
                 html.Append(listItem.Render());
             }
 

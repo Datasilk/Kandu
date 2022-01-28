@@ -3,18 +3,17 @@
     .content-keys .key .scope{font-size:0.8rem; opacity:0.65;}
 </style>
 <div class="security-details">
-    <div class="sub-title">Security Group</div>
     {{can-edit}}
-        <div class="security-form">
-            <div class="row messages hide"><span></span></div>
-            <div class="row margin-bottom">
-                <div class="row field long">Security Group Name</div>
-                <div class="row hover input"><input type="text" id="groupname" placeholder="Manager" value="{{name}}" /></div>    
-            </div>
-            <div class="row pad-top text-center buttons">
-                <a href="javascript:" class="button apply hide">Save Changes</a>
-            </div>
+    <div class="security-form">
+        <div class="row messages hide"><span></span></div>
+        <div class="row margin-bottom">
+            <div class="row field long">Security Group Name</div>
+            <div class="row hover input"><input type="text" id="groupname" placeholder="Manager" value="{{name}}" /></div>    
         </div>
+        <div class="row pad-top text-center buttons">
+            <a href="javascript:" class="button apply hide">Save Changes</a>
+        </div>
+    </div>
     {{/can-edit}}
 
     <div class="tabs">{{tabs}}</div>

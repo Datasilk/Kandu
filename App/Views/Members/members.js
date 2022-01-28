@@ -1,6 +1,7 @@
 ﻿S.members = {
     search: {
         orgId: null,
+        container: null,
         cache: {
             page: 1,
             length: 10,
@@ -9,11 +10,15 @@
 
         init: function (orgId, container, onclick) {
             S.members.search.orgId = orgId;
+            S.members.search.container = container;
             //render search form with instructions
             S.members.search.query(orgId, 1, 0, container, '', onclick);
         },
 
         query: function (orgId, page, length, container, search, onclick) {
+            if (container == null) {
+                container = S.members.search.container;
+            }
             S.members.search.cache = { page: page, length: length, search: search, onclick };
             S.ajax.post('Members/RefreshList', { orgId: orgId, page: page, length: length, search: search, onclick:onclick }, (html) => {
                 if (length == 0) {

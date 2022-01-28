@@ -78,12 +78,12 @@ namespace Kandu.Services
                 paging = "<div class=\"row paging\">" + paging + pagelist.ToString() + pagingbacknext.Render() + "</div>";
 
                 //render members list
-                viewSearch["members-list"] = resultsInfo.Render() + memberslist + paging;
+                viewSearch["members-list"] = memberslist + paging + resultsInfo.Render();
             }
             else if(length > 0)
             {
                 //render members list
-                viewSearch["members-list"] = resultsInfo.Render() + memberslist;
+                viewSearch["members-list"] = memberslist + resultsInfo.Render();
             }
             else
             {
@@ -92,7 +92,7 @@ namespace Kandu.Services
                 newsearch["orgId"] = orgId.ToString();
                 viewSearch["members-list"] = newsearch.Render();
             }
-            return length == 0 ? viewSearch.Render() : resultsInfo.Render() + memberslist + paging;
+            return length == 0 ? viewSearch.Render() : memberslist + paging + resultsInfo.Render();
         }
     }
 }

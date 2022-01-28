@@ -287,7 +287,14 @@ namespace Kandu.Services
                 listItem.Show("subtitle");
                 html.Append(listItem.Render());
             }
-            html.Append("</div>");
+            if(teams.Count() > 0)
+            {
+                html.Append("</div>");
+            }
+            else
+            {
+                html.Append("This user is not a part of any teams");
+            }
 
             return html.ToString();
         }

@@ -66,6 +66,7 @@ namespace Kandu.Common
                 ScopeTypes = new Vendor.Security.ScopeTypes[]
                 {
                     Kandu.Vendor.Security.ScopeTypes.Organization,
+                    Kandu.Vendor.Security.ScopeTypes.SecurityGroup,
                     Kandu.Vendor.Security.ScopeTypes.Team
                 }
             },
