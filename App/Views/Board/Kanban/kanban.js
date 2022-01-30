@@ -817,7 +817,7 @@
                                 });
                                 S.kanban.list.resize(listId);
 
-                                S.ajax.post('Card/Kanban/Move', { boardId: S.kanban.card.boardId, listId: listId, cardId: S.util.element.getClassId(item.elem), cardIds: cards });
+                                S.ajax.post('Card/Kanban/Move', { boardId: S.kanban.card.boardId || S.board.id, listId: listId, cardId: S.util.element.getClassId(item.elem), cardIds: cards });
                             }
                             setTimeout(function () { S.kanban.card.drag.dragging = false; }, 100);
                         },
@@ -872,7 +872,7 @@
 
         archive: function () {
             var data = {
-                boardId: S.kanban.card.boardId,
+                boardId: S.kanban.card.boardId || S.board.id,
                 cardId: S.kanban.card.selected.id
             };
             S.ajax.post('Cards/Archive', data,
@@ -899,7 +899,7 @@
 
         restore: function () {
             var data = {
-                boardId: S.kanban.card.boardId,
+                boardId: S.kanban.card.boardId || S.board.id,
                 cardId: S.kanban.card.selected.id
             };
             S.ajax.post('Cards/Restore', data,
@@ -926,7 +926,7 @@
 
         delete: function () {
             var data = {
-                boardId: S.kanban.card.boardId,
+                boardId: S.kanban.card.boardId || S.board.id,
                 cardId: S.kanban.card.selected.id
             };
             S.ajax.post('Cards/Delete', data,
@@ -1000,7 +1000,7 @@
                 S.kanban.card.title.cancel();
                 if (input.val().trim() == S.kanban.card.title.cached) { return false; }
                 var data = {
-                    boardId: S.kanban.card.boardId,
+                    boardId: S.kanban.card.boardId || S.board.id,
                     cardId: S.kanban.card.selected.id,
                     name: input.val()
                 };
@@ -1074,7 +1074,7 @@
 
             update: function (e) {
                 var data = {
-                    boardId: S.kanban.card.boardId,
+                    boardId: S.kanban.card.boardId || S.board.id,
                     cardId: S.kanban.card.selected.id,
                     description: $('#card_description').val()
                 };

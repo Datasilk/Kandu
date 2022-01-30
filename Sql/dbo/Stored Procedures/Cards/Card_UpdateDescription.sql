@@ -3,5 +3,6 @@
 	@cardId int,
 	@description nvarchar(MAX)
 AS
-	UPDATE Cards SET [description]=@description, datemodified=GETUTCDATE() WHERE cardId=@cardId AND boardId=@boardId
+	UPDATE CardDescriptions SET [description]=@description WHERE cardId=@cardId
+	UPDATE Cards SET datemodified=GETUTCDATE() WHERE cardId=@cardId
 	EXEC Board_Modified @boardId=@boardId

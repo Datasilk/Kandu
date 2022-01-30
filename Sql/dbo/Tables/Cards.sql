@@ -14,8 +14,7 @@
     [name] NVARCHAR(MAX) NOT NULL, 
     [type] VARCHAR(16) NOT NULL DEFAULT '', --used for plugins
     [colors] VARCHAR(128) NOT NULL DEFAULT '',
-    [description] NVARCHAR(MAX) NOT NULL DEFAULT '', 
-    [json] NVARCHAR(MAX) NOT NULL DEFAULT '' -- mainly used for plugins
+    [description] NVARCHAR(MAX) NOT NULL DEFAULT '', -- delete later
 )
 
 GO

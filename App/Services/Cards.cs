@@ -8,13 +8,13 @@ namespace Kandu.Services
     {
         #region "Create, Archive, Restore, & Delete"
 
-        public string Create(int boardId, int listId, string name, string description = "", DateTime? dateDue = null, string colors = "")
+        public string Create(int boardId, int listId, string name, string description = "", DateTime? dateDue = null, string colors = "", string type = "")
         {
             if (!User.CheckSecurity(boardId)) { return AccessDenied(); }
             Query.Models.Card card;
             try
             {
-                card = Common.Cards.Create(boardId, listId, name, description, dateDue, colors);
+                card = Common.Cards.Create(boardId, listId, name, description, dateDue, colors, type);
             }catch(ServiceErrorException ex)
             {
                 return Error(ex.Message);

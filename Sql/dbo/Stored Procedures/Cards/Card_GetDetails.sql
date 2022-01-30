@@ -3,9 +3,11 @@
 	@cardId int
 AS
 	/* [0] Card Info */
-	SELECT c.*, l.[name] AS listName, l.archived AS listArchived, 
+	SELECT c.*, cd.[description], cj.[json], l.[name] AS listName, l.archived AS listArchived, 
 	b.[type] AS boardType, b.[name] AS boardName, b.color AS boardColor
 	FROM Cards c
+	LEFT JOIN CardDescriptions cd ON cd.cardId = c.cardId
+	LEFT JOIN CardJson cj ON cj.cardId = c.cardId
 	LEFT JOIN Lists l ON l.listId=c.listId
 	LEFT JOIN Boards b ON b.boardId=@boardId
 	WHERE c.cardId=@cardId AND c.boardId=@boardId

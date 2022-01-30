@@ -54,3 +54,7 @@ UPDATE c SET userIdCreated = o.ownerId
 FROM Cards c
 JOIN Boards b ON b.boardId=c.boardId
 JOIN Organizations o ON o.orgId=b.orgId
+
+--move card descriptions
+INSERT INTO CardDescriptions
+SELECT cardId, [description] FROM Cards WHERE [description] != ''

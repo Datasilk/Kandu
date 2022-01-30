@@ -8,7 +8,7 @@
         $('.bg-for-boards-menu').on('click', S.head.boards.hide);
         $('.btn-user').on('click', S.head.user.show);
         $('.bg-for-user-menu').on('click', S.head.user.hide);
-        S.scrollbar.add($('.boards-menu .scroll-container'), {
+        S.scrollbar.add($('.boards-menu'), {
             footer: S.head.boards.scroll.footer,
             touch: true
         });
@@ -37,9 +37,9 @@
             const movable = $('.boards-menu .movable');
             const h = movable.height();
             if (menu.hasClass('always-show')) {
-                menu.find('.scroll-container').css({ height: (win.h - 55) + 'px' });
+                menu.css({ height: (win.h - 55) + 'px' });
             } else {
-                menu.find('.scroll-container').css({ maxHeight: '' });
+                menu.css({ maxHeight: '' });
             }
         },
 

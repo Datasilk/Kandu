@@ -6,7 +6,7 @@ namespace Kandu.Common
     public static class Cards
     {
 
-        public static Query.Models.Card Create(int boardId, int listId, string name, string description = "", DateTime? dateDue = null, string colors = "")
+        public static Query.Models.Card Create(int boardId, int listId, string name, string description = "", DateTime? dateDue = null, string colors = "", string type = "")
         {
             var card = new Query.Models.Card()
             {
@@ -16,7 +16,8 @@ namespace Kandu.Common
                 colors = colors,
                 description = description,
                 datedue = dateDue,
-                datecreated = DateTime.Now
+                datecreated = DateTime.Now,
+                type = type
             };
             try
             {

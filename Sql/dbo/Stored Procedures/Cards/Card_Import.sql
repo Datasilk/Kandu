@@ -18,7 +18,8 @@ AS
 		/* card already exists */
 		IF @merge = 1 BEGIN
 			/* merge */
-			UPDATE Cards SET [type]=@type, colors=@colors, datedue=@datedue, [description]=@description, [json]=@json
+			UPDATE Cards SET [type]=@type, colors=@colors, datedue=@datedue WHERE cardId=@oldId
+			UPDATE CardDescriptions SET [description]=@description WHERE cardId=@oldId
 			SET @create = 0
 		END
 	END

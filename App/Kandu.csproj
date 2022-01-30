@@ -23,17 +23,79 @@
   <ItemGroup>
     <None Remove="Controllers\404.html" />
     <None Remove="Controllers\500.html" />
+    <None Remove="Views\access-denied.html" />
+    <None Remove="Views\App\details.html" />
+    <None Remove="Views\App\email.html" />
+    <None Remove="Views\App\no-plugins.html" />
+    <None Remove="Views\App\plugin.html" />
+    <None Remove="Views\App\settings.html" />
+    <None Remove="Views\Boards\add-item.html" />
     <None Remove="Views\Boards\boards.html" />
+    <None Remove="Views\Boards\create-board.html" />
     <None Remove="Views\Boards\list-item.html" />
     <None Remove="Controllers\Import\success.html" />
     <None Remove="Controllers\Import\trello.html" />
+    <None Remove="Views\Boards\org-head.html" />
+    <None Remove="Views\Board\Kanban\kanban.html" />
+    <None Remove="Views\Board\menu.html" />
+    <None Remove="Views\Board\new-board.html" />
+    <None Remove="Views\Email\action-form.html" />
+    <None Remove="Views\Email\action.html" />
+    <None Remove="Views\Email\client-form.html" />
+    <None Remove="Views\Email\list-item.html" />
+    <None Remove="Views\Email\no-clients.html" />
+    <None Remove="Views\List\Kanban\list-menu.html" />
     <None Remove="Views\Login\login.html" />
     <None Remove="Views\Login\new-admin.html" />
     <None Remove="Views\Login\new-pass.html" />
+    <None Remove="Views\Members\add-item.html" />
+    <None Remove="Views\Members\list-item-selected.html" />
+    <None Remove="Views\Members\list-item.html" />
+    <None Remove="Views\Members\new-search.html" />
+    <None Remove="Views\Members\results-info.html" />
+    <None Remove="Views\Members\search.html" />
+    <None Remove="Views\Members\use-email-selected.html" />
+    <None Remove="Views\Members\use-email.html" />
+    <None Remove="Views\Organizations\details.html" />
+    <None Remove="Views\Organizations\list-item.html" />
+    <None Remove="Views\Organizations\list.html" />
+    <None Remove="Views\Organizations\no-boards.html" />
+    <None Remove="Views\Organizations\no-following.html" />
+    <None Remove="Views\Organizations\settings.html" />
+    <None Remove="Views\Organizations\templates.html" />
+    <None Remove="Views\Organizations\theme.html" />
+    <None Remove="Views\Organizations\title-bar.html" />
+    <None Remove="Views\Security\add-item.html" />
+    <None Remove="Views\Security\add-key.html" />
+    <None Remove="Views\Security\details.html" />
+    <None Remove="Views\Security\key.html" />
     <None Remove="Views\Security\list-item.html" />
+    <None Remove="Views\Security\new-group.html" />
+    <None Remove="Views\Security\new-key.html" />
+    <None Remove="Views\Shared\expander.html" />
+    <None Remove="Views\Shared\header.html" />
+    <None Remove="Views\Shared\layout.html" />
+    <None Remove="Views\Shared\menu-item.html" />
+    <None Remove="Views\Shared\menu.html" />
+    <None Remove="Views\Shared\paging-backnext.html" />
+    <None Remove="Views\Shared\paging-number.html" />
+    <None Remove="Views\Shared\PartialViews\accordion.html" />
+    <None Remove="Views\Shared\PartialViews\titlemenu.html" />
+    <None Remove="Views\Shared\tab.html" />
     <None Remove="Views\Signup\signup.html" />
     <None Remove="Views\Signup\signup.js" />
+    <None Remove="Views\Teams\add-item.html" />
+    <None Remove="Views\Teams\details.html" />
+    <None Remove="Views\Teams\invite.html" />
     <None Remove="Views\Teams\list-item.html" />
+    <None Remove="Views\Teams\new-team.html" />
+    <None Remove="Views\Teams\settings.html" />
+    <None Remove="Views\User\account.html" />
+    <None Remove="Views\User\cards.html" />
+    <None Remove="Views\User\details.html" />
+    <None Remove="Views\User\email-settings.html" />
+    <None Remove="Views\User\menu.html" />
+    <None Remove="Views\User\new-org.html" />
   </ItemGroup>
 
   <ItemGroup>
@@ -43,19 +105,73 @@
     <Content Include="Views\500.html">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Views\access-denied.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Views\App\details.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Views\App\email.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Views\App\no-plugins.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Views\App\plugin.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Views\App\settings.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Views\Boards\add-item.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Views\Boards\boards.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Views\Boards\create-board.html">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Views\Boards\list-item.html">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Views\Boards\org-head.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Views\Board\board.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Views\Board\Kanban\kanban.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Views\Board\menu.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Views\Board\new-board.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Views\Email\action-form.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Views\Email\action.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Views\Email\client-form.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Views\Email\list-item.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Views\Email\no-clients.html">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Views\Import\Trello\success.html">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Views\Import\Trello\trello.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Views\List\Kanban\list-menu.html">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Views\Login\login.html">
@@ -85,7 +201,106 @@
     <Content Include="Views\List\Kanban\list.html">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Views\Members\add-item.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Views\Members\list-item-selected.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Views\Members\list-item.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Views\Members\new-search.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Views\Members\results-info.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Views\Members\search.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Views\Members\use-email-selected.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Views\Members\use-email.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Views\Organizations\details.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Views\Organizations\list-item.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Views\Organizations\list.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Views\Organizations\no-boards.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Views\Organizations\no-following.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Views\Organizations\settings.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Views\Organizations\templates.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Views\Organizations\theme.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Views\Organizations\title-bar.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Views\Security\add-item.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Views\Security\add-key.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Views\Security\details.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Views\Security\key.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Views\Security\list-item.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Views\Security\new-group.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Views\Security\new-key.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Views\Shared\expander.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Views\Shared\header.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Views\Shared\layout.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Views\Shared\menu-item.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Views\Shared\menu.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Views\Shared\paging-backnext.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Views\Shared\paging-number.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Views\Shared\PartialViews\accordion.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Views\Shared\PartialViews\titlemenu.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Views\Shared\tab.html">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Views\Signup\signup.html">
@@ -94,7 +309,40 @@
     <Content Include="Views\Signup\signup.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Views\Teams\add-item.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Views\Teams\details.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Views\Teams\invite.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Views\Teams\list-item.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Views\Teams\new-team.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Views\Teams\settings.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Views\User\account.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Views\User\cards.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Views\User\details.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Views\User\email-settings.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Views\User\menu.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Views\User\new-org.html">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
@@ -119,9 +367,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="Views\access-denied.html">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
     <None Update="Views\Card\Kanban\Elements\warning.html">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
@@ -135,24 +380,6 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="Views\Card\Kanban\Type\separator.html">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="Views\List\Kanban\list-menu.html">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="Views\Shared\layout.html">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="Views\Board\Kanban\kanban.html">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="Views\Board\new-board.html">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="Views\Shared\expander.html">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="Views\Shared\header.html">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>

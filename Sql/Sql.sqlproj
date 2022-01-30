@@ -201,10 +201,13 @@
     <Build Include="dbo\Stored Procedures\Security\Security_RemoveKey.sql" />
     <Build Include="dbo\Stored Procedures\Security\Security_GetScopeItems.sql" />
     <Build Include="dbo\Stored Procedures\Security\Security_GetScopesForKeys.sql" />
+    <Build Include="dbo\Tables\CardDescriptions.sql" />
+    <Build Include="dbo\Tables\CardJson.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Sql.publish.xml" />
     <None Include="scripts\Migrate-2021-04-26.sql" />
+    <None Include="MyASPnet.publish.xml" />
   </ItemGroup>
   <ItemGroup>
     <RefactorLog Include="Sql.refactorlog" />
