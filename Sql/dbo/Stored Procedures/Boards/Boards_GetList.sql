@@ -46,4 +46,4 @@ AS
 	org.[name] ASC,
 	CASE WHEN @sort = 1 THEN b.[name] END ASC,
 	CASE WHEN @sort = 0 THEN bm.favorite END ASC,
-	CASE WHEN @sort = 0 OR @sort = 2 THEN b.lastmodified END ASC
+	CASE WHEN @sort = 0 OR @sort = 2 THEN b.lastmodified END DESC

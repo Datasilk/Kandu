@@ -114,5 +114,10 @@ namespace Kandu.Core
         {
             return User.CheckSecurity(orgId, key, scope, scopeId);
         }
+
+        public virtual bool CheckSecurity(int orgId, string[] keys, Models.Scope scope = Models.Scope.All, int scopeId = 0)
+        {
+            return User.CheckSecurity(orgId, keys, scope, scopeId);
+        }
     }
 }

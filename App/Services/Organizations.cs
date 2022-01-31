@@ -57,7 +57,8 @@ namespace Kandu.Services
 
         public string Details(int orgId)
         {
-            if (!CheckSecurity()) { return AccessDenied(); } //check security
+            if (!CheckSecurity() || !User.IsInOrganization(orgId)) { return AccessDenied(); } //check security
+            
             var canEdit = CheckSecurity(orgId, Security.Keys.OrgCanEditInfo.ToString(), Models.Scope.Organization, orgId);
             var tabHtml = new StringBuilder();
             var contentHtml = new StringBuilder();
@@ -156,7 +157,7 @@ namespace Kandu.Services
 
         public string Update(int orgId, string name, string description, string website)
         {
-            if(!CheckSecurity(orgId, Security.Keys.OrgCanEditInfo.ToString(), Models.Scope.Organization, orgId)) { return AccessDenied(); }
+            if(!CheckSecurity(orgId, new string[] { Security.Keys.OrgCanEditInfo.ToString() }, Models.Scope.Organization, orgId)) { return AccessDenied(); }
             if (website.Length > 0)
             {
                 website = "https://" + website.Replace("http://", "").Replace("https://", "");
@@ -188,7 +189,7 @@ namespace Kandu.Services
 
         public string RefreshSettings(int orgId)
         {
-            if (!CheckSecurity(orgId, Security.Keys.OrgCanEditSettings.ToString())) { return AccessDenied(); } //check security
+            if (!CheckSecurity(orgId, new string[] { Security.Keys.OrgCanEditSettings.ToString() }, Models.Scope.Organization, orgId)) { return AccessDenied(); } //check security
             var org = Query.Organizations.GetInfo(orgId);
             var groups = Query.Security.GetGroups(orgId, User.UserId);
             var view = new View("/Views/Organizations/settings.html");
@@ -216,7 +217,7 @@ namespace Kandu.Services
 
         public string SaveSettings(int orgId, Dictionary<string, string> parameters)
         {
-            if (!CheckSecurity(orgId, Security.Keys.OrgCanEditSettings.ToString())) { return AccessDenied(); } //check security
+            if (!CheckSecurity(orgId, new string[] { Security.Keys.OrgCanEditSettings.ToString() }, Models.Scope.Organization, orgId)) { return AccessDenied(); } //check security
             var groupId = 0;
             var cardtype = parameters.ContainsKey("org_cardtype") ? parameters["org_cardtype"] : "";
             if (parameters.ContainsKey("org_groupid")) int.TryParse(parameters["org_groupid"], out groupId);
@@ -251,7 +252,7 @@ namespace Kandu.Services
 
         public string RefreshTheme(int orgId)
         {
-            if (!CheckSecurity(orgId, Security.Keys.OrgCanEditTheme.ToString())) { return AccessDenied(); } //check security
+            if (!CheckSecurity(orgId, new string[] { Security.Keys.OrgCanEditTheme.ToString() }, Models.Scope.Organization, orgId)) { return AccessDenied(); } //check security
             var org = Query.Organizations.GetInfo(orgId);
             var groups = Query.Security.GetGroups(orgId, User.UserId);
             var view = new View("/Views/Organizations/theme.html");

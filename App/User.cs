@@ -167,30 +167,38 @@ namespace Kandu
 
         public bool CheckSecurity(int orgId, string key, Models.Scope scope = Models.Scope.All, int scopeId = 0)
         {
+            return CheckSecurity(orgId, new string[] { key }, scope, scopeId);
+        }
+
+        public bool CheckSecurity(int orgId, string[] keys, Models.Scope scope = Models.Scope.All, int scopeId = 0)
+        {
             if (Keys.ContainsKey(orgId))
             {
-                if(Keys[orgId].Any(a => a.Key == "Owner" && a.Enabled == true)) 
-                { 
-                    //owner of organization
-                    return true; 
-                }
-                if (Keys[orgId].Any(a => a.Key == key))
+                if (Keys[orgId].Any(a => (a.Key == "Owner" || a.Key == Security.Keys.OrgFullAccess.ToString()) && a.Enabled == true))
                 {
-                    var orgkeys = Keys[orgId];
-                    if (scope != Models.Scope.All)
+                    //full access to organization
+                    return true;
+                }
+                foreach(var key in keys)
+                {
+                    if (Keys[orgId].Any(a => a.Key == key))
                     {
-                        //specific scope
-                        return orgkeys.Any(a => a.Key == key && a.Enabled == true && (a.Scope == Models.Scope.All || (a.Scope == scope && a.ScopeId == scopeId)));
-                    }
-                    else
-                    {
-                        //all scopes
-                        return orgkeys.Any(a => a.Key == key && a.Enabled == true);
+                        var orgkeys = Keys[orgId];
+                        if (scope != Models.Scope.All)
+                        {
+                            //specific scope
+                            return orgkeys.Any(a => a.Key == key && a.Enabled == true && (a.Scope == Models.Scope.All || (a.Scope == scope && a.ScopeId == scopeId)));
+                        }
+                        else
+                        {
+                            //all scopes
+                            return orgkeys.Any(a => a.Key == key && a.Enabled == true);
+                        }
                     }
                 }
             }
-            //check if user is application owner (if all else fails)
-            if (Keys.Any(a => a.Value.Any(b => b.Key == "AppOwner" && b.Enabled == true)))
+            //check if user has full access to Kandu application (if all else fails)
+            if (Keys.Any(a => a.Value.Any(b => (b.Key == "AppOwner" || b.Key == "AppFullAccess") && b.Enabled == true)))
             {
                 return true;
             }

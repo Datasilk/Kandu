@@ -7,5 +7,6 @@
         void AddCSS(string url, string id = "");
         bool CheckSecurity(int boardId);
         bool CheckSecurity(int orgId, string key, Models.Scope scope = Models.Scope.All, int scopeId = 0);
+        bool CheckSecurity(int orgId, string[] keys, Models.Scope scope = Models.Scope.All, int scopeId = 0);
     }
 }

@@ -18,7 +18,7 @@
             //load boards list
             var view = new View("/Views/Boards/boards.html");
 
-            view["list"] = Common.Boards.RenderList(this);
+            view["list"] = Common.Boards.RenderList(User.UserId, this);
 
             //load page resources
             AddScript("/js/dashboard.js?v=" + Server.Version);

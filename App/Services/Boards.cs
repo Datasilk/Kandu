@@ -7,7 +7,11 @@ namespace Kandu.Services
     {
         public string Create(string name, string color, int orgId, string cardtype = "")
         {
-            if (!User.CheckSecurity(orgId, Security.Keys.BoardCanCreate.ToString())) { return AccessDenied(); } //check security
+            //check security
+            if (!User.CheckSecurity(orgId, Security.Keys.BoardCanCreate.ToString())
+                || !User.CheckSecurity(orgId, Security.Keys.BoardsFullAccess.ToString())) { return AccessDenied(); }
+            
+            //create new board
             try
             {
                 var boardId = Common.Boards.Create(this, name, color, orgId, cardtype);
@@ -20,7 +24,11 @@ namespace Kandu.Services
 
         public string RenderForm(int boardId = 0, int orgId = 0)
         {
-            if (!CheckSecurity()) { return AccessDenied(); } //check security
+            //check security
+            if (!User.CheckSecurity(orgId, Security.Keys.BoardCanCreate.ToString())
+                   || !User.CheckSecurity(orgId, Security.Keys.BoardsFullAccess.ToString())) { return AccessDenied(); }
+            
+            //render form used for creating new boards
             var view = new View("/Views/Board/new-board.html");
             var defaultCardType = "";
             if(boardId != 0)
@@ -84,12 +92,19 @@ namespace Kandu.Services
         public string RenderList()
         {
             if (!CheckSecurity()) { return AccessDenied(); } //check security
-            return Common.Boards.RenderList(this);
+            return Common.Boards.RenderList(User.UserId, this);
         }
 
         public string Details(int boardId)
-        {
-            if (!CheckSecurity()) { return AccessDenied(); } //check security
+        { 
+            //check security
+            var board = Query.Boards.GetInfo(boardId);
+            if (!User.CheckSecurity(board.orgId, Security.Keys.BoardCanView.ToString(), Models.Scope.Board, boardId)
+                || !User.CheckSecurity(board.orgId, new string[]{Security.Keys.BoardsCanViewAll.ToString(), Security.Keys.BoardsFullAccess.ToString()})
+                ) 
+            { return AccessDenied(); }
+
+            //view details about a board
             try
             {
                 return Common.Boards.Details(boardId);
@@ -101,7 +116,10 @@ namespace Kandu.Services
 
         public string Update(int boardId, string name, string color, int orgId, string cardtype)
         {
-            if (!User.CheckSecurity(orgId, Security.Keys.BoardCanUpdate.ToString(), Models.Scope.Board, boardId)) { return AccessDenied(); } //check security
+            var board = Query.Boards.GetInfo(boardId);
+            if (!User.CheckSecurity(orgId, Security.Keys.BoardCanUpdate.ToString(), Models.Scope.Board, boardId)
+                || !User.CheckSecurity(board.orgId, new string[] { Security.Keys.BoardsFullAccess.ToString() })
+                ) { return AccessDenied(); } //check security
             try
             {
                 Common.Boards.Update(this, boardId, name, color, orgId, cardtype);

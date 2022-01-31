@@ -112,7 +112,22 @@ namespace Kandu.Services
             if (!canUpdateKeys) { return AccessDenied(); }
             var view = new View("/Views/Security/new-key.html");
             var html = new StringBuilder();
-            var allkeys = Core.Vendors.Keys.SelectMany(a => a.Keys).ToList();
+            var allkeys = Core.Vendors.Keys.SelectMany(a => a.Keys).Where(a =>
+            {
+                if(a.RequiredKeys != null && a.RequiredKeys.Length > 0)
+                {
+                    var passed = true;
+                    foreach(var key in a.RequiredKeys)
+                    {
+                        if (!CheckSecurity(group.orgId, key)){ passed = false; }
+                    }
+                    if(passed == false && !CheckSecurity(group.orgId, a.Value)) {
+                        passed = false;
+                    }
+                    return passed;
+                }
+                return false;
+            }).ToList();
             view["name"] = group.name;
             view["key-options"] = string.Join('\n',
                 allkeys.Select(a => "<option value=\"" + a.Value + "\" data-title=\"" + a.Description + "\"" + 

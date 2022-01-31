@@ -46,9 +46,9 @@ namespace Kandu.Services
             var view = new View("/Views/Teams/new-team.html");
             if (teamId != 0)
             {
-                //Create Team form
+                //Edit Team form
                 var team = Query.Teams.GetTeam(teamId);
-                if (!CheckSecurity(team.orgId, Security.Keys.TeamCanCreate.ToString(), Models.Scope.Team, teamId))
+                if (!CheckSecurity(team.orgId, new string[] { Security.Keys.TeamCanEditInfo.ToString(), Security.Keys.TeamsFullAccess.ToString() }, Models.Scope.Team, teamId))
                 {
                     return AccessDenied();
                 }
@@ -58,7 +58,11 @@ namespace Kandu.Services
             }
             else
             {
-                //Edit Team form
+                //Create Team form
+                if (!CheckSecurity(orgId, new string[] { Security.Keys.TeamCanCreate.ToString(), Security.Keys.TeamsFullAccess.ToString() }, Models.Scope.Team, teamId))
+                {
+                    return AccessDenied();
+                }
                 view["submit-label"] = "Create Team";
                 view["submit-click"] = "S.teams.add.submit()";
             }
@@ -74,8 +78,13 @@ namespace Kandu.Services
 
         public string Details(int teamId)
         {
-            if (!CheckSecurity()) { return AccessDenied(); } //check security
+            //check security
             var team = Query.Teams.GetTeam(teamId);
+            if (!CheckSecurity(team.orgId, new string[] { 
+                Security.Keys.TeamCanView.ToString(), Security.Keys.TeamsCanViewAll.ToString(), Security.Keys.TeamsFullAccess.ToString() 
+            }, Models.Scope.Team, teamId)) { return AccessDenied(); } 
+
+            //view team details modal
             var canEdit = CheckSecurity(team.orgId, Security.Keys.TeamCanEditInfo.ToString(), Models.Scope.Team, teamId);
             var tabHtml = new StringBuilder();
             var contentHtml = new StringBuilder();
@@ -137,8 +146,13 @@ namespace Kandu.Services
 
         public string Update(int teamId, string name, string description)
         {
+            //check security
             var team = Query.Teams.GetTeam(teamId);
-            if (!CheckSecurity(team.orgId, Security.Keys.TeamCanEditInfo.ToString(), Models.Scope.Team, teamId)) { return AccessDenied(); } //check security
+            if (!CheckSecurity(team.orgId, new string[] {
+                Security.Keys.TeamCanView.ToString(), Security.Keys.TeamCanEditInfo.ToString(), Security.Keys.TeamsFullAccess.ToString()
+            }, Models.Scope.Team, teamId)) { return AccessDenied(); }
+
+            //update team info
             Query.Teams.Update(new Query.Models.Team()
             {
                 teamId = teamId,
@@ -151,8 +165,10 @@ namespace Kandu.Services
 
         public string RefreshMembers(int orgId, int teamId)
         {
-            if (!IsInOrganization(orgId)) { return AccessDenied(); } //check security
             var team = Query.Teams.GetTeam(teamId);
+            if (!CheckSecurity(team.orgId, new string[] {
+                Security.Keys.TeamCanView.ToString(), Security.Keys.TeamsCanViewAll.ToString(), Security.Keys.TeamsFullAccess.ToString()
+            }, Models.Scope.Team, teamId)) { return AccessDenied(); }
             var html = new StringBuilder("<div class=\"grid-items\">");
             html.Append(Common.Teams.RenderMembers(this, teamId));
             if (CheckSecurity(team.orgId, Security.Keys.TeamCanInviteUsers.ToString(), Models.Scope.Team, teamId))
@@ -172,8 +188,13 @@ namespace Kandu.Services
 
         public string RefreshSettings(int orgId, int teamId)
         {
-            if (!CheckSecurity(orgId, Security.Keys.TeamCanEditSettings.ToString(), Models.Scope.Team, teamId)) { return AccessDenied(); } //check security
+            //check security
             var team = Query.Teams.GetTeam(teamId);
+            if (!CheckSecurity(team.orgId, new string[] {
+                Security.Keys.TeamCanView.ToString(), Security.Keys.TeamsCanViewAll.ToString(), Security.Keys.TeamsFullAccess.ToString()
+            }, Models.Scope.Team, teamId)) { return AccessDenied(); }
+
+            //view team settings
             var groups = Query.Security.GetGroups(orgId, User.UserId);
             var view = new View("/Views/Teams/settings.html");
             view.Bind(new { team });
@@ -187,7 +208,11 @@ namespace Kandu.Services
 
         public string SaveSettings(int orgId, int teamId, Dictionary<string, string> parameters)
         {
-            if (!CheckSecurity(orgId, Security.Keys.TeamCanEditSettings.ToString(), Models.Scope.Team, teamId)) { return AccessDenied(); } //check security
+            var team = Query.Teams.GetTeam(teamId);
+            if (!CheckSecurity(team.orgId, new string[] {
+                Security.Keys.TeamCanEditSettings.ToString(), Security.Keys.TeamsFullAccess.ToString()
+            }, Models.Scope.Team, teamId)) { return AccessDenied(); }
+
             var groupId = 0;
             if (parameters.ContainsKey("team_groupid")) int.TryParse(parameters["team_groupid"], out groupId);
             try
@@ -221,9 +246,11 @@ namespace Kandu.Services
         #region "Invite People"
         public string RenderInviteForm(int orgId, int teamId)
         {
-            if (!IsInOrganization(orgId)) { return AccessDenied(); } //check security
-            //Invite People to Team form
             var team = Query.Teams.GetTeam(teamId);
+            if (!CheckSecurity(team.orgId, new string[] {
+                Security.Keys.TeamCanInviteUsers.ToString(), Security.Keys.TeamsFullAccess.ToString()
+            }, Models.Scope.Team, teamId)) { return AccessDenied(); }
+            //Invite People to Team form
             var view = new View("/Views/Teams/invite.html");
             if (!CheckSecurity(team.orgId, Security.Keys.TeamCanInviteUsers.ToString(), Models.Scope.Team, teamId) || orgId != team.orgId)
             {
@@ -237,7 +264,10 @@ namespace Kandu.Services
 
         public string RefreshInviteList(int orgId, int teamId, int page = 1, int length = 10, string search = "")
         {
-            if (!IsInOrganization(orgId)) { return AccessDenied(); } //check security
+            var team = Query.Teams.GetTeam(teamId);
+            if (!CheckSecurity(team.orgId, new string[] {
+                Security.Keys.TeamCanInviteUsers.ToString(), Security.Keys.TeamsFullAccess.ToString()
+            }, Models.Scope.Team, teamId)) { return AccessDenied(); }
             var m = new Members();
             m.Instantiate(this);
             return m.RefreshList(orgId, page, length, search, true, "Search", teamId, "search by name or email address", "S.teams.invite.select", "S.teams.invite.selectEmail");
@@ -269,12 +299,12 @@ namespace Kandu.Services
 
         public string InvitePeople(int orgId, int teamId, List<string> people, string message = "")
         {
-            if (!IsInOrganization(orgId)) { return AccessDenied(); } //check security
             var team = Query.Teams.GetTeam(teamId);
-            if (!CheckSecurity(team.orgId, Security.Keys.TeamCanInviteUsers.ToString(), Models.Scope.Team, teamId) || orgId != team.orgId)
-            {
-                return AccessDenied();
-            }
+            if (!CheckSecurity(team.orgId, new string[] {
+                Security.Keys.TeamCanInviteUsers.ToString(), Security.Keys.TeamsFullAccess.ToString()
+            }, Models.Scope.Team, teamId)) { return AccessDenied(); }
+
+            //send each person an invite email to your team
             if (team.groupId.HasValue == false || team.groupId <= 0)
             {
                 return Error("You must set a default security group for your team before inviting people to join");

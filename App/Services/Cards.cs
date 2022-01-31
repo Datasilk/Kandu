@@ -10,7 +10,12 @@ namespace Kandu.Services
 
         public string Create(int boardId, int listId, string name, string description = "", DateTime? dateDue = null, string colors = "", string type = "")
         {
-            if (!User.CheckSecurity(boardId)) { return AccessDenied(); }
+            //check security
+            var board = Query.Boards.GetInfo(boardId);
+            if (!User.CheckSecurity(board.orgId, new string[] { Security.Keys.BoardsFullAccess.ToString(), Security.Keys.BoardCanUpdate.ToString() }, Models.Scope.Board, boardId)
+            ) { return AccessDenied(); }
+
+            //create new card
             Query.Models.Card card;
             try
             {
@@ -23,7 +28,6 @@ namespace Kandu.Services
             //load Card html
             try
             {
-                var board = Query.Boards.GetDetails(boardId);
                 card.boardType = board.type;
                 return GetCard(boardId, card);
             }
@@ -35,8 +39,13 @@ namespace Kandu.Services
 
         public string Archive(int boardId, int cardId)
         {
-            if (!User.CheckSecurity(boardId)) { return AccessDenied(); }
-            
+            //check security
+            var board = Query.Boards.GetInfo(boardId);
+            if (!User.CheckSecurity(board.orgId, new string[] { Security.Keys.CardFullAccess.ToString() }, Models.Scope.Card, cardId)
+                || !User.CheckSecurity(board.orgId, new string[] { Security.Keys.BoardsFullAccess.ToString(), Security.Keys.BoardCanUpdate.ToString() }, Models.Scope.Board, boardId)
+            ) { return AccessDenied(); }
+
+            //archive card
             try
             {
                 Query.Cards.Archive(boardId, cardId);
@@ -49,8 +58,13 @@ namespace Kandu.Services
 
         public string Restore(int boardId, int cardId)
         {
-            if (!User.CheckSecurity(boardId)) { return AccessDenied(); }
-            
+            //check security
+            var board = Query.Boards.GetInfo(boardId);
+            if (!User.CheckSecurity(board.orgId, new string[] { Security.Keys.CardFullAccess.ToString() }, Models.Scope.Card, cardId)
+                || !User.CheckSecurity(board.orgId, new string[] { Security.Keys.BoardsFullAccess.ToString(), Security.Keys.BoardCanUpdate.ToString() }, Models.Scope.Board, boardId)
+            ) { return AccessDenied(); }
+
+            //restore archived card
             try
             {
                 Query.Cards.Restore(boardId, cardId);
@@ -64,8 +78,13 @@ namespace Kandu.Services
 
         public string Delete(int boardId, int cardId)
         {
-            if (!User.CheckSecurity(boardId)) { return AccessDenied(); }
-            
+            //check security
+            var board = Query.Boards.GetInfo(boardId);
+            if (!User.CheckSecurity(board.orgId, new string[] { Security.Keys.CardFullAccess.ToString() }, Models.Scope.Card, cardId)
+                || !User.CheckSecurity(board.orgId, new string[] { Security.Keys.BoardsFullAccess.ToString(), Security.Keys.BoardCanUpdate.ToString() }, Models.Scope.Board, boardId)
+            ) { return AccessDenied(); }
+
+            //delete card
             try
             {
                 Query.Cards.Delete(boardId, cardId);
@@ -88,6 +107,14 @@ namespace Kandu.Services
 
         public string GetCard(int boardId, Query.Models.Card card)
         {
+            //check security
+            var board = Query.Boards.GetInfo(boardId);
+            if (!User.CheckSecurity(board.orgId, new string[] { Security.Keys.CardCanView.ToString(), Security.Keys.CardFullAccess.ToString() }, Models.Scope.Card, card.cardId)
+                || !User.CheckSecurity(board.orgId, new string[] { 
+                    Security.Keys.BoardCanView.ToString(), Security.Keys.BoardsFullAccess.ToString(), Security.Keys.BoardsCanViewAll.ToString() 
+                }, Models.Scope.Board, boardId)
+            ) { return AccessDenied(); }
+
             //get card HTML based on board type (kanban, timeline, etc)
             switch (card.boardType)
             {
@@ -101,7 +128,11 @@ namespace Kandu.Services
         #region "Update Card Information"
         public string UpdateName(int boardId, int cardId, string name)
         {
-            if (!User.CheckSecurity(boardId)) { return AccessDenied(); }
+            //check security
+            var board = Query.Boards.GetInfo(boardId);
+            if (!User.CheckSecurity(board.orgId, new string[] { Security.Keys.CardFullAccess.ToString(), Security.Keys.CardCanUpdate.ToString() }, Models.Scope.Card, cardId)
+                || !User.CheckSecurity(board.orgId, new string[] { Security.Keys.BoardsFullAccess.ToString(), Security.Keys.BoardCanUpdate.ToString() }, Models.Scope.Board, boardId)
+            ) { return AccessDenied(); }
 
             //check description for malicious input
             if (Malicious.IsMalicious(name, Malicious.InputType.TextOnly) == true)
@@ -122,7 +153,11 @@ namespace Kandu.Services
 
         public string UpdateDescription(int boardId, int cardId, string description)
         {
-            if (!User.CheckSecurity(boardId)) { return AccessDenied(); }
+            //check security
+            var board = Query.Boards.GetInfo(boardId);
+            if (!User.CheckSecurity(board.orgId, new string[] { Security.Keys.CardFullAccess.ToString(), Security.Keys.CardCanUpdate.ToString() }, Models.Scope.Card, cardId)
+                || !User.CheckSecurity(board.orgId, new string[] { Security.Keys.BoardsFullAccess.ToString(), Security.Keys.BoardCanUpdate.ToString() }, Models.Scope.Board, boardId)
+            ) { return AccessDenied(); }
 
             //check description for malicious input
             if (Malicious.IsMalicious(description, Malicious.InputType.TextOnly) == true)
@@ -130,6 +165,7 @@ namespace Kandu.Services
                 return Error(); 
             }
             
+            //save description
             try
             {
                 Query.Cards.UpdateDescription(boardId, cardId, description);
@@ -139,6 +175,28 @@ namespace Kandu.Services
             {
                 return Error();
             }
+        }
+
+        public string RenderAddMembersForm(int boardId, int cardId)
+        {
+            var board = Query.Boards.GetInfo(boardId);
+            if (!User.CheckSecurity(board.orgId, new string[] { Security.Keys.CardFullAccess.ToString(), Security.Keys.CardCanUpdate.ToString() }, Models.Scope.Card, cardId)
+                || !User.CheckSecurity(board.orgId, new string[] { Security.Keys.BoardsFullAccess.ToString(), Security.Keys.BoardCanUpdate.ToString() }, Models.Scope.Board, boardId)
+            ) { return AccessDenied(); }
+            return Success();
+        }
+
+        public string AddMembers(int boardId, int cardId, int[] memberIds)
+        {
+            //check security
+            var board = Query.Boards.GetInfo(boardId);
+            if (!User.CheckSecurity(board.orgId, new string[] { Security.Keys.CardFullAccess.ToString(), Security.Keys.CardCanUpdate.ToString() }, Models.Scope.Card, cardId)
+                || !User.CheckSecurity(board.orgId, new string[] { Security.Keys.BoardsFullAccess.ToString(), Security.Keys.BoardCanUpdate.ToString() }, Models.Scope.Board, boardId)
+            ) { return AccessDenied(); }
+
+            //add member to card security
+
+            return Success();
         }
         #endregion
     }

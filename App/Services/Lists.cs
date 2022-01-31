@@ -7,9 +7,10 @@ namespace Kandu.Services
         public string Create(int boardId, string name, int sort = 0)
         {
             //check security
-            if (!User.CheckSecurity(boardId)) { return AccessDenied(); }
+            var board = Query.Boards.GetInfo(boardId);
+            if (!User.CheckSecurity(board.orgId, new string[] { Security.Keys.BoardCanUpdate.ToString(), Security.Keys.BoardsFullAccess.ToString() })
+                ) { return AccessDenied(); }
             
-            var board = Query.Boards.GetDetails(boardId);
             int id;
             try
             {
@@ -32,8 +33,9 @@ namespace Kandu.Services
         public string Archive(int boardId, int listId)
         {
             //check security
-            if (!User.CheckSecurity(boardId)) { return AccessDenied(); }
-
+            var board = Query.Boards.GetInfo(boardId);
+            if (!User.CheckSecurity(board.orgId, new string[] { Security.Keys.BoardCanUpdate.ToString(), Security.Keys.BoardsFullAccess.ToString() })
+                ) { return AccessDenied(); }
             try
             {
                 Common.Lists.Archive(listId);

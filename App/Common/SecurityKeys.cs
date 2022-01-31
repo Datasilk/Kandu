@@ -16,6 +16,13 @@ namespace Kandu.Common
             },
             new Vendor.SecurityKey()
             {
+                Label = "Application Full Access",
+                Value = "AppFullAccess",
+                Description = "Complete administrator access to the entire Kandu application",
+                RequiredKeys = new string[]{"AppOwner"}
+            },
+            new Vendor.SecurityKey()
+            {
                 Label = "Organization Owner",
                 Value = "Owner",
                 Description = "Owner of an organization with Administrator privilages"
@@ -69,6 +76,12 @@ namespace Kandu.Common
                     Kandu.Vendor.Security.ScopeTypes.SecurityGroup,
                     Kandu.Vendor.Security.ScopeTypes.Team
                 }
+            },
+            new Vendor.SecurityKey()
+            {
+                Label = "Security Groups Full Access",
+                Value = "SecGroupsFullAccess",
+                Description = "Can create, view, & update all security groups in your organization"
             },
             new Vendor.SecurityKey()
             {
@@ -134,9 +147,15 @@ namespace Kandu.Common
             },
             new Vendor.SecurityKey()
             {
+                Label = "Teams Full Access",
+                Value = "TeamsFullAccess",
+                Description = "Can create, view, & update all teams in your organization"
+            },
+            new Vendor.SecurityKey()
+            {
                 Label = "View All Teams",
                 Value = "TeamsCanViewAll",
-                Description = "Can view all teams for a specific organization"
+                Description = "Can view all teams in your organization"
             },
             new Vendor.SecurityKey()
             {
@@ -216,6 +235,12 @@ namespace Kandu.Common
             },
             new Vendor.SecurityKey()
             {
+                Label = "Boards Full Access",
+                Value = "BoardsFullAccess",
+                Description = "Can create, view, & update all boards in your organization"
+            },
+            new Vendor.SecurityKey()
+            {
                 Label = "View All Boards",
                 Value = "BoardsCanViewAll",
                 Description = "Can view all boards in your organization"
@@ -251,6 +276,26 @@ namespace Kandu.Common
                 Label = "Remove Board Comments",
                 Value = "BoardCanRemoveComment",
                 Description = "Can remove any comment created in a specific board",
+                ScopeTypes = new Vendor.Security.ScopeTypes[]
+                {
+                    Kandu.Vendor.Security.ScopeTypes.Board
+                }
+            },
+            new Vendor.SecurityKey()
+            {
+                Label = "View Card",
+                Value = "CardCanView",
+                Description = "Can view a specific card",
+                ScopeTypes = new Vendor.Security.ScopeTypes[]
+                {
+                    Kandu.Vendor.Security.ScopeTypes.Board
+                }
+            },
+            new Vendor.SecurityKey()
+            {
+                Label = "Update Card",
+                Value = "CardCanUpdate",
+                Description = "Can update a specific card",
                 ScopeTypes = new Vendor.Security.ScopeTypes[]
                 {
                     Kandu.Vendor.Security.ScopeTypes.Board

@@ -84,11 +84,11 @@ namespace Kandu.Common
             }
         }
 
-        public static string RenderList(Core.IRequest request)
+        public static string RenderList(int userId, Core.IRequest request)
         {
             var createView = new View("/Views/Boards/create-board.html");
             var orgView = new View("/Views/Boards/org-head.html");
-            var boards = Query.Boards.GetList(request.User.UserId);
+            var boards = Query.Boards.GetList(userId);
             var html = new StringBuilder();
             var item = new View("/Views/Boards/list-item.html");
             var orgId = 0;
@@ -204,7 +204,7 @@ namespace Kandu.Common
             if(menu["items"] != "")
             {
                 //add new board button
-                if (request.User.CheckSecurity(orgId, Security.Keys.BoardCanCreate.ToString()))
+                if (request.User.CheckSecurity(orgId, new string[] { Security.Keys.BoardCanCreate.ToString(), Security.Keys.BoardsFullAccess.ToString() }))
                 {
                     var additem = new View("/Views/Boards/add-item.html");
                     menu["items"] = btnsInFront ? (additem.Render() + menu["items"]) : (menu["items"] + additem.Render());

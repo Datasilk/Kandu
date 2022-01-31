@@ -18,6 +18,7 @@ namespace Query.Models
     {
         public int groupId { get; set; }
         public int orgId { get; set; }
+        public bool personal { get; set; }
         public string name { get; set; }
         public string orgName { get; set; }
         public int ownerId { get; set; }

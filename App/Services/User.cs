@@ -256,7 +256,7 @@ namespace Kandu.Services
         public string RefreshBoards(int userId)
         {
             if (!CheckSecurity()) { return AccessDenied(); } //check security
-            return Common.Boards.RenderList(this);
+            return Common.Boards.RenderList(userId, this);
         }
 
         public string RefreshTeams(int userId)
@@ -293,7 +293,7 @@ namespace Kandu.Services
             }
             else
             {
-                html.Append("This user is not a part of any teams");
+                html.Append("This user is not a part of any teams that you have access to");
             }
 
             return html.ToString();

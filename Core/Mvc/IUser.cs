@@ -27,6 +27,7 @@ namespace Kandu.Core
 
         bool CheckSecurity(int boardId);
         bool CheckSecurity(int orgId, string key, Models.Scope scope = Models.Scope.All, int scopeId = 0);
+        bool CheckSecurity(int orgId, string[] keys, Models.Scope scope = Models.Scope.All, int scopeId = 0);
         bool IsInOrganization(int orgId);
         bool IsAppOwner();
         void ValidatePassword(string password);
