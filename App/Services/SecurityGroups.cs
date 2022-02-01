@@ -57,17 +57,16 @@ namespace Kandu.Services
             return view.Render();
         }
 
-        public string Details (int groupId)
+        public string Details(int groupId)
         {
-            if (!CheckSecurity()) { return AccessDenied(); } //check security
             var group = Query.Security.GroupInfo(groupId);
+            if (!CheckSecurity(group.orgId, new string[] { Security.Keys.SecGroupCanView.ToString(), Security.Keys.SecGroupsCanViewAll.ToString()}, Models.Scope.SecurityGroup, groupId)) { return AccessDenied(); } //check security
             var canEdit = CheckSecurity(group.orgId, Security.Keys.SecGroupCanEditInfo.ToString(), Models.Scope.SecurityGroup, groupId);
             var canUpdateKeys = CheckSecurity(group.orgId, Security.Keys.SecGroupCanUpdateKeys.ToString(), Models.Scope.SecurityGroup, groupId);
             var tabHtml = new StringBuilder();
             var contentHtml = new StringBuilder();
             var view = new View("/Views/Security/details.html");
             var tab = new View("/Views/Shared/tab.html");
-            var html = new StringBuilder();
 
             //load security keys tab
             tab["title"] = "Security Keys";
