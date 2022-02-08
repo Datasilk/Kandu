@@ -94,10 +94,8 @@ namespace Kandu.Services
 
         public string Update(int groupId, string name)
         {
-            if (!CheckSecurity()) { return AccessDenied(); } //check security
             var group = Query.Security.GroupInfo(groupId);
-            var canEdit = CheckSecurity(group.orgId, Security.Keys.SecGroupCanEditInfo.ToString(), Models.Scope.SecurityGroup, groupId);
-            if (!canEdit) { return AccessDenied(); }
+            if (!CheckSecurity(group.orgId, Security.Keys.SecGroupCanEditInfo.ToString(), Models.Scope.SecurityGroup, groupId)) { return AccessDenied(); } //check security
             Query.Security.UpdateGroup(groupId, name);
             return Success();
         }

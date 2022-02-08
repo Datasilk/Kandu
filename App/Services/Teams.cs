@@ -317,17 +317,17 @@ namespace Kandu.Services
                 {
                     //invite person by userId
                     invite.userId = result;
+                    if (invite.userId > 0)
+                    {
+                        var user = Query.Users.GetInfo(invite.userId);
+                        invite.email = user.email;
+                        invite.name = user.name;
+                    }
                 }
-                else  if (person.IsEmail())
+                else if (person.IsEmail())
                 {
                     //invite person by email
                     invite.email = person;
-                }
-                if(invite.userId > 0)
-                {
-                    var user = Query.Users.GetInfo(invite.userId);
-                    invite.email = user.email;
-                    invite.name = user.name;
                 }
                 emails.Add(invite);
             }

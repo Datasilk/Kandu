@@ -4,7 +4,7 @@ namespace Kandu.Common
 {
     public static class Lists
     {
-        public static int Create(int boardId, string name, int sort = 0)
+        public static int Create(int boardId, string name, int sort = 0, string cardtype = "")
         {
             try
             {
@@ -13,7 +13,8 @@ namespace Kandu.Common
                     {
                         boardId = boardId,
                         name = name,
-                        sort = sort
+                        sort = sort,
+                        cardtype = cardtype
                     }
                 );
             }

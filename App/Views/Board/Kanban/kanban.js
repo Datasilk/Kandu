@@ -817,7 +817,7 @@
                                 });
                                 S.kanban.list.resize(listId);
 
-                                S.ajax.post('Card/Kanban/Move', { boardId: S.kanban.card.boardId || S.board.id, listId: listId, cardId: S.util.element.getClassId(item.elem), cardIds: cards });
+                                S.ajax.post('Card/Kanban/Move', { boardId: S.board.id, listId: listId, cardId: S.util.element.getClassId(item.elem), cardIds: cards });
                             }
                             setTimeout(function () { S.kanban.card.drag.dragging = false; }, 100);
                         },

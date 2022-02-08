@@ -2,7 +2,7 @@
 	@boardId int,
 	@name nvarchar(64),
 	@sort int = 0,
-	@cardtype varchar(16)
+	@cardtype varchar(16) = ''
 AS
 DECLARE @id int = NEXT VALUE FOR SequenceLists
 IF @sort <= 0 BEGIN
