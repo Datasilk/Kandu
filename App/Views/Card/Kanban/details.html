@@ -3,55 +3,98 @@
     <div class="textarea-clone">{{title}}<div></div></div>
 </div>
 <div class="card-sub-title row pad-bottom-sm">
-    <div class="col">In Board <div class="board-color" style="background-color:#{{board-color}}"></div> <a href="{{board-url}}#card={{card-id}}"><b>{{board-name}}</b></a>, List <b>{{list-name}}</b></div>
-</div>
-<div class="row">
-    <div class="col card-details">
-        {{labels}}
-        <div class="row">Labels</div>
-        <div class="row labels">{{labels-list}}</div>
-        {{/labels}}
-
-        <div class="row hover description-link new-description {{no-description}}">
-            <a href="javascript:">Edit the description...</a>
-        </div>
-        <div class="row description {{has-description}}">
-            <div class="row description-title pad-top-sm">
-                <div class="col pad-right-sm">Description</div>
-                <div class="col description-link"><a href="javascript:">Edit</a></div>
-            </div>
-            <div class="markdown"></div>
-        </div>
-        <div class="row field-description pad-bottom-lg hide">
-            <form>
-                <div class="row markdown pad-bottom pad-top-sm">
-                    <textarea id="card_description" rows="3" placeholder="description...">{{description}}</textarea>
-                </div>
-                <div class="row">
-                    <div class="col pad-right">
-                        <button type="submit" class="button apply">Save</button>
-                    </div>
-                    <div class="col icon pad-top-sm faded small">
-                        <a href="javascript:" class="btn-cancel">
-                            <svg viewBox="0 0 32 32">
-                                <use xlink:href="#icon-close" x="0" y="0" width="32" height="32"></use>
-                            </svg>
-                        </a>
-                    </div>
-                </div>
-            </form>
-        </div>
-
-        <div class="row">
-            <div class="col icon pad-right-sm">
+    <div class="col">
+        In Board <div class="board-color" style="background-color:#{{board-color}}"></div> 
+        <a href="{{board-url}}#card={{card-id}}"><b>{{board-name}}</b></a>, List <b>{{list-name}}</b>.
+        <span class="assigned-to" {{not-assigned}}style="display:none"{{/not-assigned}}>
+            {{assigned-to}}
+        </span>    
+        
+        {{not-assigned}}
+            <a class="button outline small not-assigned" href="javascript:">
                 <svg viewBox="0 0 32 32">
-                    <use xlink:href="#icon-chat-single-left" x="0" y="0" width="32" height="32"></use>
+                    <use xlink:href="#icon-user" x="0" y="0" width="32" height="32"></use>
                 </svg>
+                <span>Assign To</span>
+            </a>
+        {{/not-assigned}}
+        {{labels-list}} 
+        <a href="javascript:" class="button outline small btn-add-label">
+            <svg viewBox="0 0 32 32">
+                <use xlink:href="#icon-add" x="0" y="0" width="32" height="32"></use>
+            </svg>
+            <span>Add Label</span>
+        </a>
+        <a href="javascript:" class="button outline small btn-add-checklist">
+            <svg viewBox="0 0 32 32">
+                <use xlink:href="#icon-check" x="0" y="0" width="32" height="32"></use>
+            </svg>
+            <span>Add Checklist</span>
+        </a>
+    </div>
+</div>
+
+<div class="card-modals"></div>
+
+<div class="row card-details">
+    <div class="row hover description-link new-description {{no-description}}">
+        <a href="javascript:">Edit the description...</a>
+    </div>
+    <div class="row description {{has-description}}">
+        <div class="row description-title pad-top-sm">
+            <div class="col pad-right-sm">Description</div>
+            <div class="col description-link"><a href="javascript:">Edit</a></div>
+        </div>
+        <div class="markdown"></div>
+    </div>
+    <div class="row field-description pad-bottom-lg pad-top hide">
+        <form>
+            <div class="row markdown pad-top-lg">
+                <textarea id="card_description" rows="3" placeholder="description...">{{description}}</textarea>
             </div>
-            <h5>Add Comment</h5>
+            <div class="row">
+                <div class="col pad-right">
+                    <button type="submit" class="button apply">Save</button>
+                </div>
+                <div class="col icon pad-top-sm faded small">
+                    <a href="javascript:" class="btn-cancel">
+                        <svg viewBox="0 0 32 32">
+                            <use xlink:href="#icon-close" x="0" y="0" width="32" height="32"></use>
+                        </svg>
+                    </a>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col icon pad-right-sm">
+        <svg viewBox="0 0 32 32">
+            <use xlink:href="#icon-chat-single-left" x="0" y="0" width="32" height="32"></use>
+        </svg>
+    </div>
+    <h5>Add Comment</h5>
+</div>
+
+<script type="text/html" id="temp_assign_to">
+    <div class="row assign-to-form pad-top">
+        <div class="row hover">
+            <div class="col field">Assign To...</div>
+            <div class="col input"><select id="assignto"></select></div>
+            <div class="col right icon pad-top pad-right faded small">
+            <a href="javascript:" class="btn-cancel">
+                <svg viewBox="0 0 32 32">
+                    <use xlink:href="#icon-close" x="0" y="0" width="32" height="32"></use>
+                </svg>
+            </a>
+        </div>
         </div>
     </div>
-    <div class="col card-menu right">
+</script>
+
+<div class="row">
+    <div class="col card-menu right" style="display:none">
         <div class="row">
             <h6>Add</h6>
             <a href="javascript:" class="btn-members button grey faded">Members</a>
@@ -71,3 +114,4 @@
         </div>
     </div>
 </div>
+

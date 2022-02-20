@@ -107,6 +107,9 @@ body{overflow:hidden; overscroll-behavior-x: contain;}
     .title{max-width:~"calc(100% - 30px)";}
     .card-sub-title{
         .board-color{width:10px; height:18px; margin:0 0 0 5px; display:inline-block; position:relative; top:3px; border-radius:4px;}
+        .button{display:inline-block; margin:9px 0 -9px 5px; cursor:pointer;
+            svg{width:12px; height:12px;}
+        }
     }
     .card-field-title{position:absolute; top:9px; left:9px; width:~"calc(100% - 48px)";
         textarea{font-size:1.3rem !important; line-height:1.25; overflow:hidden;}
@@ -115,21 +118,18 @@ body{overflow:hidden; overscroll-behavior-x: contain;}
         }
     }
 }
-.card-details{width:~"calc(100% - 200px)" !important;
+.card-details{
     a:link{text-decoration:underline;}
-    .new-description{border-radius:4px; margin-bottom:20px; padding:10px;
-    }
+    .new-description{border-radius:4px; margin-bottom:20px; padding:10px;}
     .new-description, .description-title{opacity:0.7;}
-    .markdown{line-height:1.25; font-weight:400; padding:0 0 30px 0;
+    .markdown{line-height:1.25; font-weight:400; padding:0 0 10px 0;
         ul{padding:10px 0 20px 10px;}
         p{display:block; padding:0 0 10px 0;}
     }
     .description-title{padding-bottom:10px;}
 }
-.card-menu{width:130px !important;
-    a{display:block !important; margin-bottom:5px; font-size:14px;}
-    h6{padding-bottom:7px;}
-}
+
+.card-modals{position:absolute; z-index:1; width:100%;}
 
 @media(max-width:500px){
     .box .popup{

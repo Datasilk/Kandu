@@ -13,6 +13,7 @@ body > .bg.for-popup{background-color:rgba(0,0,0,0.5) !important; position:absol
         &.right{right:0;}
         .btn-close{position:absolute; right:0px; z-index:5010;}
     }
+    .popup-body{position:relative;}
 }
 .input.long{width:100%;}
 .svgicons{display:none;}
@@ -54,9 +55,12 @@ header {
 
 /* input fields */
 input[type]:not([type=button]):not([type=submit]):not([type=radio]){border-radius:3px;}
+.box select{padding:6px;}
 
 /* buttons */
-.button{font-weight:bold;}
+.button{font-weight:bold;
+    &.small{font-size:0.8rem !important; padding:5px 10px !important;}
+}
 
 /* popup menus */
 .has-top-arrow, .has-bottom-arrow, .has-left-arrow, .has-right-arrow{border-style:solid; border-color:transparent;}

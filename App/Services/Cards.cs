@@ -176,27 +176,46 @@ namespace Kandu.Services
                 return Error();
             }
         }
+        #endregion
 
-        public string RenderAddMembersForm(int boardId, int cardId)
+        #region "Assigned To"
+
+        public string GetMembers(int cardId)
         {
-            var board = Query.Boards.GetInfo(boardId);
-            if (!User.CheckSecurity(board.orgId, new string[] { Security.Keys.CardFullAccess.ToString(), Security.Keys.CardCanUpdate.ToString() }, Models.Scope.Card, cardId)
-                || !User.CheckSecurity(board.orgId, new string[] { Security.Keys.BoardsFullAccess.ToString(), Security.Keys.BoardCanUpdate.ToString() }, Models.Scope.Board, boardId)
+            var card = Query.Cards.GetInfo(cardId);
+            if (!User.CheckSecurity(card.orgId, new string[] { Security.Keys.CardFullAccess.ToString(), Security.Keys.CardCanView.ToString() }, Models.Scope.Card, cardId)
+                || !User.CheckSecurity(card.orgId, new string[] { Security.Keys.BoardsFullAccess.ToString(), Security.Keys.BoardCanView.ToString() }, Models.Scope.Board, card.boardId)
             ) { return AccessDenied(); }
-            return Success();
+
+            return JsonResponse(Query.Cards.Members(cardId));
         }
 
-        public string AddMembers(int boardId, int cardId, int[] memberIds)
+        public string UpdateAssignedTo(int cardId, int userId)
         {
-            //check security
-            var board = Query.Boards.GetInfo(boardId);
-            if (!User.CheckSecurity(board.orgId, new string[] { Security.Keys.CardFullAccess.ToString(), Security.Keys.CardCanUpdate.ToString() }, Models.Scope.Card, cardId)
-                || !User.CheckSecurity(board.orgId, new string[] { Security.Keys.BoardsFullAccess.ToString(), Security.Keys.BoardCanUpdate.ToString() }, Models.Scope.Board, boardId)
+            var card = Query.Cards.GetInfo(cardId);
+            if (!User.CheckSecurity(card.orgId, new string[] { Security.Keys.CardFullAccess.ToString(), Security.Keys.CardCanUpdate.ToString() }, Models.Scope.Card, cardId)
+                || !User.CheckSecurity(card.orgId, new string[] { Security.Keys.BoardsFullAccess.ToString(), Security.Keys.BoardCanUpdate.ToString() }, Models.Scope.Board, card.boardId)
             ) { return AccessDenied(); }
 
-            //add member to card security
+            Query.Cards.UpdateAssignedTo(cardId, User.UserId, userId);
+            return GetAssignedTo(cardId);
+        }
 
-            return Success();
+        public string GetAssignedTo(int cardId)
+        {
+            var card = Query.Cards.GetInfo(cardId);
+            if (!User.CheckSecurity(card.orgId, new string[] { Security.Keys.CardFullAccess.ToString(), Security.Keys.CardCanView.ToString() }, Models.Scope.Card, cardId)
+                || !User.CheckSecurity(card.orgId, new string[] { Security.Keys.BoardsFullAccess.ToString(), Security.Keys.BoardCanView.ToString() }, Models.Scope.Board, card.boardId)
+            ) { return AccessDenied(); }
+            if(card.userIdAssigned > 0)
+            {
+                var view = new View("/Views/Card/Kanban/Details/assigned-to.html");
+                view["assigned-userid"] = card.userIdAssigned.ToString();
+                view["assigned-name"] = card.assignedName;
+                view["org-id"] = card.orgId.ToString();
+                return view.Render();
+            }
+            return "";
         }
         #endregion
     }

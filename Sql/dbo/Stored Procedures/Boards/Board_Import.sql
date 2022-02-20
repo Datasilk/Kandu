@@ -17,7 +17,6 @@ AS
 			/* do not merge. Instead, delete board and all associated lists, cards, comments, checklists, and activity */
 			SELECT listId INTO #lists FROM Lists WHERE boardId=@oldId
 			SELECT cardId INTO #cards FROM Cards WHERE listId IN (SELECT * FROM #lists)
-			DELETE FROM CardMembers WHERE cardId IN (SELECT * FROM #cards)
 			DELETE FROM CardComments WHERE cardId IN (SELECT * FROM #cards)
 			DELETE FROM CardChecklistItems WHERE cardId IN (SELECT * FROM #cards)
 			DELETE FROM CardChecklists WHERE cardId IN (SELECT * FROM #cards)

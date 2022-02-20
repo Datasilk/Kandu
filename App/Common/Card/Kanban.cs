@@ -21,7 +21,7 @@ namespace Kandu.Common.Card
                 cardview = new View("/Views/Card/Kanban/Type/header.html");
                 cardview["name"] = card.name.TrimStart(new char[] { '#', ' ' });
             }
-            else if(card.layout == Query.Models.Card.CardLayout.custom && card.type != "" && Core.Vendors.Cards.ContainsKey(card.type))
+            else if(card.layout == Query.Models.CardLayout.custom && card.type != "" && Core.Vendors.Cards.ContainsKey(card.type))
             {
                 //custom card from vendor plugin
                 var vendor = Core.Vendors.Cards[card.type];
@@ -82,6 +82,7 @@ namespace Kandu.Common.Card
                 var card = Query.Cards.GetDetails(boardId, cardId);
                 var view = new View("/Views/Card/Kanban/details.html");
                 view["card-id"] = cardId.ToString();
+                view["org-id"] = card.orgId.ToString();
                 view["board-id"] = boardId.ToString();
                 view["board-url"] = Boards.GetUrl(boardId, card.boardName);
                 view["board-name"] = card.boardName;
@@ -94,6 +95,19 @@ namespace Kandu.Common.Card
                 view["archive-class"] = card.archived ? "hide" : "";
                 view["restore-class"] = card.archived ? "" : "hide";
                 view["delete-class"] = card.archived ? "" : "hide";
+                if(card.userIdAssigned > 0)
+                {
+                    var viewAssignedTo = new View("/Views/Card/Kanban/Details/assigned-to.html");
+                    viewAssignedTo["assigned-userid"] = card.userIdAssigned.ToString();
+                    viewAssignedTo["assigned-name"] = card.assignedName;
+                    viewAssignedTo["org-id"] = card.orgId.ToString();
+                    view["assigned-to"] = viewAssignedTo.Render();
+                }
+                else
+                {
+                    view.Show("not-assigned");
+                }
+
                 return new Tuple<Query.Models.Card, string>(card, view.Render());
             }
             catch (Exception)

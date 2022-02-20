@@ -227,16 +227,25 @@ namespace Kandu.Services
             if(cards.Count > 0)
             {
                 var html = new StringBuilder();
-                html.Append("<div class=\"col six\"><div class=\"list\"><div class=\"items\">");
-                for (var x = 0; x < cards.Count / 2; x++)
-                {
-                    html.Append(cards[x]);
-                }
-                html.Append("</div></div></div>");
                 if (cards.Count > 1)
                 {
                     html.Append("<div class=\"col six\"><div class=\"list\"><div class=\"items\">");
+                    for (var x = 0; x < cards.Count / 2; x++)
+                    {
+                        html.Append(cards[x]);
+                    }
+                    html.Append("</div></div></div>");
+                    html.Append("<div class=\"col six\"><div class=\"list\"><div class=\"items\">");
                     for (var x = cards.Count / 2; x < cards.Count; x++)
+                    {
+                        html.Append(cards[x]);
+                    }
+                    html.Append("</div></div></div>");
+                }
+                else
+                {
+                    html.Append("<div class=\"col six\"><div class=\"list\"><div class=\"items\">");
+                    for (var x = 0; x < cards.Count; x++)
                     {
                         html.Append(cards[x]);
                     }

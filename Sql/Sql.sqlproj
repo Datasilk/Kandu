@@ -76,6 +76,7 @@
     <Folder Include="dbo\Stored Procedures\Invitations" />
     <Folder Include="dbo\Stored Procedures\EmailActions" />
     <Folder Include="dbo\Stored Procedures\EmailClients" />
+    <Folder Include="dbo\Stored Procedures\Labels" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="dbo\Tables\Users.sql" />
@@ -84,7 +85,6 @@
     <Build Include="dbo\Tables\Boards.sql" />
     <Build Include="dbo\Tables\Cards.sql" />
     <Build Include="dbo\Tables\CardComments.sql" />
-    <Build Include="dbo\Tables\CardMembers.sql" />
     <Build Include="dbo\Sequences\SequenceUsers.sql" />
     <Build Include="dbo\Stored Procedures\Users\User_Create.sql" />
     <Build Include="dbo\Stored Procedures\Users\User_GetEmail.sql" />
@@ -102,7 +102,6 @@
     <Build Include="dbo\Stored Procedures\Cards\Card_Create.sql" />
     <Build Include="dbo\Sequences\SequenceCards.sql" />
     <Build Include="dbo\Stored Procedures\Cards\Card_GetDetails.sql" />
-    <Build Include="dbo\Views\View_CardMembers.sql" />
     <Build Include="dbo\Views\View_CardComments.sql" />
     <Build Include="dbo\Stored Procedures\Cards\Card_Archive.sql" />
     <Build Include="dbo\Stored Procedures\Cards\Card_Restore.sql" />
@@ -132,7 +131,6 @@
     <Build Include="dbo\Stored Procedures\Users\User_GetInfo.sql" />
     <Build Include="dbo\Stored Procedures\Users\User_AllColor.sql" />
     <Build Include="dbo\Stored Procedures\Boards\Board_Import.sql" />
-    <Build Include="dbo\Tables\CardChecklists.sql" />
     <Build Include="dbo\Tables\CardChecklistItems.sql" />
     <Build Include="dbo\Tables\BoardActivity.sql" />
     <Build Include="dbo\Stored Procedures\Cards\Card_Import.sql" />
@@ -202,6 +200,16 @@
     <Build Include="dbo\Stored Procedures\Security\Security_GetScopesForKeys.sql" />
     <Build Include="dbo\Tables\CardDescriptions.sql" />
     <Build Include="dbo\Tables\CardJson.sql" />
+    <Build Include="dbo\Tables\Labels.sql" />
+    <Build Include="dbo\Tables\CardLabels.sql" />
+    <Build Include="dbo\Sequences\SequenceLabels.sql" />
+    <Build Include="dbo\Stored Procedures\Labels\Label_Add.sql" />
+    <Build Include="dbo\Stored Procedures\Labels\Label_Remove.sql" />
+    <Build Include="dbo\Stored Procedures\Cards\Card_Checklist_AddItem.sql" />
+    <Build Include="dbo\Sequences\SequenceChecklistItems.sql" />
+    <Build Include="dbo\Stored Procedures\Cards\Card_GetInfo.sql" />
+    <Build Include="dbo\Stored Procedures\Cards\Card_GetMembers.sql" />
+    <Build Include="dbo\Stored Procedures\Cards\Card_UpdateAssignedTo.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Sql.publish.xml" />

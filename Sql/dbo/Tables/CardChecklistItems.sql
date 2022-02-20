@@ -1,8 +1,9 @@
 ﻿CREATE TABLE [dbo].[CardChecklistItems]
 (
 	[itemId] INT NOT NULL, 
-    [checklistId] INT NOT NULL, 
     [cardId] INT NOT NULL, 
     [sort] INT NOT NULL DEFAULT 999, 
-    [description] NVARCHAR(255) NOT NULL DEFAULT ''
+    [label] NVARCHAR(255) NOT NULL DEFAULT '', 
+    [checked] BIT NOT NULL DEFAULT 0,
+    [datecreated] DATETIME2 NOT NULL DEFAULT GETUTCDATE()
 )

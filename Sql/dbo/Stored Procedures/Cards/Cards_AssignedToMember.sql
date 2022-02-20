@@ -14,7 +14,7 @@ BEGIN
 		c.*, b.color AS boardColor, b.[name] AS boardName
 		FROM Cards c
 		JOIN Boards b ON b.boardId=c.boardId AND (@orgId IS NULL OR @orgId = 0 OR b.orgId=@orgId)
-		WHERE c.userId=@userId
+		WHERE c.userIdAssigned=@userId
 		AND c.archived=@archivedOnly
 	) as myTable
 	WHERE rownum >= @start AND rownum <= @start + @length

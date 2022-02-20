@@ -49,4 +49,46 @@
     <Property Name="ParentElementType" Value="SqlTable" />
     <Property Name="NewName" Value="config_json" />
   </Operation>
+  <Operation Name="Rename Refactor" Key="6a8410b7-78d9-4802-be91-7004db07ebf1" ChangeDateTime="02/19/2022 20:27:49">
+    <Property Name="ElementName" Value="[dbo].[Labels].[Id]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[Labels]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="labelId" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="d058977e-f03f-4f79-86ff-89add79b1b5f" ChangeDateTime="02/19/2022 20:28:20">
+    <Property Name="ElementName" Value="[dbo].[CardLabels].[Id]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[CardLabels]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="cardId" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="41647958-be53-4b2f-8f42-e4bb8ba919d8" ChangeDateTime="02/19/2022 21:15:54">
+    <Property Name="ElementName" Value="[dbo].[CardChecklistItems].[description]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[CardChecklistItems]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="label" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="d126091e-bb82-47f8-af54-d8b001b973fc" ChangeDateTime="02/19/2022 22:35:16">
+    <Property Name="ElementName" Value="[dbo].[Cards].[userId]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[Cards]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="userIdAssigned" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="326fe871-2ca7-4957-a577-5af8b57befd4" ChangeDateTime="02/19/2022 22:35:21">
+    <Property Name="ElementName" Value="[dbo].[Cards].[userIdAssigned]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[Cards]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="userId" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="a9910073-26f4-4026-a88f-56e8c10297aa" ChangeDateTime="02/19/2022 22:35:34">
+    <Property Name="ElementName" Value="[dbo].[Cards].[userId]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[Cards]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="userIdAssigned" />
+  </Operation>
 </Operations>

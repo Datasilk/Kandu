@@ -3,7 +3,7 @@
 	[cardId] INT NOT NULL PRIMARY KEY, 
 	[listId] INT NOT NULL,
     [boardId] INT NOT NULL, 
-    [userId] INT NOT NULL DEFAULT 0, 
+    [userIdAssigned] INT NOT NULL DEFAULT 0, 
     [userIdCreated] INT NOT NULL DEFAULT 1,
     [sort] INT NOT NULL DEFAULT 999, 
     [layout] INT NOT NULL DEFAULT 0, 
@@ -28,4 +28,4 @@ CREATE INDEX [IX_Cards_BoardModified] ON [dbo].[Cards] (boardId, datemodified DE
 
 GO
 
-CREATE INDEX [IX_Cards_UserModified] ON [dbo].[Cards] (userId, datemodified DESC)
+CREATE INDEX [IX_Cards_UserModified] ON [dbo].[Cards] ([userIdAssigned], datemodified DESC)

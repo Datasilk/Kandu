@@ -619,13 +619,22 @@
                             if (callback) { callback(); }
                         }
                     });
-                    $('.popup .card-field-title').on('click', S.kanban.card.title.edit);
-                    $('.popup .btn-archive a').off('click').on('click', S.kanban.card.archive);
-                    $('.popup .btn-restore a').off('click').on('click', S.kanban.card.restore);
-                    $('.popup .btn-delete a').off('click').on('click', S.kanban.card.delete);
-                    $('.popup .description-link a').off('click').on('click', S.kanban.card.description.edit);
-                    $('.popup .field-description .btn-cancel').off('click').on('click', S.kanban.card.description.cancel);
-                    $('.popup .field-description form').off('submit').on('submit', S.kanban.card.description.update);
+
+                    //card title event
+                    $('.popup.show .card-field-title').on('click', S.kanban.card.title.edit);
+
+                    //asign to buttons
+                    $('.popup.show .button.not-assigned').on('click', S.kanban.card.assignTo.show);
+
+                    //drop down menu item events
+                    $('.popup.show .btn-archive a').on('click', S.kanban.card.archive);
+                    $('.popup.show .btn-restore a').on('click', S.kanban.card.restore);
+                    $('.popup.show .btn-delete a').on('click', S.kanban.card.delete);
+
+                    //description events
+                    $('.popup.show .description-link a').on('click', S.kanban.card.description.edit);
+                    $('.popup.show .field-description .btn-cancel').on('click', S.kanban.card.description.cancel);
+                    $('.popup.show .field-description form').on('submit', S.kanban.card.description.update);
                     S.kanban.card.description.markdown();
                     S.kanban.card.title.edit();
                     S.kanban.card.title.cancel();
@@ -1097,6 +1106,52 @@
                 );
                 e.preventDefault();
                 return false;
+            }
+        },
+
+        modal: {
+            show: function (content) {
+                $('.popup.show .card-modals').html(content);
+                $('.popup.show .card-details').css({ 'opacity': 0 });
+            },
+
+            hide: function () {
+                $('.popup.show .card-modals').html('');
+                $('.popup.show .card-details').css({ 'opacity': 1 });
+            }
+        },
+
+        assignTo: {
+            show: function (selectedId) {
+                var card = S.kanban.card.selected;
+                S.kanban.card.modal.show(temp_assign_to.innerHTML);
+                var dropdown = $('.popup.show .assign-to-form #assignto');
+                dropdown.html('<option>[Not Assigned]</option>');
+                //get list of users for dropdown
+                S.ajax.post('Cards/GetMembers', { cardId: card.id }, (members) => {
+                    for (var x = 0; x < members.length; x++) {
+                        dropdown.append('<option value="' + members[x].userId + '"' +
+                            (members[x].userId == selectedId ? ' selected' : '') + '> ' + members[x].name + '</option > ');
+                    }
+                    $('.popup.show #assignto').on('input', S.kanban.card.assignTo.submit);
+                }, () => { }, true);
+                $('.popup.show .assign-to-form .btn-cancel').on('click', S.kanban.card.modal.hide);
+            },
+
+            submit: function () {
+                var card = S.kanban.card.selected;
+                var dropdown = $('.popup.show .assign-to-form #assignto');
+                S.ajax.post('Cards/UpdateAssignedTo', { cardId: card.id, userId: dropdown.val() }, (html) => {
+                    S.kanban.card.modal.hide();
+                    //update card sub title with new assigned to user
+                    if (html.trim().length > 0) {
+                        $('.popup.show .assigned-to').html(html).css({ 'display': 'inline-block' });
+                        $('.popup.show .not-assigned').hide();
+                    } else {
+                        $('.popup.show .assigned-to').html('').hide();
+                        $('.popup.show .not-assigned').css({ 'display': 'inline-block' });
+                    }
+                });
             }
         }
     }
