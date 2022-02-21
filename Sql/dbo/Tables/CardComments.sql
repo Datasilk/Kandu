@@ -4,5 +4,6 @@
     [cardId] INT NOT NULL, 
     [userId] INT NOT NULL, 
     [datecreated] DATETIME NOT NULL DEFAULT GETUTCDATE(), 
-    [comment] NVARCHAR(MAX) NOT NULL
+    [comment] NVARCHAR(MAX) NOT NULL, 
+    [flagged] INT NOT NULL DEFAULT 0
 )

@@ -161,7 +161,10 @@ body{overflow:hidden; overscroll-behavior-x: contain;}
 }
 #newcomment{min-height:45px;}
 
-.card-modals{position:absolute; z-index:1; width:100%;}
+.card-modals{position:absolute; z-index:1; width:100%; text-align:center; z-index:1005;
+    & > div{border-radius:5px;}
+}
+.card-modal-bg{background-color:rgba(0,0,0,0.5); position:fixed; z-index:1000; top:0; right:0; bottom:0; left:0;}
 
 @media(max-width:500px){
     .box .popup{

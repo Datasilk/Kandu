@@ -611,15 +611,20 @@
                 function (d) {
                     var card = d.split('|', 2);
                     S.popup.hide(popup);
-                    S.popup.show(card[0], card[1], {
+                    popup = S.popup.show(card[0], card[1], {
                         width: '90%', maxWidth: 750,
                         onClose: function () {
                             if (callback) { callback(); }
                         }
                     });
 
+                    $('.popup.show').prepend('<div class="card-modal-bg" style="display:none;"></div>');
+
                     //card title event
                     $('.popup.show .card-field-title').on('click', S.kanban.card.title.edit);
+
+                    //modal bg click
+                    $('.popup.show .card-modal-bg').on('click', S.kanban.card.modal.hide);
 
                     //asign to button
                     $('.popup.show .button.not-assigned').on('click', S.kanban.card.assignTo.show);
@@ -1128,12 +1133,14 @@
         modal: {
             show: function (content) {
                 $('.popup.show .card-modals').html(content);
-                $('.popup.show .card-details').css({ 'opacity': 0 });
+                //$('.popup.show .card-details').css({ 'opacity': 0 });
+                $('.popup.show .card-modal-bg').show();
             },
 
             hide: function () {
                 $('.popup.show .card-modals').html('');
                 $('.popup.show .card-details').css({ 'opacity': 1 });
+                $('.popup.show .card-modal-bg').hide();
             }
         },
 
@@ -1142,7 +1149,7 @@
                 var card = S.kanban.card.selected;
                 S.kanban.card.modal.show(temp_assign_to.innerHTML);
                 var dropdown = $('.popup.show .assign-to-form #card_assignto');
-                dropdown.html('<option>[Not Assigned]</option>');
+                dropdown.html('<option>Unassigned</option>');
                 //get list of users for dropdown
                 S.ajax.post('Cards/GetMembers', { cardId: card.id }, (members) => {
                     for (var x = 0; x < members.length; x++) {
@@ -1183,22 +1190,25 @@
                 $('.popup.show .duedate-form .btn-cancel').on('click', S.kanban.card.modal.hide);
             },
 
-            submit: function () {
+            submit: function (nodate) {
                 var card = S.kanban.card.selected;
                 var input = $('.popup.show .duedate-form #card_duedate');
-                var dates = input.val().split('-');
                 var duedate = '';
-                if (dates.length > 0) {
-                    duedate = dates[1] + '/' + dates[2] + '/' + dates[0];
+                if (nodate !== true) {
+                    var dates = input.val().split('-');
+                    if (dates.length > 0) {
+                        duedate = dates[1] + '/' + dates[2] + '/' + dates[0];
+                    }
                 }
+                
                 S.ajax.post('Cards/UpdateDueDate', { cardId: card.id, duedate: duedate }, (html) => {
                     S.kanban.card.modal.hide();
                     //update card sub title with new assigned to user
-                    if (input.val() != '') {
+                    if (duedate != '') {
                         $('.popup.show .has-duedate').css({ 'display': 'inline-block' }).find('span').html('Due ' + duedate);
                         $('.popup.show .no-duedate').hide();
                     } else {
-                        $('.popup.show .has-duedate').html('').hide();
+                        $('.popup.show .has-duedate').hide().find('span').html('');
                         $('.popup.show .no-duedate').css({ 'display': 'inline-block' });
                     }
                 });

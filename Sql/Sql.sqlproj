@@ -216,6 +216,8 @@
     <Build Include="dbo\Stored Procedures\Cards\Card_Comment_Update.sql" />
     <Build Include="dbo\Stored Procedures\Cards\Card_Comment_Remove.sql" />
     <Build Include="dbo\Stored Procedures\Cards\Card_Comment_Get.sql" />
+    <Build Include="dbo\Stored Procedures\Cards\Card_Comment_Flag.sql" />
+    <Build Include="dbo\Stored Procedures\Cards\Cards_GetFlaggedComments.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Sql.publish.xml" />

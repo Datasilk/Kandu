@@ -34,7 +34,7 @@ namespace Kandu
             TeamCanRemoveUsers, //can remove users from a team
             TeamCanAssignRoles, //can assign roles to team members
             TeamCanAssignBoards, //can assign boards to team
-            BoardsFullAccess, //can view, create, update, & delete boards in an organization
+            BoardsFullAccess, //can view, create, update, & delete boards & their contents in an organization
             BoardsCanViewAll, //can view all boards in an organization
             BoardCanView, //can view a specific board in an organization (uses scope & scopeId)
             BoardCanCreate, //can create boards for an organization
