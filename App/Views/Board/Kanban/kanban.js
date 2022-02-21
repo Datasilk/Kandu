@@ -635,6 +635,11 @@
                     //add comment button
                     $('.popup.show .comment-link').on('click', S.kanban.card.comments.add.show);
 
+                    //add new comment form (if neccessary)
+                    if ($('.popup.show .comment').length > 0) {
+                        S.kanban.card.comments.add.show(null, true);
+                    }
+
                     //drop down menu item events
                     $('.popup.show .btn-archive a').on('click', S.kanban.card.archive);
                     $('.popup.show .btn-restore a').on('click', S.kanban.card.restore);
@@ -1217,11 +1222,15 @@
 
         comments: {
             add: {
-                show: function (e) {
-                    e.cancelBubble = true;
+                show: function (e, bottom) {
+                    if (e) { e.cancelBubble = true; }
                     var comments = $('.popup.show .card-comments .contents');
                     comments.find('.add-comment-form').remove();
-                    comments.prepend(temp_add_comment.innerHTML);
+                    if (bottom === true) {
+                        comments.append(temp_add_comment.innerHTML);
+                    } else {
+                        comments.prepend(temp_add_comment.innerHTML);
+                    }
                     $('.popup.show .add-comment-form .cancel').on('click', S.kanban.card.comments.add.hide);
                     $('.popup.show .add-comment-form .apply').on('click', S.kanban.card.comments.add.submit);
                     $('.popup.show #newcomment').on('input', S.kanban.card.comments.add.resize);
