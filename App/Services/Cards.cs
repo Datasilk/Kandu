@@ -101,7 +101,7 @@ namespace Kandu.Services
 
         public string GetCard(int boardId, int cardId)
         {
-            var card = Query.Cards.GetDetails(boardId, cardId);
+            var card = Query.Cards.GetDetails(boardId, cardId, User.UserId);
             return GetCard(boardId, card);
         }
 
@@ -265,7 +265,7 @@ namespace Kandu.Services
 
                 //render new comment
                 var view = new View("/Views/Card/Kanban/Details/comment.html");
-                return Common.Cards.RenderComment(view, commentId, User.UserId, card.orgId, User.Name, comment, User.Photo, DateTime.Now, true);
+                return Common.Cards.RenderComment(view, commentId, User.UserId, card.orgId, User.Name, comment, User.Photo, DateTime.Now, true, false);
             }
             catch (Exception)
             {
@@ -280,7 +280,7 @@ namespace Kandu.Services
                 || !User.CheckSecurity(card.orgId, new string[] { Security.Keys.BoardsFullAccess.ToString(), Security.Keys.BoardCanView.ToString() }, Models.Scope.Board, card.boardId)
             ) { return AccessDenied(); }
 
-            return Query.Cards.GetComment(cardId, commentId).comment;
+            return Query.Cards.GetComment(cardId, commentId, User.UserId).comment;
         }
 
         public string UpdateComment(int cardId, int commentId, string comment)
@@ -298,7 +298,7 @@ namespace Kandu.Services
                     return Error();
                 }
                 //check for comment ownership
-                var commentobj = Query.Cards.GetComment(cardId, User.UserId);
+                var commentobj = Query.Cards.GetComment(cardId, commentId, User.UserId);
                 if(commentobj.userId != User.UserId)
                 {
                     return Error("You do not own this comment");
@@ -307,7 +307,7 @@ namespace Kandu.Services
 
                 //render comment
                 var view = new View("/Views/Card/Kanban/Details/comment.html");
-                return Common.Cards.RenderComment(view, commentId, User.UserId, card.orgId, User.Name, comment, User.Photo, DateTime.Now, true);
+                return Common.Cards.RenderComment(view, commentId, User.UserId, card.orgId, User.Name, comment, User.Photo, DateTime.Now, true, commentobj.hasflagged);
             }
             catch (Exception)
             {
@@ -325,12 +325,36 @@ namespace Kandu.Services
             try
             {
                 //check for comment ownership
-                var commentobj = Query.Cards.GetComment(cardId, User.UserId);
+                var commentobj = Query.Cards.GetComment(cardId, commentId, User.UserId);
                 if (commentobj.userId != User.UserId)
                 {
                     return Error("You do not own this comment");
                 }
                 Query.Cards.RemoveComment(commentId, cardId, User.UserId);
+                return Success();
+            }
+            catch (Exception)
+            {
+                return Error();
+            }
+        }
+
+        public string FlagComment(int cardId, int commentId)
+        {
+            var card = Query.Cards.GetInfo(cardId);
+            if (!User.CheckSecurity(card.orgId, new string[] { Security.Keys.CardFullAccess.ToString(), Security.Keys.CardCanView.ToString() }, Models.Scope.Card, cardId)
+                || !User.CheckSecurity(card.orgId, new string[] { Security.Keys.BoardsFullAccess.ToString(), Security.Keys.BoardCanView.ToString() }, Models.Scope.Board, card.boardId)
+            ) { return AccessDenied(); }
+
+            try
+            {
+                //check for comment ownership
+                var commentobj = Query.Cards.GetComment(cardId, commentId, User.UserId);
+                if (commentobj.userId == User.UserId)
+                {
+                    return Error("You cannot flag your own comment");
+                }
+                Query.Cards.FlagComment(commentId, cardId, User.UserId);
                 return Success();
             }
             catch (Exception)

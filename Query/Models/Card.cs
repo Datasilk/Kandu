@@ -58,6 +58,7 @@ namespace Query.Models
         public string name { get; set; }
         public string email { get; set; }
         public bool photo { get; set; }
+        public bool hasflagged { get; set; }
     }
 
     public class CardMember

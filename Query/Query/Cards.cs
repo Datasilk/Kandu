@@ -50,9 +50,9 @@ namespace Query
             Sql.ExecuteNonQuery("Card_Archive",new { boardId, cardId });
         }
 
-        public static Models.CardDetails GetDetails(int boardId, int cardId)
+        public static Models.CardDetails GetDetails(int boardId, int cardId, int userId)
         {
-            using (var conn = new Connection("Card_GetDetails", new { boardId, cardId }))
+            using (var conn = new Connection("Card_GetDetails", new { boardId, cardId, userId }))
             {
                 var reader = conn.PopulateMultiple();
                 var details = reader.ReadFirst<Models.CardDetails>();
@@ -144,9 +144,14 @@ namespace Query
             Sql.ExecuteNonQuery("Card_Comment_Remove", new { commentId, cardId, userId });
         }
 
-        public static Models.CardComment GetComment(int cardId, int commentId)
+        public static Models.CardComment GetComment(int cardId, int commentId, int userId)
         {
-            return Sql.Populate<Models.CardComment>("Card_Comment_Get", new { cardId, commentId }).FirstOrDefault();
+            return Sql.Populate<Models.CardComment>("Card_Comment_Get", new { cardId, commentId, userId }).FirstOrDefault();
+        }
+
+        public static void FlagComment(int commentId, int cardId, int userId)
+        {
+            Sql.ExecuteNonQuery("Card_Comment_Flag", new { commentId, cardId, userId });
         }
     }
 }

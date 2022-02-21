@@ -80,7 +80,7 @@ namespace Kandu.Common.Card
         {
             try
             {
-                var card = Query.Cards.GetDetails(boardId, cardId);
+                var card = Query.Cards.GetDetails(boardId, cardId, userId);
                 var view = new View("/Views/Card/Kanban/details.html");
                 view["card-id"] = cardId.ToString();
                 view["org-id"] = card.orgId.ToString();

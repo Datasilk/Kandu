@@ -1,6 +1,7 @@
 ﻿CREATE PROCEDURE [dbo].[Card_GetDetails]
 	@boardId int,
-	@cardId int
+	@cardId int,
+	@userId int
 AS
 	/* [0] Card Info */
 	SELECT b.orgId, c.*, u.[name] AS assignedName, cd.[description], cj.[json], l.[name] AS listName, l.archived AS listArchived, 
@@ -26,6 +27,8 @@ AS
 	ORDER BY i.sort, i.datecreated DESC
 
 	/* [2] Card Comments */
-	SELECT * FROM View_CardComments
-	WHERE cardId=@cardId
-	ORDER BY datecreated DESC
+	SELECT cc.*, CASE WHEN f.userId IS NOT NULL THEN 1 ELSE 0 END AS hasflagged 
+	FROM View_CardComments cc
+	LEFT JOIN CardCommentsFlagged f ON f.commentId = cc.commentId AND f.userId = @userId
+	WHERE cc.cardId=@cardId
+	ORDER BY cc.datecreated DESC

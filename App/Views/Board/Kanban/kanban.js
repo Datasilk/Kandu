@@ -1251,6 +1251,7 @@
                     textarea.css({ 'height': Math.round(pos.height + 16) + 'px' });
                 }
             },
+
             edit: {
                 show: function (commentId) {
                     var card = S.kanban.card.selected;
@@ -1307,7 +1308,21 @@
                 }, (err) => {
                     S.message.show(null, 'error', 'Could not remove comment');
                 });
-            }
+            },
+
+            flag: function (commentId) {
+                if (!confirm('Do you want to flag the selected comment for inappropriate behavior?')) { return; }
+                var card = S.kanban.card.selected;
+                S.ajax.post('Cards/FlagComment', { cardId: card.id, commentId: commentId }, (html) => {
+                    $('.popup.show .comment-' + commentId + ' .comment-flag').html('flagged')
+                        .removeClass('comment-flag').addClass('comment-flagged');
+                    S.kanban.card.comments.add.hide();
+                }, (err) => {
+                    S.message.show(null, 'error', 'Could not flag comment');
+                });
+            },
+
+
         }
     }
 };

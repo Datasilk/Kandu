@@ -33,10 +33,10 @@ namespace Kandu.Common
 
         public static string RenderComment(View view, int orgId, Query.Models.CardComment comment, bool isowner)
         {
-            return RenderComment(view, comment.commentId, comment.userId, orgId, comment.name, comment.comment, comment.photo, comment.dateCreated, isowner);
+            return RenderComment(view, comment.commentId, comment.userId, orgId, comment.name, comment.comment, comment.photo, comment.dateCreated, isowner, comment.hasflagged);
         }
 
-        public static string RenderComment(View view, int commentId, int userId, int orgId, string name, string comment, bool photo, DateTime datecreated, bool isowner)
+        public static string RenderComment(View view, int commentId, int userId, int orgId, string name, string comment, bool photo, DateTime datecreated, bool isowner, bool hasflagged)
         {
             view.Clear();
             view["comment-id"] = commentId.ToString();
@@ -46,7 +46,9 @@ namespace Kandu.Common
             view["date"] = datecreated.ToString("MM/dd/yyyy h:mm tt");
             view["photo"] = photo ? "/images/users/photos/" + userId + ".jpg" : "";
             if (photo) { view.Show("has-photo"); } else { view.Show("no-photo"); }
-            if (isowner) { view.Show("is-owner"); }
+            if (isowner) { view.Show("is-owner"); } 
+            else if(hasflagged == false) { view.Show("can-flag"); } 
+            else if(hasflagged == true) { view.Show("has-flagged"); }
             view["comment"] = comment;
             return view.Render();
         }

@@ -18,6 +18,12 @@
                 <div class="col right comment-delete"><a href="javascript:" onclick="S.kanban.card.comments.delete({{comment-id}})">delete</a></div>
                 <div class="col right comment-edit"><a href="javascript:" onclick="S.kanban.card.comments.edit.show({{comment-id}})">edit</a></div>
             {{/is-owner}}
+            {{can-flag}}
+                <div class="col right comment-flag"><a href="javascript:" onclick="S.kanban.card.comments.flag({{comment-id}})" title="Flag this comment as inappropriate">flag</a></div>
+            {{/can-flag}}
+            {{has-flagged}}
+                <div class="col right comment-flagged" title="You've flagged this comment as inappropriate">flagged</div>
+            {{/has-flagged}}
             <div class="col no-color"><h5><a href="javascript:" onclick="S.user.details.show({{user-id}}, {{org-id}}, '{{name}}')">{{name}}</a></h5></div>
         </div>
         <div class="row"><p>{{comment}}</p></div>
