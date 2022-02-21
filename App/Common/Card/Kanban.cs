@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text;
 using Kandu.Core;
 
 namespace Kandu.Common.Card
 {
     public static class Kanban
     {
-        public static string RenderCard(IRequest request, Query.Models.Card card, string boardColor = "", string boardName = "")
+        public static string RenderCardDetails(IRequest request, Query.Models.Card card, string boardColor = "", string boardName = "")
         {
             var useLayout = false;
             View cardview;
@@ -75,7 +76,7 @@ namespace Kandu.Common.Card
             return cardview.Render();
         }
 
-        public static Tuple<Query.Models.Card, string> Details(int boardId, int cardId)
+        public static Tuple<Query.Models.Card, string> Details(int boardId, int cardId, int userId)
         {
             try
             {
@@ -89,24 +90,64 @@ namespace Kandu.Common.Card
                 view["board-color"] = card.boardColor;
                 view["title"] = card.name;
                 view["list-name"] = card.listName;
-                view["description"] = card.description;
-                view["no-description"] = card.description.Length > 0 ? "hide" : "";
-                view["has-description"] = card.description.Length <= 0 ? "hide" : "";
                 view["archive-class"] = card.archived ? "hide" : "";
                 view["restore-class"] = card.archived ? "" : "hide";
                 view["delete-class"] = card.archived ? "" : "hide";
-                if(card.userIdAssigned > 0)
+
+                //description
+                var viewDescription = new View("/Views/Card/Kanban/Details/description.html");
+                var viewDescriptionMenu = new View("/Views/Card/Kanban/Details/description-menu.html");
+                viewDescription["description"] = card.description;
+                viewDescription["no-description"] = card.description.Length > 0 ? "hide" : "";
+                viewDescription["has-description"] = card.description.Length <= 0 ? "hide" : "";
+                view["description"] = Accordion.Render("Description", viewDescription.Render(), "card-description", "", viewDescriptionMenu.Render(), true);
+
+                //assigned to
+                if (card.userIdAssigned > 0)
                 {
                     var viewAssignedTo = new View("/Views/Card/Kanban/Details/assigned-to.html");
                     viewAssignedTo["assigned-userid"] = card.userIdAssigned.ToString();
                     viewAssignedTo["assigned-name"] = card.assignedName;
                     viewAssignedTo["org-id"] = card.orgId.ToString();
                     view["assigned-to"] = viewAssignedTo.Render();
+                    view.Show("assigned");
                 }
                 else
                 {
                     view.Show("not-assigned");
                 }
+
+                //due date
+                if (card.datedue.HasValue)
+                {
+                    view["duedate"] = "Due " + card.datedue.Value.ToString("MM/dd/yyyy");
+                    view.Show("has-duedate");
+                }
+                else
+                {
+                    view.Show("no-duedate");
+                }
+
+                //comments
+                var html = new StringBuilder();
+                var viewComments = new View("/Views/Card/Kanban/Details/comments.html");
+                var viewComment = new View("/Views/Card/Kanban/Details/comment.html");
+                var viewCommentMenu = new View("/Views/Card/Kanban/Details/comment-menu.html");
+                if(card.comments.Count > 0)
+                {
+                    foreach (var comment in card.comments)
+                    {
+                        html.Append(Cards.RenderComment(viewComment, card.orgId, comment, comment.userId == userId));
+                    }
+                    viewComments["content"] = html.ToString();
+                }
+                else
+                {
+                    //no comments
+                    viewComments["content"] = Cache.LoadFile("/Views/Card/Kanban/Details/no-comments.html");
+                }
+                
+                view["comments"] = Accordion.Render("Comments", viewComments.Render(), "card-comments", "icon-chat-single-left", viewCommentMenu.Render(), true);
 
                 return new Tuple<Query.Models.Card, string>(card, view.Render());
             }
@@ -125,7 +166,7 @@ namespace Kandu.Common.Card
             {
                 x++;
                 if (x > length) break;
-                html.Add(RenderCard(request, card, card.boardColor, card.boardName) + "\n");
+                html.Add(RenderCardDetails(request, card, card.boardColor, card.boardName) + "\n");
             }
             return html;
         }

@@ -1,0 +1,23 @@
+﻿<div class="accordion {{class-name}}{{expanded}} expanded{{/expanded}}">
+    <div class="title">
+        {{has-icon}}
+            <div class="col icon pad-right-sm pad-top-xs">
+                <svg viewBox="0 0 32 32">
+                    <use xlink:href="#{{icon}}" x="0" y="0" width="32" height="32"></use>
+                </svg>
+            </div>
+        {{/has-icon}}
+        <h6>{{title}}</h6>
+        <div class="col right">
+            <div class="row hover pad-sm icon small pointer">
+                <svg viewBox="0 0 32 32" class="expander">
+                    <use xlink:href="#icon-arrow-right" x="0" y="0" width="32" height="32"></use>
+                </svg>
+            </div>
+        </div>
+        {{menu}}
+    </div>
+    <div class="contents">
+        {{contents}}
+    </div>
+</div>

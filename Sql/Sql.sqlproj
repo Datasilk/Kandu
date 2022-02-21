@@ -210,6 +210,12 @@
     <Build Include="dbo\Stored Procedures\Cards\Card_GetInfo.sql" />
     <Build Include="dbo\Stored Procedures\Cards\Card_GetMembers.sql" />
     <Build Include="dbo\Stored Procedures\Cards\Card_UpdateAssignedTo.sql" />
+    <Build Include="dbo\Stored Procedures\Cards\Card_UpdateDueDate.sql" />
+    <Build Include="dbo\Sequences\SequenceComments.sql" />
+    <Build Include="dbo\Stored Procedures\Cards\Card_Comment_Add.sql" />
+    <Build Include="dbo\Stored Procedures\Cards\Card_Comment_Update.sql" />
+    <Build Include="dbo\Stored Procedures\Cards\Card_Comment_Remove.sql" />
+    <Build Include="dbo\Stored Procedures\Cards\Card_Comment_Get.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Sql.publish.xml" />

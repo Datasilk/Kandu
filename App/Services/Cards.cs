@@ -119,7 +119,7 @@ namespace Kandu.Services
             switch (card.boardType)
             {
                 case Query.Models.Board.BoardType.kanban:
-                    return Common.Card.Kanban.RenderCard(this, card);
+                    return Common.Card.Kanban.RenderCardDetails(this, card);
             }
             return "";
         }
@@ -176,6 +176,32 @@ namespace Kandu.Services
                 return Error();
             }
         }
+
+        public string UpdateDueDate(int cardId, string duedate)
+        {
+            //check security
+            var card = Query.Cards.GetInfo(cardId);
+            if (!User.CheckSecurity(card.orgId, new string[] { Security.Keys.CardFullAccess.ToString(), Security.Keys.CardCanUpdate.ToString() }, Models.Scope.Card, cardId)
+                || !User.CheckSecurity(card.orgId, new string[] { Security.Keys.BoardsFullAccess.ToString(), Security.Keys.BoardCanUpdate.ToString() }, Models.Scope.Board, card.boardId)
+            ) { return AccessDenied(); }
+
+
+            //save due date
+            try
+            {
+                DateTime? date = null;
+                if(duedate != "")
+                {
+                    date = DateTime.Parse(duedate);
+                }
+                Query.Cards.UpdateDueDate(cardId, User.UserId, date);
+            }
+            catch (Exception)
+            {
+                return Error();
+            }
+            return Success();
+        }
         #endregion
 
         #region "Assigned To"
@@ -216,6 +242,101 @@ namespace Kandu.Services
                 return view.Render();
             }
             return "";
+        }
+        #endregion
+
+        #region "Comments"
+        public string AddComment(int cardId, string comment)
+        {
+            var card = Query.Cards.GetInfo(cardId);
+            if (!User.CheckSecurity(card.orgId, new string[] { Security.Keys.CardFullAccess.ToString(), Security.Keys.CardCanUpdate.ToString(), Security.Keys.CardCanComment.ToString() }, Models.Scope.Card, cardId)
+                || !User.CheckSecurity(card.orgId, new string[] { Security.Keys.BoardsFullAccess.ToString(), Security.Keys.BoardCanUpdate.ToString(), Security.Keys.BoardCanComment.ToString() }, Models.Scope.Board, card.boardId)
+            ) { return AccessDenied(); }
+
+            try
+            {
+                //check for malicious text
+                if (Malicious.IsMalicious(comment, Malicious.InputType.TextOnly) == true)
+                {
+                    return Error();
+                }
+                //add comment
+                var commentId = Query.Cards.AddComment(cardId, User.UserId, comment);
+
+                //render new comment
+                var view = new View("/Views/Card/Kanban/Details/comment.html");
+                return Common.Cards.RenderComment(view, commentId, User.UserId, card.orgId, User.Name, comment, User.Photo, DateTime.Now, true);
+            }
+            catch (Exception)
+            {
+                return Error();
+            }
+        }
+
+        public string GetComment(int cardId, int commentId)
+        {
+            var card = Query.Cards.GetInfo(cardId);
+            if (!User.CheckSecurity(card.orgId, new string[] { Security.Keys.CardFullAccess.ToString(), Security.Keys.CardCanView.ToString() }, Models.Scope.Card, cardId)
+                || !User.CheckSecurity(card.orgId, new string[] { Security.Keys.BoardsFullAccess.ToString(), Security.Keys.BoardCanView.ToString() }, Models.Scope.Board, card.boardId)
+            ) { return AccessDenied(); }
+
+            return Query.Cards.GetComment(cardId, commentId).comment;
+        }
+
+        public string UpdateComment(int cardId, int commentId, string comment)
+        {
+            var card = Query.Cards.GetInfo(cardId);
+            if (!User.CheckSecurity(card.orgId, new string[] { Security.Keys.CardFullAccess.ToString(), Security.Keys.CardCanUpdate.ToString(), Security.Keys.CardCanComment.ToString() }, Models.Scope.Card, cardId)
+                || !User.CheckSecurity(card.orgId, new string[] { Security.Keys.BoardsFullAccess.ToString(), Security.Keys.BoardCanUpdate.ToString(), Security.Keys.BoardCanComment.ToString() }, Models.Scope.Board, card.boardId)
+            ) { return AccessDenied(); }
+
+            try
+            {
+                //check for malicious text
+                if (Malicious.IsMalicious(comment, Malicious.InputType.TextOnly) == true)
+                {
+                    return Error();
+                }
+                //check for comment ownership
+                var commentobj = Query.Cards.GetComment(cardId, User.UserId);
+                if(commentobj.userId != User.UserId)
+                {
+                    return Error("You do not own this comment");
+                }
+                Query.Cards.UpdateComment(commentId, cardId, User.UserId, comment);
+
+                //render comment
+                var view = new View("/Views/Card/Kanban/Details/comment.html");
+                return Common.Cards.RenderComment(view, commentId, User.UserId, card.orgId, User.Name, comment, User.Photo, DateTime.Now, true);
+            }
+            catch (Exception)
+            {
+                return Error();
+            }
+        }
+
+        public string DeleteComment(int cardId, int commentId)
+        {
+            var card = Query.Cards.GetInfo(cardId);
+            if (!User.CheckSecurity(card.orgId, new string[] { Security.Keys.CardFullAccess.ToString(), Security.Keys.CardCanUpdate.ToString(), Security.Keys.CardCanComment.ToString() }, Models.Scope.Card, cardId)
+                || !User.CheckSecurity(card.orgId, new string[] { Security.Keys.BoardsFullAccess.ToString(), Security.Keys.BoardCanUpdate.ToString(), Security.Keys.BoardCanComment.ToString() }, Models.Scope.Board, card.boardId)
+            ) { return AccessDenied(); }
+
+            try
+            {
+                //check for comment ownership
+                var commentobj = Query.Cards.GetComment(cardId, User.UserId);
+                if (commentobj.userId != User.UserId)
+                {
+                    return Error("You do not own this comment");
+                }
+                Query.Cards.RemoveComment(commentId, cardId, User.UserId);
+                return Success();
+            }
+            catch (Exception)
+            {
+                return Error();
+            }
         }
         #endregion
     }

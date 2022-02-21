@@ -47,9 +47,7 @@ namespace Query
 
         public static void Archive(int boardId, int cardId)
         {
-            Sql.ExecuteNonQuery("Card_Archive",
-                new { boardId, cardId }
-            );
+            Sql.ExecuteNonQuery("Card_Archive",new { boardId, cardId });
         }
 
         public static Models.CardDetails GetDetails(int boardId, int cardId)
@@ -70,16 +68,12 @@ namespace Query
 
         public static void Restore(int boardId, int cardId)
         {
-            Sql.ExecuteNonQuery("Card_Restore",
-                new { boardId, cardId }
-            );
+            Sql.ExecuteNonQuery("Card_Restore",new { boardId, cardId });
         }
 
         public static void Delete(int boardId, int cardId)
         {
-            Sql.ExecuteNonQuery("Card_Delete",
-                new { boardId, cardId }
-            );
+            Sql.ExecuteNonQuery("Card_Delete",new { boardId, cardId });
         }
 
         public static Models.Card GetInfo(int cardId)
@@ -89,10 +83,7 @@ namespace Query
 
         public static List<Models.Card> GetList(int boardId, int listId = 0, int start = 1, int length = 2000, bool archivedOnly = false)
         {
-            return Sql.Populate<Models.Card>(
-                "Cards_GetList",
-                new { boardId, listId, start, length, archivedOnly }
-            );
+            return Sql.Populate<Models.Card>("Cards_GetList",new { boardId, listId, start, length, archivedOnly });
         }
 
         public static List<Models.CardDetails> AssignedToMember(int userId, int orgId = 0, int start = 1, int length = 20, bool archivedOnly = false)
@@ -110,37 +101,52 @@ namespace Query
 
         public static void Move(int boardId, int listId, int cardId, int[] cardIds)
         {
-            Sql.ExecuteNonQuery("Card_Move",
-                new { boardId, listId, cardId, ids = string.Join(",", cardIds) }
-            );
+            Sql.ExecuteNonQuery("Card_Move",new { boardId, listId, cardId, ids = string.Join(",", cardIds) });
         }
 
         public static void UpdateName(int boardId, int cardId, string name)
         {
-            Sql.ExecuteNonQuery("Card_UpdateName",
-                new { boardId, cardId, name }
-            );
+            Sql.ExecuteNonQuery("Card_UpdateName",new { boardId, cardId, name });
         }
 
         public static void UpdateDescription(int boardId, int cardId, string description)
         {
-            Sql.ExecuteNonQuery("Card_UpdateDescription",
-                new { boardId, cardId, description }
-            );
+            Sql.ExecuteNonQuery("Card_UpdateDescription",new { boardId, cardId, description });
         }
 
         public static void UpdateJson(int boardId, int cardId, string json)
         {
-            Sql.ExecuteNonQuery("Card_UpdateJson",
-                new { boardId, cardId, json }
-            );
+            Sql.ExecuteNonQuery("Card_UpdateJson",new { boardId, cardId, json });
         }
 
         public static void UpdateAssignedTo(int cardId, int userId, int userIdAssigned)
         {
-            Sql.ExecuteNonQuery("Card_UpdateAssignedTo",
-                new { cardId, userId, userIdAssigned }
-            );
+            Sql.ExecuteNonQuery("Card_UpdateAssignedTo",new { cardId, userId, userIdAssigned });
+        }
+
+        public static void UpdateDueDate(int cardId, int userId, DateTime? duedate)
+        {
+            Sql.ExecuteNonQuery("Card_UpdateDueDate",new { cardId, userId, duedate });
+        }
+
+        public static int AddComment(int cardId, int userId, string comment)
+        {
+            return Sql.ExecuteScalar<int>("Card_Comment_Add", new { cardId, userId, comment });
+        }
+
+        public static void UpdateComment(int commentId, int cardId, int userId, string comment)
+        {
+            Sql.ExecuteNonQuery("Card_Comment_Update", new { commentId, cardId, userId, comment });
+        }
+
+        public static void RemoveComment(int commentId, int cardId, int userId)
+        {
+            Sql.ExecuteNonQuery("Card_Comment_Remove", new { commentId, cardId, userId });
+        }
+
+        public static Models.CardComment GetComment(int cardId, int commentId)
+        {
+            return Sql.Populate<Models.CardComment>("Card_Comment_Get", new { cardId, commentId }).FirstOrDefault();
         }
     }
 }

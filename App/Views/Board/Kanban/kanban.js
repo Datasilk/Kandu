@@ -41,13 +41,11 @@
 
         //load card if card is in URL hash
         var hash = S.util.url.hash.params();
-        console.log(hash);
         if (hash.length > 0) {
             var param = hash.filter(a => a.key == 'card');
             if (param.length > 0) {
                 param = param[0];
                 var e = { target: $('.item.id-' + param.value)[0] };
-                console.log(e);
                 S.kanban.card.details(e);
             }
         }
@@ -623,8 +621,14 @@
                     //card title event
                     $('.popup.show .card-field-title').on('click', S.kanban.card.title.edit);
 
-                    //asign to buttons
+                    //asign to button
                     $('.popup.show .button.not-assigned').on('click', S.kanban.card.assignTo.show);
+
+                    //due date button
+                    $('.popup.show .button.no-duedate, .popup.show .button.has-duedate').on('click', S.kanban.card.dueDate.show);
+
+                    //add comment button
+                    $('.popup.show .comment-link').on('click', S.kanban.card.comments.add.show);
 
                     //drop down menu item events
                     $('.popup.show .btn-archive a').on('click', S.kanban.card.archive);
@@ -632,13 +636,15 @@
                     $('.popup.show .btn-delete a').on('click', S.kanban.card.delete);
 
                     //description events
-                    $('.popup.show .description-link a').on('click', S.kanban.card.description.edit);
+                    $('.popup.show .description-link').on('click', S.kanban.card.description.edit);
                     $('.popup.show .field-description .btn-cancel').on('click', S.kanban.card.description.cancel);
+                    $('.popup.show #card_description').on('input', S.kanban.card.description.resize);
                     $('.popup.show .field-description form').on('submit', S.kanban.card.description.update);
                     S.kanban.card.description.markdown();
                     S.kanban.card.title.edit();
                     S.kanban.card.title.cancel();
                     S.popup.resize();
+                    S.accordion.load();
                 },
                 function () {
                     S.util.message('.board .message', "error", S.message.error.generic);
@@ -1035,9 +1041,11 @@
             cached: null,
             edit: function () {
                 S.kanban.card.description.cached = $('#card_description').val().trim();
-                $('.popup .field-description').removeClass('hide');
-                $('.popup .new-description').addClass('hide');
-                $('.popup .description').addClass('hide');
+                $('.popup.show .field-description').removeClass('hide');
+                $('.popup.show .new-description').addClass('hide');
+                $('.popup.show .description').addClass('hide');
+                $('.popup.show .card-description').addClass('expanded');
+                S.kanban.card.description.resize();
             },
 
             cancel: function () {
@@ -1047,11 +1055,11 @@
             },
 
             hide: function () {
-                $('.popup .field-description').addClass('hide');
-                if ($('.popup .description .markdown').html().trim() != '') {
-                    $('.popup .description').removeClass('hide');
+                $('.popup.show .field-description').addClass('hide');
+                if ($('.popup.show .description .markdown').html().trim() != '') {
+                    $('.popup.show .description').removeClass('hide');
                 } else {
-                    $('.popup .new-description').removeClass('hide');
+                    $('.popup.show .new-description').removeClass('hide');
                 }  
             },
 
@@ -1075,7 +1083,7 @@
                     linkify: true
                 });
 
-                $('.popup .description .markdown').html(
+                $('.popup.show .description .markdown').html(
                     markdown.render(text.trim())
                         .replace('<code>', '<code class="hljs">') //bug fix
                 );
@@ -1106,6 +1114,14 @@
                 );
                 e.preventDefault();
                 return false;
+            },
+
+            resize: function () {
+                var textarea = $('.popup.show #card_description');
+                var temp = $('.popup.show .card-description .temp');
+                temp.html(textarea.val().replace(/\n/g, '<br/>'));
+                var pos = temp[0].getBoundingClientRect();
+                textarea.css({ 'height': Math.round((pos.height * 1.05) + 20) + 'px'});
             }
         },
 
@@ -1125,7 +1141,7 @@
             show: function (selectedId) {
                 var card = S.kanban.card.selected;
                 S.kanban.card.modal.show(temp_assign_to.innerHTML);
-                var dropdown = $('.popup.show .assign-to-form #assignto');
+                var dropdown = $('.popup.show .assign-to-form #card_assignto');
                 dropdown.html('<option>[Not Assigned]</option>');
                 //get list of users for dropdown
                 S.ajax.post('Cards/GetMembers', { cardId: card.id }, (members) => {
@@ -1133,14 +1149,14 @@
                         dropdown.append('<option value="' + members[x].userId + '"' +
                             (members[x].userId == selectedId ? ' selected' : '') + '> ' + members[x].name + '</option > ');
                     }
-                    $('.popup.show #assignto').on('input', S.kanban.card.assignTo.submit);
+                    $('.popup.show #card_assignto').on('input', S.kanban.card.assignTo.submit);
                 }, () => { }, true);
                 $('.popup.show .assign-to-form .btn-cancel').on('click', S.kanban.card.modal.hide);
             },
 
             submit: function () {
                 var card = S.kanban.card.selected;
-                var dropdown = $('.popup.show .assign-to-form #assignto');
+                var dropdown = $('.popup.show .assign-to-form #card_assignto');
                 S.ajax.post('Cards/UpdateAssignedTo', { cardId: card.id, userId: dropdown.val() }, (html) => {
                     S.kanban.card.modal.hide();
                     //update card sub title with new assigned to user
@@ -1151,6 +1167,135 @@
                         $('.popup.show .assigned-to').html('').hide();
                         $('.popup.show .not-assigned').css({ 'display': 'inline-block' });
                     }
+                });
+            }
+        },
+
+        dueDate: {
+            show: function () {
+                S.kanban.card.modal.show(temp_set_duedate.innerHTML);
+                var input = $('.popup.show .duedate-form #card_duedate');
+                var duedate = $('.popup.show .has-duedate span').html().replace('Due ', '');
+                if (duedate != '') {
+                    input[0].valueAsDate = new Date(duedate);
+                }
+                $('.popup.show #card_duedate').on('change', S.kanban.card.dueDate.submit);
+                $('.popup.show .duedate-form .btn-cancel').on('click', S.kanban.card.modal.hide);
+            },
+
+            submit: function () {
+                var card = S.kanban.card.selected;
+                var input = $('.popup.show .duedate-form #card_duedate');
+                var dates = input.val().split('-');
+                var duedate = '';
+                if (dates.length > 0) {
+                    duedate = dates[1] + '/' + dates[2] + '/' + dates[0];
+                }
+                S.ajax.post('Cards/UpdateDueDate', { cardId: card.id, duedate: duedate }, (html) => {
+                    S.kanban.card.modal.hide();
+                    //update card sub title with new assigned to user
+                    if (input.val() != '') {
+                        $('.popup.show .has-duedate').css({ 'display': 'inline-block' }).find('span').html('Due ' + duedate);
+                        $('.popup.show .no-duedate').hide();
+                    } else {
+                        $('.popup.show .has-duedate').html('').hide();
+                        $('.popup.show .no-duedate').css({ 'display': 'inline-block' });
+                    }
+                });
+            }
+        },
+
+        comments: {
+            add: {
+                show: function (e) {
+                    e.cancelBubble = true;
+                    var comments = $('.popup.show .card-comments .contents');
+                    comments.find('.add-comment-form').remove();
+                    comments.prepend(temp_add_comment.innerHTML);
+                    $('.popup.show .add-comment-form .cancel').on('click', S.kanban.card.comments.add.hide);
+                    $('.popup.show .add-comment-form .apply').on('click', S.kanban.card.comments.add.submit);
+                    $('.popup.show #newcomment').on('input', S.kanban.card.comments.add.resize);
+                    $('.popup.show .card-comments').addClass('expanded');
+                    $('.popup.show .no-comments').hide();
+                },
+
+                submit: function () {
+                    var card = S.kanban.card.selected;
+                    S.ajax.post('Cards/AddComment', { cardId: card.id, comment: $('.popup.show #newcomment').val() }, (html) => {
+                        $('.popup.show .comments').prepend(html);
+                        S.kanban.card.comments.add.hide();
+                    }, (err) => {
+                        S.message.show(null, 'error', 'Could not add comment');
+                    });
+                },
+
+                hide: function () {
+                    $('.popup.show .card-comments .add-comment-form').remove();
+                },
+
+                resize: function () {
+                    var textarea = $('.popup.show #newcomment');
+                    var temp = $('.popup.show .card-comments .temp');
+                    temp.html(textarea.val().replace(/\n/g, '<br/>'));
+                    var pos = temp[0].getBoundingClientRect();
+                    textarea.css({ 'height': Math.round(pos.height + 16) + 'px' });
+                }
+            },
+            edit: {
+                show: function (commentId) {
+                    var card = S.kanban.card.selected;
+                    var comments = $('.popup.show .card-comments .contents');
+                    var comment = $('.popup.show .comment-' + commentId);
+                    comments.find('.add-comment-form').remove();
+                    comment.after(temp_add_comment.innerHTML);
+                    comment.hide();
+                    $('.popup.show .add-comment-form .field').html('Update Comment');
+                    $('.popup.show .add-comment-form .cancel').on('click', () => { S.kanban.card.comments.edit.hide(commentId); });
+                    $('.popup.show .add-comment-form .apply').on('click', () => { S.kanban.card.comments.edit.submit(commentId); });
+                    $('.popup.show #newcomment').on('input', S.kanban.card.comments.edit.resize);
+                    $('.popup.show .card-comments').addClass('expanded');
+                    $('.popup.show .no-comments').hide();
+                    S.ajax.post('Cards/GetComment', { cardId: card.id, commentId: commentId }, (result) => {
+                        $('.popup.show #newcomment').val(result);
+                    });
+                },
+
+                submit: function (commentId) {
+                    var card = S.kanban.card.selected;
+                    var comment = $('.popup.show .comment-' + commentId);
+                    S.ajax.post('Cards/UpdateComment', { cardId: card.id, commentId: commentId, comment: $('.popup.show #newcomment').val() }, (html) => {
+                        comment.before(html);
+                        comment.remove();
+                        S.kanban.card.comments.add.hide();
+                    }, (err) => {
+                        S.message.show(null, 'error', 'Could not add comment');
+                    });
+                },
+
+                hide: function (commentId) {
+                    $('.popup.show .card-comments .add-comment-form').remove();
+                    var comment = $('.popup.show .comment-' + commentId);
+                    comment.show();
+                },
+
+                resize: function () {
+                    var textarea = $('.popup.show #newcomment');
+                    var temp = $('.popup.show .card-comments .temp');
+                    temp.html(textarea.val().replace(/\n/g, '<br/>'));
+                    var pos = temp[0].getBoundingClientRect();
+                    textarea.css({ 'height': Math.round(pos.height + 16) + 'px' });
+                }
+            },
+
+            delete: function (commentId) {
+                if (!confirm('Do you really want to delete the selected comment? This cannot be undone.')) { return; }
+                var card = S.kanban.card.selected;
+                var comment = $('.popup.show .comment-' + commentId);
+                S.ajax.post('Cards/DeleteComment', { cardId: card.id, commentId: commentId }, (html) => {
+                    comment.remove();
+                    S.kanban.card.comments.add.hide();
+                }, (err) => {
+                    S.message.show(null, 'error', 'Could not remove comment');
                 });
             }
         }

@@ -1,0 +1,25 @@
+﻿<div class="comment comment-{{comment-id}}">
+    <div class="photo">
+        {{has-photo}}
+            <a href="javascript:" onclick="S.user.details.show({{user-id}}, {{org-id}}, {{name}})"><img src="{{photo}}" /></a>
+        {{/has-photo}}
+        {{no-photo}}
+            <a href="javascript:" onclick="S.user.details.show({{user-id}}, {{org-id}}, {{name}})">
+                <svg viewBox="0 0 32 32" class="no-photo">
+                    <use xlink:href="#icon-user" x="0" y="0" width="32" height="32"></use>
+                </svg>
+            </a>
+        {{/no-photo}}
+    </div>
+    <div class="row comment-body">
+        <div class="row comment-title">
+            <div class="col right comment-date">{{date}}</div>
+            {{is-owner}}
+                <div class="col right comment-delete"><a href="javascript:" onclick="S.kanban.card.comments.delete({{comment-id}})">delete</a></div>
+                <div class="col right comment-edit"><a href="javascript:" onclick="S.kanban.card.comments.edit.show({{comment-id}})">edit</a></div>
+            {{/is-owner}}
+            <div class="col no-color"><h5><a href="javascript:" onclick="S.user.details.show({{user-id}}, {{org-id}}, '{{name}}')">{{name}}</a></h5></div>
+        </div>
+        <div class="row"><p>{{comment}}</p></div>
+    </div>
+</div>

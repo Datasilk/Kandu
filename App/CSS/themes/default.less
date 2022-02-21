@@ -78,6 +78,9 @@ body, h1, h2, h3, h4, h5, h6, span, input, select, textarea{font-family: Open Sa
         .links(#555, #555, #555, #555);
     }
     .links(#6200ff, #9100ff, #c000ff, #6200ff);
+    .no-color{
+        .links(#222, #222, #222, #222);
+    }
     .fonts(#222, fade(#222, 30%), #009B87, #4DA400, #FF2222, #376EB2);
     .input(#fff, #444, #cccccc, #aaa, #ffffff, #444, #77c8b6, #fff, #444, #b1dcdc, #8c8c8c, #6d43d5 );
     .line(#e6e6e6); 
@@ -159,3 +162,16 @@ body, h1, h2, h3, h4, h5, h6, span, input, select, textarea{font-family: Open Sa
 //tooltip
 .tooltip{background-color:#d5f8c9; border-color:#adf296; color:#0e5c00;}
 .tooltip:after{border-color: #adf296 transparent; }
+
+//accordion
+.accordion{
+    .title{background-color:#ececec;
+        .row.hover:hover{background-color:#d0d0d0;}
+    }
+}
+
+//comments
+.popup .box .comment{background-color:#fff;}
+.comment svg.no-photo{background-color:#bbe3ff; 
+    use{color:#0e72b9 !important;}
+}

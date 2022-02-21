@@ -39,12 +39,12 @@ namespace Kandu
             BoardCanView, //can view a specific board in an organization (uses scope & scopeId)
             BoardCanCreate, //can create boards for an organization
             BoardCanUpdate, //can update boards for an organization, including lists & cards for the board
-            //BoardCanAssignUser, //can assign users to boards
-            //BoardCanRemoveUsers, //can remove users from boards they are assigned to
-            BoardCanRemoveComment, //can remove comments
+            BoardCanComment, //can comment on cards within a board
+            BoardCanRemoveComments, //can remove comments
             CardFullAccess, //can view & update & assign a specific card
             CardCanView, //can view a specific card
             CardCanUpdate, //can update card title, description, checklists, etc
+            CardCanComment //can comment on a specific card
         }
     }
 

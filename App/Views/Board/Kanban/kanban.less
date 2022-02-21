@@ -104,10 +104,10 @@ body{overflow:hidden; overscroll-behavior-x: contain;}
 
 /* card details popup /////////////////////////// */
 .box .popup{
-    .title{max-width:~"calc(100% - 30px)";}
-    .card-sub-title{
+    & > div > .title{max-width:~"calc(100% - 30px)";}
+    .card-sub-title{margin-top:-10px;
         .board-color{width:10px; height:18px; margin:0 0 0 5px; display:inline-block; position:relative; top:3px; border-radius:4px;}
-        .button{display:inline-block; margin:9px 0 -9px 5px; cursor:pointer;
+        .button{display:inline-block; margin:15px 0 -9px 5px; cursor:pointer;
             svg{width:12px; height:12px;}
         }
     }
@@ -119,15 +119,47 @@ body{overflow:hidden; overscroll-behavior-x: contain;}
     }
 }
 .card-details{
-    a:link{text-decoration:underline;}
     .new-description{border-radius:4px; margin-bottom:20px; padding:10px;}
     .new-description, .description-title{opacity:0.7;}
-    .markdown{line-height:1.25; font-weight:400; padding:0 0 10px 0;
-        ul{padding:10px 0 20px 10px;}
-        p{display:block; padding:0 0 10px 0;}
+    .markdown{line-height:1.5; font-weight:400; padding:10px;
+        ul{padding:0 0 10px 10px;}
+        li{padding:3px 0;}
+        p{display:block; padding:0 0 10px 0; line-height:1.5; }
     }
     .description-title{padding-bottom:10px;}
+    .accordion{margin-top:20px;
+        & > .title > div{margin-top:-5px; height:30px;
+            .icon{height:18px;}
+        }
+    }
+    .temp{position:absolute; width:100%; min-height:75px; top:-10000px; left:-10000px; opacity:0;
+        line-height:1.5; font-weight:400; padding:10px;
+        ul{padding:0 0 10px 10px;}
+        li{padding:3px 0;}
+        p{display:block; padding:0 0 10px 0; line-height:1.5; }
+    }
 }
+#card_description, #newcomment{line-height:1.5; overflow-y:hidden; height:45px;}
+ 
+.card-comments > .title > .icon svg{width:18px;}
+.comments{padding-top:10px;
+    .comment{border-radius:6px; box-shadow:1px 1px 5px rgba(0,0,0,0.125); padding:10px 5px 10px 5px; margin:5px 0; width:100%;
+        &:after{clear:both; display:block; content:'';}
+    }
+    .photo{display:inline-block; width:55px; padding-right:10px;}
+    h5{font-size:14px;
+        a{font-weight:bold;}
+        a:link, a:visited{text-decoration:none;}
+        a:hover, a:active{text-decoration:underline;}
+    }
+    .comment-body{display:inline-block; width:~"calc(100% - 60px)"; line-height:1.5;}
+    .comment-title{padding-bottom:5px;}
+    .comment-date{opacity:0.7; font-size:0.8rem; padding-top:2px;}
+    .comment-edit{padding-right:10px;}
+    .comment-delete{padding-right:15px;}
+    svg.no-photo{background-color:#bbe3ff; border-radius:50px; width:50px; height:50px; padding:7px;}
+}
+#newcomment{min-height:45px;}
 
 .card-modals{position:absolute; z-index:1; width:100%;}
 
