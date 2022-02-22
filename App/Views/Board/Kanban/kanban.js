@@ -1241,7 +1241,7 @@
                 submit: function () {
                     var card = S.kanban.card.selected;
                     S.ajax.post('Cards/AddComment', { cardId: card.id, comment: $('.popup.show #newcomment').val() }, (html) => {
-                        $('.popup.show .comments').prepend(html);
+                        $('.popup.show .comments').append(html);
                         S.kanban.card.comments.add.hide();
                     }, (err) => {
                         S.message.show(null, 'error', 'Could not add comment');
@@ -1332,6 +1332,13 @@
             },
 
 
+        },
+
+        share: {
+            show: function () {
+                S.kanban.card.modal.show(temp_share.innerHTML);
+                $('.popup.show .share-form .btn-cancel').on('click', S.kanban.card.modal.hide);
+            }
         }
     }
 };

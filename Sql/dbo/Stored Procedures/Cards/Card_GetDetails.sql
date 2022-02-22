@@ -31,4 +31,4 @@ AS
 	FROM View_CardComments cc
 	LEFT JOIN CardCommentsFlagged f ON f.commentId = cc.commentId AND f.userId = @userId
 	WHERE cc.cardId=@cardId
-	ORDER BY cc.datecreated DESC
+	ORDER BY cc.datecreated ASC

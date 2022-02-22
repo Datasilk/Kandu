@@ -2,6 +2,20 @@
     <textarea>{{title}}</textarea>
     <div class="textarea-clone">{{title}}<div></div></div>
 </div>
+<div class="icon-share">
+    <div class="row hover pad-sm pointer" onclick="S.kanban.card.share.show()">
+        <svg viewBox="0 0 32 32">
+            <use xlink:href="#icon-share" x="0" y="0" width="32" height="32"></use>
+        </svg>
+    </div>
+</div>
+<div class="icon-dots">
+    <div class="row hover pad-sm pointer" onclick="S.kanban.card.menu.show()">
+        <svg viewBox="0 0 32 32">
+            <use xlink:href="#icon-dots" x="0" y="0" width="32" height="32"></use>
+        </svg>
+    </div>
+</div>
 <div class="card-sub-title row pad-bottom-sm">
     In Board <div class="board-color" style="background-color:#{{board-color}}"></div> 
     <a href="{{board-url}}#card={{card-id}}"><b>{{board-name}}</b></a>, List <b>{{list-name}}</b>.
@@ -77,6 +91,41 @@
                     </svg>
                 </a>
             </div>
+        </div>
+    </div>
+</script>
+
+<script type="text/html" id="temp_share">
+    <div class="col share-form bg pad">
+        <div class="row share-title">
+            <div class="col right icon pad-left-sm faded small">
+                <a href="javascript:" class="btn-cancel pad-right-sm">
+                    <svg viewBox="0 0 32 32">
+                        <use xlink:href="#icon-close" x="0" y="0" width="32" height="32"></use>
+                    </svg>
+                </a>
+            </div>
+            <h6>Invite users to view & collaborate on this card</h6>
+        </div>
+        <div class="row field">Name or email address</div>
+        <div class="row input"><input type="text" id="share_name" /></div>
+        <div class="row invited-users"></div>
+        <div class="row pad-top invite-options">
+            <div class="col six mobile">
+                <div class="row hover input">
+                    <input type="checkbox" id="invite_canupdate" />
+                    <label for="invite_canupdate">Can make changes</label>
+                </div>
+            </div>
+            <div class="col six mobile">
+                <div class="row hover input">
+                    <input type="checkbox" id="invite_cancomment" />
+                    <label for="invite_cancomment">Can post comments</label>
+                </div>
+            </div>
+        </div>
+        <div class="row pad-top buttons text-center">
+            <button class="apply">Send Invites</button>
         </div>
     </div>
 </script>
