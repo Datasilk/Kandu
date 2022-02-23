@@ -108,7 +108,10 @@
             <h6>Invite users to view & collaborate on this card</h6>
         </div>
         <div class="row field">Name or email address</div>
-        <div class="row input"><input type="text" id="share_name" /></div>
+        <div class="row input">
+            <div class="search-results" style="display:none"></div>
+            <input type="text" class="search-input" id="share_name" />
+        </div>
         <div class="row invited-users"></div>
         <div class="row pad-top invite-options">
             <div class="col six mobile">
@@ -128,6 +131,9 @@
             <button class="apply">Send Invites</button>
         </div>
     </div>
+</script>
+<script type="text/html" id="temp_invited_user">
+    <div class="col six mobile invited cursor" data-id="#id#" title="#name#"><div class="row hover"><span>#name#</span></div></div>
 </script>
 
 <div class="row">

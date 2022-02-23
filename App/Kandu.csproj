@@ -1,23 +1,15 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
-    <TargetFramework>net5.0</TargetFramework>
+    <TargetFramework>net6.0</TargetFramework>
     <StartupObject>Kandu.Program</StartupObject>
     <AspNetCoreHostingModel>OutOfProcess</AspNetCoreHostingModel>
     <UserSecretsId>96e7edba-d054-41a2-9bbc-78c1d5ccede2</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Core\Test\**" />
-    <Content Remove="Core\Test\**" />
-    <EmbeddedResource Remove="Core\Test\**" />
-    <None Remove="Core\Test\**" />
-  </ItemGroup>
-
-  <ItemGroup>
     <Content Remove="config.json" />
     <Content Remove="config.prod.json" />
-    <Content Remove="Core\config.json" />
   </ItemGroup>
 
   <ItemGroup>

@@ -94,9 +94,9 @@ namespace Query
             );
         }
 
-        public static List<Models.CardMember> Members(int cardId)
+        public static List<Models.CardMember> Members(int cardId, string search = "")
         {
-            return Sql.Populate<Models.CardMember>("Card_GetMembers", new { cardId }).Distinct().ToList();
+            return Sql.Populate<Models.CardMember>("Card_GetMembers", new { cardId, search }).Distinct().ToList();
         }
 
         public static void Move(int boardId, int listId, int cardId, int[] cardIds)

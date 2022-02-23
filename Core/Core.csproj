@@ -1,17 +1,31 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
     <AssemblyName>Kandu.Core</AssemblyName>
     <RootNamespace>Kandu.Core</RootNamespace>
+    <Company>Datasilk</Company>
+    <Authors>Mark Entingh</Authors>
+    <Description>The core interfaces, classes, and middleware for Kandu, used by plugin developers.</Description>
+    <Copyright>2022 Datasilk</Copyright>
+    <PackageProjectUrl>https://kandu.datasilk.io</PackageProjectUrl>
+    <RepositoryUrl>https://www.github.com/Datasilk/Kandu</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageTags>kanban</PackageTags>
+    <PackageReleaseNotes>The first release of Kandu's new plugin system</PackageReleaseNotes>
+    <AssemblyVersion>0.1.0.0</AssemblyVersion>
+    <FileVersion>0.1.0.0</FileVersion>
+    <Version>0.1.0</Version>
+    <PackageLicenseFile>LICENSE</PackageLicenseFile>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Datasilk.Core.Mvc" Version="1.0.7" />
+    <PackageReference Include="Datasilk.Core.Mvc" Version="1.0.7.6" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Query\Query.csproj" />
+	  <None Include="LICENSE" Pack="true" PackagePath=""/>
   </ItemGroup>
 
 </Project>

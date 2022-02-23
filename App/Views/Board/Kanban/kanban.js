@@ -1335,9 +1335,74 @@
         },
 
         share: {
+            timer: null,
+
             show: function () {
                 S.kanban.card.modal.show(temp_share.innerHTML);
+                $('.popup.show #share_name').on('input', S.kanban.card.share.search);
                 $('.popup.show .share-form .btn-cancel').on('click', S.kanban.card.modal.hide);
+            },
+
+            search: function () {
+                if (S.kanban.card.share.timer == null) {
+                    var container = $('.popup.show .share-form .search-results');
+                    container.html('<div class="row no-results">waiting...</div>');
+                    container.show();
+                }
+                if (S.kanban.card.share.timer != null) {
+                    clearTimeout(S.kanban.card.share.timer);
+                }
+                S.kanban.card.share.timer = setTimeout(S.kanban.card.share.endWait, 500);
+            },
+
+            endWait: function () {
+                //executed after user is done typing in the search field
+                var card = S.kanban.card.selected;
+                var search = $('.popup.show #share_name').val();
+                var container = $('.popup.show .share-form .search-results');
+                container.html('<div class="row no-results">searching...</div>');
+                if (search.length == 0) {
+                    container.hide();
+                    return;
+                }
+                S.ajax.post('Cards/FindInvites', { cardId: card.id, search: search }, (results) => {
+                    if (results.length > 0) {
+                        container.html('');
+                        results.forEach(a => {
+                            container.append('<div class="row hover result" data-id="' + a.id + '"><span>' + a.name + '</span></div>');
+                        });
+                        $('.popup.show .result').on('click', S.kanban.card.share.selectResult);
+                    } else {
+                        container.html('<div class="row no-results">No members were found that match your query</div>');
+                    }
+                }, () => { }, true);
+            },
+
+            selectResult: function (e) {
+                S.kanban.card.share.timer = null;
+                var target = $(e.target);
+                if (!target.hasClass('result')) {
+                    target = target.parents('.result').first();
+                }
+                if (target.length > 0) {
+                    var id = target.attr('data-id');
+                    var name = target.find('span').html();
+                    S.kanban.card.share.createInvite(id, name);
+                }
+                S.kanban.card.share.hideResults();
+            },
+
+            createInvite: function (id, name) {
+                $('.popup.show .share-form .invited-users').append(temp_invited_user.innerHTML
+                    .replace(/\#id\#/g, id)
+                    .replace(/\#name\#/g, name)
+                );
+            },
+
+            hideResults: function () {
+                $('.popup.show #share_name').val('');
+                var container = $('.popup.show .share-form .search-results');
+                container.hide();
             }
         }
     }

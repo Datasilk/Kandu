@@ -1,5 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using Utility;
+using Utility.Strings;
 
 
 namespace Kandu.Services
@@ -361,6 +364,34 @@ namespace Kandu.Services
             {
                 return Error();
             }
+        }
+        #endregion
+
+        #region "Share"
+        public string FindInvites(int cardId, string search)
+        {
+            var card = Query.Cards.GetInfo(cardId);
+            if (!User.CheckSecurity(card.orgId, new string[] { Security.Keys.CardFullAccess.ToString(), Security.Keys.CardCanUpdate.ToString(), Security.Keys.CardCanComment.ToString() }, Models.Scope.Card, cardId)
+                || !User.CheckSecurity(card.orgId, new string[] { Security.Keys.BoardsFullAccess.ToString(), Security.Keys.BoardCanUpdate.ToString(), Security.Keys.BoardCanComment.ToString() }, Models.Scope.Board, card.boardId)
+            ) { return AccessDenied(); }
+
+            //find member from search param
+            var members = new List<Query.Models.Member>();
+            var results = Query.Organizations.GetMembers(card.orgId, 1, 10, search);
+            if(results != null && results.Count > 0)
+            {
+                members.AddRange(results);
+            }
+            else if (search.IsEmail())
+            {
+                //search is for an unknown email address
+                members.Add(new Query.Models.Member()
+                {
+                    name = search
+                });
+            }
+
+            return JsonResponse(members.Select(a => new {id = a.userId, a.name, a.photo}));
         }
         #endregion
     }

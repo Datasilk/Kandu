@@ -1,10 +1,13 @@
 ﻿CREATE PROCEDURE [dbo].[Card_GetMembers]
-	@cardId int
+	@cardId int,
+	@search nvarchar(64) = ''
 AS
 	DECLARE @orgId int, @boardId int
 	SELECT @orgId = b.orgId, @boardId = c.boardId FROM Cards c
 	JOIN Boards b ON b.boardId = c.boardId 
 	WHERE c.cardId=@cardId
+
+	IF @search IS NULL SET @search = ''
 
 	SELECT DISTINCT u.userId, u.[name], u.photo, k.sort
 	FROM [Security] s
@@ -28,5 +31,12 @@ AS
 	OR (s.[key] = 'BoardCanUpdate' AND s.scopeId=@boardId)
 	OR (s.[key] = 'CardFullAccess' AND s.scopeId=@cardId)
 	OR (s.[key] = 'CardCanUpdate' AND s.scopeId=@cardId)
+
+	AND ( -- Search ////////////////////////////////////////
+		@search = '' OR (
+			u.[name] LIKE '%' + @search + '%'
+			OR u.email LIKE '%' + @search + '%'
+		)
+	)
 	ORDER BY k.sort
 	

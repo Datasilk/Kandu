@@ -194,7 +194,7 @@ namespace Kandu
             }
         }
 
-        public virtual void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public virtual async void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             //get environment based on application build
             App.Environment = (env.EnvironmentName.ToLower()) switch
@@ -312,7 +312,7 @@ namespace Kandu
                 IgnoreRequestBodySize = true,
                 WriteDebugInfoToConsole = false,
                 LogRequests = false,
-                InvokeNext = false
+                InvokeNext = false,
             });
         }
     }
