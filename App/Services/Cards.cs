@@ -371,8 +371,8 @@ namespace Kandu.Services
         public string FindInvites(int cardId, string search)
         {
             var card = Query.Cards.GetInfo(cardId);
-            if (!User.CheckSecurity(card.orgId, new string[] { Security.Keys.CardFullAccess.ToString(), Security.Keys.CardCanUpdate.ToString(), Security.Keys.CardCanComment.ToString() }, Models.Scope.Card, cardId)
-                || !User.CheckSecurity(card.orgId, new string[] { Security.Keys.BoardsFullAccess.ToString(), Security.Keys.BoardCanUpdate.ToString(), Security.Keys.BoardCanComment.ToString() }, Models.Scope.Board, card.boardId)
+            if (!User.CheckSecurity(card.orgId, new string[] { Security.Keys.CardFullAccess.ToString(), Security.Keys.CardCanUpdate.ToString() }, Models.Scope.Card, cardId)
+                || !User.CheckSecurity(card.orgId, new string[] { Security.Keys.BoardsFullAccess.ToString(), Security.Keys.BoardCanUpdate.ToString() }, Models.Scope.Board, card.boardId)
             ) { return AccessDenied(); }
 
             //find member from search param
@@ -392,6 +392,16 @@ namespace Kandu.Services
             }
 
             return JsonResponse(members.Select(a => new {id = a.userId, a.name, a.photo}));
+        }
+
+        public string BatchInvite(int cardId, string invites)
+        {
+            var card = Query.Cards.GetInfo(cardId);
+            if (!User.CheckSecurity(card.orgId, new string[] { Security.Keys.CardFullAccess.ToString(), Security.Keys.CardCanUpdate.ToString() }, Models.Scope.Card, cardId)
+                || !User.CheckSecurity(card.orgId, new string[] { Security.Keys.BoardsFullAccess.ToString(), Security.Keys.BoardCanUpdate.ToString() }, Models.Scope.Board, card.boardId)
+            ) { return AccessDenied(); }
+
+            return "";
         }
         #endregion
     }

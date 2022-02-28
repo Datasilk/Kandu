@@ -231,6 +231,7 @@ namespace Kandu
             //configure Server security
             Server.BcryptWorkFactor = int.Parse(config.GetSection("Encryption:bcrypt_work_factor").Value);
             Server.Salt = config.GetSection("Encryption:salt").Value;
+            Server.Name = config.GetSection("name").Exists() ? config.GetSection("name").Value : "Kandu";
 
             //configure cookie-based authentication
             var expires = !string.IsNullOrEmpty(config.GetSection("Session:Expires").Value) ? int.Parse(config.GetSection("Session:Expires").Value) : 60;

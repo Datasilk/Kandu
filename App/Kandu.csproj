@@ -377,7 +377,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Content\emails\" />
     <Folder Include="Vendors\" />
     <Folder Include="Views\Board\Timeline\" />
   </ItemGroup>

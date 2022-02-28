@@ -292,11 +292,6 @@ namespace Kandu.Services
             return view.Render();
         }
 
-        private class Person: Query.Models.Invitation
-        {
-            public string name { get; set; }
-        }
-
         public string InvitePeople(int orgId, int teamId, List<string> people, string message = "")
         {
             var team = Query.Teams.GetTeam(teamId);
@@ -309,54 +304,7 @@ namespace Kandu.Services
             {
                 return Error("You must set a default security group for your team before inviting people to join");
             }
-            var emails = new List<Person>();
-            foreach(var person in people)
-            {
-                var invite = new Person();
-                if(int.TryParse(person, out var result))
-                {
-                    //invite person by userId
-                    invite.userId = result;
-                    if (invite.userId > 0)
-                    {
-                        var user = Query.Users.GetInfo(invite.userId);
-                        invite.email = user.email;
-                        invite.name = user.name;
-                    }
-                }
-                else if (person.IsEmail())
-                {
-                    //invite person by email
-                    invite.email = person;
-                }
-                emails.Add(invite);
-            }
-
-            //save invitations into the database and retrieve any failed invitations
-            var failed = Query.Invitations.InvitePeople(User.UserId, teamId, Models.Scope.Team, message, emails.Select(a => new Query.Models.Xml.Invites.Invite()
-            {
-                UserId = a.userId,
-                Email = a.email,
-                PublicKey = string.IsNullOrEmpty(a.publickey) ? "" : a.publickey
-            }).ToList());
-
-            //send an email out to each person
-            foreach(var person in emails)
-            {
-                if (failed.Any(a => (person.email != "" && person.email == a) || (person.userId > 0 && person.userId.ToString() == a)))
-                {
-                    //skip all failed invitations
-                    continue;
-                }
-                //TODO: send invitation emails
-                if(person.email != "" && person.userId == 0)
-                {
-                    //TODO: send email to unknown user who could not be matched with a user account
-                }else if(person.userId > 0)
-                {
-                    //TODO: send email to existing user
-                }
-            }
+            var failed = Common.Invitations.Send(this, people, orgId, Models.Scope.Team, teamId, "join", "");
 
             //response
             if (failed.Length > 0)

@@ -91,4 +91,18 @@
     <Property Name="ParentElementType" Value="SqlTable" />
     <Property Name="NewName" Value="userIdAssigned" />
   </Operation>
+  <Operation Name="Rename Refactor" Key="08245186-0643-4a24-aa00-f3c760485d41" ChangeDateTime="02/26/2022 21:01:20">
+    <Property Name="ElementName" Value="[dbo].[Invites].[Id]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[Invites]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="inviteId" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="15f733e2-2a21-428e-93ef-41ba5cf87574" ChangeDateTime="02/26/2022 21:02:31">
+    <Property Name="ElementName" Value="[dbo].[Invites].[email]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[Invites]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="invitedemail" />
+  </Operation>
 </Operations>

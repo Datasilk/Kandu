@@ -56,7 +56,6 @@ namespace Kandu.Common
             return null;
         }
 
-
         public static void Send(MailMessage message, string type)
         {
             var action = GetActionConfig(type);
@@ -106,6 +105,15 @@ namespace Kandu.Common
                 Name = "Update Password",
                 Description = "",
                 TemplateFile = "update-pass.html",
+                UserDefinedSubject = true,
+                UserDefinedBody = true
+            },
+            new EmailType()
+            {
+                Key="invite",
+                Name = "Send Invitation",
+                Description = "",
+                TemplateFile = "invite.html",
                 UserDefinedSubject = true,
                 UserDefinedBody = true
             }

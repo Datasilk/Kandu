@@ -50,6 +50,11 @@ namespace Query
             return Sql.Populate<Models.ScopeItem>("Security_GetScopeItems", new { orgId, groupId, key, scope });
         }
 
+        public static Models.ScopeItem GetScopeItem(int scope, int scopeId)
+        {
+            return Sql.Populate<Models.ScopeItem>("Security_GetScopeItem", new { scope, scopeId }).FirstOrDefault();
+        }
+
         public static List<Models.ScopeKey> GetScopesForKeys(int groupId)
         {
             return Sql.Populate<Models.ScopeKey>("Security_GetScopesForKeys", new { groupId});

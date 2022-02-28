@@ -17,5 +17,3 @@ AS
 
 	INSERT INTO [Security] (orgId, groupId, [key], [enabled]) 
 	VALUES (@orgId, @groupId, 'Owner', 1)
-	
-	SELECT @orgId

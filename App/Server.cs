@@ -4,19 +4,20 @@ using Microsoft.Extensions.Configuration;
 public static class Server
 {
     //server properties
-    public static DateTime ServerStart = DateTime.Now;
-    public static double RequestCount = 0;
-    public static double PageRequestCount = 0;
-    public static double ApiRequestCount = 0;
-    public static float RequestTime = 0;
-    public static string Version = "1.0";
+    public static string Name { get; set; } = "Kandu";
+    public static DateTime ServerStart { get; set; } = DateTime.Now;
+    public static double RequestCount { get; set; } = 0;
+    public static double PageRequestCount { get; set; } = 0;
+    public static double ApiRequestCount { get; set; } = 0;
+    public static float RequestTime { get; set; } = 0;
+    public static string Version { get; set; } = "1.0";
 
     //config properties
-    public static IConfiguration Config;
-    public static string SqlActive = "";
-    public static string SqlConnectionString = "";
-    public static int BcryptWorkFactor = 10;
-    public static string Salt = "";
-    public static bool HasAdmin = false; //no admin account exists
-    public static bool ResetPass = false; //force admin to reset password
+    public static IConfiguration Config { get; set; }
+    public static string SqlActive { get; set; } = "";
+    public static string SqlConnectionString { get; set; } = "";
+    public static int BcryptWorkFactor { get; set; } = 10;
+    public static string Salt { get; set; } = "";
+    public static bool HasAdmin { get; set; } = false; //no admin account exists
+    public static bool ResetPass { get; set; } = false; //force admin to reset password
 }

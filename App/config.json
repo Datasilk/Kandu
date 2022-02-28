@@ -1,5 +1,6 @@
 {
   "assembly": "Kandu",
+  "name":  "Kandu",
   "version":  "0.25",
   "sql": {
     "active": "SqlServerTrusted",

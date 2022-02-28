@@ -8,7 +8,7 @@ AS
 		SELECT orgId AS id, [name] AS title FROM Organizations WHERE orgId = @orgId
 	END
 	ELSE IF @scope = 2 BEGIN -- Security Group
-		SELECT groupId AS id, [name] AS title FROM SecurityGroups WHERE orgId = @orgId
+		SELECT groupId AS id, [name] AS title FROM SecurityGroups WHERE orgId = @orgId AND personal = 0
 	END
 	ELSE IF @scope = 3 BEGIN -- Team
 		SELECT teamId AS id, [name] AS title FROM Teams WHERE orgId = @orgId

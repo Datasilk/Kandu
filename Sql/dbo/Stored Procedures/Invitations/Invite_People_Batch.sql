@@ -2,7 +2,6 @@
 	@invitedBy int = 0, -- userId
 	@scopeId int = 0,
 	@scope int = 0,
-	@message nvarchar(MAX),
 	@invites XML 
 	/* example:	
 		<invites>
@@ -43,8 +42,8 @@ SET NOCOUNT ON
 	FETCH FROM @cursor INTO @userId, @email, @publickey
 	WHILE @@FETCH_STATUS = 0 BEGIN
 		BEGIN TRY
-			INSERT INTO Invitations (userId, scopeId, scope, email, publickey, [message], invitedBy) 
-			VALUES (@userId, @scopeId, @scope, @email, @publickey, @message, @invitedBy)
+			INSERT INTO Invitations (userId, scopeId, scope, email, publickey, invitedBy) 
+			VALUES (@userId, @scopeId, @scope, @email, @publickey, @invitedBy)
 		END TRY
 		BEGIN CATCH
 			SET @failed += (CASE WHEN @userId > 0 THEN (SELECT [name] FROM Users WHERE userId=@userId) ELSE @email END) + ','

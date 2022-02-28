@@ -8,7 +8,7 @@ AS
 	INSERT INTO Users (userId, [name], email, [password], photo, datecreated)
 	VALUES (@userId, @name, @email, @password, @photo, GETDATE())
 	
-	-- create organization for user
+	-- create organization for user (which also creates admin security group for user/owner in org)
 	DECLARE @tmp TABLE (id int)
 	INSERT INTO @tmp EXEC Organization_Create @ownerId=@userId, @name='My Organization', @website='', @description='Personal Organization', @isprivate=1
 	DECLARE @orgId int
@@ -16,5 +16,5 @@ AS
 
 	-- create a team for the user
 	EXEC Team_Create @orgId=@orgId, @ownerId=@userId, @name='My Team', @description='Personal Team'
-
-	SELECT @userId
+	DECLARE @teamId int
+	SELECT @teamId FROM Teams WHERE orgId=@orgId AND ownerId=@userId

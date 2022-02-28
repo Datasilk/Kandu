@@ -1365,6 +1365,9 @@
                     container.hide();
                     return;
                 }
+                if (search.length < 3) {
+                    return;
+                }
                 S.ajax.post('Cards/FindInvites', { cardId: card.id, search: search }, (results) => {
                     if (results.length > 0) {
                         container.html('');

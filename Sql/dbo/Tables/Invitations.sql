@@ -7,6 +7,14 @@
     [publickey] VARCHAR(16) NULL , --if the invitation requires a key to authenticate the validity of the invitation
     [datecreated] DATETIME2 NOT NULL DEFAULT GETUTCDATE(), 
     [invitedBy] INT NOT NULL, 
-    [message] NVARCHAR(MAX) NULL, 
+    [accepted] DATETIME2 NULL, 
     PRIMARY KEY ([userId], [scopeId], [scope], [email])
 )
+
+GO
+
+CREATE INDEX [IX_Invitations_Email] ON [dbo].[Invitations] ([email])
+
+GO
+
+CREATE INDEX [IX_Invitations_Accepted] ON [dbo].[Invitations] ([accepted])
