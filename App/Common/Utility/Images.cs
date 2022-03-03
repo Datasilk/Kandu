@@ -3,7 +3,7 @@ using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.PixelFormats;
 using SixLabors.ImageSharp.Processing;
 
-namespace Kandu.Common.Utility
+namespace Utility
 {
     public struct ImageInfo
     {
@@ -19,7 +19,7 @@ namespace Kandu.Common.Utility
         public ImageInfo Load(string path, string filename)
         {
             ImageInfo newImg = new ImageInfo();
-            using (var fs = File.OpenRead(App.MapPath(path + filename)))
+            using (var fs = File.OpenRead(Kandu.App.MapPath(path + filename)))
             {
                 var image = Image.Load<Rgba32>(fs);
                 newImg.bitmap = image;
@@ -33,7 +33,7 @@ namespace Kandu.Common.Utility
 
         public void Shrink(string filename, string outfile, int width)
         {
-            using (var fs = File.OpenRead(App.MapPath(filename)))
+            using (var fs = File.OpenRead(Kandu.App.MapPath(filename)))
             {
                 var image = Image.Load(fs);
 
@@ -44,7 +44,7 @@ namespace Kandu.Common.Utility
                         Size = new Size(width, 0)
                     }));
                 }
-                image.Save(App.MapPath(outfile));
+                image.Save(Kandu.App.MapPath(outfile));
                 fs.Dispose();
             }
         }

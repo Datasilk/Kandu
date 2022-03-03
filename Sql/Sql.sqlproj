@@ -78,6 +78,7 @@
     <Folder Include="dbo\Stored Procedures\EmailActions" />
     <Folder Include="dbo\Stored Procedures\EmailClients" />
     <Folder Include="dbo\Stored Procedures\Labels" />
+    <Folder Include="dbo\Stored Procedures\Logs" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="dbo\Tables\Users.sql" />
@@ -222,6 +223,8 @@
     <Build Include="dbo\Tables\CardCommentsFlagged.sql" />
     <Build Include="dbo\Stored Procedures\Invitations\Invite_Accept.sql" />
     <Build Include="dbo\Stored Procedures\Security\Security_GetScopeItem.sql" />
+    <Build Include="dbo\Tables\Log_Errors.sql" />
+    <Build Include="dbo\Stored Procedures\Logs\Log_Error.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Sql.publish.xml" />

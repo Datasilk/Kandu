@@ -304,12 +304,17 @@ namespace Kandu.Services
             {
                 return Error("You must set a default security group for your team before inviting people to join");
             }
-            var failed = Common.Invitations.Send(this, people, orgId, Models.Scope.Team, teamId, "join", "");
-
-            //response
-            if (failed.Length > 0)
+            try
             {
-                return Error(string.Join(",", failed));
+                var failed = Common.Invitations.Send(this, people, orgId, Models.Scope.Team, teamId, new string[] { "join" });
+                if (failed.Count > 0)
+                {
+                    return Error(string.Join(",", failed.Select(a => a.name != a.email ? a.name : a.email).ToArray()));
+                }
+            }
+            catch (Exception ex)
+            {
+                return Error(ex.Message);
             }
             return Success();
         }

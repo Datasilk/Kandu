@@ -8,6 +8,7 @@
     [datecreated] DATETIME2 NOT NULL DEFAULT GETUTCDATE(), 
     [invitedBy] INT NOT NULL, 
     [accepted] DATETIME2 NULL, 
+    [keys] VARCHAR(MAX) NOT NULL DEFAULT '', 
     PRIMARY KEY ([userId], [scopeId], [scope], [email])
 )
 

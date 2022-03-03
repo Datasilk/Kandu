@@ -2,6 +2,7 @@
 using System.Text;
 using System.Collections.Generic;
 using System.Linq;
+using Kandu.Vendor;
 
 
 namespace Kandu.Services
@@ -188,7 +189,7 @@ namespace Kandu.Services
             return view.Render();
         }
 
-        private string LoadEmailClientParameters(Vendor.IVendorEmailClient client, Query.Models.EmailClient savedClient = null)
+        private string LoadEmailClientParameters(IVendorEmailClient client, Query.Models.EmailClient savedClient = null)
         {
             var html = new StringBuilder("<div class=\"row\">");
             foreach (var param in client.Parameters)
@@ -199,7 +200,7 @@ namespace Kandu.Services
                 var placeholder = !string.IsNullOrEmpty(param.Value.Placeholder) ? " placeholder=\"" + param.Value.Placeholder + "\"" : "";
                 switch (param.Value.DataType)
                 {
-                    case Vendor.EmailClientDataType.Boolean:
+                    case EmailClientDataType.Boolean:
                         break;
                     default:
                         html.Append("<div class=\"row field\">" + param.Value.Name + "</div>");
@@ -207,25 +208,25 @@ namespace Kandu.Services
                 }
                 switch (param.Value.DataType)
                 {
-                    case Vendor.EmailClientDataType.Text:
+                    case EmailClientDataType.Text:
                         html.Append("<div class=\"row input\"><input type=\"text\"" + idattr + " value=\"" + value + "\"" + placeholder + "/></div>");
                         break;
-                    case Vendor.EmailClientDataType.UserOrEmail:
+                    case EmailClientDataType.UserOrEmail:
                         html.Append("<div class=\"row input\"><input type=\"text\"" + idattr + " value=\"" + value + "\"" + placeholder + " autocomplete=\"new-email\"/></div>");
                         break;
-                    case Vendor.EmailClientDataType.Password:
+                    case EmailClientDataType.Password:
                         html.Append("<div class=\"row input\"><input type=\"password\"" + idattr + " value=\"" + (value != "" ? "********" : "") + "\" autocomplete=\"new-password\"/></div>");
                         break;
-                    case Vendor.EmailClientDataType.Number:
+                    case EmailClientDataType.Number:
                         html.Append("<div class=\"row input\"><input type=\"number\"" + idattr + " value=\"" + value + "\"" + placeholder + "/></div>");
                         break;
-                    case Vendor.EmailClientDataType.List:
+                    case EmailClientDataType.List:
                         html.Append("<div class=\"row input\"><select" + idattr + ">" +
                             string.Join("", param.Value.ListOptions?.Select(a => "<option value=\"" + a + 
                                 (param.Value.DefaultValue == a ? " selected" : "") + 
                                 "\">" + a + "</option>") ?? new string[] { "" }) + "</select></div>");
                         break;
-                    case Vendor.EmailClientDataType.Boolean:
+                    case EmailClientDataType.Boolean:
                         html.Append("<div class=\"row input\"><input type=\"checkbox\"" + idattr + (value == "1" || value.ToLower() == "true" ? " checked=\"checked\"" : "") + " />" +
                             "<label for=\"" + client.Key + "_" + param.Key + "\">" + param.Value.Name + "</label>" +
                             "</div>");
@@ -281,10 +282,16 @@ namespace Kandu.Services
             //save to the database
             Query.EmailClients.Save(clientId, key, label, parameters);
 
+            //update cached objects
+
+            var vendorClient = Core.Vendors.EmailClients.Where(a => a.Key == key).FirstOrDefault();
+            Common.Email.ClearVendorClients();
+            Common.Email.ClearActions();
+            vendorClient.Value.Parameters = Common.Email.VendorClients.Where(a => a.Key == key).FirstOrDefault()?.Parameters ?? vendorClient.Value.Parameters;
             return Success();
         }
 
-        private void ValidateEmailClientParameters(Dictionary<string, string> parameters, Vendor.IVendorEmailClient client, Query.Models.EmailClient emailClient = null)
+        private void ValidateEmailClientParameters(Dictionary<string, string> parameters, IVendorEmailClient client, Query.Models.EmailClient emailClient = null)
         {
             var changes = new List<KeyValuePair<string, string>>();
             foreach (var item in parameters)
@@ -294,11 +301,11 @@ namespace Kandu.Services
                     throw new Exception("Could not find parameter " + item.Key);
                 }
                 var param = client.Parameters[item.Key];
-                if (param.Required == true && string.IsNullOrEmpty(item.Value) && param.DataType != Vendor.EmailClientDataType.Password)
+                if (param.Required == true && string.IsNullOrEmpty(item.Value) && param.DataType != EmailClientDataType.Password)
                 {
                     throw new Exception(param.Name + " is required");
                 }
-                if(param.DataType == Vendor.EmailClientDataType.Password)
+                if(param.DataType == EmailClientDataType.Password)
                 {
                     //find password placeholder
                     if(item.Value.Replace("*", "") == "")
@@ -318,7 +325,7 @@ namespace Kandu.Services
                 }
 
                 //check boolean parameters for valid values
-                if (param.DataType == Vendor.EmailClientDataType.Boolean)
+                if (param.DataType == EmailClientDataType.Boolean)
                 {
                     if (item.Value != "True" && item.Value != "False")
                     {
@@ -362,6 +369,19 @@ namespace Kandu.Services
                 return Error("Could not find email action \"" + key + "\"");
             }
             var config = Query.EmailActions.GetInfo(key);
+            if(config == null)
+            {
+                //load default email action template
+                var template = Cache.LoadFile("/Content/temp/emails/" + key + ".html");
+                config = new Query.Models.EmailClientAction()
+                {
+                    clientId = 0,
+                    subject = "",
+                    bodyText = "",
+                    bodyHtml = template
+                };
+            }
+
             var emailClients = Common.Email.VendorClients;
             var clients = Query.EmailClients.GetList();
             var clientoptions = new StringBuilder();

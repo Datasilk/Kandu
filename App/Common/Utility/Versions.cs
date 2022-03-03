@@ -1,4 +1,4 @@
-﻿namespace Kandu.Common.Utility
+﻿namespace Utility
 {
     public static class Versions
     {

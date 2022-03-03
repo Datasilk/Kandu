@@ -29,20 +29,39 @@ namespace Kandu.Common
             } 
         }
 
+        public static void ClearVendorClients()
+        {
+            _vendorClients = null;
+        }
+
+        private static List<EmailType> _emailtypes { get; set; }
         public static List<EmailType> VendorActions
         {
             get
             {
-                var emailActions = new List<EmailType>();
-                emailActions.AddRange(Types);
-                emailActions.AddRange(Core.Vendors.EmailTypes.Values);
-                return emailActions;
+                if(_emailtypes == null)
+                {
+                    _emailtypes  = new List<EmailType>(Types);
+                    _emailtypes.AddRange(Core.Vendors.EmailTypes.Values);
+                }
+                return _emailtypes;
             }
         }
 
-        private class Action : Query.Models.EmailClientAction
+        public static EmailType VendorAction(string action)
         {
-            public EmailType VendorAction { get; set; }
+            return VendorActions.Where(a => a.Key == action).FirstOrDefault();
+        }
+
+        public static View GetMessage(string key)
+        {
+            var action = VendorAction(key);
+            return new View("/Content/emails/" + action.TemplateFile);
+        }
+
+        public static Query.Models.EmailAction GetInfo(string action)
+        {
+            return Query.EmailActions.GetInfo(action);
         }
 
         private static Dictionary<string, Query.Models.EmailClientAction> _actions { get; set; }
@@ -50,36 +69,48 @@ namespace Kandu.Common
         {
             if(_actions == null)
             {
-                _actions = Query.EmailActions.GetList().ToDictionary(a => a.key, a => a);
+                _actions = Query.EmailActions.GetList().ToDictionary(a => a.action, a => a);
             }
-            if (_actions.ContainsKey(type)) { return _actions[type]; }
-            return null;
+            return _actions[type] ?? null;
+        }
+        public static void ClearActions()
+        {
+            _actions.Clear();
         }
 
-        public static void Send(MailMessage message, string type)
+        public static void Send(string from, string to, string subject, string body, string action)
         {
-            var action = GetActionConfig(type);
-            if(action == null)
+            Send(new MailMessage(from, to, subject, body), GetActionConfig(action));
+        }
+
+        public static void Send(MailMessage message, string action)
+        {
+            Send(message, GetActionConfig(action));
+        }
+
+        public static void Send(MailMessage message, Query.Models.EmailClientAction clientAction)
+        {
+            if (clientAction == null)
             {
                 //log error, could not send email
-                //Query.Logs.LogError(0, "", "Email.Send", "Could not find Email Action Type \"" + type + "\"", "");
+                Query.Logs.LogError(0, "", "Email.Send", "Could not find Email Action Type \"" + clientAction.action + "\"", "");
                 return;
             }
-            var client = VendorClients.Where(a => a.Key == action.key).FirstOrDefault();
+            var client = VendorClients.Where(a => a.Key == clientAction.key).FirstOrDefault();
             if (client == null)
             {
                 //log error, could not send email
-                //Query.Logs.LogError(0, "", "Email.Send", "Could not find Email Client \"" + action.Client + "\"", "");
+                Query.Logs.LogError(0, "", "Email.Send", "Could not find Email Client \"" + clientAction.key + "\"", "");
                 return;
             }
             var _msg = "";
-            client.Send(action.config, message, delegate() {
+            client.Send(clientAction.config, message, delegate () {
                 //only get RFC 2822 message if vendor plugin specifically requests it
                 if (string.IsNullOrEmpty(_msg))
                 {
                     _msg = GetRFC2822FormattedMessage(message);
                 }
-                return _msg; 
+                return _msg;
             });
         }
 
@@ -187,7 +218,7 @@ namespace Kandu.Common
                     };
 
                     client.Connect(config["domain"], config.ContainsKey("port") && config["port"] != "" ?
-                        int.Parse(config["port"]) : 0, config["ssl"] == "1");
+                        int.Parse(config["port"]) : 0, config.ContainsKey("ssl") && config["ssl"] == "1");
 
                     //disable the XOAUTH2 authentication mechanism.
                     client.AuthenticationMechanisms.Remove("XOAUTH2");
@@ -195,9 +226,10 @@ namespace Kandu.Common
                     client.Send(msg);
                     client.Disconnect(true);
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
-                    //Query.Logs.LogError(0, "", "Email.Smtp.Send", ex.Message, ex.StackTrace);
+                    Query.Logs.LogError(0, "", "Email.Smtp.Send", ex.Message, ex.StackTrace);
+                    throw new Exception("Could not send message to " + message.To);
                 }
             }
         }
@@ -287,9 +319,9 @@ namespace Kandu.Common
                     client.Send(msg);
                     client.Disconnect(true);
                 }
-                catch(Exception)
+                catch(Exception ex)
                 {
-                    //Query.Logs.LogError(0, "", "Email.Smtp.Send", ex.Message, ex.StackTrace);
+                    Query.Logs.LogError(0, "", "Email.Smtp.Send", ex.Message, ex.StackTrace);
                 }
              }
         }

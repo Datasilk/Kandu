@@ -1,5 +1,4 @@
 ﻿CREATE PROCEDURE [dbo].[Security_GetScopeItem]
-	@orgId int,
 	@scopeId int,
 	@scope int
 AS

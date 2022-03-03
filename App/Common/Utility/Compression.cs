@@ -2,7 +2,7 @@
 using System.IO.Compression;
 using System.Text;
 
-namespace Kandu.Common.Utility
+namespace Utility
 {
     public static class Compression
     {
@@ -10,7 +10,7 @@ namespace Kandu.Common.Utility
         {
             byte[] bytes = Encoding.UTF8.GetBytes(contents);
             MemoryStream ms = new MemoryStream(bytes);
-            using (FileStream fs = File.Create(App.MapPath(outfile)))
+            using (FileStream fs = File.Create(Kandu.App.MapPath(outfile)))
             {
                 using (var gz = new GZipStream(fs, CompressionMode.Compress))
                 {

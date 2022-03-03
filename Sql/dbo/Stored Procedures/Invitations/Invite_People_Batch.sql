@@ -2,6 +2,7 @@
 	@invitedBy int = 0, -- userId
 	@scopeId int = 0,
 	@scope int = 0,
+	@keys varchar(MAX) = '',
 	@invites XML 
 	/* example:	
 		<invites>
@@ -35,22 +36,29 @@ SET NOCOUNT ON
 	) AS x
 
 	DECLARE @cursor CURSOR,
-	@userId int, @email nvarchar(64), @publickey varchar(16), @failed varchar(MAX) = ''
+	@userId int, @email nvarchar(64), @publickey varchar(16)
+	DECLARE @failed TABLE (
+		email nvarchar(64),
+		[name] nvarchar(64)
+	)
 	SET @cursor = CURSOR FOR
 	SELECT userId, email, publickey FROM @cols
 	OPEN @cursor
 	FETCH FROM @cursor INTO @userId, @email, @publickey
 	WHILE @@FETCH_STATUS = 0 BEGIN
 		BEGIN TRY
-			INSERT INTO Invitations (userId, scopeId, scope, email, publickey, invitedBy) 
-			VALUES (@userId, @scopeId, @scope, @email, @publickey, @invitedBy)
+			INSERT INTO Invitations (userId, scopeId, scope, email, publickey, invitedBy, keys) 
+			VALUES (@userId, @scopeId, @scope, @email, @publickey, @invitedBy, @keys)
 		END TRY
 		BEGIN CATCH
-			SET @failed += (CASE WHEN @userId > 0 THEN (SELECT [name] FROM Users WHERE userId=@userId) ELSE @email END) + ','
+			INSERT INTO @failed (email, [name]) VALUES (
+				CASE WHEN @userId > 0 THEN (SELECT email FROM Users WHERE userId=@userId) ELSE @email END,
+				CASE WHEN @userId > 0 THEN (SELECT [name] FROM Users WHERE userId=@userId) ELSE @email END
+			)
 		END CATCH
 		FETCH FROM @cursor INTO @userId, @email, @publickey
 	END
 	CLOSE @cursor
 	DEALLOCATE @cursor
 
-	SELECT @failed
+	SELECT * FROM @failed

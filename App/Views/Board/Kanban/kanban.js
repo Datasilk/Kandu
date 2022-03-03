@@ -1340,6 +1340,7 @@
             show: function () {
                 S.kanban.card.modal.show(temp_share.innerHTML);
                 $('.popup.show #share_name').on('input', S.kanban.card.share.search);
+                $('.popup.show .share-form .btn-send').on('click', S.kanban.card.share.submit);
                 $('.popup.show .share-form .btn-cancel').on('click', S.kanban.card.modal.hide);
             },
 
@@ -1406,6 +1407,30 @@
                 $('.popup.show #share_name').val('');
                 var container = $('.popup.show .share-form .search-results');
                 container.hide();
+            },
+
+            submit: function () {
+                var card = S.kanban.card.selected;
+                var invited = $('.popup.show .invited-users .invited');
+                S.ajax.post('Cards/BatchInvite', {
+                    cardId: card.id,
+                    invites: invited.map((i, a) => {
+                        var el = $(a);
+                        var id = el.attr('data-id');
+                        if (id == '0') {
+                            return el.attr('title');
+                        }
+                        return id;
+                    }).join(','),
+                    canupdate: invite_canupdate.checked ? true : false,
+                    canpostcomment: invite_cancomment.checked ? true : false
+                }, () => {
+                    S.message.show('.popup.show .messages.for-card', '', 'Invited ' +
+                        invited.length + (invited.length > 1 ? ' people' : ' person') + ' to view this card');
+                    S.kanban.card.modal.hide();
+                }, (err) => {
+                    S.message.show('.popup.show .share-form .messages', 'error', err.responseText);
+                });
             }
         }
     }

@@ -9,7 +9,15 @@ namespace Query.Models
         public Kandu.Models.Scope scope { get; set; }
         public string email { get; set; }
         public string publickey { get; set; }
+        public string keys { get; set; }
         public DateTime datecreated { get; set; }
+        public bool accepted { get; set; }
         public string message { get; set; }
+    }
+
+    public class FailedInvite
+    {
+        public string email { get; set; }
+        public string name { get; set; }
     }
 }

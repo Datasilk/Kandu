@@ -31,5 +31,10 @@
         /// Name of the HTML template file used for this email message type, e.g. "/Vendors/My-Plugin/my-email-type.html" and rendered as a View
         /// </summary>
         public string TemplateFile { get; set; }
+
+        /// <summary>
+        /// A list of available mustache variables that can be used in HTML within the template file
+        /// </summary>
+        public string[] MustacheVars { get; set; }
     }
 }

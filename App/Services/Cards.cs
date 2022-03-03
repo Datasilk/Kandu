@@ -394,14 +394,30 @@ namespace Kandu.Services
             return JsonResponse(members.Select(a => new {id = a.userId, a.name, a.photo}));
         }
 
-        public string BatchInvite(int cardId, string invites)
+        public string BatchInvite(int cardId, string invites, bool canupdate = false, bool canpostcomment = false)
         {
             var card = Query.Cards.GetInfo(cardId);
             if (!User.CheckSecurity(card.orgId, new string[] { Security.Keys.CardFullAccess.ToString(), Security.Keys.CardCanUpdate.ToString() }, Models.Scope.Card, cardId)
                 || !User.CheckSecurity(card.orgId, new string[] { Security.Keys.BoardsFullAccess.ToString(), Security.Keys.BoardCanUpdate.ToString() }, Models.Scope.Board, card.boardId)
             ) { return AccessDenied(); }
 
-            return "";
+            var keys = new List<string>();
+            if (canupdate) { keys.Add(Security.Keys.CardCanUpdate.ToString()); }
+            if (canpostcomment) { keys.Add(Security.Keys.CardCanComment.ToString()); }
+            try
+            {
+                var failed = Common.Invitations.Send(this, invites.Split(',').ToList(), card.orgId, Models.Scope.Card, cardId, new string[] { "join" });
+                //if (failed.Length > 0)
+                //{
+                //    return Error(string.Join(",", failed));
+                //}
+            }
+            catch(Exception ex)
+            {
+                return Error(ex.Message);
+            }
+            
+            return Success();
         }
         #endregion
     }
