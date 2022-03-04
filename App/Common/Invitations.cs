@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Net.Mail;
 using Kandu.Core;
 using Utility.Strings;
 
@@ -56,7 +57,7 @@ namespace Kandu.Common
             var scopeItem = Query.Security.GetScopeItem((int)scope, scopeId);
             var keyItem = Core.Vendors.Keys.SelectMany(a => a.Keys).Where(a => a.Value == keys[0]).FirstOrDefault();
             var action = Email.GetInfo("invite");
-            if(action == null)
+            if(action == null || action.subject == "")
             {
                 throw new Exception("The \"invite\" email action has not yet been set up in your " + Server.Name + " Settings > Email tab.");
             }
@@ -93,6 +94,7 @@ namespace Kandu.Common
 
             var task = new Task(new Action(() => {
                 //send an email out to each person using a separate thread
+                var messages = new List<MailMessage>();
                 foreach (var person in emails)
                 {
                     if (failed.Any(a => person.email != "" && person.email == a.email))
@@ -116,8 +118,10 @@ namespace Kandu.Common
                     message["scope"] = scopeText;
                     message["invite-url"] = App.Host + "invitation?pk=" + person.publickey;
 
-                    Email.Send(action.fromAddress, person.email, subject.Render(), message.Render(), "invite");
+                    messages.Add(new MailMessage(action.fromAddress, person.email, subject.Render(), message.Render()));
                 }
+
+                Email.SendMany(messages.ToArray(), "invite");
             }));
             task.Start();
             

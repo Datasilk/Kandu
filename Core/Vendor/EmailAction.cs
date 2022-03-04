@@ -1,6 +1,6 @@
 ﻿namespace Kandu.Vendor
 {
-    public class EmailType
+    public class EmailAction
     {
         /// <summary>
         /// Used to identify the message type (e.g. "payment-confirmation")
@@ -21,6 +21,11 @@
         /// If true, allows the user to define a custom subject line for emails sent using this message type.
         /// </summary>
         public bool UserDefinedSubject { get; set; }
+
+        /// <summary>
+        /// Default subject text to display if the user hasn't set up their email action yet
+        /// </summary>
+        public string DefaultSubject { get; set; }
 
         /// <summary>
         /// If true, allows the user to define a custom body text & body HTML for emails sent using this message type.

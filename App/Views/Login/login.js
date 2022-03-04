@@ -4,7 +4,7 @@
             email: $('#email').val(),
             password: $('#password').val()
         }
-        var msg = $('.login .messages');
+        var msg = '.login .messages';
 
         S.ajax.post('User/Authenticate', data, function (d) {
             if (d) {
@@ -12,7 +12,8 @@
                 window.location.href = d;
             }
         }, function (err) {
-            console.log(err);
+            S.message.clear(msg);
+            S.message.show(msg, 'error', 'Incorrect email or password');
         });
     }
 };

@@ -12,7 +12,7 @@ namespace Kandu.Core
         public static Dictionary<string, Type> Startups { get; set; } = new Dictionary<string, Type>();
         public static List<IVendorKeys> Keys { get; set; } = new List<IVendorKeys>();
         public static Dictionary<string, IVendorEmailClient> EmailClients { get; set; } = new Dictionary<string, IVendorEmailClient>();
-        public static Dictionary<string, EmailType> EmailTypes { get; set; } = new Dictionary<string, EmailType>();
+        public static Dictionary<string, EmailAction> EmailTypes { get; set; } = new Dictionary<string, EmailAction>();
         public static List<KanduEvents> EventHandlers { get; set; } = new List<KanduEvents>();
 
         //Partial Views
@@ -39,7 +39,7 @@ namespace Kandu.Core
         public Dictionary<string, Type> Startups { get; set; } = new Dictionary<string, Type>();
         public List<IVendorKeys> Keys { get; set; } = new List<IVendorKeys>();
         public Dictionary<string, IVendorEmailClient> EmailClients { get; set; } = new Dictionary<string, IVendorEmailClient>();
-        public Dictionary<string, EmailType> EmailTypes { get; set; } = new Dictionary<string, EmailType>();
+        public Dictionary<string, EmailAction> EmailTypes { get; set; } = new Dictionary<string, EmailAction>();
     }
 
 }

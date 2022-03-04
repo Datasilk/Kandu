@@ -5,7 +5,7 @@
     /// </summary>
     public interface IVendorEmails
     {
-        EmailType[] Types { get; set; }
+        EmailAction[] Types { get; set; }
     }
 }
 

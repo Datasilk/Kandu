@@ -104,23 +104,21 @@ namespace Kandu.Services
                 {
                     action = new
                     {
-                        key = action.Key,
+                        //key = action.Key,
                         name = action.Name,
-                        fromname = config?.fromName ?? "",
-                        fromaddress = config?.fromAddress ?? "",
-                        templatefile = action.TemplateFile,
-                        subject = config?.subject ?? "",
-                        options = string.Join("",
-                            clients.Select(a => "<option value=\"" + a.clientId + "\"" +
-                            (config?.clientId == a.clientId ? " selected=\"selected\"" : "") +
-                            ">" + emailClients.Where(b => b.Key == a.key).FirstOrDefault()?.Name + ": " + a.label + "</option>"
-                            )),
+                        //fromname = config?.fromName ?? "",
+                        //fromaddress = config?.fromAddress ?? "",
+                        //templatefile = action.TemplateFile,
+                        //subject = config?.subject ?? action.SubjectDefault,
+                        //options = string.Join("",
+                        //    clients.Select(a => "<option value=\"" + a.clientId + "\"" +
+                        //    (config?.clientId == a.clientId ? " selected=\"selected\"" : "") +
+                        //    ">" + emailClients.Where(b => b.Key == a.key).FirstOrDefault()?.Name + ": " + a.label + "</option>"
+                        //    )),
                         onclick = "S.kandu.email.action.details('" + action.Key + "')"
                     }
                 });
                 if (action.UserDefinedSubject) { viewEmailAction.Show("user-subject"); }
-                if (action.TemplateFile == "") { viewEmailAction.Show("any-file"); }
-                else { viewEmailAction.Show("template-file"); }
                 html.Append(viewEmailAction.Render());
                 viewEmailAction.Clear();
             }
@@ -372,14 +370,18 @@ namespace Kandu.Services
             if(config == null)
             {
                 //load default email action template
-                var template = Cache.LoadFile("/Content/temp/emails/" + key + ".html");
+                var template = Cache.LoadFile(action.TemplateFile);
                 config = new Query.Models.EmailClientAction()
                 {
                     clientId = 0,
-                    subject = "",
+                    subject = action.DefaultSubject,
                     bodyText = "",
                     bodyHtml = template
                 };
+            }
+            if(config.subject == "")
+            {
+                config.subject = action.DefaultSubject;
             }
 
             var emailClients = Common.Email.VendorClients;

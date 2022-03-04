@@ -38,5 +38,13 @@ namespace Kandu.Vendor
         /// <param name="message">Mail Message which includes all information about the email; to, from, subject, body, etc.</param>
         /// <param name="GetRFC2822">The RFC 2822 formatted email. Some clients require that it be Base64 URL encoded.</param>
         void Send(Dictionary<string, string> config, MailMessage message, Func<string> GetRFC2822);
+
+        /// <summary>
+        /// Executed when Kandu is requesting to send an email via your email client
+        /// </summary>
+        /// <param name="config">the user configuration for this email client based on the given Parameters dictionary</param>
+        /// <param name="message">Mail Message which includes all information about the email; to, from, subject, body, etc.</param>
+        /// <param name="GetRFC2822">The RFC 2822 formatted email. Some clients require that it be Base64 URL encoded.</param>
+        void SendMany(Dictionary<string, string> config, MailMessage[] messages, Func<MailMessage, string> GetRFC2822);
     }
 }

@@ -34,21 +34,21 @@ namespace Kandu.Common
             _vendorClients = null;
         }
 
-        private static List<EmailType> _emailtypes { get; set; }
-        public static List<EmailType> VendorActions
+        private static List<EmailAction> _emailtypes { get; set; }
+        public static List<EmailAction> VendorActions
         {
             get
             {
                 if(_emailtypes == null)
                 {
-                    _emailtypes  = new List<EmailType>(Types);
+                    _emailtypes  = new List<EmailAction>(Actions);
                     _emailtypes.AddRange(Core.Vendors.EmailTypes.Values);
                 }
                 return _emailtypes;
             }
         }
 
-        public static EmailType VendorAction(string action)
+        public static EmailAction VendorAction(string action)
         {
             return VendorActions.Where(a => a.Key == action).FirstOrDefault();
         }
@@ -88,12 +88,43 @@ namespace Kandu.Common
             Send(message, GetActionConfig(action));
         }
 
+        public static void SendMany(MailMessage[] messages, string action)
+        {
+            SendMany(messages, GetActionConfig(action));
+        }
+
+        public static void SendMany(MailMessage[] messages, Query.Models.EmailClientAction clientAction)
+        {
+            if (clientAction == null)
+            {
+                //log error, could not send email
+                Query.Logs.LogError(0, "", "Email.Send", "Could not find Email Action \"" + clientAction.action + "\"", "");
+                return;
+            }
+            var client = VendorClients.Where(a => a.Key == clientAction.key).FirstOrDefault();
+            if (client == null)
+            {
+                //log error, could not send email
+                Query.Logs.LogError(0, "", "Email.Send", "Could not find Email Client \"" + clientAction.key + "\"", "");
+                return;
+            }
+            var _msg = "";
+            client.SendMany(clientAction.config, messages, delegate (MailMessage message) {
+                //only get RFC 2822 message if vendor plugin specifically requests it
+                if (string.IsNullOrEmpty(_msg))
+                {
+                    _msg = GetRFC2822FormattedMessage(message);
+                }
+                return _msg;
+            });
+        }
+
         public static void Send(MailMessage message, Query.Models.EmailClientAction clientAction)
         {
             if (clientAction == null)
             {
                 //log error, could not send email
-                Query.Logs.LogError(0, "", "Email.Send", "Could not find Email Action Type \"" + clientAction.action + "\"", "");
+                Query.Logs.LogError(0, "", "Email.Send", "Could not find Email Action \"" + clientAction.action + "\"", "");
                 return;
             }
             var client = VendorClients.Where(a => a.Key == clientAction.key).FirstOrDefault();
@@ -119,34 +150,37 @@ namespace Kandu.Common
             return MimeMessage.CreateFromMailMessage(message).ToString();
         }
 
-        private static readonly List<EmailType> Types = new List<EmailType>()
+        private static readonly List<EmailAction> Actions = new List<EmailAction>()
         {
-            new EmailType()
+            new EmailAction()
             {
                 Key = "signup",
                 Name = "Sign Up",
                 Description = "",
                 TemplateFile = "signup.html",
                 UserDefinedSubject = true,
-                UserDefinedBody = true
+                UserDefinedBody = true,
+                DefaultSubject = "{{app-name}} email verification"
             },
-            new EmailType()
+            new EmailAction()
             {
                 Key="updatepass",
                 Name = "Update Password",
                 Description = "",
                 TemplateFile = "update-pass.html",
                 UserDefinedSubject = true,
-                UserDefinedBody = true
+                UserDefinedBody = true,
+                DefaultSubject = "Reset your {{app-name}} account password"
             },
-            new EmailType()
+            new EmailAction()
             {
                 Key="invite",
                 Name = "Send Invitation",
                 Description = "",
                 TemplateFile = "invite.html",
                 UserDefinedSubject = true,
-                UserDefinedBody = true
+                UserDefinedBody = true,
+                DefaultSubject = "You are invited to participate in {{app-name}}"
             }
         };
 
@@ -218,7 +252,7 @@ namespace Kandu.Common
                     };
 
                     client.Connect(config["domain"], config.ContainsKey("port") && config["port"] != "" ?
-                        int.Parse(config["port"]) : 0, config.ContainsKey("ssl") && config["ssl"] == "1");
+                        int.Parse(config["port"]) : 0, true);//config.ContainsKey("ssl") && config["ssl"] == "1");
 
                     //disable the XOAUTH2 authentication mechanism.
                     client.AuthenticationMechanisms.Remove("XOAUTH2");
@@ -228,8 +262,55 @@ namespace Kandu.Common
                 }
                 catch (Exception ex)
                 {
-                    Query.Logs.LogError(0, "", "Email.Smtp.Send", ex.Message, ex.StackTrace);
+                    Query.Logs.LogError(0, "", "Email.Smtps.Send", ex.Message, ex.StackTrace);
                     throw new Exception("Could not send message to " + message.To);
+                }
+            }
+
+            public void SendMany(Dictionary<string, string> config, MailMessage[] messages, Func<MailMessage, string> GetRFC2822)
+            {
+                try
+                {
+                    //connect to email server
+                    var client = new MailKit.Net.Smtp.SmtpClient();
+                    client.Connect(config["domain"], config.ContainsKey("port") && config["port"] != "" ?
+                        int.Parse(config["port"]) : 0, true);//config.ContainsKey("ssl") && config["ssl"] == "1");
+                    //disable the XOAUTH2 authentication mechanism.
+                    client.AuthenticationMechanisms.Remove("XOAUTH2");
+                    client.Authenticate(config["user"], config["pass"]);
+
+                    //send all messages
+                    foreach (var message in messages)
+                    {
+                        try
+                        {
+                            var msg = new MimeMessage();
+                            msg.From.Add(new MailboxAddress(message.From.DisplayName, message.From.Address));
+                            foreach (var to in message.To)
+                            {
+                                msg.To.Add(new MailboxAddress(to.DisplayName, to.Address));
+                            }
+                            msg.Subject = message.Subject;
+
+                            msg.Body = new TextPart("html")
+                            {
+                                Text = message.Body
+                            };
+                            client.Send(msg);
+                        }
+                        catch (Exception ex)
+                        {
+                            Query.Logs.LogError(0, "", "Email.Smtps.Send", ex.Message, ex.StackTrace);
+                            throw new Exception("Could not send message to " + message.To);
+                        }
+                    }
+                    
+                    client.Disconnect(true);
+                }
+                catch (Exception ex)
+                {
+                    Query.Logs.LogError(0, config["domain"] + ":" + config["port"], "Email.Smtps.Send", ex.Message, ex.StackTrace);
+                    throw new Exception("Could not connect to " + config["domain"] + ":" + config["port"]);
                 }
             }
         }
@@ -324,6 +405,11 @@ namespace Kandu.Common
                     Query.Logs.LogError(0, "", "Email.Smtp.Send", ex.Message, ex.StackTrace);
                 }
              }
+
+            public void SendMany(Dictionary<string, string> config, MailMessage[] messages, Func<MailMessage, string> GetRFC2822)
+            {
+                throw new NotImplementedException();
+            }
         }
     }
 }
