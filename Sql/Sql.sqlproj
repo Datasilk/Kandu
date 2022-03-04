@@ -134,7 +134,6 @@
     <Build Include="dbo\Stored Procedures\Users\User_AllColor.sql" />
     <Build Include="dbo\Stored Procedures\Boards\Board_Import.sql" />
     <Build Include="dbo\Tables\CardChecklistItems.sql" />
-    <Build Include="dbo\Tables\BoardActivity.sql" />
     <Build Include="dbo\Stored Procedures\Cards\Card_Import.sql" />
     <Build Include="dbo\Stored Procedures\Lists\List_Import.sql" />
     <Build Include="dbo\Stored Procedures\Boards\Board_GetInfo.sql" />
@@ -225,6 +224,12 @@
     <Build Include="dbo\Stored Procedures\Security\Security_GetScopeItem.sql" />
     <Build Include="dbo\Tables\Log_Errors.sql" />
     <Build Include="dbo\Stored Procedures\Logs\Log_Error.sql" />
+    <Build Include="dbo\Tables\Log_Boards.sql" />
+    <Build Include="dbo\Tables\Log_Boards_Data.sql" />
+    <Build Include="dbo\Tables\Log_Lists.sql" />
+    <Build Include="dbo\Tables\Log_Lists_Data.sql" />
+    <Build Include="dbo\Tables\Log_Cards.sql" />
+    <Build Include="dbo\Tables\Log_Cards_Data.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Sql.publish.xml" />

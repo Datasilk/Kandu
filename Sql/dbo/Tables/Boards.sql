@@ -2,7 +2,7 @@
 (
 	[boardId] INT NOT NULL PRIMARY KEY, 
     [orgId] INT NOT NULL DEFAULT 0, 
-    [teamId] INT NULL, 
+    [teamId] INT NULL, --delete me
     [archived] BIT NOT NULL DEFAULT 0, 
     [name] NVARCHAR(64) NOT NULL, 
     [color] NVARCHAR(6) NOT NULL DEFAULT '', 
