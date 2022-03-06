@@ -1,4 +1,6 @@
-﻿namespace Kandu.Vendor.Security
+﻿using System.Collections.Generic;
+
+namespace Kandu.Vendor.Security
 {
     public enum ScopeTypes
     {
@@ -8,6 +10,38 @@
         Board = 4,
         List = 5,
         Card = 6
+    }
+
+    public class RequiredKeys
+    {
+        /// <summary>
+        /// Combines all application-wide security keys, organization-wide security keys, and any keys that you define into one array
+        /// </summary>
+        /// <param name="keys"></param>
+        /// <returns></returns>
+        public static RequiredKey[] Load(RequiredKey[] keys = null)
+        {
+            var newkeys = new List<RequiredKey>()
+            {
+
+                    new RequiredKey(){Key = "AppOwner" },
+                    new RequiredKey(){Key = "AppFullAccess" },
+                    new RequiredKey(){Key = "Owner", Scope = ScopeTypes.Organization },
+                    new RequiredKey(){Key = "OrgFullAccess", Scope = ScopeTypes.Organization },
+                    new RequiredKey(){Key = "SecGroupsFullAccess", Scope = ScopeTypes.SecurityGroup }
+            };
+            if(keys != null)
+            {
+                newkeys.AddRange(keys);
+            }
+            return newkeys.ToArray();
+        }
+    }
+
+    public class RequiredKey
+    {
+        public string Key { get; set; }
+        public ScopeTypes Scope { get; set; }
     }
 }
 
@@ -36,6 +70,6 @@ namespace Kandu.Vendor {
         /// A list of keys the user is required to have access to in order to
         /// be able to use this key when adding keys to a security group
         /// </summary>
-        public string[] RequiredKeys { get; set; }
+        public Security.RequiredKey[] RequiredKeys { get; set; }
     }
 }

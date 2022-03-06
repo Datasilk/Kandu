@@ -95,6 +95,7 @@
 
         hide: function () {
             S.popup.hide(S.security.details.popup);
+            S.security.details.popup = null;
         },
 
         addKey: {

@@ -113,10 +113,14 @@ namespace Kandu.Services
             {
                 if(a.RequiredKeys != null && a.RequiredKeys.Length > 0)
                 {
-                    var passed = true;
+                    var passed = false;
                     foreach(var key in a.RequiredKeys)
                     {
-                        if (!CheckSecurity(group.orgId, key)){ passed = false; }
+                        //if any required key is present, give user access
+                        if (CheckSecurity(group.orgId, key.Key)){
+                            passed = true;
+                            break; 
+                        }
                     }
                     if(passed == false && !CheckSecurity(group.orgId, a.Value)) {
                         passed = false;
