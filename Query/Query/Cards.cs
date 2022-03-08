@@ -66,6 +66,11 @@ namespace Query
             }
         }
 
+        public static Models.CardBoard GetBoard(int cardId)
+        {
+            return Sql.Populate<Models.CardBoard>("Card_GetBoard", new { cardId }).FirstOrDefault();
+        }
+
         public static void Restore(int boardId, int cardId)
         {
             Sql.ExecuteNonQuery("Card_Restore",new { boardId, cardId });

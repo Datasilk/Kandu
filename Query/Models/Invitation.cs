@@ -11,7 +11,7 @@ namespace Query.Models
         public string publickey { get; set; }
         public string keys { get; set; }
         public DateTime datecreated { get; set; }
-        public bool accepted { get; set; }
+        public DateTime? accepted { get; set; }
         public string message { get; set; }
     }
 

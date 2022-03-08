@@ -39,14 +39,20 @@
         $(window).on('scroll', S.kanban.list.resize);
         S.kanban.list.resize();
 
-        //load card if card is in URL hash
         var hash = S.util.url.hash.params();
         if (hash.length > 0) {
+            var msg = '.toolbar .messages';
+            //load card if card is in URL hash
             var param = hash.filter(a => a.key == 'card');
             if (param.length > 0) {
                 param = param[0];
                 var e = { target: $('.item.id-' + param.value)[0] };
                 S.kanban.card.details(e);
+            }
+
+            //load message to invited user
+            if (hash.filter(a => a.key == 'joined-board').length > 0) {
+                S.message.show(msg, 'confirm', 'Thank you for accepting our invitation to this board!');
             }
         }
     },

@@ -1,12 +1,50 @@
-﻿<div class="row">
-    <h3>Accept Invitation</h3>
-    <p>Please enter your email address to accept the invitation.</p>
-</div>
-<div class="row hover">
-    <div class="col field">Email</div>
-    <div class="col input"><input type="email" id="invite_email" /></div>
-</div>
-<div class="row buttons text-center pad-top">
-    <button class="accept">Accept</button>
-    <a class="button accept" href="/">Cancel</a>
+﻿<style type="text/css">
+    .section.accept-form {max-width: 500px; margin:0 auto; padding:50px 20px}
+    .section.accept-form .logo{text-align:center;}
+    .section.accept-form .title{left:56px;}
+    .section.accept-form .logo img {max-width: 100%;}
+    .section.accept-form .button, .section.accept-form button {
+        padding: 10px 25px; margin: 0 10px 10px 10px; line-height:1; font-weight:bold;
+    }
+    @media(max-width:500px){
+    .section.accept-form .title{left:0;}
+    }
+</style>
+<div class="row pad-top-xl">
+    <div class="section accept-form center">
+        <form method="post">
+            <div class="row logo pad-top pad-bottom-lg">
+                <img src="/images/logo-xs.png" />
+            </div>
+            <div class="step-1">
+                <div class="row title pad-bottom">
+                    <h3>Accept Invitation</h3>
+                    <p>Please enter your email address to accept the invitation.</p>
+                </div>
+                <div class="row messages pad-bottom"><span></span></div>
+                <div class="row hover">
+                    <div class="col field mobile">Email</div>
+                    <div class="col input expand mobile"><input type="email" id="invite_email" /></div>
+                </div>
+                <div class="row buttons text-center pad-top">
+                    <button class="accept">Accept</button>
+                    <a class="button cancel" href="/">Cancel</a>
+                </div>
+            </div>
+            
+            <div class="step-2" style="display:none;">
+                <div class="row title pad-bottom">
+                    <h3>Processing Invitation...</h3>
+                    <p>Please wait while we process your invitation.</p>
+                </div>
+            </div>
+            
+            <div class="step-3" style="display:none;">
+                <div class="row title pad-bottom">
+                    <h3>Invitation Accepted!</h3>
+                    <p>Please wait while we load your dashboard</p>
+                </div>
+            </div>
+        </form>
+    </div>
 </div>

@@ -56,7 +56,7 @@ namespace Kandu.Common
         public static View GetMessage(string key)
         {
             var action = VendorAction(key);
-            return new View("/Content/emails/" + action.TemplateFile);
+            return new View(action.TemplateFile);
         }
 
         public static Query.Models.EmailAction GetInfo(string action)
@@ -157,7 +157,7 @@ namespace Kandu.Common
                 Key = "signup",
                 Name = "Sign Up",
                 Description = "",
-                TemplateFile = "signup.html",
+                TemplateFile = "/Content/temp/emails/signup.html",
                 UserDefinedSubject = true,
                 UserDefinedBody = true,
                 DefaultSubject = "{{app-name}} email verification"
@@ -167,7 +167,7 @@ namespace Kandu.Common
                 Key="updatepass",
                 Name = "Update Password",
                 Description = "",
-                TemplateFile = "update-pass.html",
+                TemplateFile = "/Content/temp/emails/update-pass.html",
                 UserDefinedSubject = true,
                 UserDefinedBody = true,
                 DefaultSubject = "Reset your {{app-name}} account password"
@@ -177,7 +177,7 @@ namespace Kandu.Common
                 Key="invite",
                 Name = "Send Invitation",
                 Description = "",
-                TemplateFile = "invite.html",
+                TemplateFile = "/Content/temp/emails/invite.html",
                 UserDefinedSubject = true,
                 UserDefinedBody = true,
                 DefaultSubject = "You are invited to participate in {{app-name}}"

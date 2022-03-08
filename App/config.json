@@ -1,7 +1,8 @@
 {
   "assembly": "Kandu",
-  "name":  "Kandu",
-  "version":  "0.25",
+  "name": "Kandu",
+  "version": "0.25",
+  "hostUrl": "https://localhost:7773/",
   "sql": {
     "active": "SqlServerTrusted",
     "SqlServerTrusted": "server=.\\SQL2017; database=Kandu; Trusted_Connection=true"

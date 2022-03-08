@@ -230,6 +230,8 @@
     <Build Include="dbo\Tables\Log_Lists_Data.sql" />
     <Build Include="dbo\Tables\Log_Cards.sql" />
     <Build Include="dbo\Tables\Log_Cards_Data.sql" />
+    <Build Include="dbo\Stored Procedures\Lists\List_GetBoard.sql" />
+    <Build Include="dbo\Stored Procedures\Cards\Card_GetBoard.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Sql.publish.xml" />

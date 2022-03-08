@@ -9,7 +9,11 @@
         S.ajax.post('User/Authenticate', data, function (d) {
             if (d) {
                 S.message.show(msg, '', 'Login success! Redirecting...');
-                window.location.href = d;
+                if (location.href.toLowerCase().indexOf('login')) {
+                    window.location.href = d;
+                } else {
+                    window.location.reload();
+                }
             }
         }, function (err) {
             S.message.clear(msg);

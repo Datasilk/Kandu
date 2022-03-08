@@ -88,7 +88,7 @@ namespace Kandu.Common
                     scopeText = scopeKey + "list \"<b>" + scopeItem.title + "</b>\" in organization \"<b>" + scopeItem.orgName + "</b>\"";
                     break;
                 case Models.Scope.Card:
-                    scopeText = scopeKey + "card \"<b>" + scopeItem.title.MaxChars(32, "...") + "</b>\" in organization \"<b>" + scopeItem.orgName + "</b>\"";
+                    scopeText = scopeKey + "card \"<b>" + scopeItem.title.MaxChars(64, "...") + "</b>\" in organization \"<b>" + scopeItem.orgName + "</b>\"";
                     break;
             }
 

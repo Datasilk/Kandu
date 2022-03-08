@@ -41,6 +41,11 @@ namespace Query.Models
         public List<CardComment> comments { get; set; }
     }
 
+    public class CardBoard: Card
+    {
+        public string boardName { get; set; }
+    }
+
     public class CardChecklistItem
     {
         public int itemId { get; set; }

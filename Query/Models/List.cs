@@ -11,4 +11,9 @@ namespace Query.Models
         public string cardtype { get; set; }
         public List<Card> cards { get; set; }
     }
+
+    public class ListBoard: List
+    {
+        public string boardName { get; set; }
+    }
 }
