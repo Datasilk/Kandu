@@ -16,8 +16,8 @@
         S.kanban.card.drag.init();
 
         //add events for message popup
-        $('.board .message').on('DOMSubtreeModified', S.kanban.list.resize);
-        $('.board .message .btn-close').on('click', () => { $('.board .message').addClass('hide').hide(); });
+        $('.board .messages').on('DOMSubtreeModified', S.kanban.list.resize);
+        $('.board .messages .btn-close').on('click', () => { $('.board .messages').addClass('hide').hide(); });
 
         //add event for horizontal scrollbar
         $('.kanban > .scroller .scrollbar').on('mousedown', S.kanban.scroll.start);
@@ -114,7 +114,7 @@
                 speed: 0,
                 speedStart: 0,
                 coastStart: null,
-                coasting:false,
+                coasting: false,
                 barX: scrollbar.offset().left,
                 diff: (1 / win.w) * ((scrollW / w) * win.w)
             };
@@ -153,7 +153,7 @@
             requestAnimationFrame(() => {
                 S.kanban.scroll.animate.call(S.kanban.scroll);
             });
-        }, 
+        },
 
         stop: function (e) {
             $('body').off('mousemove', S.kanban.scroll.move);
@@ -162,7 +162,7 @@
         },
 
         touchstart: function (e) {
-            if (S.kanban.scroll.disabled == true) { return;}
+            if (S.kanban.scroll.disabled == true) { return; }
             S.kanban.scroll.start(e.touches[0], true);
         },
 
@@ -192,7 +192,7 @@
 
         coast: function () {
             let sel = S.kanban.scroll.selected;
-            if (sel == null || sel.coasting == false || S.kanban.scroll.disabled == true) { return;}
+            if (sel == null || sel.coasting == false || S.kanban.scroll.disabled == true) { return; }
             let oldspeed = sel.speed;
             S.kanban.scroll.selected.currentX = sel.currentX + (sel.speed);
             var newspeed = sel.speedStart - (sel.speedStart * ((1 / 500) * (Date.now() - sel.coastStart)));
@@ -223,7 +223,7 @@
 
             cancel: function () {
                 $('.form-new-list').removeClass('show').addClass('cancel');
-                setTimeout(function () { $('.form-new-list').removeClass('cancel').addClass('hide');}, 500)
+                setTimeout(function () { $('.form-new-list').removeClass('cancel').addClass('hide'); }, 500)
             },
 
             submit: function () {
@@ -296,7 +296,7 @@
         drag: {
             dragging: false, timer: null,
             geometry: { lists: null },
-            current: { listId: null, list: null, side: 'left', pos:0},
+            current: { listId: null, list: null, side: 'left', pos: 0 },
 
             init: function (elems) {
                 var selector = elems || '.lists .list';
@@ -387,7 +387,7 @@
                         //onStop  /////////////////////////////////////////////////////////////////////////////////
                         function (item) {
                             item.elem.removeClass('dragging');
-                            $('.lists .list').removeClass('hovering leftside rightside after-hover').css({ 'margin-left': '', 'margin-right':'', left: '', top: '' });
+                            $('.lists .list').removeClass('hovering leftside rightside after-hover').css({ 'margin-left': '', 'margin-right': '', left: '', top: '' });
                             $('.board').removeClass('dragging');
                             item.elem.css({ top: 0, left: 0 });
 
@@ -400,7 +400,7 @@
                                 }
                                 this.current.listId = '';
                                 this.current.list = null;
-                                
+
                                 //send update to server via ajax
                                 var list = item.elem;
                                 var listId = S.util.element.getClassId(list);
@@ -415,9 +415,9 @@
                             setTimeout(function () { S.kanban.list.drag.dragging = false; }, 100);
                         },
                         //onClick  /////////////////////////////////////////////////////////////////////////////////
-                        function (item) {},
+                        function (item) { },
                         //options
-                        { hideAreaOffset: 7, speed: 1000 / 30, callee: S.kanban.list.drag, offsetX:-19, offsetY:-15 }
+                        { hideAreaOffset: 7, speed: 1000 / 30, callee: S.kanban.list.drag, offsetX: -19, offsetY: -15 }
                     )
                 });
             },
@@ -482,7 +482,7 @@
                     $('.list.id-' + listid).remove();
                 },
                 function () {
-                    S.util.message('.board .message', "error", S.message.error.generic);
+                    S.util.message('.board .messages', "error", S.message.error.generic);
                 }
             );
         }
@@ -491,7 +491,12 @@
     card: {
         selected: null,
         boardId: null,
-
+        layouts: [
+            { name: 'center' },
+            { name: 'rightside' },
+            { name: 'leftside' },
+            { name: 'fullscreen' }
+        ],
         create: {
             show: function (listid) {
                 var list = $('.list.id-' + listid);
@@ -572,14 +577,14 @@
                                 S.kanban.list.resize(listid);
                             },
                             complete: function () {
-                                item.css({ height:''});
+                                item.css({ height: '' });
                             }
                         });
                         var nodes = items.children();
                         S.kanban.card.drag.init($(nodes[nodes.length - 1]).children()[0]);
                     },
                     function () {
-                        S.util.message('.board .message', "error", S.message.error.generic);
+                        S.util.message('.board .messages', "error", S.message.error.generic);
                     }
                 );
             }
@@ -612,13 +617,13 @@
                 listId: S.util.element.getClassId(elem.parents('.list'), 'id-'),
                 elem: $('.board .list .item.id-' + id)
             };
-            var popup = S.popup.show("", S.loader(), {width: 350});
+            var popup;
             S.ajax.post('Card/Kanban/Details', data,
                 function (d) {
                     var card = d.split('|', 2);
                     S.popup.hide(popup);
                     popup = S.popup.show(card[0], card[1], {
-                        width: '90%', maxWidth: 750,
+                        width: '90%', maxWidth: 750, className:'popup-card-details',
                         onClose: function () {
                             if (callback) { callback(); }
                         }
@@ -626,13 +631,13 @@
 
                     $('.popup.show').prepend('<div class="card-modal-bg" style="display:none;"></div>');
 
+                    //modal bg click
+                    $('.popup.show .card-modal-bg, .popup.show .card-modals').on('click', S.kanban.card.modal.hide);
+
                     //card title event
                     $('.popup.show .card-field-title').on('click', S.kanban.card.title.edit);
 
-                    //modal bg click
-                    $('.popup.show .card-modal-bg').on('click', S.kanban.card.modal.hide);
-
-                    //asign to button
+                    //assign to button
                     $('.popup.show .button.not-assigned').on('click', S.kanban.card.assignTo.show);
 
                     //due date button
@@ -647,9 +652,9 @@
                     }
 
                     //drop down menu item events
-                    $('.popup.show .btn-archive a').on('click', S.kanban.card.archive);
-                    $('.popup.show .btn-restore a').on('click', S.kanban.card.restore);
-                    $('.popup.show .btn-delete a').on('click', S.kanban.card.delete);
+                    $('.popup.show .btn-archive').on('click', S.kanban.card.archive);
+                    $('.popup.show .btn-restore').on('click', S.kanban.card.restore);
+                    $('.popup.show .btn-delete').on('click', S.kanban.card.delete);
 
                     //description events
                     $('.popup.show .description-link').on('click', S.kanban.card.description.edit);
@@ -663,7 +668,7 @@
                     S.accordion.load();
                 },
                 function () {
-                    S.util.message('.board .message', "error", S.message.error.generic);
+                    S.util.message('.board .messages', "error", S.message.error.generic);
                 }
             );
 
@@ -672,7 +677,7 @@
         drag: { //also handles card onClick
             dragging: false, timer: null,
             geometry: { lists: null },
-            current: { listId: null, list:null, cardId: null, card:null, below: true, special: null },
+            current: { listId: null, list: null, cardId: null, card: null, below: true, special: null },
 
             init: function (elems) {
                 var selector = elems || '.lists .item';
@@ -694,7 +699,7 @@
                             this.elem = $(S.drag.item.elem);
                             this.listId = S.util.element.getClassId(this.elem.parents('.list').first(), 'id-');
                             S.drag.item.elem = clone;
-                            
+
                             //reset classes
                             $('.list .item.hovering').removeClass('hovering').parent().removeClass('hovering upward downward');
 
@@ -702,9 +707,9 @@
                             this.getGeometryForLists();
                         },
                         //onDrag /////////////////////////////////////////////////////////////////////////////////
-                        function (item) { 
+                        function (item) {
                             //detect where to drop the card
-                            if (this.dragging == false) { return;}
+                            if (this.dragging == false) { return; }
                             var current = this.current;
                             var geo = this.geometry;
                             var bounds = { top: item.cursor.y - 5, right: item.cursor.x, bottom: item.cursor.y + 5, left: item.cursor.x };
@@ -857,7 +862,7 @@
                             S.kanban.card.details({ target: item.elem });
                         },
                         //options
-                        { hideArea: true, hideAreaOffset: 7, useElemPos:true, offsetY: -($('header').height()), speed:1000 / 30, callee: S.kanban.card.drag }
+                        { hideArea: true, hideAreaOffset: 7, useElemPos: true, offsetY: -($('header').height()), speed: 1000 / 30, callee: S.kanban.card.drag }
                     )
                 });
             },
@@ -910,20 +915,20 @@
                 function (d) {
                     if (d == 'success') {
                         //hide archive button & show restore and delete buttons
-                        $('.popup .btn-archive').addClass('hide');
-                        $('.popup .btn-restore').removeClass('hide');
-                        $('.popup .btn-delete').removeClass('hide');
+                        $('.popup.show .menu .item-archive').addClass('hide');
+                        $('.popup.show .menu .item-restore').removeClass('hide');
+                        $('.popup.show .menu .item-delete').removeClass('hide');
 
                         //remove card from list
                         S.kanban.card.selected.elem.remove();
                         S.kanban.list.resize(S.kanban.card.selected.listId);
 
                     } else {
-                        S.util.message('.board .message', "error", S.message.error.generic);
+                        S.util.message('.board .messages', "error", S.message.error.generic);
                     }
                 },
                 function () {
-                    S.util.message('.board .message', "error", S.message.error.generic);
+                    S.util.message('.board .messages', "error", S.message.error.generic);
                 }
             );
         },
@@ -937,20 +942,20 @@
                 function (d) {
                     if (d != '') {
                         //hide restore and delete buttons, then show archive button
-                        $('.popup .btn-restore').addClass('hide');
-                        $('.popup .btn-delete').addClass('hide');
-                        $('.popup .btn-archive').removeClass('hide');
+                        $('.popup.show .menu .item-restore').addClass('hide');
+                        $('.popup.show .menu .item-delete').addClass('hide');
+                        $('.popup.show .menu .item-archive').removeClass('hide');
 
                         //add card to list
                         $('.board .list.id-' + S.kanban.card.selected.listId + ' .items').append(d);
                         S.kanban.list.resize(S.kanban.card.selected.listId);
 
                     } else {
-                        S.util.message('.board .message', "error", S.message.error.generic);
+                        S.util.message('.board .messages', "error", S.message.error.generic);
                     }
                 },
                 function () {
-                    S.util.message('.board .message', "error", S.message.error.generic);
+                    S.util.message('.board .messages', "error", S.message.error.generic);
                 }
             );
         },
@@ -963,14 +968,14 @@
             S.ajax.post('Cards/Delete', data,
                 function (d) {
                     if (d == 'success') {
-                        S.util.message('.board .message', "alert", 'The selected card has been permanently deleted from this board');
+                        S.util.message('.board .messages', "alert", 'The selected card has been permanently deleted from this board');
                         S.popup.hide();
                     } else {
-                        S.util.message('.board .message', "error", S.message.error.generic);
+                        S.util.message('.board .messages', "error", S.message.error.generic);
                     }
                 },
                 function () {
-                    S.util.message('.board .message', "error", S.message.error.generic);
+                    S.util.message('.board .messages', "error", S.message.error.generic);
                 }
             );
         },
@@ -984,7 +989,7 @@
         },
 
         title: {
-            cached: null, 
+            cached: null,
             edit: function () {
                 if ($('.popup .card-field-title').hasClass('transparent') == false) { return; }
                 let title = $('.popup .textarea-clone').val();
@@ -1041,11 +1046,11 @@
                             //replace existing card with updated card
                             S.kanban.card.replace(d);
                         } else {
-                            S.util.message('.board .message', "error", S.message.error.generic);
+                            S.util.message('.board .messages', "error", S.message.error.generic);
                         }
                     },
                     function () {
-                        S.util.message('.board .message', "error", S.message.error.generic);
+                        S.util.message('.board .messages', "error", S.message.error.generic);
                     }
                 );
                 if (e.preventDefault) { e.preventDefault(); }
@@ -1056,10 +1061,15 @@
         description: {
             cached: null,
             edit: function () {
-                S.kanban.card.description.cached = $('#card_description').val().trim();
-                $('.popup.show .field-description').removeClass('hide');
-                $('.popup.show .new-description').addClass('hide');
-                $('.popup.show .description').addClass('hide');
+                var field = $('.popup.show .field-description');
+                if (field.hasClass('hide')) {
+                    S.kanban.card.description.cached = $('#card_description').val().trim();
+                    field.removeClass('hide');
+                    $('.popup.show .new-description').addClass('hide');
+                    $('.popup.show .description').addClass('hide');
+                } else {
+                    S.kanban.card.description.update();
+                }
                 $('.popup.show .card-description').addClass('expanded');
                 S.kanban.card.description.resize();
             },
@@ -1076,12 +1086,12 @@
                     $('.popup.show .description').removeClass('hide');
                 } else {
                     $('.popup.show .new-description').removeClass('hide');
-                }  
+                }
             },
 
             markdown: function () {
                 var text = $('#card_description').val().trim();
-                if (text == '' || text == null) { return;}
+                if (text == '' || text == null) { return; }
                 var markdown = new Remarkable({
                     highlight: function (str, lang) {
                         var language = lang || 'javascript';
@@ -1111,6 +1121,12 @@
                     cardId: S.kanban.card.selected.id,
                     description: $('#card_description').val()
                 };
+                if (data.description.trim() == S.kanban.card.description.cached.trim()) {
+                    //data is identical. cancel ajax and show rendered markdown instead
+                    S.kanban.card.description.markdown();
+                    S.kanban.card.description.hide();
+                    return;
+                }
                 S.ajax.post('Cards/UpdateDescription', data,
                     function (d) {
                         if (d != '') {
@@ -1121,14 +1137,15 @@
                             S.kanban.card.description.markdown();
                             S.kanban.card.description.hide();
                         } else {
-                            S.util.message('.board .message', "error", S.message.error.generic);
+                            S.util.message('.board .messages', "error", S.message.error.generic);
                         }
                     },
                     function () {
-                        S.util.message('.board .message', "error", S.message.error.generic);
+                        S.util.message('.board .messages', "error", S.message.error.generic);
                     }
                 );
-                e.preventDefault();
+                if (e) { e.preventDefault();}
+                
                 return false;
             },
 
@@ -1137,7 +1154,7 @@
                 var temp = $('.popup.show .card-description .temp');
                 temp.html(textarea.val().replace(/\n/g, '<br/>'));
                 var pos = temp[0].getBoundingClientRect();
-                textarea.css({ 'height': Math.round((pos.height * 1.05) + 20) + 'px'});
+                textarea.css({ 'height': Math.round((pos.height * 1.05) + 20) + 'px' });
             }
         },
 
@@ -1148,7 +1165,13 @@
                 $('.popup.show .card-modal-bg').show();
             },
 
-            hide: function () {
+            hide: function (e) {
+                if (e != null) {
+                    console.log(e.target);
+                    var target = $(e.target);
+                    if (target.parents('.btn-cancel').length == 0 && target.parents('.card-modals').length > 0) { return; }
+                }
+
                 $('.popup.show .card-modals').html('');
                 $('.popup.show .card-details').css({ 'opacity': 1 });
                 $('.popup.show .card-modal-bg').hide();
@@ -1169,7 +1192,7 @@
                     }
                     $('.popup.show #card_assignto').on('input', S.kanban.card.assignTo.submit);
                 }, () => { }, true);
-                $('.popup.show .assign-to-form .btn-cancel').on('click', S.kanban.card.modal.hide);
+                $('.popup.show .assign-to-form .btn-cancel').on('click', () => { S.kanban.card.modal.hide(); });
             },
 
             submit: function () {
@@ -1198,7 +1221,7 @@
                     input[0].valueAsDate = new Date(duedate);
                 }
                 $('.popup.show #card_duedate').on('change', S.kanban.card.dueDate.submit);
-                $('.popup.show .duedate-form .btn-cancel').on('click', S.kanban.card.modal.hide);
+                $('.popup.show .duedate-form .btn-cancel').on('click', () => { S.kanban.card.modal.hide(); });
             },
 
             submit: function (nodate) {
@@ -1211,7 +1234,7 @@
                         duedate = dates[1] + '/' + dates[2] + '/' + dates[0];
                     }
                 }
-                
+
                 S.ajax.post('Cards/UpdateDueDate', { cardId: card.id, duedate: duedate }, (html) => {
                     S.kanban.card.modal.hide();
                     //update card sub title with new assigned to user
@@ -1347,7 +1370,7 @@
                 S.kanban.card.modal.show(temp_share.innerHTML);
                 $('.popup.show #share_name').on('input', S.kanban.card.share.search);
                 $('.popup.show .share-form .btn-send').on('click', S.kanban.card.share.submit);
-                $('.popup.show .share-form .btn-cancel').on('click', S.kanban.card.modal.hide);
+                $('.popup.show .share-form .btn-cancel').on('click', () => { S.kanban.card.modal.hide(); });
             },
 
             search: function () {
@@ -1437,6 +1460,41 @@
                 }, (err) => {
                     S.message.show('.popup.show .share-form .messages', 'error', err.responseText);
                 });
+            }
+        },
+
+        menu: {
+            show: function () {
+                var menu = $('.popup.show .icon-dots .menu');
+                menu.show();
+                function bodyclick(e) {
+                    var target = $(e.target);
+                    if (!target.hasClass('icon-dots') && target.parents('.icon-dots').length == 0) {
+                        menu.hide();
+                        $('body').off('click', bodyclick);
+                    }
+                }
+                $('body').on('click', bodyclick);
+            }
+        },
+
+        layout: function (type) {
+            var layout = type;
+            var layouts = S.kanban.card.layouts;
+            var popup = $('.popup.show');
+            if (layout == null || layout == '') { layout = 'center'; }
+            var selected = layouts.filter(a => a.name == layout)[0];
+            if ($('body').hasClass('card-' + selected.name)) { return;}
+            $('body').removeClass('card-center card-rightside card-leftside card-fullscreen').addClass('card-' + selected.name);
+            popup.removeClass('pos-center pos-rightside pos-leftside pos-fullscreen').addClass('pos-' + selected.name);
+            switch (type) {
+                case 'center':
+                    $('.bg.for-popup').removeClass('disabled');
+                    S.popup.resize();
+                    break;
+                case 'leftside': case 'rightside': case 'fullscreen':
+                    $('.bg.for-popup').addClass('disabled');
+                    break;
             }
         }
     }

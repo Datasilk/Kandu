@@ -69,7 +69,7 @@
                 .html('Unpin this menu')
                 .off('click', S.head.boards.alwaysShow)
                 .on('click', S.head.boards.cancelAlwaysShow);
-            $('.body').css({ marginLeft: 250 });  
+            $('.body').css({ marginLeft: 240 });  
             $('.bg-for-boards-menu').addClass('hide');
             if (init !== true) { S.ajax.post('Boards/KeepMenuOpen', { keepOpen: true }); }
             S.head.boards.callback.execute(true, true);

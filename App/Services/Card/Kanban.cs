@@ -13,7 +13,7 @@
             if (!User.CheckSecurity(boardId)) { return AccessDenied(); }
             try
             {
-                var results = Common.Card.Kanban.Details(boardId, cardId, User.UserId);
+                var results = Common.Card.Kanban.Details(this, boardId, cardId, User.UserId);
                 return results.Item1.name + "|" + results.Item2;
             }
             catch (ServiceErrorException ex)

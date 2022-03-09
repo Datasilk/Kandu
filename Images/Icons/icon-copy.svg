@@ -1,0 +1,55 @@
+
+<svg xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" preserveAspectRatio="none" x="0px" y="0px" width="64px" height="64px" viewBox="0 0 64 64">
+<defs>
+<g id="iconCopy_0_Layer1_0_FILL">
+<path fill="#FFFFFF" stroke="none" d="
+M 64 47.5
+L 64 22.5
+Q 64 16 57.5 16
+L 43 16 43 6.5
+Q 43 0 36.5 0
+L 6.5 0
+Q 0 0 0 6.5
+L 0 31.5
+Q 0 38 6.5 38
+L 21 38 21 47.5
+Q 21 54 27.5 54
+L 57.5 54
+Q 64 54 64 47.5
+M 61 22.5
+L 61 47.5
+Q 61 51 57.5 51
+L 27.5 51
+Q 24 51 24 47.5
+L 24 38 36.5 38
+Q 43 38 43 31.5
+L 43 19 57.5 19
+Q 61 19 61 22.5
+M 36.5 3
+Q 40 3 40 6.5
+L 40 31.5
+Q 40 35 36.5 35
+L 6.5 35
+Q 3 35 3 31.5
+L 3 6.5
+Q 3 3 6.5 3
+L 36.5 3 Z"/>
+</g>
+
+<g id="iconCopy_0_Layer0_0_FILL">
+<path fill="#FFFFFF" fill-opacity="0" stroke="none" d="
+M 64 -5
+L 0 -5 0 59 64 59 64 -5 Z"/>
+</g>
+</defs>
+
+<g transform="matrix( 1, 0, 0, 1, 0,5) ">
+<g transform="matrix( 1, 0, 0, 1, 0,0) ">
+<use xlink:href="#iconCopy_0_Layer1_0_FILL"/>
+</g>
+
+<g transform="matrix( 1, 0, 0, 1, 0,0) ">
+<use xlink:href="#iconCopy_0_Layer0_0_FILL"/>
+</g>
+</g>
+</svg>

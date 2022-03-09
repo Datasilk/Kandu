@@ -76,7 +76,7 @@ namespace Kandu.Common.Card
             return cardview.Render();
         }
 
-        public static Tuple<Query.Models.Card, string> Details(int boardId, int cardId, int userId)
+        public static Tuple<Query.Models.Card, string> Details(IRequest request, int boardId, int cardId, int userId)
         {
             try
             {
@@ -90,9 +90,19 @@ namespace Kandu.Common.Card
                 view["board-color"] = card.boardColor;
                 view["title"] = card.name;
                 view["list-name"] = card.listName;
-                view["archive-class"] = card.archived ? "hide" : "";
-                view["restore-class"] = card.archived ? "" : "hide";
-                view["delete-class"] = card.archived ? "" : "hide";
+
+                //protected features
+                if(request.User.CheckSecurity(card.orgId, new string[] { Security.Keys.CardFullAccess.ToString(), Security.Keys.CardCanUpdate.ToString() }, Models.Scope.Card, cardId)
+                    || request.User.CheckSecurity(card.orgId, new string[] { Security.Keys.BoardsFullAccess.ToString(), Security.Keys.BoardCanUpdate.ToString() }, Models.Scope.Board, boardId))
+                {
+                    view.Show("can-move");
+                    view.Show("can-archive");
+                    view.Show("can-restore");
+                    view.Show("can-delete");
+                    view["archive-class"] = card.archived ? "hide" : "";
+                    view["restore-class"] = card.archived ? "" : "hide";
+                    view["delete-class"] = card.archived ? "" : "hide";
+                }
 
                 //description
                 var viewDescription = new View("/Views/Card/Kanban/Details/description.html");

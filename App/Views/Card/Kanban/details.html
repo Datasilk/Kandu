@@ -15,6 +15,109 @@
             <use xlink:href="#icon-dots" x="0" y="0" width="32" height="32"></use>
         </svg>
     </div>
+    <div class="menu bg" style="display:none">
+        <ul>
+            <li>
+                <div class="row layouts">
+                    <div class="col">
+                        <div class="row hover" title="Popup Modal Layout" onclick="S.kanban.card.layout('center')">
+                            <svg viewBox="0 0 32 32">
+                                <use xlink:href="#icon-modal" x="0" y="0" width="32" height="32"></use>
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="row hover" title="Left Panel Layout" onclick="S.kanban.card.layout('leftside')">
+                            <svg viewBox="0 0 32 32">
+                                <use xlink:href="#icon-leftside" x="0" y="0" width="32" height="32"></use>
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="row hover" title="Right Panel Layout" onclick="S.kanban.card.layout('rightside')">
+                            <svg viewBox="0 0 32 32">
+                                <use xlink:href="#icon-rightside" x="0" y="0" width="32" height="32"></use>
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="row hover" title="Fullscreen Layout" onclick="S.kanban.card.layout('fullscreen')">
+                            <svg viewBox="0 0 32 32">
+                                <use xlink:href="#icon-fullscreen" x="0" y="0" width="32" height="32"></use>
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+            </li>
+            <li>
+                <hr/>
+            </li>
+            <li>
+                <div class="row hover">
+                    <svg viewBox="0 0 32 32">
+                        <use xlink:href="#icon-user" x="0" y="0" width="32" height="32"></use>
+                    </svg>
+                    <span>Members</span>
+                </div>
+            </li>
+            <li>
+                <hr/>
+            </li>
+            {{can-move}}
+            <li>
+                <div class="row hover">
+                    <svg viewBox="0 0 32 32">
+                        <use xlink:href="#icon-move" x="0" y="0" width="32" height="32"></use>
+                    </svg>
+                    <span>Move</span>
+                </div>
+            </li>
+            {{/can-move}}
+            <li>
+                <div class="row hover">
+                    <svg viewBox="0 0 32 32">
+                        <use xlink:href="#icon-copy" x="0" y="0" width="32" height="32"></use>
+                    </svg>
+                    <span>Copy</span>
+                </div>
+            </li>
+            <li>
+                <hr/>
+            </li>
+            {{can-archive}}
+            <li class="item-archive {{archive-class}}">
+                <div class="row hover btn-archive">
+                    <svg viewBox="0 0 32 32">
+                        <use xlink:href="#icon-archive" x="0" y="0" width="32" height="32"></use>
+                    </svg>
+                    <span>Archive</span>
+                </div>
+            </li>
+            {{/can-archive}}
+
+            {{can-restore}}
+            <li class="item-restore {{restore-class}}">
+                <div class="row hover btn-restore">
+                    <svg viewBox="0 0 32 32">
+                        <use xlink:href="#icon-archive" x="0" y="0" width="32" height="32"></use>
+                    </svg>
+                    <span>Restore</span>
+                </div>
+            </li>
+            {{/can-restore}}
+            
+            {{can-delete}}
+            <li class="item-delete {{delete-class}}">
+                <div class="row hover btn-delete">
+                    <svg viewBox="0 0 32 32">
+                        <use xlink:href="#icon-close" x="0" y="0" width="32" height="32"></use>
+                    </svg>
+                    <span>Delete</span>
+                </div>
+            </li>
+            {{/can-delete}}
+        </ul>
+    </div>
 </div>
 <div class="messages for-card"></div>
 <div class="card-sub-title row pad-bottom-sm">
@@ -135,29 +238,7 @@
         </div>
     </div>
 </script>
+
 <script type="text/html" id="temp_invited_user">
     <div class="col six mobile invited cursor" data-id="#id#" title="#name#"><div class="row hover"><span>#name#</span></div></div>
 </script>
-
-<div class="row">
-    <div class="col card-menu right" style="display:none">
-        <div class="row">
-            <h6>Add</h6>
-            <a href="javascript:" class="btn-members button grey faded">Members</a>
-            <a href="javascript:" class="btn-labels button grey faded">Labels</a>
-            <a href="javascript:" class="btn-checklist button grey faded">Checklist</a>
-            <a href="javascript:" class="btn-duedate button grey faded">Due Date</a>
-            <a href="javascript:" class="btn-attachment button grey faded">Attachment</a>
-        </div>
-        <div class="row pad-top">
-            <h6>Action</h6>
-            <div class="row btn-move"><a href="javascript:" class=" button grey faded">Move</a></div>
-            <div class="row btn-copy"><a href="javascript:" class="button grey faded">Copy</a></div>
-            <div class="row btn-watch"><a href="javascript:" class="button grey faded">Watch</a></div>
-            <div class="row btn-archive {{archive-class}}"><a href="javascript:" class="button grey">Archive</a></div>
-            <div class="row btn-restore {{restore-class}}"><a href="javascript:" class="button grey">Restore Card</a></div>
-            <div class="row btn-delete {{delete-class}}"><a href="javascript:" class="button red">Delete</a></div>
-        </div>
-    </div>
-</div>
-
