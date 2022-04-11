@@ -24,7 +24,7 @@ namespace Kandu.Common
             {
                 item.Clear();
                 item.Bind(new { org });
-                item["onclick"] = (onclick != "" ? onclick : "S.orgs.details.show") + "(" + org.orgId + ", '" + org.name + "')";
+                item["onclick"] = (onclick != "" ? onclick : "S.orgs.details.show") + "(" + org.orgId + ", '" + org.name + "');S.head.user.hide();";
                 html.Append(item.Render());
             }
             return html.ToString();

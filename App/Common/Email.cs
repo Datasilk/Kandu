@@ -75,7 +75,7 @@ namespace Kandu.Common
         }
         public static void ClearActions()
         {
-            _actions.Clear();
+            if (_actions != null) { _actions.Clear(); }
         }
 
         public static void Send(string from, string to, string subject, string body, string action)

@@ -37,7 +37,7 @@
             const movable = $('.boards-menu .movable');
             const h = movable.height();
             if (menu.hasClass('always-show')) {
-                menu.css({ height: (win.h - 55) + 'px' });
+                menu.css({ height: (win.h - 44) + 'px' });
             } else {
                 menu.css({ maxHeight: '' });
             }
@@ -69,7 +69,8 @@
                 .html('Unpin this menu')
                 .off('click', S.head.boards.alwaysShow)
                 .on('click', S.head.boards.cancelAlwaysShow);
-            $('.body').css({ marginLeft: 240 });  
+            $('.body').css({ marginLeft: 240 });
+            $('body').addClass('boards-menu-leftside');
             $('.bg-for-boards-menu').addClass('hide');
             if (init !== true) { S.ajax.post('Boards/KeepMenuOpen', { keepOpen: true }); }
             S.head.boards.callback.execute(true, true);
@@ -86,6 +87,7 @@
                 .off('click', S.head.boards.cancelAlwaysShow)
                 .on('click', S.head.boards.alwaysShow);
             $('.body').css({ marginLeft: '' });
+            $('body').removeClass('boards-menu-leftside');
             $('.bg-for-boards-menu').removeClass('hide');
             S.ajax.post('Boards/KeepMenuOpen', { keepOpen: false });
             S.head.boards.callback.execute(true, false);
@@ -122,7 +124,6 @@
     user: {
         menuBg: $('.bg-for-user-menu'),
         show: function () {
-            S.popup.hide();
             $('.user-menu').removeClass('hide');
             $('.bg-for-user-menu').removeClass('hide');
             S.scrollbar.update($('.boards-menu'));

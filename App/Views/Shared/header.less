@@ -52,7 +52,7 @@
 
     &:after { bottom: 100%; left: 8%; border: solid transparent; content: ""; height: 0; width: 0; position: absolute; pointer-events: none; border-width: 15px; margin-left: -15px;}
 
-    &.always-show{top:44px; left:0px; margin:0; border-radius:0; max-height:~"calc(100% - 57px)";
+    &.always-show{top:44px; left:0px; margin:0; border-radius:0; max-height:unset !important;
         &:after {
             border-width:0 !important;
         }
@@ -61,9 +61,10 @@
 .bg-for-boards-menu, .bg-for-user-menu{position:absolute; top:0; left:0; right:0; bottom:0; z-index:99;
     .dark-area{position:absolute; top:44px; left:0; right:0; bottom:0; background:rgba(0,0,0,0.3);}
 }
+.bg-for-user-menu{z-index:8000; top:-50px;}
 
 .btn-user{ cursor:pointer;}
-.user-menu{position:absolute; right:10px; top:40px; margin:10px 0 0 7px; max-width:200px; z-index:100; border-radius:5px; box-shadow:@shadow;
+.dropdown-menu, .user-menu{position:absolute; right:10px; top:40px; margin:10px 0 0 7px; max-width:200px; z-index:8000; border-radius:5px; box-shadow:@shadow;
     .scroller{position:relative; float:right; background-color:rgba(0,0,0,0.05); width:10px; height:100%; overflow:hidden; border-radius:10px; margin-top:7px;}
     .scrollbar{position:relative; background-color:rgba(0,0,0,0.1); width:10px; min-height:20px; overflow:hidden; border-radius:10px;}
     .scrollable{overflow:hidden; max-width:224px;
@@ -81,16 +82,7 @@
     &:after { bottom:100%; left:90%; border:solid transparent; content:""; height:0; width:0; position:absolute; pointer-events:none; border-width:15px; margin-left:-15px;}
 }
 
-.orgs-list-menu{position:absolute; right:190px; top:40px; margin:10px 0 0 7px; max-height:~"calc(100% - 70px)"; width:220px; z-index:100; border-radius:5px; box-shadow:@shadow;
-    .scroller{position:relative; float:right; background-color:rgba(0,0,0,0.05); width:10px; height:100%; overflow:hidden; border-radius:10px; margin-top:7px;}
-    .scrollbar{position:relative; background-color:rgba(0,0,0,0.1); width:10px; min-height:20px; overflow:hidden; border-radius:10px;}
-    .scrollable{overflow:hidden; max-width:224px;
-        .scroller{display:none;}
-        &:after{content:' '; display:block; clear:both; height:0; overflow:hidden;}
-        &.scroll{ max-width:234px;
-            .scroller{display:block;} 
-        }
-    }
+.orgs-list-menu{right:190px; max-height:~"calc(100% - 70px)"; width:220px; 
     .movable{float:left; position:relative; max-width:200px; padding-bottom:10px;line-height:0; 
         & > div{float:left;}
         a .row{white-space:nowrap; text-wrap:none; text-overflow:ellipsis; overflow:hidden;}
@@ -98,8 +90,7 @@
     .movable > *{display:inline-block; width:200px; }
     .movable:after{content:'';display:block;clear:both;}
     a:hover, a:active{text-decoration:none !important;}
-    &:after { top:68px; left:100%; border:solid transparent; content:""; height:0; width:0; position:absolute; pointer-events:none; border-width:15px; margin-top:-15px;}
-
+    &:after { bottom:unset; top:68px; left:100%;}
 }
 
 header{

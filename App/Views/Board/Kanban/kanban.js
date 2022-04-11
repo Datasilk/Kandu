@@ -66,19 +66,18 @@
             const lists = $('.kanban .lists');
             const scroller = $('.kanban > .scroller');
             const scrollbar = $('.kanban > .scroller .scrollbar');
-            const win = S.window.pos();
             let w = 0;
-            let scrollW = scroller.width();
             let pos = lists.position();
-            pos.width = lists.width();
+            let boardWidth = lists.width();
+            pos.width = boardWidth;
             //get total width of all lists
             $('.lists .columns > div').each((i, e) => {
                 w += $(e).width();
             });
-            if (w > win.w) {
+            if (w > boardWidth) {
                 //lists wider than window
                 scroller.removeClass('hide');
-                scrollbar.css({ width: (scrollW / w) * win.w });
+                scrollbar.css({ width: (boardWidth / w) * boardWidth });
             } else {
                 //lists smaller than window width
                 scroller.addClass('hide');
@@ -91,7 +90,7 @@
             const scrollbar = $('.kanban > .scroller .scrollbar');
             const win = S.window.pos();
             let w = 0;
-            let scrollW = scroller.width();
+            let boardWidth = lists.width();
             let pos = lists.position();
             pos.width = lists.width();
             //get total width of all lists
@@ -100,12 +99,11 @@
             });
 
             var anim = S.kanban.scroll.selected == null;
-
             S.kanban.scroll.selected = {
                 scrollbar: scrollbar,
                 columns: lists.find('.columns'),
-                width: win.w,
-                barWidth: (scrollW / w) * win.w,
+                width: boardWidth,
+                barWidth: (boardWidth / w) * boardWidth,
                 listsW: w,
                 cursorX: e.clientX,
                 currentX: e.clientX,
@@ -115,8 +113,8 @@
                 speedStart: 0,
                 coastStart: null,
                 coasting: false,
-                barX: scrollbar.offset().left,
-                diff: (1 / win.w) * ((scrollW / w) * win.w)
+                barX: scrollbar.position().left,
+                diff: (1 / win.w) * ((boardWidth / w) * win.w)
             };
             if (!istouch === true) {
                 e.cancelBubble = true;
@@ -144,10 +142,10 @@
             S.kanban.scroll.selected.lastX = sel.currentX || 0;
 
             //animate scrollbar & columns
-            const curr = sel.currentX - sel.cursorX - (10 - sel.barX);
-            let perc = (100 / (sel.width - sel.barWidth)) * curr;
+            let perc = (100 / (sel.width - sel.barWidth)) * (sel.barX + sel.currentX - sel.cursorX);
             if (perc > 100) { perc = 100; }
             if (perc < 0) { perc = 0; }
+            console.log(sel.barX + ', ' + sel.cursorX + ', ' + sel.currentX + ', ' + perc.toFixed(2));
             sel.scrollbar.css({ left: ((sel.width - sel.barWidth) / 100) * perc });
             sel.columns.css({ left: -1 * (((sel.listsW - sel.width) / 100) * perc) });
             requestAnimationFrame(() => {
@@ -497,6 +495,8 @@
             { name: 'leftside' },
             { name: 'fullscreen' }
         ],
+        currentLayout: null,
+
         create: {
             show: function (listid) {
                 var list = $('.list.id-' + listid);
@@ -621,11 +621,24 @@
             S.ajax.post('Card/Kanban/Details', data,
                 function (d) {
                     var card = d.split('|', 2);
+                    function hasbg() {
+                        var layout = S.kanban.card.currentLayout;
+                        return layout != null ? ['rightside', 'leftside'].filter(a => layout.name).length == 0 : true;
+                    }
                     S.popup.hide(popup);
                     popup = S.popup.show(card[0], card[1], {
-                        width: '90%', maxWidth: 750, className:'popup-card-details',
+                        width: '90%', maxWidth: 750, className: 'popup-card-details', bg: hasbg(),
                         onClose: function () {
                             if (callback) { callback(); }
+                        },
+                        onShow: function () {
+                            layout = S.kanban.card.currentLayout;
+                            if (hasbg() == false) {
+                                $('.bg.for-popup').addClass('disabled');
+                            } else {
+                                $('.bg.for-popup').removeClass('disabled');
+                            }
+                            S.kanban.scroll.resize();
                         }
                     });
 
@@ -906,6 +919,12 @@
             }
         },
 
+        move: {
+            show: function () {
+
+            }
+        },
+
         archive: function () {
             var data = {
                 boardId: S.kanban.card.boardId || S.board.id,
@@ -1167,7 +1186,6 @@
 
             hide: function (e) {
                 if (e != null) {
-                    console.log(e.target);
                     var target = $(e.target);
                     if (target.parents('.btn-cancel').length == 0 && target.parents('.card-modals').length > 0) { return; }
                 }
@@ -1367,7 +1385,9 @@
             timer: null,
 
             show: function () {
-                S.kanban.card.modal.show(temp_share.innerHTML);
+                S.kanban.card.modal.show(temp_share.innerHTML
+                    .replace(/\#url\#/g, window.location.href.split('#')[0] + '#card=' + S.kanban.card.selected.id)
+                );
                 $('.popup.show #share_name').on('input', S.kanban.card.share.search);
                 $('.popup.show .share-form .btn-send').on('click', S.kanban.card.share.submit);
                 $('.popup.show .share-form .btn-cancel').on('click', () => { S.kanban.card.modal.hide(); });
@@ -1475,26 +1495,42 @@
                     }
                 }
                 $('body').on('click', bodyclick);
+            },
+            hide: function () {
+                var menu = $('.popup.show .icon-dots .menu');
+                menu.hide();
             }
         },
 
         layout: function (type) {
+            S.kanban.card.menu.hide();
             var layout = type;
             var layouts = S.kanban.card.layouts;
             var popup = $('.popup.show');
             if (layout == null || layout == '') { layout = 'center'; }
             var selected = layouts.filter(a => a.name == layout)[0];
+            S.kanban.card.currentLayout = selected;
             if ($('body').hasClass('card-' + selected.name)) { return;}
             $('body').removeClass('card-center card-rightside card-leftside card-fullscreen').addClass('card-' + selected.name);
             popup.removeClass('pos-center pos-rightside pos-leftside pos-fullscreen').addClass('pos-' + selected.name);
             switch (type) {
                 case 'center':
                     $('.bg.for-popup').removeClass('disabled');
-                    S.popup.resize();
                     break;
                 case 'leftside': case 'rightside': case 'fullscreen':
                     $('.bg.for-popup').addClass('disabled');
                     break;
+            }
+            S.popup.resize();
+            S.kanban.scroll.resize();
+        }
+    },
+
+    browser: {
+        list: {
+            show: function () {
+                //allow user to select a list from any board across all 
+                //organizations that they have access to
             }
         }
     }

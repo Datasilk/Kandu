@@ -3,7 +3,7 @@
     <div class="textarea-clone">{{title}}<div></div></div>
 </div>
 <div class="icon-share">
-    <div class="row hover pad-sm pointer" onclick="S.kanban.card.share.show()">
+    <div class="row hover pad-sm pointer" onclick="S.kanban.card.share.show()" title="Share this card with other people">
         <svg viewBox="0 0 32 32">
             <use xlink:href="#icon-share" x="0" y="0" width="32" height="32"></use>
         </svg>
@@ -20,16 +20,16 @@
             <li>
                 <div class="row layouts">
                     <div class="col">
-                        <div class="row hover" title="Popup Modal Layout" onclick="S.kanban.card.layout('center')">
+                        <div class="row hover" title="Left Panel Layout" onclick="S.kanban.card.layout('leftside')">
                             <svg viewBox="0 0 32 32">
-                                <use xlink:href="#icon-modal" x="0" y="0" width="32" height="32"></use>
+                                <use xlink:href="#icon-leftside" x="0" y="0" width="32" height="32"></use>
                             </svg>
                         </div>
                     </div>
                     <div class="col">
-                        <div class="row hover" title="Left Panel Layout" onclick="S.kanban.card.layout('leftside')">
+                        <div class="row hover" title="Popup Modal Layout" onclick="S.kanban.card.layout('center')">
                             <svg viewBox="0 0 32 32">
-                                <use xlink:href="#icon-leftside" x="0" y="0" width="32" height="32"></use>
+                                <use xlink:href="#icon-modal" x="0" y="0" width="32" height="32"></use>
                             </svg>
                         </div>
                     </div>
@@ -211,6 +211,14 @@
                 </a>
             </div>
             <h6>Invite users to view & collaborate on this card</h6>
+        </div>
+        <div class="row field url">
+            <div>
+                <svg viewBox="0 0 32 32">
+                    <use xlink:href="#icon-copy" x="0" y="0" width="32" height="32"></use>
+                </svg>
+            </div>
+            <a href="#url#" target="_blank">#url#</a>
         </div>
         <div class="row field">Name or email address</div>
         <div class="row input">

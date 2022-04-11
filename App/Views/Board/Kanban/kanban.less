@@ -187,7 +187,14 @@ body{overflow:hidden; overscroll-behavior-x: contain;}
     }
 }
 
-.share-form{ max-width:100%; width: 450px !important;}
+.share-form{ max-width:100%; width: 450px !important;
+    .url{
+        div {display:inline-block; padding-right:8px;
+             svg{width:18px; height:18px;}
+        }
+        a{width:~"calc(100% - 26px)"; text-overflow:ellipsis; overflow:hidden;}
+    }
+}
 .share-title{
     h6{width:~"calc(100% - 30px)"; text-align:left;}
 }
@@ -216,14 +223,18 @@ body{overflow:hidden; overscroll-behavior-x: contain;}
 
 /* card details layouts //////////////////////////*/
 body.card-leftside{
-    .for-popup.disabled{ width:100%; max-width:700px; left:0; bottom:0; right:unset !important; overflow:visible;}
+    .body{margin-left:699px !important;}
+    .for-popup.disabled{ width:0; left:0; bottom:unset; right:unset !important; overflow:visible;}
     .popup-card-details{ top:44px !important; left:0 !important; bottom:0px; max-width:700px !important; width:100% !important;}
+    &.boards-menu-leftside{
+        .body{margin-left:940px !important;}
+        .popup-card-details{ left:240px !important;}
+    }
 }
 body.card-rightside{
     .for-popup.disabled{ width:100%; max-width:700px; right:0; bottom:0; left:unset !important;  overflow:visible; }
-    .popup-card-details{ top:44px !important; left:auto !important; bottom:0px; right:0px; max-width:700px !important; width:100% !important;
-
-    }
+    .popup-card-details{ top:44px !important; left:auto !important; bottom:0px; right:0px; max-width:700px !important; width:100% !important;}
+    .kanban{max-width:~"calc(100% - 700px)"}
 }
 body.card-fullscreen{
     .for-popup.disabled{ width:100%; max-width:unset !important; top:0 !important; right:0 !important; bottom:0 !important; left:0 !important;  overflow:visible; }
