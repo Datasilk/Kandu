@@ -53,7 +53,7 @@
                 <hr/>
             </li>
             <li>
-                <div class="row hover">
+                <div class="row hover btn-card-members">
                     <svg viewBox="0 0 32 32">
                         <use xlink:href="#icon-user" x="0" y="0" width="32" height="32"></use>
                     </svg>
@@ -63,9 +63,22 @@
             <li>
                 <hr/>
             </li>
+            {{can-create-checklist}}
+            <li>
+                <div class="row hover btn-create-checklist">
+                    <svg viewBox="0 0 32 32">
+                        <use xlink:href="#icon-check" x="0" y="0" width="32" height="32"></use>
+                    </svg>
+                    <span>Checklist</span>
+                </div>
+            </li>
+            <li>
+                <hr/>
+            </li>
+            {{/can-create-checklist}}
             {{can-move}}
             <li>
-                <div class="row hover">
+                <div class="row hover btn-move-card">
                     <svg viewBox="0 0 32 32">
                         <use xlink:href="#icon-move" x="0" y="0" width="32" height="32"></use>
                     </svg>
@@ -74,7 +87,7 @@
             </li>
             {{/can-move}}
             <li>
-                <div class="row hover">
+                <div class="row hover btn-copy-card">
                     <svg viewBox="0 0 32 32">
                         <use xlink:href="#icon-copy" x="0" y="0" width="32" height="32"></use>
                     </svg>
@@ -86,7 +99,7 @@
             </li>
             {{can-archive}}
             <li class="item-archive {{archive-class}}">
-                <div class="row hover btn-archive">
+                <div class="row hover btn-archive-card">
                     <svg viewBox="0 0 32 32">
                         <use xlink:href="#icon-archive" x="0" y="0" width="32" height="32"></use>
                     </svg>
@@ -97,7 +110,7 @@
 
             {{can-restore}}
             <li class="item-restore {{restore-class}}">
-                <div class="row hover btn-restore">
+                <div class="row hover btn-restore-card">
                     <svg viewBox="0 0 32 32">
                         <use xlink:href="#icon-archive" x="0" y="0" width="32" height="32"></use>
                     </svg>
@@ -108,7 +121,7 @@
             
             {{can-delete}}
             <li class="item-delete {{delete-class}}">
-                <div class="row hover btn-delete">
+                <div class="row hover btn-delete-card">
                     <svg viewBox="0 0 32 32">
                         <use xlink:href="#icon-close" x="0" y="0" width="32" height="32"></use>
                     </svg>
@@ -163,6 +176,7 @@
 
 <div class="row card-details">
     {{description}}
+    {{checklist}}
     {{comments}}
 </div>
 

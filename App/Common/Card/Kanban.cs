@@ -7,7 +7,7 @@ namespace Kandu.Common.Card
 {
     public static class Kanban
     {
-        public static string RenderCardDetails(IRequest request, Query.Models.Card card, string boardColor = "", string boardName = "")
+        public static string RenderCard(IRequest request, Query.Models.Card card, string boardColor = "", string boardName = "")
         {
             var useLayout = false;
             View cardview;
@@ -76,7 +76,7 @@ namespace Kandu.Common.Card
             return cardview.Render();
         }
 
-        public static Tuple<Query.Models.Card, string> Details(IRequest request, int boardId, int cardId, int userId)
+        public static Tuple<Query.Models.Card, string> RenderDetails(IRequest request, int boardId, int cardId, int userId)
         {
             try
             {
@@ -99,6 +99,10 @@ namespace Kandu.Common.Card
                     view.Show("can-archive");
                     view.Show("can-restore");
                     view.Show("can-delete");
+                    if(card.checklist.Count == 0)
+                    {
+                        view.Show("can-create-checklist");
+                    }
                     view["archive-class"] = card.archived ? "hide" : "";
                     view["restore-class"] = card.archived ? "" : "hide";
                     view["delete-class"] = card.archived ? "" : "hide";
@@ -138,6 +142,13 @@ namespace Kandu.Common.Card
                     view.Show("no-duedate");
                 }
 
+                //checklist
+                if(card.checklist.Count > 0)
+                {
+                    view["checklist"] = RenderChecklist(card);
+                }
+                
+
                 //comments
                 var html = new StringBuilder();
                 var viewComments = new View("/Views/Card/Kanban/Details/comments.html");
@@ -167,6 +178,34 @@ namespace Kandu.Common.Card
             }
         }
 
+        public static string RenderChecklist(Query.Models.CardDetails card)
+        {
+            var html = new StringBuilder();
+            var body = "";
+            if (card.checklist.Count > 0)
+            {
+                var viewItem = new View("/Views/Card/Kanban/Details/checklist-item.html");
+                foreach (var item in card.checklist)
+                {
+                    viewItem.Clear();
+                    viewItem["id"] = item.itemId.ToString();
+                    viewItem["text"] = Utility.Strings.Web.HtmlEncode(item.label);
+                    if(item.isChecked == true)
+                    {
+                        viewItem.Show("checked");
+                    }
+                    html.Append(viewItem.Render());
+                }
+                body = html.ToString();
+            }
+            else
+            {
+                body = Cache.LoadFile("/Views/Card/Kanban/Details/no-checklistitems.html");
+            }
+            var viewChecklistMenu = new View("/Views/Card/Kanban/Details/checklist-menu.html");
+            return Accordion.Render("Checklist", body, "card-checklist", "icon-check", viewChecklistMenu.Render(), true);
+        }
+
         public static List<string> RenderCardsForMember(IRequest request, int userId, int orgId = 0, int start = 1, int length = 20)
         {
             var html = new List<string>();
@@ -176,7 +215,7 @@ namespace Kandu.Common.Card
             {
                 x++;
                 if (x > length) break;
-                html.Add(RenderCardDetails(request, card, card.boardColor, card.boardName) + "\n");
+                html.Add(RenderCard(request, card, card.boardColor, card.boardName) + "\n");
             }
             return html;
         }

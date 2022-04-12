@@ -1,11 +1,11 @@
-﻿CREATE PROCEDURE [dbo].[Card_Checklist_AddItem]
+﻿CREATE PROCEDURE [dbo].[Card_Checklist_UpdateItem]
+	@itemId int,
 	@userId int,
 	@cardId int,
 	@sort int,
 	@label nvarchar(255),
 	@ischecked bit
 AS
-	DECLARE @id int = NEXT VALUE FOR SequenceChecklistItems
 	IF (@sort < 0) BEGIN
 		SELECT @sort = CASE WHEN COUNT(*) > ISNULL(MAX(sort), 0) THEN COUNT(*) ELSE ISNULL(MAX(sort), 0) END + 1
 		FROM CardChecklistItems
@@ -18,6 +18,6 @@ AS
 		WHERE cardId=@cardId
 		SET @label = 'Checklist Item #' + CAST(@index AS varchar(32))
 	END
-	INSERT INTO CardChecklistItems (itemId, cardId, [sort], [label], checked)
-	VALUES (@id, @cardId, @sort, @label, @ischecked)
-	SELECT * FROM CardCheckListItems WHERE itemId=@id
+	UPDATE CardChecklistItems 
+	SET [sort] = @sort, [label]=@label, checked=@ischecked
+	WHERE itemId=@itemId AND cardId=@cardId

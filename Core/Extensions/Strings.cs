@@ -4,6 +4,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Linq;
 using System.Security.Cryptography;
+using System.Web;
 
 namespace Utility.Strings
 {
@@ -648,6 +649,16 @@ namespace Utility.Strings
                 return new string[] { sub, domain };
             }
             return new string[] { "", domain };
+        }
+
+        public static string UrlEncode(this string text)
+        {
+            return HttpUtility.UrlEncode(text);
+        }
+
+        public static string HtmlEncode(this string text)
+        {
+            return HttpUtility.HtmlEncode(text);
         }
 
     }

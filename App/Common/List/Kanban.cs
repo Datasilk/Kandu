@@ -15,7 +15,7 @@ namespace Kandu.Common.List
             //set up each card
             foreach (var card in cards)
             {
-                html.Append(Card.Kanban.RenderCardDetails(request, card));
+                html.Append(Card.Kanban.RenderCard(request, card));
             }
 
             //set up list

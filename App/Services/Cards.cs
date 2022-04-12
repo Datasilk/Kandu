@@ -122,7 +122,7 @@ namespace Kandu.Services
             switch (card.boardType)
             {
                 case Query.Models.Board.BoardType.kanban:
-                    return Common.Card.Kanban.RenderCardDetails(this, card);
+                    return Common.Card.Kanban.RenderCard(this, card);
             }
             return "";
         }
@@ -245,6 +245,90 @@ namespace Kandu.Services
                 return view.Render();
             }
             return "";
+        }
+        #endregion
+
+        #region "Checklist"
+        public string AddCheckList(int boardId, int cardId)
+        {
+            var board = Query.Boards.GetInfo(boardId);
+            if (!User.CheckSecurity(board.orgId, new string[] { Security.Keys.CardCanUpdate.ToString(), Security.Keys.CardFullAccess.ToString() }, Models.Scope.Card, cardId)
+                || !User.CheckSecurity(board.orgId, new string[] {
+                    Security.Keys.BoardCanView.ToString(), Security.Keys.BoardsFullAccess.ToString(), Security.Keys.BoardCanUpdate.ToString()
+                }, Models.Scope.Board, boardId)
+            ) { return AccessDenied(); }
+
+            Query.Cards.AddChecklistItem(cardId, User.UserId, "", false);
+            var card = Query.Cards.GetDetails(boardId, cardId, User.UserId);
+            return Common.Card.Kanban.RenderChecklist(card);
+        }
+
+        public string NewCheckListItem(int boardId, int cardId)
+        {
+            var board = Query.Boards.GetInfo(boardId);
+            if (!User.CheckSecurity(board.orgId, new string[] { Security.Keys.CardCanUpdate.ToString(), Security.Keys.CardFullAccess.ToString() }, Models.Scope.Card, cardId)
+                || !User.CheckSecurity(board.orgId, new string[] {
+                    Security.Keys.BoardCanView.ToString(), Security.Keys.BoardsFullAccess.ToString(), Security.Keys.BoardCanUpdate.ToString()
+                }, Models.Scope.Board, boardId)
+            ) { return AccessDenied(); }
+
+            var item = Query.Cards.AddChecklistItem(cardId, User.UserId, "", false);
+            var viewItem = new View("/Views/Card/Kanban/Details/checklist-item.html");
+            viewItem["id"] = item.itemId.ToString();
+            viewItem["text"] = Web.HtmlEncode(item.label);
+            return viewItem.Render();
+        }
+
+        public string UpdateCheckListItemLabel(int boardId, int cardId, int itemId, string label)
+        {
+            var board = Query.Boards.GetInfo(boardId);
+            if (!User.CheckSecurity(board.orgId, new string[] { Security.Keys.CardCanUpdate.ToString(), Security.Keys.CardFullAccess.ToString() }, Models.Scope.Card, cardId)
+                || !User.CheckSecurity(board.orgId, new string[] {
+                    Security.Keys.BoardCanView.ToString(), Security.Keys.BoardsFullAccess.ToString(), Security.Keys.BoardCanUpdate.ToString()
+                }, Models.Scope.Board, boardId)
+            ) { return AccessDenied(); }
+
+            try
+            {
+                Query.Cards.UpdateChecklistItemLabel(itemId, cardId, User.UserId, label);
+            }catch(Exception)
+            {
+                return Error("Could not update existing checklist item");
+            }
+            return Success();
+        }
+
+        public string UpdateCheckListItemChecked(int boardId, int cardId, int itemId, bool ischecked)
+        {
+            var board = Query.Boards.GetInfo(boardId);
+            if (!User.CheckSecurity(board.orgId, new string[] { Security.Keys.CardCanUpdate.ToString(), Security.Keys.CardFullAccess.ToString() }, Models.Scope.Card, cardId)
+                || !User.CheckSecurity(board.orgId, new string[] {
+                    Security.Keys.BoardCanView.ToString(), Security.Keys.BoardsFullAccess.ToString(), Security.Keys.BoardCanUpdate.ToString()
+                }, Models.Scope.Board, boardId)
+            ) { return AccessDenied(); }
+
+            try
+            {
+                Query.Cards.UpdateChecklistItemChecked(itemId, cardId, User.UserId, ischecked);
+            }
+            catch (Exception)
+            {
+                return Error("Could not update existing checklist item");
+            }
+            return Success();
+        }
+
+        public string GetCheckList(int boardId, int cardId)
+        {
+            var board = Query.Boards.GetInfo(boardId);
+            if (!User.CheckSecurity(board.orgId, new string[] { Security.Keys.CardCanUpdate.ToString(), Security.Keys.CardFullAccess.ToString() }, Models.Scope.Card, cardId)
+                || !User.CheckSecurity(board.orgId, new string[] {
+                    Security.Keys.BoardCanView.ToString(), Security.Keys.BoardsFullAccess.ToString(), Security.Keys.BoardCanUpdate.ToString()
+                }, Models.Scope.Board, boardId)
+            ) { return AccessDenied(); }
+
+            var card = Query.Cards.GetDetails(boardId, cardId, User.UserId);
+            return Common.Card.Kanban.RenderChecklist(card);
         }
         #endregion
 

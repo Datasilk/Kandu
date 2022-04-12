@@ -158,5 +158,35 @@ namespace Query
         {
             Sql.ExecuteNonQuery("Card_Comment_Flag", new { commentId, cardId, userId });
         }
+
+        public static Models.CardChecklistItem GetChecklistItem(int cardId, int itemId)
+        {
+            return Sql.ExecuteScalar<Models.CardChecklistItem>("Card_Checklist_GetItem", new { cardId, itemId });
+        }
+
+        public static Models.CardChecklistItem AddChecklistItem(int cardId, int userId, string label, bool ischecked, int sort = -1)
+        {
+            return Sql.ExecuteScalar<Models.CardChecklistItem>("Card_Checklist_AddItem", new { cardId, userId, label, ischecked, sort });
+        }
+
+        public static void UpdateChecklistItem(int itemId, int cardId, int userId, int sort, string label, bool ischecked = false)
+        {
+            Sql.ExecuteNonQuery("Card_Checklist_UpdateItem", new { itemId, userId, cardId, sort, label, ischecked });
+        }
+
+        public static void UpdateChecklistItemLabel(int itemId, int cardId, int userId, string label)
+        {
+            Sql.ExecuteNonQuery("Card_Checklist_UpdateItemLabel", new { itemId, userId, cardId, label});
+        }
+
+        public static void UpdateChecklistItemChecked(int itemId, int cardId, int userId, bool ischecked)
+        {
+            Sql.ExecuteNonQuery("Card_Checklist_UpdateItemChecked", new { itemId, userId, cardId, ischecked });
+        }
+
+        public static void RemoveChecklistItem(int itemId, int cardId, int userId)
+        {
+            Sql.ExecuteNonQuery("Card_Checklist_RemoveItem", new { itemId, cardId, userId });
+        }
     }
 }

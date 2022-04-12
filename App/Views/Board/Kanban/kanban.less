@@ -128,8 +128,10 @@ body{overflow:hidden; overscroll-behavior-x: contain;}
     }
     .description-title{padding-bottom:10px;}
     .accordion{margin-top:20px;
-        & > .title > div{margin-top:-5px; height:30px;
-            .icon{height:18px;}
+        & > .title > div{margin-top:-5px; height:30px;}
+        & > .title .icon{height:18px;}
+        & > .title > .icon{margin-top:-2px;
+            svg{width:18px;}
         }
     }
     .temp{position:absolute; width:100%; min-height:75px; top:-10000px; left:-10000px; opacity:0;
@@ -137,6 +139,10 @@ body{overflow:hidden; overscroll-behavior-x: contain;}
         ul{padding:0 0 10px 10px;}
         li{padding:3px 0;}
         p{display:block; padding:0 0 10px 0; line-height:1.5; }
+    }
+
+    .checklist-item{
+
     }
 }
 #card_description, #newcomment{line-height:1.5; overflow-y:hidden; height:45px;}

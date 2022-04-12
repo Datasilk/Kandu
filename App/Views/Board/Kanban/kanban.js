@@ -145,7 +145,6 @@
             let perc = (100 / (sel.width - sel.barWidth)) * (sel.barX + sel.currentX - sel.cursorX);
             if (perc > 100) { perc = 100; }
             if (perc < 0) { perc = 0; }
-            console.log(sel.barX + ', ' + sel.cursorX + ', ' + sel.currentX + ', ' + perc.toFixed(2));
             sel.scrollbar.css({ left: ((sel.width - sel.barWidth) / 100) * perc });
             sel.columns.css({ left: -1 * (((sel.listsW - sel.width) / 100) * perc) });
             requestAnimationFrame(() => {
@@ -630,17 +629,22 @@
                         width: '90%', maxWidth: 750, className: 'popup-card-details', bg: hasbg(),
                         onClose: function () {
                             if (callback) { callback(); }
+                            $('body').removeClass('card-leftside card-rightside card-fullscreen card-center');
                         },
                         onShow: function () {
-                            layout = S.kanban.card.currentLayout;
                             if (hasbg() == false) {
                                 $('.bg.for-popup').addClass('disabled');
                             } else {
                                 $('.bg.for-popup').removeClass('disabled');
                             }
+                            if (S.kanban.card.currentLayout != null) { S.kanban.card.layout(S.kanban.card.currentLayout.name); }
                             S.kanban.scroll.resize();
+                        },
+                        onHide: function () {
+                            $('body').removeClass('card-leftside card-rightside card-fullscreen card-center');
                         }
                     });
+                    if (S.kanban.card.currentLayout != null) { S.kanban.card.layout(S.kanban.card.currentLayout.name); }
 
                     $('.popup.show').prepend('<div class="card-modal-bg" style="display:none;"></div>');
 
@@ -656,6 +660,9 @@
                     //due date button
                     $('.popup.show .button.no-duedate, .popup.show .button.has-duedate').on('click', S.kanban.card.dueDate.show);
 
+                    //initialize checklist
+                    S.kanban.card.checklist.init();
+
                     //add comment button
                     $('.popup.show .comment-link').on('click', S.kanban.card.comments.add.show);
 
@@ -665,9 +672,12 @@
                     }
 
                     //drop down menu item events
-                    $('.popup.show .btn-archive').on('click', S.kanban.card.archive);
-                    $('.popup.show .btn-restore').on('click', S.kanban.card.restore);
-                    $('.popup.show .btn-delete').on('click', S.kanban.card.delete);
+                    $('.popup.show .btn-create-checklist').on('click', S.kanban.card.checklist.add);
+                    $('.popup.show .btn-copy-card').on('click', S.kanban.card.copy.show);
+                    $('.popup.show .btn-move-card').on('click', S.kanban.card.move.show);
+                    $('.popup.show .btn-archive-card').on('click', S.kanban.card.archive);
+                    $('.popup.show .btn-restore-card').on('click', S.kanban.card.restore);
+                    $('.popup.show .btn-delete-card').on('click', S.kanban.card.delete);
 
                     //description events
                     $('.popup.show .description-link').on('click', S.kanban.card.description.edit);
@@ -919,8 +929,82 @@
             }
         },
 
+        checklist: {
+            typingTimer: null,
+
+            init: function () {
+                var container = $('.popup.show .card-checklist');
+                container.find('.checklist-link').off('click').on('click', S.kanban.card.checklist.addItem);
+                container.find('.checklist-item input[type="text"]').off('input').on('input', S.kanban.card.checklist.inputItem);
+                container.find('.checklist-item input[type="checkbox"]').off('input').on('input', S.kanban.card.checklist.checked);
+            },
+
+            add: function () {
+                S.kanban.card.menu.hide();
+                S.ajax.post('Cards/AddCheckList', { boardId: S.kanban.card.boardId, cardId: S.kanban.card.selected.id }, (response) => {
+                    $('.popup.show .accordion.card-checklist').remove();
+                    $('.popup.show .accordion.card-description').after(response);
+                    S.kanban.card.checklist.init();
+                });
+            },
+
+            addItem: function () {
+                S.ajax.post('Cards/NewCheckListItem', { boardId: S.kanban.card.boardId, cardId: S.kanban.card.selected.id }, (response) => {
+                    $('.popup.show .accordion.card-checklist .contents').append(response);
+                    S.kanban.card.checklist.init();
+                });
+            },
+
+            checked: function (e) {
+                var target = $(e.target);
+                var item = target.parents('.checklist-item');
+                var id = item.attr('data-id');
+                var data = {
+                    boardId: S.kanban.card.boardId,
+                    cardId: S.kanban.card.selected.id,
+                    itemId: id,
+                    ischecked: item.find('input[type="checkbox"]')[0].checked === true
+                };
+                console.log(data);
+                S.ajax.post('Cards/UpdateCheckListItemChecked', data);
+            },
+
+            inputItem: function (e) {
+                var timer = S.kanban.card.checklist.typingTimer;
+                if (timer != null) { clearTimeout(timer); }
+                S.kanban.card.checklist.typingTimer = setTimeout(() => {
+                    var target = $(e.target);
+                    var item = target.parents('.checklist-item');
+                    var id = item.attr('data-id');
+                    var data = {
+                        boardId: S.kanban.card.boardId,
+                        cardId: S.kanban.card.selected.id,
+                        itemId: id,
+                        label: item.find('input[type="text"]').val()
+                    };
+                    S.ajax.post('Cards/UpdateCheckListItemLabel', data, (response) => {
+
+                    });
+                }, 2000);
+            }
+        },
+
+        copy: {
+            show: function () {
+
+            },
+
+            cancel: function () {
+
+            }
+        },
+
         move: {
             show: function () {
+
+            },
+
+            cancel: function () {
 
             }
         },
