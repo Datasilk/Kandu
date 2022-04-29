@@ -58,7 +58,11 @@ input[type]:not([type=button]):not([type=submit]):not([type=radio]){border-radiu
 .box select{padding:6px;}
 input[type="checkbox"]{width:18px !important; height:18px;}
 input.label{border-style:none !important; background-color:transparent !important;}
-.row.hover:hover input.label{border-style:solid; background-color:inherit;}
+.row.hover:hover input.label:focus{border-style:none; background-color:inherit;}
+.row.hover:hover input.label.on-focus:focus, 
+.row.hover input.label.on-focus:focus{border-style:none !important; outline-style:none !important; background-color:transparent !important;}
+.row.hover:hover input.label.on-focus.focused:focus, 
+.row.hover input.label.on-focus.focused:focus{border-style:none !important; outline-style:solid !important;}
 
 /* buttons */
 .button{font-weight:bold;

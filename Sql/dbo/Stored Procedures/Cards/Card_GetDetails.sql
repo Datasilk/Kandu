@@ -21,7 +21,7 @@ AS
 	WHERE cl.cardId = @cardId
 
 	/* [1] Card Checklist Items */
-	SELECT i.itemId, i.sort, i.checked AS ischecked, i.[label]
+	SELECT i.itemId, i.sort, i.ischecked, i.[label]
 	FROM CardChecklistItems i
 	WHERE i.cardId = @cardId
 	ORDER BY i.sort, i.datecreated DESC

@@ -5,5 +5,5 @@
 	@ischecked bit
 AS
 	UPDATE CardChecklistItems 
-	SET [checked]=@ischecked
+	SET [ischecked]=@ischecked
 	WHERE itemId=@itemId AND cardId=@cardId

@@ -166,7 +166,7 @@ namespace Query
 
         public static Models.CardChecklistItem AddChecklistItem(int cardId, int userId, string label, bool ischecked, int sort = -1)
         {
-            return Sql.ExecuteScalar<Models.CardChecklistItem>("Card_Checklist_AddItem", new { cardId, userId, label, ischecked, sort });
+            return Sql.Populate<Models.CardChecklistItem>("Card_Checklist_AddItem", new { cardId, userId, label, ischecked, sort }).FirstOrDefault();
         }
 
         public static void UpdateChecklistItem(int itemId, int cardId, int userId, int sort, string label, bool ischecked = false)

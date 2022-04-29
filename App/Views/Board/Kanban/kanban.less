@@ -141,7 +141,15 @@ body{overflow:hidden; overscroll-behavior-x: contain;}
         p{display:block; padding:0 0 10px 0; line-height:1.5; }
     }
 
+    .card-checklist{
+        .contents{position:relative;}
+        .clone{position:absolute; transform:rotate(-4deg); z-index:10000;}
+    }
     .checklist-item{
+        .input.expand{width:~"calc(100% - 70px)" !important;}
+        .icon-close{margin:13px 0 0 0;
+            svg{width:16px;}
+        }
 
     }
 }

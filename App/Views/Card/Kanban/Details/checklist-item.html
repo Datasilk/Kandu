@@ -2,7 +2,12 @@
     <div class="col input checkbox">
         <input type="checkbox" id="checklistitem_{{id}}" {{checked}}checked="checked"{{/checked}} />
     </div>
-    <div class="col input">
-        <input type="text" class="label" value="{{text}}"/>
+    <div class="col input expand">
+        <input type="text" class="label on-focus" value="{{text}}"/>
+    </div>
+    <div class="col hover-only icon-close">
+        <svg viewBox="0 0 32 32">
+            <use xlink:href="#icon-close" x="0" y="0" width="32" height="32"></use>
+        </svg>
     </div>
 </div>

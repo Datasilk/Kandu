@@ -181,7 +181,7 @@ namespace Kandu.Common.Card
         public static string RenderChecklist(Query.Models.CardDetails card)
         {
             var html = new StringBuilder();
-            var body = "";
+            string body;
             if (card.checklist.Count > 0)
             {
                 var viewItem = new View("/Views/Card/Kanban/Details/checklist-item.html");

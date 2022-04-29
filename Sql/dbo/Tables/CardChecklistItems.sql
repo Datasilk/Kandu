@@ -4,6 +4,6 @@
     [cardId] INT NOT NULL, 
     [sort] INT NOT NULL DEFAULT 999, 
     [label] NVARCHAR(255) NOT NULL DEFAULT '', 
-    [checked] BIT NOT NULL DEFAULT 0,
+    [ischecked] BIT NOT NULL DEFAULT 0,
     [datecreated] DATETIME2 NOT NULL DEFAULT GETUTCDATE()
 )

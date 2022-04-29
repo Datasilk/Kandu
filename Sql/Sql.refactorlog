@@ -105,4 +105,11 @@
     <Property Name="ParentElementType" Value="SqlTable" />
     <Property Name="NewName" Value="invitedemail" />
   </Operation>
+  <Operation Name="Rename Refactor" Key="cf6f9abd-6b40-45c3-a725-5df0b60999ba" ChangeDateTime="04/16/2022 23:51:50">
+    <Property Name="ElementName" Value="[dbo].[CardChecklistItems].[checked]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[CardChecklistItems]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="ischecked" />
+  </Operation>
 </Operations>

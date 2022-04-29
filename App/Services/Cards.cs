@@ -318,6 +318,26 @@ namespace Kandu.Services
             return Success();
         }
 
+        public string DeleteCheckListItem(int boardId, int cardId, int itemId)
+        {
+            var board = Query.Boards.GetInfo(boardId);
+            if (!User.CheckSecurity(board.orgId, new string[] { Security.Keys.CardCanUpdate.ToString(), Security.Keys.CardFullAccess.ToString() }, Models.Scope.Card, cardId)
+                || !User.CheckSecurity(board.orgId, new string[] {
+                    Security.Keys.BoardCanView.ToString(), Security.Keys.BoardsFullAccess.ToString(), Security.Keys.BoardCanUpdate.ToString()
+                }, Models.Scope.Board, boardId)
+            ) { return AccessDenied(); }
+
+            try
+            {
+                Query.Cards.RemoveChecklistItem(itemId, cardId, User.UserId);
+            }
+            catch (Exception)
+            {
+                return Error("Could not delete checklist item");
+            }
+            return Success();
+        }
+
         public string GetCheckList(int boardId, int cardId)
         {
             var board = Query.Boards.GetInfo(boardId);
