@@ -350,6 +350,8 @@ namespace Kandu.Services
             var card = Query.Cards.GetDetails(boardId, cardId, User.UserId);
             return Common.Card.Kanban.RenderChecklist(card);
         }
+
+
         #endregion
 
         #region "Comments"

@@ -188,5 +188,10 @@ namespace Query
         {
             Sql.ExecuteNonQuery("Card_Checklist_RemoveItem", new { itemId, cardId, userId });
         }
+
+        public static void SortChecklist(int cardId, int userId, int[] ids)
+        {
+            Sql.ExecuteNonQuery("Card_Checklist_SortItems", new { userId, cardId, ids = string.Join(',', ids) });
+        }
     }
 }

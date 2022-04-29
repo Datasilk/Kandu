@@ -28,5 +28,13 @@
             Query.Cards.Move(boardId, listId, cardId, cardIds);
             return Success();
         }
+
+
+        public string MoveChecklistItem(int boardId, int cardId, int[] itemIds)
+        {
+            if (!User.CheckSecurity(boardId)) { return AccessDenied(); }
+            Query.Cards.SortChecklist(cardId, User.UserId, itemIds);
+            return Success();
+        }
     }
 }

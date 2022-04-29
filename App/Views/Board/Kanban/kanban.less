@@ -140,7 +140,6 @@ body{overflow:hidden; overscroll-behavior-x: contain;}
         li{padding:3px 0;}
         p{display:block; padding:0 0 10px 0; line-height:1.5; }
     }
-
     .card-checklist{
         .contents{position:relative;}
         .clone{position:absolute; transform:rotate(-4deg); z-index:10000;}
@@ -150,7 +149,11 @@ body{overflow:hidden; overscroll-behavior-x: contain;}
         .icon-close{margin:13px 0 0 0;
             svg{width:16px;}
         }
-
+    }
+    .drag{
+        &.hovering.upward{padding-top:0 !important;}
+        &.hovering.downward{padding-bottom:0 !important;}
+        .clone{border-style:solid; border-width:2px; border-radius:4px;}
     }
 }
 #card_description, #newcomment{line-height:1.5; overflow-y:hidden; height:45px;}

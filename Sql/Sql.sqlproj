@@ -237,6 +237,7 @@
     <Build Include="dbo\Stored Procedures\Cards\Card_Checklist_GetItem.sql" />
     <Build Include="dbo\Stored Procedures\Cards\Card_Checklist_UpdateItemLabel.sql" />
     <Build Include="dbo\Stored Procedures\Cards\Card_Checklist_UpdateItemChecked.sql" />
+    <Build Include="dbo\Stored Procedures\Cards\Card_Checklist_SortItems.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Sql.publish.xml" />

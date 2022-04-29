@@ -987,7 +987,6 @@
                     itemId: id,
                     ischecked: item.find('input[type="checkbox"]')[0].checked === true
                 };
-                console.log(data);
                 S.ajax.post('Cards/UpdateCheckListItemChecked', data);
             },
 
@@ -1022,17 +1021,17 @@
 
                 init: function (elems) {
                     let container = '.popup.show .card-checklist .contents';
+                    let parent = $(container);
+                    let cpos = parent.offset();
                     let selItems = container + ' .checklist-item';
                     $(selItems).each(function (i, item) {
                         var cardElem = $(item);
                         S.drag.add(cardElem, cardElem,
                             //onStart  /////////////////////////////////////////////////////////////////////////////////
                             function (item) {
-
                                 this.dragging = true;
                                 item.elem.addClass('dragging');
-                                $('.board').addClass('dragging');
-                                this.headerHeight = $('header').height();
+                                $(container).addClass('dragging');
 
                                 //clone item for visual representation
                                 let clone = $(item.elem[0].cloneNode(true));
@@ -1056,77 +1055,41 @@
                                 var geo = this.geometry;
                                 var bounds = { top: item.cursor.y - 5, right: item.cursor.x, bottom: item.cursor.y + 5, left: item.cursor.x };
                                 var changed = false;
-                                //console.log('bounds:');
-                                //console.log(bounds);
+
                                 //first, detect which list the cursor is over
                                 var found = false;
                                 var hovering = $(selItems + '.hovering');
-                                hovering.removeClass('hovering').parent().removeClass('hovering upward downward');
+                                hovering.removeClass('hovering');
                                 if (geo.items.length > 0) {
                                     for (var y = 0; y < geo.items.length; y++) {
-                                        var item = geo.items[y];
-                                        if (S.math.intersect(item, bounds)) {
-                                            //console.log(['intersecting item:', item, 'bounds:', bounds]);
-                                            var elem = $(item.elem);
-                                            $(selItems + '.hovering').removeClass('hovering').parent().removeClass('hovering upward downward');
-                                            current.itemId = S.util.element.getClassId(item.elem, 'item-');
+                                        var nextitem = geo.items[y];
+                                        var itembounds = { top: nextitem.top - 5, right: nextitem.top + nextitem.width, bottom: nextitem.top + nextitem.height, left: nextitem.left };
+                                        if (S.math.intersect(itembounds, bounds)) {
+                                            var elem = $(nextitem.elem);
+                                            current.itemId = S.util.element.getClassId(nextitem.elem, 'item-');
                                             current.item = elem;
-                                            current.list = $(container);
+                                            current.list = parent;
                                             elem.addClass('hovering');
-                                            elem.parent().addClass('hovering');
+                                            parent.addClass('hovering');
                                             changed = true;
-                                            var pos = elem.offset();
-                                            var parent = elem.parent();
-                                            if (bounds.top - pos.top < elem.height() / 2) {
+                                            if (bounds.top - nextitem.top < nextitem.height / 2) {
                                                 //upward drop
                                                 if (!parent.hasClass('upward')) {
-                                                    console.log('upward');
                                                     parent.addClass('upward').removeClass('downward');
                                                     S.drag.alteredDOM();
-                                                    current.below = false;
                                                 }
+                                                current.below = false;
                                             } else {
                                                 //downward drop
                                                 if (!parent.hasClass('downward')) {
-                                                    console.log('downward');
                                                     parent.addClass('downward').removeClass('upward');
                                                     S.drag.alteredDOM();
-                                                    current.below = true;
                                                 }
-                                            }
-                                            //check if item is above dragging item in same list
-                                            let founditem = false;
-                                            let founddrag = false;
-                                            var list = $(selItems);
-                                            for (var z = 0; z < list.length; z++) {
-                                                if (list[z].className.indexOf('item-' + current.itemId) >= 0) {
-                                                    founditem = true;
-                                                    break;
-                                                } else if (list[z] == this.elem[0]) {
-                                                    founddrag = true;
-                                                }
-                                            }
-                                            if ((founditem == true && founddrag == false) ||
-                                                (founditem == false && founddrag == true)) {
-                                                //item is above dragged item
-                                                S.drag.item.offset.y = 50;
-                                            } else {
-                                                //item is below dragged item
-                                                S.drag.item.offset.y = 0;
+                                                current.below = true;
                                             }
                                             found = true;
                                             break;
                                         }
-                                    }
-                                } else {
-                                    //list contains no items
-                                    if (list.elem.find('.item').length == 0) {
-                                        current.list = $(container);
-                                        current.itemId = null;
-                                        current.item = null;
-                                        changed = true;
-                                        list.elem.find('.items').addClass('hovering');
-                                        found = true;
                                     }
                                 }
 
@@ -1139,32 +1102,25 @@
                                     hovering.parent().removeClass('hovering upward downward');
                                     this.current = { itemId: null, item: null, below: true };
                                     S.drag.alteredDOM();
-                                    //S.drag.item.offset.y = -this.headerHeight;
                                 }
                             },
                             //onStop  /////////////////////////////////////////////////////////////////////////////////
                             function (item) {
                                 //$('.kanban > .list .items > *').remove();
                                 item.elem = $(this.elem);
+                                $(container + ' .clone').remove();
                                 item.elem.removeClass('dragging hide').css({ 'margin-bottom': '' });
-                                $(selItems).parent().removeClass('hovering upward downward');
-                                $(container).removeClass('dragging');
-                                $(selItems + '.dragging').remove();
+                                parent.removeClass('hovering upward downward');
                                 item.elem.css({ top: 0, left: 0 });
 
                                 //move item in DOM to drop area
-                                if (this.current.listId != null) {
-                                    if (this.current.itemId != null) {
-                                        if (this.current.below == true) {
-                                            //append below item
-                                            this.current.item.parent().after(item.elem.parent());
-                                        } else {
-                                            //append above item
-                                            this.current.item.parent().before(item.elem.parent());
-                                        }
+                                if (this.current.itemId != null) {
+                                    if (this.current.below == true) {
+                                        //append below item
+                                        this.current.item.after(item.elem);
                                     } else {
-                                        //drop item into empty list
-                                        this.current.list.find('.items').append(item.elem.parent());
+                                        //append above item
+                                        this.current.item.before(item.elem);
                                     }
 
                                     //send update to server via ajax
@@ -1173,15 +1129,13 @@
                                     list.each(function (i, item) {
                                         items.push(S.util.element.getClassId(item, 'item-'));
                                     });
-                                    S.kanban.list.resize(listId);
 
-                                    S.ajax.post('Card/ChecklistItem/Move', { boardId: S.board.id, cardId: S.kanban.card.selected.id, itemIds: items });
+                                    S.ajax.post('Card/Kanban/MoveChecklistItem', { boardId: S.board.id, cardId: S.kanban.card.selected.id, itemIds: items });
                                 }
                                 setTimeout(function () { S.kanban.card.checklist.drag.dragging = false; }, 100);
                             },
                             //onClick  /////////////////////////////////////////////////////////////////////////////////
                             function (item) {
-                                console.log(item);
                                 item.elem.find('input[type="text"]').addClass('focused')[0].focus();
                             },
                             //options
@@ -1193,19 +1147,20 @@
                 getGeometryForItems: function () {
                     //get current rectangular geometry for all checklist items
                     var geo = {items:[]};
-                    let selItems = '.popup.show .card-checklist .checklist-item:not(.clone)';
+                    let selItems = '.popup.show .card-checklist .checklist-item:not(.clone):not(.hide)';
+                    let parent = $('.popup.show .card-checklist .contents');
+                    var cpos = parent.offset();
                     geo.items = $(selItems).map((index, item) => {
-                        var parent = $(item).parent();
-                        var cpos = parent.offset();
-                        var pos = $(item).offset();
+                        var pos = $(item).position();
+                        var elem = $(item);
                         return {
                             elem: item,
-                            top: cpos.top,
+                            top: cpos.top + pos.top,
                             left: cpos.left,
                             right: cpos.left + parent.width(),
-                            bottom: cpos.top + parent.height(),
+                            bottom: cpos.top + elem.height(),
                             width: parent.width(),
-                            height: parent.height()
+                            height: elem.height()
                         }
                     });
                     S.kanban.card.checklist.drag.geometry = geo;
