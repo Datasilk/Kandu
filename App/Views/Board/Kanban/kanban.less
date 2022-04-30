@@ -151,9 +151,10 @@ body{overflow:hidden; overscroll-behavior-x: contain;}
         }
     }
     .drag{
-        &.hovering.upward{padding-top:0 !important;}
-        &.hovering.downward{padding-bottom:0 !important;}
+        &.hovering.upward .hovering{padding-top:50px !important;}
+        &.hovering.downward .hovering{padding-bottom:50px !important;}
         .clone{border-style:solid; border-width:2px; border-radius:4px;}
+        &.dragging *{cursor:move !important;}
     }
 }
 #card_description, #newcomment{line-height:1.5; overflow-y:hidden; height:45px;}

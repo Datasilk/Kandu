@@ -1022,7 +1022,7 @@
                 init: function (elems) {
                     let container = '.popup.show .card-checklist .contents';
                     let parent = $(container);
-                    let cpos = parent.offset();
+                    parent.addClass('drag');
                     let selItems = container + ' .checklist-item';
                     $(selItems).each(function (i, item) {
                         var cardElem = $(item);
@@ -1040,6 +1040,7 @@
                                 $(container).prepend(clone);
                                 this.elem = $(S.drag.item.elem);
                                 S.drag.item.elem = clone;
+                                clone.find('input[type="text"]').css({ 'cursor': 'move' });
 
                                 //reset classes
                                 $(selItems + '.hovering').removeClass('hovering').parent().removeClass('hovering upward downward');
@@ -1110,7 +1111,7 @@
                                 item.elem = $(this.elem);
                                 $(container + ' .clone').remove();
                                 item.elem.removeClass('dragging hide').css({ 'margin-bottom': '' });
-                                parent.removeClass('hovering upward downward');
+                                parent.removeClass('dragging hovering upward downward');
                                 item.elem.css({ top: 0, left: 0 });
 
                                 //move item in DOM to drop area
@@ -1139,7 +1140,7 @@
                                 item.elem.find('input[type="text"]').addClass('focused')[0].focus();
                             },
                             //options
-                            { hideArea: true, hideAreaOffset: 7, useElemPos: false, speed: 1000 / 30, callee: S.kanban.card.checklist.drag }
+                            { cancelBubble: false, hideArea: true, hideAreaOffset: 7, useElemPos: false, delay: 500, speed: 1000 / 30, callee: S.kanban.card.checklist.drag }
                         );
                     });
                 },
