@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Text.RegularExpressions;
+using Utility.Strings;
 
 namespace Kandu.Controllers
 {
@@ -38,8 +39,8 @@ namespace Kandu.Controllers
             {
                 var filename = file.Value.Filename.Replace(" ", "-").ToLower();
                 var ext = filename.Split('.')[^1];
-                filename = Regex.Replace(filename.Replace("." + ext, ""), "[^0-9A-Za-z]+", "");
-                if (filename.Length > 24) { filename = filename.Substring(0, 24); }
+                filename = filename.Replace("." + ext, "").ReplaceOnlyAlphaNumeric(true, true, "-", "_");
+                if (filename.Length > 58) { filename = filename.Substring(0, 58); }
                 var rnd = new Random();
                 var id = rnd.Next(1000, 9999);
                 var finalname = filename + "." + ext;// + "_" + id + "." + ext;
@@ -97,7 +98,7 @@ namespace Kandu.Controllers
                 filenames.Add(new Models.FileInfo()
                 {
                     Path = "/file/" + cardId + "/",
-                    Name = filename + "_" + id + "/" + ext,
+                    Name = finalname,
                     Type = filetype
                 });
             }

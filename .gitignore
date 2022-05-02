@@ -6,6 +6,7 @@
 /App/wwwroot/css/
 /App/wwwroot/js/
 /App/Content/emails/
+/App/Content/files/
 
 *.bak
 *.jfm

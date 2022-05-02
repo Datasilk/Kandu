@@ -620,6 +620,7 @@
             S.ajax.post('Card/Kanban/Details', data,
                 function (d) {
                     var card = d.split('|', 2);
+                    console.log(card);
                     function hasbg() {
                         var layout = S.kanban.card.currentLayout;
                         return layout != null ? ['rightside', 'leftside'].filter(a => layout.name).length == 0 : true;
@@ -1796,6 +1797,7 @@
         attachments: {
             init: function() {
                 $('.attachments .attachments-link').on('click', S.kanban.card.attachments.show);
+                S.kanban.card.attachments.hide();
             },
 
             show: function () {
@@ -1823,21 +1825,13 @@
             upload: function (e) {
                 var input = uploadfiles;
                 if (input.files && input.files.length > 0) {
-                    //get current caret position in editor
-
-                    let files = input.files;
-                    var progress = $('.upload-progress');
-                    progress.prop({ 'width': '1%' });
-                    progress.show();
-                    let done = 0;
+                    var files = input.files;
+                    var len = files.length;
+                    var done = 0;
+                    var filenames = [];
                     for (var x = 0; x < files.length; x++) {
                         var xhr = new XMLHttpRequest();
                         var file = files[x];
-                        //show progress bar
-                        xhr.upload.addEventListener('progress', (e) => {
-                            var percent = (x / files.length * 100) + ((e.loaded / e.total * 100) / files.length);
-                            $('.upload-progress').prop({ 'width': percent + '%' });
-                        }, false);
 
                         xhr.open('POST', '/upload?cardId=' + S.kanban.card.selected.id, false);
 
@@ -1847,18 +1841,17 @@
                                 //request success
                                 console.log(xhr.responseText);
                             }
-                            if (files.length == done) {
+                            filenames = [...filenames, ...JSON.parse(xhr.responseText)];
+                            if (done == len) {
                                 //complete upload process
-                                var files = JSON.parse(xhr.responseText);
                                 var data = {
                                     cardId: S.kanban.card.selected.id,
-                                    filenames: files.map(a => a.Name)
+                                    filenames: filenames.map(a => a.Name)
                                 };
                                 S.ajax.post('Cards/AddAttachments', data, (response) => {
                                     $('.popup.show .attachments').html(response);
                                     S.kanban.card.attachments.init();
                                 });
-                                progress.hide();
                             }
                         };
 

@@ -1,4 +1,4 @@
-﻿CREATE PROCEDURE [dbo].[Card_Attachment_Add]
+﻿CREATE PROCEDURE [dbo].[Card_Attachments_Add]
 	@userId int,
 	@cardId int,
 	@files XML 

@@ -355,7 +355,7 @@ namespace Kandu.Services
 
         #region "Attachments"
 
-        public string AddAttachments(int cardId, string[] filenames)
+        public string AddAttachments(int cardId, List<string> filenames)
         {
             var card = Query.Cards.GetInfo(cardId);
             if (!User.CheckSecurity(card.orgId, new string[] { Security.Keys.CardCanUpdate.ToString(), Security.Keys.CardFullAccess.ToString() }, Models.Scope.Card, cardId)
@@ -363,7 +363,7 @@ namespace Kandu.Services
             ) { return AccessDenied(); }
 
             //save all attachments to the database
-            Query.Cards.AddAttachments(cardId, User.UserId, filenames);
+            Query.Cards.AddAttachments(cardId, User.UserId, filenames.ToArray());
 
             //load attachments accordion
             return Common.Card.Kanban.RenderAttachments(cardId, User.UserId);

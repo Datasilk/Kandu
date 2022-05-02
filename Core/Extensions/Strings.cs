@@ -127,6 +127,53 @@ namespace Utility.Strings
             return newStr;
         }
 
+        public static string ReplaceOnlyAlphaNumeric(this string myStr, bool allowAlpha = true, bool allowNumbers = true, params string[] exceptions)
+        {
+            string newStr = myStr.ToString();
+            bool result = false;
+            int x = 0;
+            while (x < newStr.Length)
+            {
+                result = false;
+                var substr = newStr.Substring(x, 1);
+                if (allowAlpha == true)
+                {
+                    if (Asc(substr) >= Asc("a") & Asc(substr) <= Asc("z"))
+                    {
+                        result = true;
+                    }
+
+                    if (Asc(substr) >= Asc("A") & Asc(substr) <= Asc("Z"))
+                    {
+                        result = true;
+                    }
+                }
+
+                if (allowNumbers == true)
+                {
+                    if (Asc(substr) >= Asc("0") & Asc(substr) <= Asc("9"))
+                    {
+                        result = true;
+                    }
+                }
+                if(exceptions.Any(a => a == substr))
+                {
+                    result = true;
+                }
+
+                if (result == false)
+                {
+                    //remove character
+                    newStr = newStr.Substring(0, x) + newStr.Substring(x + 1);
+                }
+                else
+                {
+                    x++;
+                }
+            }
+            return newStr;
+        }
+
         public static string Capitalize(this string origText)
         {
             string[] textParts = origText.Split(' ');

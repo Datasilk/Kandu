@@ -151,7 +151,13 @@ namespace Kandu.Common.Card
                 {
                     view["checklist"] = RenderChecklist(card);
                 }
-                
+
+                //attachments
+                if (card.attachments.Count > 0)
+                {
+                    view["attachments"] = RenderAttachments(card);
+                }
+
 
                 //comments
                 var html = new StringBuilder();
@@ -254,8 +260,8 @@ namespace Kandu.Common.Card
             {
                 body = Cache.LoadFile("/Views/Card/Kanban/Details/no-attachments.html");
             }
-            var viewChecklistMenu = new View("/Views/Card/Kanban/Details/attachments-menu.html");
-            return Accordion.Render("Checklist", body, "card-checklist", "icon-check", viewChecklistMenu.Render(), true);
+            var viewAttachmentsMenu = new View("/Views/Card/Kanban/Details/attachments-menu.html");
+            return Accordion.Render("Attachments", body, "card-attachments", "icon-upload", viewAttachmentsMenu.Render(), true);
         }
 
         public static string RenderAttachment(Query.Models.CardAttachment item, View view = null)
