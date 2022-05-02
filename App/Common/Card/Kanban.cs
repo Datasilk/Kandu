@@ -80,7 +80,7 @@ namespace Kandu.Common.Card
         {
             try
             {
-                var card = Query.Cards.GetDetails(boardId, cardId, userId);
+                var card = Query.Cards.GetDetails(cardId, userId);
                 var view = new View("/Views/Card/Kanban/details.html");
                 view["card-id"] = cardId.ToString();
                 view["org-id"] = card.orgId.ToString();
@@ -102,6 +102,10 @@ namespace Kandu.Common.Card
                     if(card.checklist.Count == 0)
                     {
                         view.Show("can-create-checklist");
+                    }
+                    if (card.attachments.Count == 0)
+                    {
+                        view.Show("can-upload-files");
                     }
                     view["archive-class"] = card.archived ? "hide" : "";
                     view["restore-class"] = card.archived ? "" : "hide";
@@ -187,14 +191,7 @@ namespace Kandu.Common.Card
                 var viewItem = new View("/Views/Card/Kanban/Details/checklist-item.html");
                 foreach (var item in card.checklist)
                 {
-                    viewItem.Clear();
-                    viewItem["id"] = item.itemId.ToString();
-                    viewItem["text"] = Utility.Strings.Web.HtmlEncode(item.label);
-                    if(item.isChecked == true)
-                    {
-                        viewItem.Show("checked");
-                    }
-                    html.Append(viewItem.Render());
+                    html.Append(RenderChecklistItem(item, viewItem));
                 }
                 body = html.ToString();
             }
@@ -204,6 +201,77 @@ namespace Kandu.Common.Card
             }
             var viewChecklistMenu = new View("/Views/Card/Kanban/Details/checklist-menu.html");
             return Accordion.Render("Checklist", body, "card-checklist", "icon-check", viewChecklistMenu.Render(), true);
+        }
+
+        public static string RenderChecklistItem(Query.Models.CardChecklistItem item, View view = null)
+        {
+            if(view == null)
+            {
+                view = new View("/Views/Card/Kanban/Details/checklist-item.html");
+            }
+            else
+            {
+                view.Clear();
+            }
+            view["id"] = item.itemId.ToString();
+            view["text"] = Utility.Strings.Web.HtmlEncode(item.label);
+            if (item.label.StartsWith("#"))
+            {
+                //show header label
+                view.Show("header-item");
+                view["text"] = item.label.Substring(1).Trim();
+            }
+            else
+            {
+                //show checkbox & label
+                view.Show("checklist-item");
+                if (item.isChecked == true)
+                {
+                    view.Show("checked");
+                }
+            }
+            return view.Render();
+        }
+
+        public static string RenderAttachments(int cardId, int userId)
+        {
+            return RenderAttachments(Query.Cards.GetDetails(cardId, userId));
+        }
+        public static string RenderAttachments(Query.Models.CardDetails card)
+        {
+            var html = new StringBuilder();
+            string body;
+            if (card.attachments.Count > 0)
+            {
+                var viewItem = new View("/Views/Card/Kanban/Details/attachment.html");
+                foreach (var item in card.attachments)
+                {
+                    html.Append(RenderAttachment(item, viewItem));
+                }
+                body = html.ToString();
+            }
+            else
+            {
+                body = Cache.LoadFile("/Views/Card/Kanban/Details/no-attachments.html");
+            }
+            var viewChecklistMenu = new View("/Views/Card/Kanban/Details/attachments-menu.html");
+            return Accordion.Render("Checklist", body, "card-checklist", "icon-check", viewChecklistMenu.Render(), true);
+        }
+
+        public static string RenderAttachment(Query.Models.CardAttachment item, View view = null)
+        {
+            if (view == null)
+            {
+                view = new View("/Views/Card/Kanban/Details/attachment.html");
+            }
+            else
+            {
+                view.Clear();
+            }
+            view["id"] = item.attachmentId.ToString();
+            view["filename"] = item.filename;
+
+            return view.Render();
         }
 
         public static List<string> RenderCardsForMember(IRequest request, int userId, int orgId = 0, int start = 1, int length = 20)
@@ -219,5 +287,6 @@ namespace Kandu.Common.Card
             }
             return html;
         }
+
     }
 }

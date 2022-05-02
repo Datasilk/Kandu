@@ -50,9 +50,9 @@ namespace Query
             Sql.ExecuteNonQuery("Card_Archive",new { boardId, cardId });
         }
 
-        public static Models.CardDetails GetDetails(int boardId, int cardId, int userId)
+        public static Models.CardDetails GetDetails(int cardId, int userId)
         {
-            using (var conn = new Connection("Card_GetDetails", new { boardId, cardId, userId }))
+            using (var conn = new Connection("Card_GetDetails", new { cardId, userId }))
             {
                 var reader = conn.PopulateMultiple();
                 var details = reader.ReadFirst<Models.CardDetails>();
@@ -60,6 +60,7 @@ namespace Query
                 {
                     details.labels = reader.Read<Models.Label>().ToList();
                     details.checklist = reader.Read<Models.CardChecklistItem>().ToList();
+                    details.attachments = reader.Read<Models.CardAttachment>().ToList();
                     details.comments = reader.Read<Models.CardComment>().ToList();
                 }
                 return details;
@@ -192,6 +193,20 @@ namespace Query
         public static void SortChecklist(int cardId, int userId, int[] ids)
         {
             Sql.ExecuteNonQuery("Card_Checklist_SortItems", new { userId, cardId, ids = string.Join(',', ids) });
+        }
+
+        public static void AddAttachments(int cardId, int userId, string[] filenames)
+        {
+            var list = new Models.Xml.Attachments() 
+            { 
+                file = filenames.Select(a => new Models.Xml.Attachments.Filename() { filename = a }).ToArray() 
+            };
+            Sql.ExecuteNonQuery("Card_Attachments_Add", new { userId, cardId, files = Common.Serializer.ToXmlDocument(list).OuterXml.Replace("encoding=\"utf-8\"", "") });
+        }
+
+        public static void RemoveAttachment(int cardId, int attachmentId)
+        {
+            Sql.ExecuteNonQuery("Card_Attachment_Remove", new { attachmentId, cardId });
         }
     }
 }

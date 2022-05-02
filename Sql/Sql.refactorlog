@@ -112,4 +112,11 @@
     <Property Name="ParentElementType" Value="SqlTable" />
     <Property Name="NewName" Value="ischecked" />
   </Operation>
+  <Operation Name="Rename Refactor" Key="b46901ad-9be3-4969-85a9-b0ee16c65797" ChangeDateTime="05/01/2022 20:13:04">
+    <Property Name="ElementName" Value="[dbo].[CardAttachments].[datecreate]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[CardAttachments]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="datecreated" />
+  </Operation>
 </Operations>

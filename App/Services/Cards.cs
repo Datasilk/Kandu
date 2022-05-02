@@ -104,7 +104,7 @@ namespace Kandu.Services
 
         public string GetCard(int boardId, int cardId)
         {
-            var card = Query.Cards.GetDetails(boardId, cardId, User.UserId);
+            var card = Query.Cards.GetDetails(cardId, User.UserId);
             return GetCard(boardId, card);
         }
 
@@ -259,7 +259,7 @@ namespace Kandu.Services
             ) { return AccessDenied(); }
 
             Query.Cards.AddChecklistItem(cardId, User.UserId, "", false);
-            var card = Query.Cards.GetDetails(boardId, cardId, User.UserId);
+            var card = Query.Cards.GetDetails(cardId, User.UserId);
             return Common.Card.Kanban.RenderChecklist(card);
         }
 
@@ -273,10 +273,9 @@ namespace Kandu.Services
             ) { return AccessDenied(); }
 
             var item = Query.Cards.AddChecklistItem(cardId, User.UserId, "", false);
-            var viewItem = new View("/Views/Card/Kanban/Details/checklist-item.html");
-            viewItem["id"] = item.itemId.ToString();
-            viewItem["text"] = Web.HtmlEncode(item.label);
-            return viewItem.Render();
+            var card = Query.Cards.GetInfo(cardId);
+
+            return Common.Card.Kanban.RenderChecklistItem(item);
         }
 
         public string UpdateCheckListItemLabel(int boardId, int cardId, int itemId, string label)
@@ -347,11 +346,39 @@ namespace Kandu.Services
                 }, Models.Scope.Board, boardId)
             ) { return AccessDenied(); }
 
-            var card = Query.Cards.GetDetails(boardId, cardId, User.UserId);
+            var card = Query.Cards.GetDetails(cardId, User.UserId);
             return Common.Card.Kanban.RenderChecklist(card);
         }
 
 
+        #endregion
+
+        #region "Attachments"
+
+        public string AddAttachments(int cardId, string[] filenames)
+        {
+            var card = Query.Cards.GetInfo(cardId);
+            if (!User.CheckSecurity(card.orgId, new string[] { Security.Keys.CardCanUpdate.ToString(), Security.Keys.CardFullAccess.ToString() }, Models.Scope.Card, cardId)
+                || !User.CheckSecurity(card.orgId, new string[] {Security.Keys.BoardCanView.ToString(), Security.Keys.BoardsFullAccess.ToString(), Security.Keys.BoardCanUpdate.ToString()}, Models.Scope.Board, card.boardId)
+            ) { return AccessDenied(); }
+
+            //save all attachments to the database
+            Query.Cards.AddAttachments(cardId, User.UserId, filenames);
+
+            //load attachments accordion
+            return Common.Card.Kanban.RenderAttachments(cardId, User.UserId);
+        }
+
+        public string GetAttachments(int cardId)
+        {
+            var card = Query.Cards.GetInfo(cardId);
+            if (!User.CheckSecurity(card.orgId, new string[] { Security.Keys.CardCanView.ToString(), Security.Keys.CardFullAccess.ToString() }, Models.Scope.Card, cardId)
+                || !User.CheckSecurity(card.orgId, new string[] { Security.Keys.BoardCanView.ToString(), Security.Keys.BoardsFullAccess.ToString(), Security.Keys.BoardCanView.ToString()}, Models.Scope.Board, card.boardId)
+            ) { return AccessDenied(); }
+
+            //load attachments accordion
+            return Common.Card.Kanban.RenderAttachments(cardId, User.UserId);
+        }
         #endregion
 
         #region "Comments"

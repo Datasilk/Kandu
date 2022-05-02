@@ -76,6 +76,19 @@
                 <hr/>
             </li>
             {{/can-create-checklist}}
+            {{can-upload-files}}
+            <li>
+                <div class="row hover btn-upload-files">
+                    <svg viewBox="0 0 32 32">
+                        <use xlink:href="#icon-upload" x="0" y="0" width="32" height="32"></use>
+                    </svg>
+                    <span>Add Attachment</span>
+                </div>
+            </li>
+            <li>
+                <hr/>
+            </li>
+            {{/can-upload-files}}
             {{can-move}}
             <li>
                 <div class="row hover btn-move-card">
@@ -158,17 +171,11 @@
         <span>{{duedate}}</span>
     </a>
     {{labels-list}} 
-    <!--<a href="javascript:" class="button outline small btn-add-label">
+    <!--<a href="javascript:" class="button outline small btn-add-tag">
         <svg viewBox="0 0 32 32">
             <use xlink:href="#icon-add" x="0" y="0" width="32" height="32"></use>
         </svg>
-        <span>Add Label</span>
-    </a>
-    <a href="javascript:" class="button outline small btn-add-checklist">
-        <svg viewBox="0 0 32 32">
-            <use xlink:href="#icon-check" x="0" y="0" width="32" height="32"></use>
-        </svg>
-        <span>Add Checklist</span>
+        <span>Add Tag</span>
     </a>-->
 </div>
 
@@ -177,6 +184,7 @@
 <div class="row card-details">
     {{description}}
     {{checklist}}
+    <div class="attachments">{{attachments}}</div>
     {{comments}}
 </div>
 

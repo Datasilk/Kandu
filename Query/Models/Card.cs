@@ -38,6 +38,7 @@ namespace Query.Models
         public string boardName { get; set; }
         public List<Label> labels { get; set; }
         public List<CardChecklistItem> checklist { get; set; }
+        public List<CardAttachment> attachments { get; set; }
         public List<CardComment> comments { get; set; }
     }
 
@@ -52,6 +53,15 @@ namespace Query.Models
         public int sort { get; set; }
         public bool isChecked { get; set; }
         public string label { get; set; }
+    }
+
+    public class CardAttachment
+    {
+        public int attachmentId { get; set; }
+        public int userId { get; set; }
+        public string filename { get; set; }
+        public string path { get; set; }
+        public DateTime datecreated { get; set; }
     }
 
     public class CardComment

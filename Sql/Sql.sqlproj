@@ -238,6 +238,10 @@
     <Build Include="dbo\Stored Procedures\Cards\Card_Checklist_UpdateItemLabel.sql" />
     <Build Include="dbo\Stored Procedures\Cards\Card_Checklist_UpdateItemChecked.sql" />
     <Build Include="dbo\Stored Procedures\Cards\Card_Checklist_SortItems.sql" />
+    <Build Include="dbo\Tables\CardAttachments.sql" />
+    <Build Include="dbo\Stored Procedures\Cards\Card_Attachments_Add.sql" />
+    <Build Include="dbo\Sequences\SequenceAttachments.sql" />
+    <Build Include="dbo\Stored Procedures\Cards\Card_Attachment_Remove.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Sql.publish.xml" />

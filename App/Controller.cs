@@ -1,5 +1,6 @@
 ﻿using Utility.Strings;
 using Kandu.Core;
+using System.Text.Json;
 
 namespace Kandu
 {
@@ -101,6 +102,12 @@ namespace Kandu
         public override string AccessDenied()
         {
             return AccessDenied<Controllers.Login>();
+        }
+
+        public string JsonResponse(dynamic obj)
+        {
+            Context.Response.ContentType = "application/json";
+            return JsonSerializer.Serialize(obj);
         }
     }
 }

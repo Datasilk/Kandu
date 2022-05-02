@@ -130,11 +130,9 @@ body, h1, h2, h3, h4, h5, h6, span, input, select, textarea{font-family: Open Sa
 .box .row.hover:hover .icon-close, .box .row.hover:hover .icon-close{
     .svg(#999, true);
 }
-.box .row.hover:hover .icon-close:hover, .box .row.hover:hover .icon-close:hover{
+.box .icon-close:hover, .box .row.hover:hover .icon-close:hover{
     .svg(#ff0000, true);
 }
-
-//close button
 .box .row .btn-close a:hover use{fill:#cc0000 !important; color:#cc0000 !important;}
 
 //popup menu arrows
@@ -142,7 +140,7 @@ body, h1, h2, h3, h4, h5, h6, span, input, select, textarea{font-family: Open Sa
 .has-right-arrow:after { border-left-color: #eee !important;}
 
 //separator
-.separator{background-color:rgba(0,0,0,0.1) !important;}
+.popup .separator{background-color:rgba(0,0,0,0.1) !important;}
 
 //tabs
 .box .tabs{background-color:#d0d0d0;
@@ -205,4 +203,13 @@ body, h1, h2, h3, h4, h5, h6, span, input, select, textarea{font-family: Open Sa
         &.downward .hovering{border-bottom:solid 2px #7968ff;}
         .row.hover.hovering, .row.hover.hovering:hover{background:#b5d4ec !important;}*/
     }
+}
+
+//upload modal
+.upload-bg{background-color:rgba(0,0,0,0.9);}
+.upload-modal{
+    .box(transparent, transparent, #ddd);
+    .fonts(#ddd, fade(#ddd, 30%), #009B87, #4DA400, #FF2222, #376EB2);
+    .links(#6200ff, #9100ff, #c000ff, #6200ff);
+    .button(apply,      #00ab2f, #00d43a, #00d43a, #00d43a, transparent, transparent, transparent, transparent, transparent, transparent, transparent, transparent, #fff, #fff, #fff, #fff);
 }

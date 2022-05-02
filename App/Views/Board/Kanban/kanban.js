@@ -644,6 +644,7 @@
                             $('body').removeClass('card-leftside card-rightside card-fullscreen card-center');
                         }
                     });
+                    S.kanban.card.selected.name = $('.popup.show .card-field-title textarea').val().trim();
                     if (S.kanban.card.currentLayout != null) { S.kanban.card.layout(S.kanban.card.currentLayout.name); }
 
                     $('.popup.show').prepend('<div class="card-modal-bg" style="display:none;"></div>');
@@ -662,6 +663,8 @@
 
                     //initialize checklist
                     S.kanban.card.checklist.init();
+                    //initialize attachments
+                    S.kanban.card.attachments.init();
 
                     //add comment button
                     $('.popup.show .comment-link').on('click', S.kanban.card.comments.add.show);
@@ -673,6 +676,7 @@
 
                     //drop down menu item events
                     $('.popup.show .btn-create-checklist').on('click', S.kanban.card.checklist.add);
+                    $('.popup.show .btn-upload-files').on('click', S.kanban.card.attachments.show);
                     $('.popup.show .btn-copy-card').on('click', S.kanban.card.copy.show);
                     $('.popup.show .btn-move-card').on('click', S.kanban.card.move.show);
                     $('.popup.show .btn-archive-card').on('click', S.kanban.card.archive);
@@ -1787,6 +1791,92 @@
             }
             S.popup.resize();
             S.kanban.scroll.resize();
+        },
+
+        attachments: {
+            init: function() {
+                $('.attachments .attachments-link').on('click', S.kanban.card.attachments.show);
+            },
+
+            show: function () {
+                S.kanban.card.menu.hide();
+                //hide menu item (if neccessary)
+                var menu = $('.popup.show .icon-dots .menu .btn-upload-files').parents('li').first();
+                if (menu.length > 0) {
+                    menu.next().remove();
+                    menu.remove();
+                }
+                var div = document.createElement('div');
+                div.className = 'upload-bg';
+                div.innerHTML = $('#template_upload_modal').html()
+                    .replace('#card-name#', S.kanban.card.selected.name);
+                $('body').prepend(div);
+                //button events
+                $('.upload-modal > .icon-close').on('click', S.kanban.card.attachments.hide);
+                $('.upload-modal #uploadfiles').on('change', S.kanban.card.attachments.upload);
+            },
+
+            hide: function () {
+                $('body > .upload-bg').remove();
+            },
+
+            upload: function (e) {
+                var input = uploadfiles;
+                if (input.files && input.files.length > 0) {
+                    //get current caret position in editor
+
+                    let files = input.files;
+                    var progress = $('.upload-progress');
+                    progress.prop({ 'width': '1%' });
+                    progress.show();
+                    let done = 0;
+                    for (var x = 0; x < files.length; x++) {
+                        var xhr = new XMLHttpRequest();
+                        var file = files[x];
+                        //show progress bar
+                        xhr.upload.addEventListener('progress', (e) => {
+                            var percent = (x / files.length * 100) + ((e.loaded / e.total * 100) / files.length);
+                            $('.upload-progress').prop({ 'width': percent + '%' });
+                        }, false);
+
+                        xhr.open('POST', '/upload?cardId=' + S.kanban.card.selected.id, false);
+
+                        xhr.onload = function () {
+                            done++;
+                            if (xhr.status >= 200 && xhr.status < 400) {
+                                //request success
+                                console.log(xhr.responseText);
+                            }
+                            if (files.length == done) {
+                                //complete upload process
+                                var files = JSON.parse(xhr.responseText);
+                                var data = {
+                                    cardId: S.kanban.card.selected.id,
+                                    filenames: files.map(a => a.Name)
+                                };
+                                S.ajax.post('Cards/AddAttachments', data, (response) => {
+                                    $('.popup.show .attachments').html(response);
+                                    S.kanban.card.attachments.init();
+                                });
+                                progress.hide();
+                            }
+                        };
+
+                        console.log('sending file...');
+                        var formData = new FormData();
+                        formData.append("file", file);
+                        xhr.send(formData);
+                    }
+                }
+            },
+
+            reload: function () {
+                //reload attachments accordion
+                S.ajax.post('/Cards/GetAttachments', { cardId: S.kanban.card.selected.id }, (response) => {
+                    $('.popup.show .attachments').html(response);
+                    S.kanban.card.attachments.init();
+                });
+            }
         }
     },
 

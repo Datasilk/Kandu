@@ -47,5 +47,19 @@ namespace Query.Models
                 public string PublicKey { get; set; }
             }
         }
+
+        [Serializable]
+        [XmlRoot("attachments")]
+        public class Attachments
+        {
+            [XmlElement("file")]
+            public Filename[] file { get; set; }
+
+            public class Filename
+            {
+                [XmlAttribute("filename")]
+                public string filename { get; set; }
+            }
+        }
     }
 }

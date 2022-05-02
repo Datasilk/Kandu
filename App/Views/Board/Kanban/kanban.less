@@ -34,7 +34,7 @@ body{overflow:hidden; overscroll-behavior-x: contain;}
             .drag{position:relative;}
             &.hovering{height:40px;}
         }
-        .item{width:216px; box-shadow:@shadow-sm; border-radius:4px; background-color:#ffffff; padding:8px; margin:7px 0; overflow:hidden; cursor:pointer;
+        .item{width:213px; box-shadow:@shadow-sm; border-radius:4px; background-color:#ffffff; padding:8px; margin:7px 0; overflow:hidden; cursor:pointer;
             .title{font-size:15px; font-weight:400; line-height:1.5; white-space:normal; width: 100%; display: inline-block;}
             &.dragging{transform:rotate(7deg); z-index:100; box-shadow:@shadow;}
             &.separator{
@@ -118,6 +118,7 @@ body{overflow:hidden; overscroll-behavior-x: contain;}
         }
     }
 }
+.popup-card-details{min-height:450px;}
 .card-details{min-height:220px; margin-left:-10px; width:~"calc(100% + 20px)" !important;
     .new-description{border-radius:4px; margin-bottom:20px; padding:10px;}
     .new-description, .description-title{opacity:0.7;}
@@ -156,10 +157,18 @@ body{overflow:hidden; overscroll-behavior-x: contain;}
         .clone{border-style:solid; border-width:2px; border-radius:4px;}
         &.dragging *{cursor:move !important;}
     }
+    .attachment{
+        .icon{width:32px;}
+        .filename{width:~"calc(100% - 70px)" !important;}
+        .icon-close{margin:13px 0 0 0;
+            svg{width:16px;}
+        }
+    }
 }
-#card_description, #newcomment{line-height:1.5; overflow-y:hidden; height:45px;}
- 
+
+#card_description, #newcomment{line-height:1.5; overflow-y:hidden; height:45px;} 
 .card-comments > .title > .icon svg{width:18px;}
+
 .comments{padding-top:10px;
     .comment{border-radius:6px; box-shadow:1px 1px 5px rgba(0,0,0,0.125); padding:10px 5px 10px 5px; margin:5px 0; width:100%;
         &:after{clear:both; display:block; content:'';}
@@ -312,6 +321,19 @@ body.card-fullscreen{
         & > div{position:absolute; width:100%; min-height:30px; font-size:15px; font-weight:400; padding:10px; white-space:normal; line-height:1.5; box-sizing:border-box; border-width:1px; box-sizing:border-box;}
     }
 }
+
+/* upload modal ///////////////////////////////////// */
+.upload-bg{position:fixed; top:0; right:0; bottom:0; left:0; background-color:rgba(0,0,0,0.9); padding-top:7%; z-index:10000;}
+.row.upload-modal{margin:0 auto; max-width:550px; color:#eee; padding:0 20px;
+    .icon-close{float:right;}
+    p{padding-top:25px;}
+    & > .icon-close{margin:13px 0 0 0;
+        svg{width:25px;}
+    }
+    button.apply{margin-left:7px;}
+    #uploadfiles{opacity:0; width:170px; height:31px; position:absolute;}
+}
+
 
 @keyframes newcard {
     from { min-height: 0px; opacity:0 }
