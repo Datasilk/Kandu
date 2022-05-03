@@ -1,0 +1,20 @@
+﻿<div class="col attachment id-{{id}}" title="{{filename}}">
+    <div class="row hover">
+        <div class="col hover-only icon-close">
+            <svg viewBox="0 0 32 32">
+                <use xlink:href="#icon-close" x="0" y="0" width="32" height="32"></use>
+            </svg>
+        </div>
+        <div class="row icon">
+            {{use-icon}}
+            <svg viewBox="0 0 32 32">
+                <use xlink:href="#{{icon}}" x="0" y="0" width="32" height="32"></use>
+            </svg>
+            {{/use-icon}}
+            {{use-img}}
+            <img src="{{img-src}}" />
+            {{/use-img}}
+        </div>
+        <div class="row filename"><span>{{filename}}</span></div>
+    </div>
+</div>

@@ -157,11 +157,29 @@ body{overflow:hidden; overscroll-behavior-x: contain;}
         .clone{border-style:solid; border-width:2px; border-radius:4px;}
         &.dragging *{cursor:move !important;}
     }
-    .attachment{
-        .icon{width:32px;}
-        .filename{width:~"calc(100% - 70px)" !important;}
-        .icon-close{margin:13px 0 0 0;
-            svg{width:16px;}
+}
+.attachments {
+    &.layout-gallery {
+        .attachment .row.hover{width:210px; padding:30px 30px 10px 30px; margin:10px;}
+        .attachment{
+            .icon-close{position:absolute; right:10px; top:5px;
+                svg{width:16px;}
+            }
+            .icon{width:150px; height:175px; text-align:center; padding-top:10px
+                svg{width:150px; height:150px; position:relative; top:25px;}
+                img{width:auto; height:150px; margin:0 auto;}
+            }
+        }
+        .filename{padding:0; max-width:150px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
+        &:after{content:''; clear:both; display:block; height:0;}
+    }
+    &.layout-list{
+        .attachment{
+            .icon-close{margin:13px 0 0 0;
+                svg{width:16px;}
+            }
+            .icon{width:32px;}
+            .filename{width:~"calc(100% - 70px)" !important;}
         }
     }
 }

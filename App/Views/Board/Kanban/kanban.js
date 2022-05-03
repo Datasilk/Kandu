@@ -1797,6 +1797,7 @@
         attachments: {
             init: function() {
                 $('.attachments .attachments-link').on('click', S.kanban.card.attachments.show);
+                $('.popup.show .attachments').addClass('layout-gallery');
                 S.kanban.card.attachments.hide();
             },
 

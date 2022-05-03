@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using Kandu.Core;
+using Utility.Strings;
 
 namespace Kandu.Common.Card
 {
@@ -155,6 +156,10 @@ namespace Kandu.Common.Card
                 //attachments
                 if (card.attachments.Count > 0)
                 {
+                    foreach (var attachment in card.attachments)
+                    {
+                        attachment.path = "/Attachment?c=" + cardId + "&f=" + attachment.filename;
+                    }
                     view["attachments"] = RenderAttachments(card);
                 }
 
@@ -239,17 +244,35 @@ namespace Kandu.Common.Card
             return view.Render();
         }
 
+        public enum AttachmentsLayout
+        {
+            List = 0,
+            Gallery = 1
+        }
+
         public static string RenderAttachments(int cardId, int userId)
         {
-            return RenderAttachments(Query.Cards.GetDetails(cardId, userId));
+            var card = Query.Cards.GetDetails(cardId, userId);
+            foreach(var attachment in card.attachments)
+            {
+                attachment.path = "/Attachment?c=" + cardId + "&f=" + attachment.filename;
+            }
+            return RenderAttachments(card);
         }
-        public static string RenderAttachments(Query.Models.CardDetails card)
+        public static string RenderAttachments(Query.Models.CardDetails card, AttachmentsLayout layout = AttachmentsLayout.Gallery)
         {
             var html = new StringBuilder();
             string body;
             if (card.attachments.Count > 0)
             {
-                var viewItem = new View("/Views/Card/Kanban/Details/attachment.html");
+                var file = "list-item.html";
+                switch (layout)
+                {
+                    case AttachmentsLayout.Gallery:
+                        file = "gallery-item.html";
+                        break;
+                }
+                var viewItem = new View("/Views/Card/Kanban/Details/Attachment/" + file);
                 foreach (var item in card.attachments)
                 {
                     html.Append(RenderAttachment(item, viewItem));
@@ -264,18 +287,45 @@ namespace Kandu.Common.Card
             return Accordion.Render("Attachments", body, "card-attachments", "icon-upload", viewAttachmentsMenu.Render(), true);
         }
 
-        public static string RenderAttachment(Query.Models.CardAttachment item, View view = null)
+        public static string RenderAttachment(Query.Models.CardAttachment item, View view)
         {
-            if (view == null)
-            {
-                view = new View("/Views/Card/Kanban/Details/attachment.html");
-            }
-            else
-            {
-                view.Clear();
-            }
+            view.Clear();
             view["id"] = item.attachmentId.ToString();
+            var ext = item.filename.GetFileExtension();
+            var filetype = Files.GetFileType(item.filename);
+            switch (filetype)
+            {
+                case Files.FileType.Image:
+                    view.Show("use-img");
+                    view["img-src"] = item.path + "&s=thumb";
+                    break;
+                default:
+                    view.Show("use-icon");
+                    switch (filetype)
+                    {
+                        case Files.FileType.Document:
+                            view["icon"] = "icon-file-doc";
+                            if(ext == "pdf") { view["icon"] = "icon-file-pdf"; }
+                            break;
+                        case Files.FileType.Compressed:
+                            view["icon"] = "icon-file-zip";
+                            break;
+                        case Files.FileType.Video:
+                            view["icon"] = "icon-file-video";
+                            break;
+                        case Files.FileType.Audio:
+                            view["icon"] = "icon-file-video";
+                            break;
+                        default:
+                            view["icon"] = "icon-file";
+                            break;
+                    }
+                    break;
+            }
+
+            view["icon"] = item.filename;
             view["filename"] = item.filename;
+
 
             return view.Render();
         }

@@ -529,7 +529,7 @@ namespace Utility.Strings
             {
                 if (filename.Substring(x, 1) == ".")
                 {
-                    return filename.Substring(x + 1);
+                    return filename.Substring(x + 1).ToLower();
                 }
             }
 
