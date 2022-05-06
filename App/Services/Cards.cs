@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.IO;
 using Utility;
 using Utility.Strings;
 
@@ -375,6 +376,31 @@ namespace Kandu.Services
             if (!User.CheckSecurity(card.orgId, new string[] { Security.Keys.CardCanView.ToString(), Security.Keys.CardFullAccess.ToString() }, Models.Scope.Card, cardId)
                 || !User.CheckSecurity(card.orgId, new string[] { Security.Keys.BoardCanView.ToString(), Security.Keys.BoardsFullAccess.ToString(), Security.Keys.BoardCanView.ToString()}, Models.Scope.Board, card.boardId)
             ) { return AccessDenied(); }
+
+            //load attachments accordion
+            return Common.Card.Kanban.RenderAttachments(cardId, User.UserId);
+        }
+
+        public string RemoveAttachment(int cardId, int attachmentId)
+        {
+            var card = Query.Cards.GetInfo(cardId);
+            if (!User.CheckSecurity(card.orgId, new string[] { Security.Keys.CardCanUpdate.ToString(), Security.Keys.CardFullAccess.ToString() }, Models.Scope.Card, cardId)
+                || !User.CheckSecurity(card.orgId, new string[] { Security.Keys.BoardCanView.ToString(), Security.Keys.BoardsFullAccess.ToString(), Security.Keys.BoardCanUpdate.ToString() }, Models.Scope.Board, card.boardId)
+            ) { return AccessDenied(); }
+
+            var attachment = Query.Cards.GetAttachment(attachmentId);
+            try
+            {
+                var path = "/Content/files/" + card.orgId + "/" + card.cardId + "/";
+                File.Delete(App.MapPath(path + attachment.filename));
+                File.Delete(App.MapPath(path + "thumb/" + attachment.filename));
+            } catch (Exception ex)
+            {
+                return Error(ex.Message);
+            }
+
+            //remove attachment from the database
+            Query.Cards.RemoveAttachment(cardId, User.UserId, attachmentId);
 
             //load attachments accordion
             return Common.Card.Kanban.RenderAttachments(cardId, User.UserId);

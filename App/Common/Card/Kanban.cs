@@ -259,6 +259,7 @@ namespace Kandu.Common.Card
             }
             return RenderAttachments(card);
         }
+
         public static string RenderAttachments(Query.Models.CardDetails card, AttachmentsLayout layout = AttachmentsLayout.Gallery)
         {
             var html = new StringBuilder();
@@ -284,7 +285,7 @@ namespace Kandu.Common.Card
                 body = Cache.LoadFile("/Views/Card/Kanban/Details/no-attachments.html");
             }
             var viewAttachmentsMenu = new View("/Views/Card/Kanban/Details/attachments-menu.html");
-            return Accordion.Render("Attachments", body, "card-attachments", "icon-upload", viewAttachmentsMenu.Render(), true);
+            return Accordion.Render("Attachments", body, "card-attachments", "icon-file", viewAttachmentsMenu.Render(), true);
         }
 
         public static string RenderAttachment(Query.Models.CardAttachment item, View view)
@@ -323,8 +324,8 @@ namespace Kandu.Common.Card
                     break;
             }
 
-            view["icon"] = item.filename;
             view["filename"] = item.filename;
+            view["url"] = item.path;
 
 
             return view.Render();

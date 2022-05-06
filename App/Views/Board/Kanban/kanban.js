@@ -1797,6 +1797,7 @@
         attachments: {
             init: function() {
                 $('.attachments .attachments-link').on('click', S.kanban.card.attachments.show);
+                $('.attachment .icon-close').on('click', S.kanban.card.attachments.remove);
                 $('.popup.show .attachments').addClass('layout-gallery');
                 S.kanban.card.attachments.hide();
             },
@@ -1821,6 +1822,16 @@
 
             hide: function () {
                 $('body > .upload-bg').remove();
+            },
+
+            remove: function (e) {
+                var target = $(e.target).parents('.attachment').first();
+                var name = target.find('.filename span').html().trim();
+                if (!confirm('Do you really want to remove the attachment "' + name + '"? This cannot be undone.')) { return; }
+                var id = target.attr('data-id');
+                S.ajax.post('/Cards/RemoveAttachment', { cardId: S.kanban.card.selected.id, attachmentId: id }, (response) => {
+                    target.remove();
+                });
             },
 
             upload: function (e) {

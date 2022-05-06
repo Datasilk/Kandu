@@ -204,9 +204,14 @@ namespace Query
             Sql.ExecuteNonQuery("Card_Attachments_Add", new { userId, cardId, files = Common.Serializer.ToXmlDocument(list).OuterXml.Replace("encoding=\"utf-8\"", "") });
         }
 
-        public static void RemoveAttachment(int cardId, int attachmentId)
+        public static void RemoveAttachment(int cardId, int userId, int attachmentId)
         {
-            Sql.ExecuteNonQuery("Card_Attachment_Remove", new { attachmentId, cardId });
+            Sql.ExecuteNonQuery("Card_Attachment_Remove", new { userId, cardId, attachmentId });
+        }
+
+        public static Models.CardAttachment GetAttachment(int attachmentId)
+        {
+            return Sql.Populate<Models.CardAttachment>("Card_Attachment_GetInfo", new { attachmentId }).FirstOrDefault();
         }
     }
 }

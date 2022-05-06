@@ -27,7 +27,7 @@ namespace Kandu.Controllers
                 return Error("Please specify one or more files to upload"); 
             }
 
-            var folder = App.MapPath("/Content/files/" + cardId + "/");
+            var folder = App.MapPath("/Content/files/" + card.orgId + "/" + cardId + "/");
             var filenames = new List<Models.FileInfo>();
             var img = new Utility.Images();
 
@@ -44,13 +44,14 @@ namespace Kandu.Controllers
                 var rnd = new Random();
                 var id = rnd.Next(1000, 9999);
                 var finalname = filename + "." + ext;// + "_" + id + "." + ext;
-                var filetype = 1; //0 = unknown, 1 = image, 2 = document, 3 = zip file, 4 = video
+                var filetype = 0; //0 = unknown, 1 = image, 2 = document, 3 = zip file, 4 = video
                 switch (ext)
                 {
                     case "jpg":
                     case "jpeg":
                     case "png":
                     case "gif":
+                        filetype = 1;
                         break;
                     case "doc":
                     case "docx":
@@ -91,7 +92,7 @@ namespace Kandu.Controllers
                     {
                         Directory.CreateDirectory(folder + "thumb\\");
                     }
-                    img.Shrink(folder + finalname, folder + "thumb\\" + finalname, 1600);
+                    img.Shrink(folder + finalname, folder + "thumb\\" + finalname, 400);
                 }
 
                 //add file to result list

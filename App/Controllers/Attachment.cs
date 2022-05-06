@@ -49,7 +49,7 @@ namespace Kandu.Controllers
             }
 
             //serve file
-            using (FileStream fs = new FileStream(App.MapPath("/Content/files/" + cardId + "/" + (img && !fullsize ? "thumb/" : "") + filename), FileMode.Open))
+            using (FileStream fs = new FileStream(App.MapPath("/Content/files/" + card.orgId + "/" + cardId + "/" + (img && !fullsize ? "thumb/" : "") + filename), FileMode.Open))
             {
                 using (var ms = new MemoryStream())
                 {

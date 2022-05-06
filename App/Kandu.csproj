@@ -344,7 +344,7 @@
     <PackageReference Include="dotless.Core" Version="1.6.7" />
     <PackageReference Include="MailKit" Version="2.13.0" />
     <PackageReference Include="MimeKit" Version="2.13.0" />
-    <PackageReference Include="SixLabors.ImageSharp" Version="1.0.3" />
+    <PackageReference Include="SixLabors.ImageSharp" Version="2.1.1" />
   </ItemGroup>
 
   <ItemGroup>

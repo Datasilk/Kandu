@@ -160,17 +160,17 @@ body{overflow:hidden; overscroll-behavior-x: contain;}
 }
 .attachments {
     &.layout-gallery {
-        .attachment .row.hover{width:210px; padding:30px 30px 10px 30px; margin:10px;}
+        .attachment .row.hover{width:210px; padding:30px 30px 10px 30px; margin:13px;}
         .attachment{
             .icon-close{position:absolute; right:10px; top:5px;
                 svg{width:16px;}
             }
-            .icon{width:150px; height:175px; text-align:center; padding-top:10px
-                svg{width:150px; height:150px; position:relative; top:25px;}
-                img{width:auto; height:150px; margin:0 auto;}
+            .icon{width:150px; height:105px; text-align:center; padding-top:10px;
+                svg{width:80px !important; height:80px !important; position:relative; display:inline-block;}
+                img{width:auto; max-height:100px; max-width:150px; margin:0 auto;}
             }
         }
-        .filename{padding:0; max-width:150px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
+        .filename{padding:0; max-width:150px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; text-align:center}
         &:after{content:''; clear:both; display:block; height:0;}
     }
     &.layout-list{

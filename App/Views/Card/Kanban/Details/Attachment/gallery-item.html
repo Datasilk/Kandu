@@ -1,5 +1,5 @@
-﻿<div class="col attachment id-{{id}}" title="{{filename}}">
-    <div class="row hover">
+﻿<div class="col attachment" data-id="{{id}}" title="{{filename}}">
+    <div class="row hover no-links">
         <div class="col hover-only icon-close">
             <svg viewBox="0 0 32 32">
                 <use xlink:href="#icon-close" x="0" y="0" width="32" height="32"></use>
@@ -7,14 +7,16 @@
         </div>
         <div class="row icon">
             {{use-icon}}
-            <svg viewBox="0 0 32 32">
-                <use xlink:href="#{{icon}}" x="0" y="0" width="32" height="32"></use>
-            </svg>
+            <a href="{{url}}" target="_blank">
+                <svg viewBox="0 0 32 32">
+                    <use xlink:href="#{{icon}}" x="0" y="0" width="32" height="32"></use>
+                </svg>
+            </a>
             {{/use-icon}}
             {{use-img}}
-            <img src="{{img-src}}" />
+            <a href="{{url}}" target="_blank"><img src="{{img-src}}" /></a>
             {{/use-img}}
         </div>
-        <div class="row filename"><span>{{filename}}</span></div>
+        <div class="row filename"><a href="{{url}}" target="_blank"><span>{{filename}}</span></a></div>
     </div>
 </div>
