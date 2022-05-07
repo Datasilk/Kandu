@@ -59,5 +59,15 @@ namespace Query
             return Sql.ExecuteScalar<int>("Organization_GetMembersCount", new { orgId, page, length, search, excludeTeamId });
         }
 
+        public static void UpdateCustomJs(int orgId, bool enabled)
+        {
+            Sql.ExecuteNonQuery("Organization_UpdateCustomJs", new { orgId, customJs = enabled });
+        }
+
+        public static void UpdateCustomCss(int orgId, bool enabled)
+        {
+            Sql.ExecuteNonQuery("Organization_UpdateCustomCss", new { orgId, customCss = enabled });
+        }
+
     }
 }

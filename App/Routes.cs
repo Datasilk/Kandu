@@ -12,9 +12,14 @@ namespace Kandu
             {
                 case "": case "home": return new Controllers.Home();
                 case "login": return new Controllers.Login();
+                case "logout": return new Controllers.Logout();
                 case "boards": return new Controllers.Boards();
                 case "board": return new Controllers.Board();
                 case "import": return new Controllers.Import();
+                case "attachment": return new Controllers.Attachment();
+                case "invitation": return new Controllers.Invitation();
+                case "signup": return new Controllers.Signup();
+                case "upload": return new Controllers.Upload();
             }
             return null;
         }

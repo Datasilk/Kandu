@@ -1,4 +1,18 @@
 ﻿<div class="row messages hide"><span></span></div>
-<div class="row buttons pad-top text-center">
-    <a href="javascript:" class="button apply btn-save-settings hide" onclick="S.orgs.theme.save()">Save Changes</a>
-</div>
+<form id="formtheme">
+    <div class="row hover">
+        <div class="col field">CSS File</div>
+        <div class="col input"><input type="file" id="themefileCSS" accept=".css"  /></div>
+    </div>
+    <div class="row hover">
+        <div class="col field">JS File</div>
+        <div class="col input"><input type="file" id="themefileJS" accept=".js" /></div>
+    </div>
+    <div class="row hover">
+        <div class="col field">Resources</div>
+        <div class="col input"><input type="file" id="themefileResources" multiple /></div>
+    </div>
+    <div class="row buttons pad-top text-center">
+        <a href="javascript:" class="button apply btn-save-theme hide" onclick="S.orgs.theme.save()">Save Changes</a>
+    </div>
+</form>

@@ -16,5 +16,7 @@ namespace Query.Models
         public bool enabled { get; set; }
         public bool isprivate { get; set; }
         public string cardtype { get; set; }
+        public bool customJs { get; set; }
+        public bool customCss { get; set; }
     }
 }

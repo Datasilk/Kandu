@@ -243,6 +243,8 @@
     <Build Include="dbo\Sequences\SequenceAttachments.sql" />
     <Build Include="dbo\Stored Procedures\Cards\Card_Attachment_Remove.sql" />
     <Build Include="dbo\Stored Procedures\Cards\Card_Attachment_GetInfo.sql" />
+    <Build Include="dbo\Stored Procedures\Organizations\Organization_UpdateCustomJs.sql" />
+    <Build Include="dbo\Stored Procedures\Organizations\Organization_UpdateCustomCss.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Sql.publish.xml" />

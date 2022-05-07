@@ -393,20 +393,30 @@ S.orgs = {
             S.ajax.post('Organizations/RefreshTheme', { orgId: S.orgs.details.orgId }, function (result) {
                 var content = $('.org-details .content-theme');
                 content.html(result);
-                var savebtn = $('.org-details .btn-save-theme');
-                content.find('select, input').on('keyup, change', () => {
-                    savebtn.removeClass('hide');
-                });
+                $('#themefileCSS').on('change', S.orgs.theme.canSave);
+                $('#themefileJs').on('change', S.orgs.theme.canSave);
+                $('#themefileResources').on('change', S.orgs.theme.canSave);
+                $('.org-details .btn-save-theme').on('click', S.orgs.theme.save);
                 S.popup.resize();
             },
-                (err) => {
+            (err) => {
 
-                });
+            });
+        },
+
+        canSave: function () {
+            $('.org-details .btn-save-theme').removeClass('hide');
         },
 
         save: function () {
             var savebtn = $('.org-details .btn-save-theme');
             savebtn.addClass('hide');
+            //upload JS file first
+
+            //upload CSS file
+
+            //upload all resource files
+
         }
     }
 };

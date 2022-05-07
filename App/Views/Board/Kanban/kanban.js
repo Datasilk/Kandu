@@ -620,7 +620,6 @@
             S.ajax.post('Card/Kanban/Details', data,
                 function (d) {
                     var card = d.split('|', 2);
-                    console.log(card);
                     function hasbg() {
                         var layout = S.kanban.card.currentLayout;
                         return layout != null ? ['rightside', 'leftside'].filter(a => layout.name).length == 0 : true;
@@ -1851,7 +1850,6 @@
                             done++;
                             if (xhr.status >= 200 && xhr.status < 400) {
                                 //request success
-                                console.log(xhr.responseText);
                             }
                             filenames = [...filenames, ...JSON.parse(xhr.responseText)];
                             if (done == len) {
@@ -1866,8 +1864,6 @@
                                 });
                             }
                         };
-
-                        console.log('sending file...');
                         var formData = new FormData();
                         formData.append("file", file);
                         xhr.send(formData);

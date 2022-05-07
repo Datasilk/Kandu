@@ -254,8 +254,8 @@ namespace Kandu.Services
         {
             if (!CheckSecurity(orgId, new string[] { Security.Keys.OrgCanEditTheme.ToString() }, Models.Scope.Organization, orgId)) { return AccessDenied(); } //check security
             var org = Query.Organizations.GetInfo(orgId);
-            var groups = Query.Security.GetGroups(orgId, User.UserId);
             var view = new View("/Views/Organizations/theme.html");
+
             view.Bind(new { org });
             return view.Render();
         }

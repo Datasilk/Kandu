@@ -11,5 +11,7 @@
     [photo] BIT NOT NULL DEFAULT 0,
     [enabled] BIT NOT NULL DEFAULT 1, 
     [isprivate] BIT NOT NULL DEFAULT 1,
-    [cardtype] VARCHAR(16) NOT NULL DEFAULT '' --default card type to use when creating a new card 
-)
+    [cardtype] VARCHAR(16) NOT NULL DEFAULT '', --default card type to use when creating a new card 
+    [customJs] BIT NOT NULL DEFAULT 0, -- theme js
+    [customCss] BIT NOT NULL DEFAULT 0 -- theme css
+    )

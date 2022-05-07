@@ -16,10 +16,22 @@
             AddCSS("/css/dashboard.css?v=" + Server.Version);
 
             var view = new View("/Views/Board/board.html");
+            var board = Query.Boards.GetBoardAndLists(boardId);
+            var org = Query.Organizations.GetInfo(board.orgId);
+
+            //add theme-related resources
+            if (org.customJs)
+            {
+                AddScript("/themes/orgs/" + org.orgId + "/theme.js");
+            }
+            if (org.customCss)
+            {
+                AddScript("/themes/orgs/" + org.orgId + "/theme.css");
+            }
+
 
             //load board details
             var colors = new Utility.Colors();
-            var board = Query.Boards.GetBoardAndLists(boardId);
             BoardPage page;
 
             //add custom javascript for User Settings & Board info
