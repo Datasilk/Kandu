@@ -394,7 +394,7 @@ S.orgs = {
                 var content = $('.org-details .content-theme');
                 content.html(result);
                 $('#themefileCSS').on('change', S.orgs.theme.canSave);
-                $('#themefileJs').on('change', S.orgs.theme.canSave);
+                $('#themefileJS').on('change', S.orgs.theme.canSave);
                 $('#themefileResources').on('change', S.orgs.theme.canSave);
                 $('.org-details .btn-save-theme').on('click', S.orgs.theme.save);
                 S.popup.resize();
@@ -408,15 +408,60 @@ S.orgs = {
             $('.org-details .btn-save-theme').removeClass('hide');
         },
 
+        upload: function (file, type, callback) {
+            var xhr = new XMLHttpRequest();
+
+            xhr.open('POST', '/uploadtheme?orgId=' + S.orgs.details.orgId + '&type=' + type, false);
+
+            xhr.onload = function () {
+                if (xhr.status >= 200 && xhr.status < 400) {
+                    //request success
+                    if (callback) { callback();}
+                }
+            };
+            var formData = new FormData();
+            formData.append("file", file);
+            xhr.send(formData);
+        },
+
+        queueUploads: function (files, type, callback) {
+            if (files == null || files.length == 0) {
+                if (callback) { callback(); }
+                return;
+            }
+            S.orgs.theme.upload(files.splice(0, 1)[0], type, () => {
+                console.log(files);
+                S.orgs.theme.queueUploads(files, type, callback);
+            });
+        },
+
         save: function () {
             var savebtn = $('.org-details .btn-save-theme');
             savebtn.addClass('hide');
-            //upload JS file first
+            //upload CSS file first /////////////////////////////////////////////////////////////
+            var input = themefileCSS;
+            if (input.files && input.files.length > 0) {
+                S.orgs.theme.upload(input.files[0], 'css', uploadJs);
+            }
 
-            //upload CSS file
+            function uploadJs() {
+                //upload CSS file
+                input = themefileJS;
+                if (input.files && input.files.length > 0) {
+                    S.orgs.theme.upload(input.files[0], 'js', uploadResources);
+                }
+            }
 
-            //upload all resource files
-
+            function uploadResources() {
+                //upload all resource files
+                input = themefileResources;
+                if (input.files && input.files.length > 0) {
+                    S.orgs.theme.queueUploads(input.files[0], 'resource', () => {
+                        //refresh themes panel
+                        S.orgs.theme.refresh();
+                    });
+                }
+            }
         }
     }
 };

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.IO;
 
 namespace Kandu.Services
 {
@@ -254,9 +255,27 @@ namespace Kandu.Services
         {
             if (!CheckSecurity(orgId, new string[] { Security.Keys.OrgCanEditTheme.ToString() }, Models.Scope.Organization, orgId)) { return AccessDenied(); } //check security
             var org = Query.Organizations.GetInfo(orgId);
+            var path = "/themes/orgs/" + orgId + "/";
             var view = new View("/Views/Organizations/theme.html");
-
-            view.Bind(new { org });
+            view["css-file"] = org.customCss ? "<a href=\"" + path + "theme.css\" target=\"_blank\">" + path + "theme.css</a>" : "";
+            view["js-file"] = org.customJs ? "<a href=\"" + path + "theme.js\" target=\"_blank\">" + path + "theme.js</a>" : "";
+            //get list of files from wwwroot/themes
+            if(Directory.Exists(App.MapPath("/wwwroot" + path)))
+            {
+                var viewItem = new View("/Views/Organizations/resource-item.html");
+                var exclude = new List<string> { "theme.css", "theme.js" };
+                var files = new DirectoryInfo(App.MapPath("/wwwroot" + path)).GetFiles().Where(a => !exclude.Contains(a.Name)).ToList();
+                var html = new StringBuilder();
+                foreach(var file in files)
+                {
+                    viewItem.Clear();
+                    viewItem["id"] = file.Name;
+                    viewItem["url"] = path + file.Name;
+                    viewItem["filename"] = file.Name;
+                    html.Append(viewItem.Render());
+                }
+                view["resources"] = Common.Accordion.Render("Theme Resources", html.ToString(), "resources", "icon-file-jpg", "", true);
+            }
             return view.Render();
         }
 

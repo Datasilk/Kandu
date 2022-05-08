@@ -3,16 +3,19 @@
     <div class="row hover">
         <div class="col field">CSS File</div>
         <div class="col input"><input type="file" id="themefileCSS" accept=".css"  /></div>
+        <div class="col text right">{{css-file}}</div>
     </div>
     <div class="row hover">
         <div class="col field">JS File</div>
         <div class="col input"><input type="file" id="themefileJS" accept=".js" /></div>
+        <div class="col text right">{{js-file}}</div>
     </div>
     <div class="row hover">
         <div class="col field">Resources</div>
         <div class="col input"><input type="file" id="themefileResources" multiple /></div>
     </div>
-    <div class="row buttons pad-top text-center">
+    <div class="row buttons pad-height text-center">
         <a href="javascript:" class="button apply btn-save-theme hide" onclick="S.orgs.theme.save()">Save Changes</a>
     </div>
+    {{resources}}
 </form>

@@ -10,16 +10,22 @@ namespace Kandu
             if (App.Environment == Environment.development) { ViewCache.Clear(); }
             switch (name)
             {
+                //most frequently used routes first
+                case "board": return new Controllers.Board();
                 case "": case "home": return new Controllers.Home();
                 case "login": return new Controllers.Login();
-                case "logout": return new Controllers.Logout();
                 case "boards": return new Controllers.Boards();
-                case "board": return new Controllers.Board();
-                case "import": return new Controllers.Import();
+
+                //dashboard routes
                 case "attachment": return new Controllers.Attachment();
-                case "invitation": return new Controllers.Invitation();
-                case "signup": return new Controllers.Signup();
                 case "upload": return new Controllers.Upload();
+                case "invitation": return new Controllers.Invitation();
+                case "uploadtheme": return new Controllers.UploadTheme();
+
+                //least used routes
+                case "signup": return new Controllers.Signup();
+                case "logout": return new Controllers.Logout();
+                case "import": return new Controllers.Import();
             }
             return null;
         }
