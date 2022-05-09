@@ -109,14 +109,19 @@ input.label{border-style:none !important; background-color:transparent !importan
 
 /* accordion */
 .accordion {margin-bottom:5px;
-    .title{padding:5px 5px 5px 10px; cursor:default;
+    & > .title{padding:5px 5px 5px 10px; cursor:default;
+        &  > div{margin-top:-5px; height:30px;}
         h1, h2, h3, h4, h5, h6{padding-bottom:0;}
         h6{font-weight:normal; display:inline-block;}
         .button{float:right; border-radius:6px; cursor:pointer; width:25px; height:25px; 
                 margin:-2px 5px 0 0; padding:0; background:transparent; opacity:1;
             svg{width:16px;position:relative; left:5px;}
         }
+        .icon{height:18px;}
         .icon.small{width:16px;}
+        &  > .icon{margin-top:-2px;
+            svg{width:18px;}
+        }
     }
     svg.expander{transform: rotate(-90deg); margin:-3px 0 0 0; width:16px; position:relative; top:3px;}
     .contents{display:none;}

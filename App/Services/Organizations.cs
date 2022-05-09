@@ -265,18 +265,36 @@ namespace Kandu.Services
                 var viewItem = new View("/Views/Organizations/resource-item.html");
                 var exclude = new List<string> { "theme.css", "theme.js" };
                 var files = new DirectoryInfo(App.MapPath("/wwwroot" + path)).GetFiles().Where(a => !exclude.Contains(a.Name)).ToList();
-                var html = new StringBuilder();
-                foreach(var file in files)
+                if(files.Count > 0)
                 {
-                    viewItem.Clear();
-                    viewItem["id"] = file.Name;
-                    viewItem["url"] = path + file.Name;
-                    viewItem["filename"] = file.Name;
-                    html.Append(viewItem.Render());
+                    var html = new StringBuilder();
+                    foreach (var file in files)
+                    {
+                        viewItem.Clear();
+                        viewItem["id"] = file.Name;
+                        viewItem["url"] = path + file.Name;
+                        viewItem["filename"] = file.Name;
+                        html.Append(viewItem.Render());
+                    }
+                    view["resources"] = Common.Accordion.Render("Theme Resources", html.ToString(), "resources", "icon-file-jpg", "", true);
                 }
-                view["resources"] = Common.Accordion.Render("Theme Resources", html.ToString(), "resources", "icon-file-jpg", "", true);
             }
             return view.Render();
+        }
+
+        public string DeleteThemeResource(int orgId, string filename)
+        {
+            if (!CheckSecurity(orgId, new string[] { Security.Keys.OrgCanEditTheme.ToString() }, Models.Scope.Organization, orgId)) { return AccessDenied(); } //check security
+            var path = "/themes/orgs/" + orgId + "/";
+            try
+            {
+                File.Delete(App.MapPath("/wwwroot/" + path + filename));
+            }
+            catch(Exception ex)
+            {
+                return Error("Could not delete resource");
+            }
+            return Success();
         }
 
         #endregion

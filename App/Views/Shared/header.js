@@ -178,7 +178,7 @@
 
 //force popup modal to stick to the top of the window at 70px
 S.popup.global.stickyTop = 0;
-S.popup.global.offsetHeight = 44;
+S.popup.global.offsetHeight = 0;
 
 //initialize head class
 S.head.init();

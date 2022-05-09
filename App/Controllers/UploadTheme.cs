@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using Utility.Strings;
@@ -24,8 +23,10 @@ namespace Kandu.Controllers
                 return Error("Please specify one or more files to upload"); 
             }
 
-            var folder = App.MapPath("/wwwroot/themes/org/" + orgId + "/");
-            var extensions = new string[] { "jpg", "jpeg", "png", "gif", "svg", "avif", "webp" };
+            var folder = App.MapPath("/wwwroot/themes/orgs/" + orgId + "/");
+
+            //allowed resource file extensions
+            var allowed = new string[] { "jpg", "jpeg", "png", "gif", "svg", "avif", "webp" };
 
             if (!Directory.Exists(folder))
             {
@@ -36,10 +37,6 @@ namespace Kandu.Controllers
             {
                 var filename = file.Value.Filename.Replace(" ", "-").ToLower();
                 var ext = filename.Split('.')[^1];
-                if(!extensions.Contains(ext))
-                {
-                    return Error("Unknown file type. Only upload files compatible with themes");
-                }
 
                 //save file to disk
                 switch (type)
@@ -49,6 +46,10 @@ namespace Kandu.Controllers
                         filename = "theme";
                         break;
                     default:
+                        if (!allowed.Contains(ext))
+                        {
+                            return Error("Unknown file type. Only upload files compatible with themes");
+                        }
                         filename = filename.Replace("." + ext, "").ReplaceOnlyAlphaNumeric(true, true, "-", "_");
                         if (filename.Length > 58) { filename = filename.Substring(0, 58); }
                         break;
