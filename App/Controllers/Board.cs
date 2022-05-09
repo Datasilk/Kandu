@@ -22,11 +22,11 @@
             //add theme-related resources
             if (org.customJs)
             {
-                AddScript("/themes/orgs/" + org.orgId + "/theme.js");
+                AddScript("/themes/orgs/" + org.orgId + "/theme.js", "themejs");
             }
             if (org.customCss)
             {
-                AddScript("/themes/orgs/" + org.orgId + "/theme.css");
+                AddCSS("/themes/orgs/" + org.orgId + "/theme.css", "themecss");
             }
 
 
@@ -37,7 +37,7 @@
             //add custom javascript for User Settings & Board info
             Scripts.Append("<script language=\"javascript\">" + 
                 "S.board.id=" + board.boardId + ";" + 
-                (User.AllColor ? "S.head.allColor();" : "") + 
+                (User.AllColor ? "S.head.allColor();" : "S.board.color = '" + board.color + "';") + 
                 "</script>");
 
             //choose which Lists Type to render

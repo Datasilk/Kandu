@@ -8,8 +8,8 @@ namespace Kandu.Services
         public string Create(string name, string color, int orgId, string cardtype = "")
         {
             //check security
-            if (!User.CheckSecurity(orgId, Security.Keys.BoardCanCreate.ToString())
-                || !User.CheckSecurity(orgId, Security.Keys.BoardsFullAccess.ToString())) { return AccessDenied(); }
+            if (!User.CheckSecurity(orgId, new string[] { Security.Keys.BoardCanCreate.ToString(), Security.Keys.BoardsFullAccess.ToString() },
+                Models.Scope.Organization, orgId)) { return AccessDenied(); }
             
             //create new board
             try
@@ -25,8 +25,13 @@ namespace Kandu.Services
         public string RenderForm(int boardId = 0, int orgId = 0)
         {
             //check security
-            if (!User.CheckSecurity(orgId, Security.Keys.BoardCanCreate.ToString())
-                   || !User.CheckSecurity(orgId, Security.Keys.BoardsFullAccess.ToString())) { return AccessDenied(); }
+            if ((orgId > 0 && boardId > 0 && !User.CheckSecurity(orgId, new string[] { 
+                Security.Keys.BoardCanCreate.ToString(), 
+                Security.Keys.BoardsFullAccess.ToString() }, Models.Scope.Board, boardId))
+                || (orgId > 0 && !User.CheckSecurity(orgId, new string[] {
+                Security.Keys.OrgFullAccess.ToString(),
+                Security.Keys.BoardsFullAccess.ToString() }, Models.Scope.Organization, orgId))) 
+            { return AccessDenied(); }
             
             //render form used for creating new boards
             var view = new View("/Views/Board/new-board.html");

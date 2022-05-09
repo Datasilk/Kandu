@@ -76,6 +76,7 @@
                 S.util.message(msg, 'error', 'Please specify a board name');
                 return;
             }
+            if (orgId == null || orgId <= 0) { orgId = $('#orgId').val(); }
             var form = { name: name, color: color, orgId: orgId, cardtype: cardtype };
             if (hasid) { form.boardId = id; }
             S.ajax.post(hasid ? 'Boards/Update' : 'Boards/Create', form,

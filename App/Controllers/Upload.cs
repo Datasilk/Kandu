@@ -80,7 +80,7 @@ namespace Kandu.Controllers
                 }
 
                 //save file to disk
-                using (var fw = new FileStream(folder + finalname, FileMode.OpenOrCreate))
+                using (var fw = new FileStream(folder + finalname, FileMode.Create))
                 {
                     file.Value.WriteTo(fw);
                 }

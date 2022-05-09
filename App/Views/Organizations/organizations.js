@@ -444,6 +444,7 @@ S.orgs = {
             savebtn.addClass('hide');
             //upload CSS file first /////////////////////////////////////////////////////////////
             var input = themefileCSS;
+            console.log('upload css...')
             if (input.files && input.files.length > 0) {
                 S.orgs.theme.upload(input.files[0], 'css', uploadJs);
             } else {
@@ -453,6 +454,7 @@ S.orgs = {
             function uploadJs() {
                 //upload CSS file
                 input = themefileJS;
+                console.log('upload js...')
                 if (input.files && input.files.length > 0) {
                     S.orgs.theme.upload(input.files[0], 'js', uploadResources);
                 } else {
@@ -463,11 +465,16 @@ S.orgs = {
             function uploadResources() {
                 //upload all resource files
                 input = themefileResources;
+                console.log('upload resources...')
                 if (input.files && input.files.length > 0) {
                     S.orgs.theme.queueUploads([...input.files], 'resource', () => {
-                        //refresh themes panel
+                        //finally, refresh themes panel
                         S.orgs.theme.refresh();
+                        savebtn.removeClass('hide');
+                        console.log('finished uploading...');
                     });
+                } else {
+                    console.log('finished uploading...');
                 }
             }
         },

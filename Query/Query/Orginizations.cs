@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 
 namespace Query
 {
@@ -31,12 +32,7 @@ namespace Query
 
         public static Models.Organization GetInfo(int orgId)
         {
-            var list = Sql.Populate<Models.Organization>("Organization_GetInfo", new { orgId });
-            if(list != null && list.Count > 0)
-            {
-                return list[0];
-            }
-            return null;
+            return Sql.Populate<Models.Organization>("Organization_GetInfo", new { orgId }).FirstOrDefault();
         }
 
         public static List<Models.Organization> Owned(int ownerId)

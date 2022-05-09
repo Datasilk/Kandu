@@ -12,6 +12,7 @@ namespace Kandu.Controllers
             if (!Parameters.ContainsKey("orgId")) { return Error("Missing parameter orgId"); }
             if (!Parameters.ContainsKey("type")) { return Error("Missing parameter type"); }
             var orgId = int.Parse(Parameters["orgId"]);
+            var org = Query.Organizations.GetInfo(orgId);
             var type = Parameters["type"];
 
             //check security
@@ -42,8 +43,18 @@ namespace Kandu.Controllers
                 switch (type)
                 {
                     case "css":
+                        filename = "theme";
+                        if(org.customCss == false)
+                        {
+                            Query.Organizations.UpdateCustomCss(orgId, true);
+                        }
+                        break;
                     case "js":
                         filename = "theme";
+                        if(org.customJs == false)
+                        {
+                            Query.Organizations.UpdateCustomJs(orgId, true);
+                        }
                         break;
                     default:
                         if (!allowed.Contains(ext))
@@ -55,7 +66,7 @@ namespace Kandu.Controllers
                         break;
                 }
                 var finalname = filename + "." + ext;
-                using (var fw = new FileStream(folder + finalname, FileMode.OpenOrCreate))
+                using (var fw = new FileStream(folder + finalname, FileMode.Create))
                 {
                     file.Value.WriteTo(fw);
                 }
