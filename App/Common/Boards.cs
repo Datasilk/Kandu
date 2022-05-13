@@ -123,13 +123,27 @@ namespace Kandu.Common
                 item["url"] = GetUrl(b.boardId, b.name);
                 html.Append(item.Render());
             });
-            if (request.CheckSecurity(orgId, Security.Keys.BoardCanCreate.ToString()))
+            if(boards.Count == 0)
             {
+                //show empty organizations
+                var orgs = Query.Organizations.UserIsPartOf(userId);
+                foreach(var org in orgs)
+                {
+                    canCreate = request.CheckSecurity(org.orgId, Security.Keys.BoardCanCreate.ToString());
+                    if (canCreate)
+                    {
+                        orgView["name"] = org.name;
+                        html.Append(orgView.Render() + "<div class=\"org-boards\">");
+                        createView["onclick"] = "S.boards.add.show(null, null, '', " + org.orgId + ")";
+                        html.Append(createView.Render() + "</div>");
+                    }
+                }
+            }else if (request.CheckSecurity(orgId, Security.Keys.BoardCanCreate.ToString()))
+            {
+                //show create button for last board in list
                 createView["onclick"] = "S.boards.add.show(null, null, '', " + orgId + ")";
-                html.Append(createView.Render());
+                html.Append(createView.Render() + "</div>");
             }
-            html.Append("</div>");
-
             return html.ToString();
         }
 
