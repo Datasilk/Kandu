@@ -31,6 +31,21 @@
     <None Remove="Views\Board\Kanban\kanban.html" />
     <None Remove="Views\Board\menu.html" />
     <None Remove="Views\Board\new-board.html" />
+    <None Remove="Views\Card\Kanban\Details\assigned-to.html" />
+    <None Remove="Views\Card\Kanban\Details\attachments-menu.html" />
+    <None Remove="Views\Card\Kanban\Details\Attachment\gallery-item.html" />
+    <None Remove="Views\Card\Kanban\Details\Attachment\list-item.html" />
+    <None Remove="Views\Card\Kanban\Details\checklist-item.html" />
+    <None Remove="Views\Card\Kanban\Details\checklist-menu.html" />
+    <None Remove="Views\Card\Kanban\Details\comment-menu.html" />
+    <None Remove="Views\Card\Kanban\Details\comment.html" />
+    <None Remove="Views\Card\Kanban\Details\comments.html" />
+    <None Remove="Views\Card\Kanban\Details\description-menu.html" />
+    <None Remove="Views\Card\Kanban\Details\description.html" />
+    <None Remove="Views\Card\Kanban\Details\no-attachments.html" />
+    <None Remove="Views\Card\Kanban\Details\no-checklistitems.html" />
+    <None Remove="Views\Card\Kanban\Details\no-comments.html" />
+    <None Remove="Views\Card\Kanban\new-card.html" />
     <None Remove="Views\Email\action-form.html" />
     <None Remove="Views\Email\action.html" />
     <None Remove="Views\Email\client-form.html" />
@@ -53,6 +68,7 @@
     <None Remove="Views\Organizations\list.html" />
     <None Remove="Views\Organizations\no-boards.html" />
     <None Remove="Views\Organizations\no-following.html" />
+    <None Remove="Views\Organizations\resource-item.html" />
     <None Remove="Views\Organizations\settings.html" />
     <None Remove="Views\Organizations\templates.html" />
     <None Remove="Views\Organizations\theme.html" />
@@ -64,6 +80,7 @@
     <None Remove="Views\Security\list-item.html" />
     <None Remove="Views\Security\new-group.html" />
     <None Remove="Views\Security\new-key.html" />
+    <None Remove="Views\Shared\accordion.html" />
     <None Remove="Views\Shared\expander.html" />
     <None Remove="Views\Shared\header.html" />
     <None Remove="Views\Shared\layout.html" />
@@ -74,6 +91,7 @@
     <None Remove="Views\Shared\PartialViews\accordion.html" />
     <None Remove="Views\Shared\PartialViews\titlemenu.html" />
     <None Remove="Views\Shared\tab.html" />
+    <None Remove="Views\Shared\upload-modal.html" />
     <None Remove="Views\Signup\signup.html" />
     <None Remove="Views\Signup\signup.js" />
     <None Remove="Views\Teams\add-item.html" />
@@ -140,6 +158,51 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Views\Board\new-board.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Views\Card\Kanban\Details\assigned-to.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Views\Card\Kanban\Details\attachments-menu.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Views\Card\Kanban\Details\Attachment\gallery-item.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Views\Card\Kanban\Details\Attachment\list-item.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Views\Card\Kanban\Details\checklist-item.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Views\Card\Kanban\Details\checklist-menu.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Views\Card\Kanban\Details\comment-menu.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Views\Card\Kanban\Details\comment.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Views\Card\Kanban\Details\comments.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Views\Card\Kanban\Details\description-menu.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Views\Card\Kanban\Details\description.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Views\Card\Kanban\Details\no-attachments.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Views\Card\Kanban\Details\no-checklistitems.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Views\Card\Kanban\Details\no-comments.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Views\Card\Kanban\new-card.html">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Views\Email\action-form.html">
@@ -232,6 +295,9 @@
     <Content Include="Views\Organizations\no-following.html">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Views\Organizations\resource-item.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Views\Organizations\settings.html">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -265,6 +331,9 @@
     <Content Include="Views\Security\new-key.html">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Views\Shared\accordion.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Views\Shared\expander.html">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -293,6 +362,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Views\Shared\tab.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Views\Shared\upload-modal.html">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Views\Signup\signup.html">
@@ -364,9 +436,6 @@
     </None>
     <None Update="Views\Card\Kanban\Elements\checkmark.html">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="Views\Card\Kanban\new-card.html">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="Views\Card\Kanban\Type\header.html">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
