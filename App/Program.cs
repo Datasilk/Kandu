@@ -1,9 +1,8 @@
 ﻿using System;
-using System.IO;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.AspNetCore.Hosting.Server;
 using Microsoft.AspNetCore.Hosting.Server.Features;
 
 namespace Kandu
@@ -12,7 +11,15 @@ namespace Kandu
     {
         public static void Main(string[] args)
         {
-            CreateHostBuilder(args).Build().Run();
+            var host = CreateHostBuilder(args).Build();
+            host.Start();
+            var server = host.Services.GetRequiredService<IServer>();
+            var addressFeature = server.Features.Get<IServerAddressesFeature>();
+            foreach (var address in addressFeature.Addresses)
+            {
+                Console.WriteLine($"Listening to {address}");
+            }
+            host.WaitForShutdown();
         }
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>
