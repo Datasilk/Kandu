@@ -60,8 +60,7 @@
             page.board = board;
 
             //set background color of board
-            view["color"] = "#" + board.color;
-            view["color-dark"] = colors.ChangeHexBrightness(board.color, (float)-0.3);
+            view["color"] = board.color;
 
             //transfer resources from page
             Scripts.Append(page.Scripts);

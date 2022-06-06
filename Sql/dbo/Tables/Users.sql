@@ -9,5 +9,6 @@
     [datecreated] DATETIME NOT NULL DEFAULT GETDATE(), 
     [lastboard] INT NOT NULL DEFAULT 0, 
     [keepmenu] BIT NOT NULL DEFAULT 0, 
-    [allcolor] BIT NOT NULL DEFAULT 0
+    [allcolor] BIT NOT NULL DEFAULT 0, 
+    [theme] NVARCHAR(32) NOT NULL DEFAULT ''
 )

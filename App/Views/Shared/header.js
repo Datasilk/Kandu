@@ -132,12 +132,19 @@
         hide: function () {
             $('.user-menu').addClass('hide');
             $('.bg-for-user-menu').addClass('hide');
-            S.orgs.list.hide();
+            S.head.user.submenus.hide();
         },
 
         details: function (id, orgId, name) {
             S.head.user.hide();
             S.user.details.show(id, orgId, name);
+        },
+
+        submenus: {
+            hide: function () {
+                S.orgs.list.hide();
+                S.head.themes.list.hide();
+            }
         }
     }, 
 
@@ -172,6 +179,32 @@
             uploaded: function () {
                 location.reload();
             }
+        }
+    },
+
+    themes: {
+        list: {
+            show: function () {
+                S.head.user.submenus.hide();
+                $('.themes-list-menu').removeClass('hide');
+                S.head.themes.list.resize();
+                S.scrollbar.update('.themes-list-menu .scroll-container');
+            },
+
+            hide: function () {
+                $('.themes-list-menu').addClass('hide');
+            },
+
+            resize: function () {
+                var win = S.window;
+                $('.themes-list-menu .scroll-container').css({ 'max-height': (win.h - 70) + 'px' });
+            }
+        },
+
+        change: function (name) {
+            S.ajax.post("Themes/Change", { name: name }, () => {
+                location.reload();
+            });
         }
     }
 }

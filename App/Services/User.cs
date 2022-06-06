@@ -22,7 +22,7 @@ namespace Kandu.Services
             var user = Query.Users.AuthenticateUser(email, encrypted);
             if (user != null)
             {
-                User.LogIn(user.userId, user.orgId, user.email, user.name, user.datecreated, "", user.photo);
+                User.LogIn(user);
                 User.Save(true);
 
                 if (user.lastboard == 0)

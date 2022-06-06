@@ -25,7 +25,7 @@ namespace Kandu
             var view = new View("/Views/Shared/layout.html");
             view["title"] = Title;
             view["description"] = Description;
-            view["theme"] = Theme;
+            view["theme"] = User.Theme != null && User.Theme != "" ? User.Theme : Theme;
             view["head-css"] = Css.ToString();
             view["favicon"] = Favicon;
             view["body"] = body;
@@ -74,6 +74,7 @@ namespace Kandu
                 
                 //load organization templates
                 view.Child("header")["org-menu"] = Common.Organizations.RenderList(this);
+                view.Child("header")["themes-menu"] = Common.Themes.RenderList(this);
                 view.Child("header")["org-templates"] = Cache.LoadFile("/Views/Organizations/templates.html"); ;
             }
             else

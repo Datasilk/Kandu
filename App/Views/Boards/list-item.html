@@ -1,8 +1,8 @@
-﻿<div class="board board-{{id}} {{extra}}" onclick="window.location.href='{{url}}'" style="background-color:{{color}}">
+﻿<div class="board board-{{id}} {{extra}}" onclick="window.location.href='{{url}}'" style="background-color:var(--board_color{{color}})">
     {{favorite}}
     <div class="favorite"></div>
     {{/favorite}}
-    <div class="label" style="background-color:{{color}}"></div>
+    <div class="label" style="background-color:var(--board_color{{color}})"></div>
     <a href="{{url}}" class="title">{{name}}</a>
     <div class="options icon hover-only">
         <a href="javascript:" onclick="S.boards.add.show(event, {{id}}, S.boards.getTitle, {{orgId}}, S.boards.add.updated);" title="Board Options">

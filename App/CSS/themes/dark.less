@@ -4,6 +4,9 @@
 /* Kandu theme system */
 @import '../theme.less';
 
+
+/* fonts */
+
 @font-face {
   font-family: 'Open Sans';
   font-style: italic;
@@ -74,41 +77,41 @@ body, h1, h2, h3, h4, h5, h6, span, input, select, textarea{font-family: Open Sa
 
 //board colors
 :root {
-    .board-color(1, #fe6133, #fe6133, #fe6133, #fff, #fff);
-    .board-color(2, #f89e3d, #f89e3d, #f89e3d, #fff, #fff);
-    .board-color(3, #ffd637, #ffd637, #ffd637, #fff, #fff);
-    .board-color(4, #24c838, #24c838, #24c838, #fff, #fff);
-    .board-color(5, #1bdbc0, #1bdbc0, #1bdbc0, #fff, #fff);
-    .board-color(6, #0094ff, #0094ff, #0094ff, #fff, #fff);
-    .board-color(7, #3399FF, #3399FF, #3399FF, #fff, #fff);
-    .board-color(8, #6c57f3, #6c57f3, #6c57f3, #fff, #fff);
-    .board-color(9, #b25ff3, #b25ff3, #b25ff3, #fff, #fff);
-    .board-color(10, #FF99FF, #FF99FF, #FF99FF, #fff, #fff);
-    .board-color(11, #9f9f9f, #9f9f9f, #9f9f9f, #fff, #fff);
-    .board-color(12, #272727, #272727, #272727, #fff, #fff);
+    .board-color(1, #d33000, #d33000, #d33000, #fff, #fff, #00c0ff, #00d1ff);
+    .board-color(2, #df6000, #df6000, #df6000, #fff, #fff, #00c0ff, #00d1ff);
+    .board-color(3, #eca731, #eca731, #eca731, #fff, #fff, #00c0ff, #00d1ff);
+    .board-color(4, #27a836, #27a836, #27a836, #fff, #fff, #00c0ff, #00d1ff);
+    .board-color(5, #00a089, #00a089, #00a089, #fff, #fff, #00c0ff, #00d1ff);
+    .board-color(6, #0079d0, #0079d0, #0079d0, #fff, #fff, #00c0ff, #00d1ff);
+    .board-color(7, #3399FF, #3399FF, #3399FF, #fff, #fff, #00c0ff, #00d1ff);
+    .board-color(8, #604dd7, #604dd7, #604dd7, #fff, #fff, #00c0ff, #00d1ff);
+    .board-color(9, #7011ba, #7011ba, #7011ba, #fff, #fff, #00c0ff, #00d1ff);
+    .board-color(10, #d027d0, #d027d0, #d027d0, #fff, #fff, #00c0ff, #00d1ff);
+    .board-color(11, #535353, #535353, #535353, #fff, #fff, #00c0ff, #00d1ff);
+    .board-color(12, #272727, #272727, #272727, #fff, #fff, #00c0ff, #00d1ff);
 }
 
 .box, .box .bg{
-    .box(#eee, transparent, #555);
-    .row(transparent, #eaeaea, #5eceb6, #444, #333, #333, #6200ff, #9100ff, #c000ff, #6200ff, #c000ff, #555, #444, #444, #444);
+    .box(#333, transparent, #eee);
+    .row(transparent, #555, #274960, #eee, #fff, #fff, #b592ff, #d985ff, #e400ff, #b592ff, #e400ff, #eee, #eee, #eee, #eee);
     .row.no-links, li, .item, .row:hover .item, .row.hover.item, li .row:hover{
-        .links(#555, #555, #555, #555);
+        .links(#bbb, #bbb, #bbb, #bbb);
     }
-    .links(#6200ff, #9100ff, #c000ff, #6200ff);
+    .links(#b592ff, #d985ff, #e400ff, #b592ff);
     .no-color{
-        .links(#222, #222, #222, #222);
+        .links(#eee, #eee, #eee, #eee);
     }
-    .fonts(#222, fade(#222, 30%), #009B87, #4DA400, #FF2222, #376EB2);
-    .input(#fff, #444, #cccccc, #aaa, #ffffff, #444, #77c8b6, #fff, #444, #b1dcdc, #8c8c8c, #6d43d5 );
+    .fonts(#eee, fade(#eee, 30%), #009B87, #4DA400, #FF2222, #376EB2);
+    .input(#444, #eee, #707070, #aaa, #4f4f4f, #efefef, #878787, #4f4f4f, #efefef, #878787, #8c8c8c, #6d43d5 );
     .line(#e6e6e6); 
     .button(default,    #00a0c4, #00cce1, #00cce1, #00cce1, transparent, transparent, transparent, transparent, transparent, transparent, transparent, transparent, #fff, #fff, #fff, #fff);
-    .button(apply,      #38acff, #0095ff, #0095ff, #0095ff, transparent, transparent, transparent, transparent, transparent, transparent, transparent, transparent, #fff, #fff, #fff, #fff);
-    .button(cancel,     #b5b4b4, #ff8138, #ffab2d, #ff8138, transparent, transparent, transparent, transparent, transparent, transparent, transparent, transparent, #fff, #fff, #fff, #fff);
+    .button(apply,      #9f00d2, #c100ff, #c100ff, #ef00ff, transparent, transparent, transparent, transparent, transparent, transparent, transparent, transparent, #fff, #fff, #fff, #fff);
+    .button(cancel,     #717171, #858585, #858585, #466cad, transparent, transparent, transparent, transparent, transparent, transparent, transparent, transparent, #fff, #fff, #fff, #fff);
     .button(disabled,   #a9d7ec, #a9d7ec, #a9d7ec, #a9d7ec, transparent, transparent, transparent, transparent, transparent, transparent, transparent, transparent, #fff, #fff, #fff, #fff);
     .button(grey,       #e0e0e0, #bfbfbf, #bfbfbf, #e0e0e0, transparent, transparent, transparent, transparent, transparent, transparent, transparent, transparent, #333, #333, #333, #333);
     .button(delete,     #d07d7d, #c95454, #c95454, #c95454, transparent, transparent, transparent, transparent, transparent, transparent, transparent, transparent, #fff, #fff, #fff, #fff);
     .button(red,        #c80c0c, #ff0000, #ff0000, #c80c0c, transparent, transparent, transparent, transparent, transparent, transparent, transparent, transparent, #fff, #fff, #fff, #fff);
-    .button(outline,    transparent, transparent, transparent, transparent, transparent, transparent, transparent, transparent, #38acff, #0095ff, #0095ff, #0095ff, #38acff, #0095ff, #0095ff, #0095ff);
+    .button(outline,    transparent, transparent, transparent, transparent, transparent, transparent, transparent, transparent, #aeff96, #3aff00, #3aff00, #3aff00, #aeff96, #3aff00, #3aff00, #3aff00);
     .message(default, #637eca, transparent, #fff, #fff);
     .message(error,   #f46f6f, transparent, #fff, #fff);
     .message(alert,   #ffb000, transparent, #fff, #fff); 
@@ -116,14 +119,19 @@ body, h1, h2, h3, h4, h5, h6, span, input, select, textarea{font-family: Open Sa
 }
 
 .box .bg.white{
-    .box(#fff, transparent, #555);
+    .box(#222, transparent, #eee);
 }
 
 .popup, .popup .bg{
-    .box(#fafafa, #dadada, #444);
+    .box(#333, #333, #eee);
     .menu{
-        .row(transparent, #eaeaea, #5eceb6, #444, #333, #333, #6200ff, #9100ff, #c000ff, #6200ff, #c000ff, #555, #444, #444, #444);
+        .row(transparent, #555, #274960, #eee, #fff, #fff, #b592ff, #d985ff, #e400ff, #b592ff, #e400ff, #eee, #eee, #eee, #eee);
     }
+}
+
+//lists
+.kanban .list {background-color:#333 !important;
+    .item{background-color:#444 !important;}
 }
 
 //stars
@@ -150,32 +158,32 @@ body, h1, h2, h3, h4, h5, h6, span, input, select, textarea{font-family: Open Sa
 .box .icon-close:hover, .box .row.hover:hover .icon-close:hover{
     .svg(#ff0000, true);
 }
-.box .row .btn-close a:hover use{fill:#cc0000 !important; color:#cc0000 !important;}
+.box .row .btn-close a:hover use{fill:#ff4f3d !important; color:#ff4f3d !important;}
 
 //popup menu arrows
-.has-top-arrow:after { border-bottom-color: #eee !important;}
-.has-right-arrow:after { border-left-color: #eee !important;}
+.has-top-arrow:after { border-bottom-color: #444 !important;}
+.has-right-arrow:after { border-left-color: #444 !important;}
 
 //separator
-.popup .separator{background-color:rgba(0,0,0,0.1) !important;}
+.popup .separator{background-color:rgba(255,255,255,0.1) !important;}
 
 //tabs
-.box .tabs{background-color:#d0d0d0;
-    .tab{background-color:#e2e2e2; color:#111}
-    .tab:hover{background-color:#7968ff; color:#fff; 
+.box .tabs{background-color:#202020;
+    .tab{background-color:#4e4e4e; color:#bbb}
+    .tab:hover{background-color:#6900c9; color:#eee; 
         .svg(#fff);
     }
-    .tab.selected{background-color:#fafafa; color:#333}
-    .tab.selected:hover{background-color:#fafafa; color:#111; 
+    .tab.selected{background-color:#333333; color:#eee}
+    .tab.selected:hover{background-color:#333333; color:#eee; 
         .svg(#fff);
     }
 }
 
 //cards in a popup modal
-.content-cards.kanban {background:#eaeaea;}
+.content-cards.kanban {background:#444;}
 
 //title bar
-.title-bar{background-color:#eee !important;}
+.title-bar{background-color:#333 !important;}
 
 //tooltip
 .tooltip{background-color:#d5f8c9; border-color:#adf296; color:#0e5c00;}
@@ -183,17 +191,17 @@ body, h1, h2, h3, h4, h5, h6, span, input, select, textarea{font-family: Open Sa
 
 //accordion
 .accordion{
-    .title{background-color:#ececec;
-        .row.hover:hover{background-color:#d0d0d0;}
+    .title{background-color:#7d2ab7;
+        .row.hover:hover{background-color:#a800ff;}
     }
 }
 
 //comments
-.popup.box .comment{background-color:#fff;
-    svg.no-photo{background-color:#bbe3ff; 
-        use{color:#0e72b9 !important;}
+.popup.box .comment{background-color:#474747;
+    svg.no-photo{background-color:#516471; 
+        use{color:#5aa8e0 !important;}
     }
-    .comment-flagged{color:#cc0000;}
+    .comment-flagged{color:#ff4f3d;}
 }
 
 //search results
@@ -227,6 +235,6 @@ body, h1, h2, h3, h4, h5, h6, span, input, select, textarea{font-family: Open Sa
 .upload-modal{
     .box(transparent, transparent, #ddd);
     .fonts(#ddd, fade(#ddd, 30%), #009B87, #4DA400, #FF2222, #376EB2);
-    .links(#6200ff, #9100ff, #c000ff, #6200ff);
+    .links(#b592ff, #d985ff, #e400ff, #b592ff);
     .button(apply,      #00ab2f, #00d43a, #00d43a, #00d43a, transparent, transparent, transparent, transparent, transparent, transparent, transparent, transparent, #fff, #fff, #fff, #fff);
 }

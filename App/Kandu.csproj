@@ -100,6 +100,8 @@
     <None Remove="Views\Teams\list-item.html" />
     <None Remove="Views\Teams\new-team.html" />
     <None Remove="Views\Teams\settings.html" />
+    <None Remove="Views\Themes\list-item.html" />
+    <None Remove="Views\Themes\list.html" />
     <None Remove="Views\User\account.html" />
     <None Remove="Views\User\cards.html" />
     <None Remove="Views\User\details.html" />
@@ -389,6 +391,12 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Views\Teams\settings.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Views\Themes\list-item.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Views\Themes\list.html">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Views\User\account.html">

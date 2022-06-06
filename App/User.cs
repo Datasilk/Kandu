@@ -25,6 +25,7 @@ namespace Kandu
         public bool ResetPass { get; set; } = false;
         public bool KeepMenuOpen { get; set; }
         public bool AllColor { get; set; }
+        public string Theme { get; set; }
         public List<int> Boards { get; set; } = new List<int>();
 
         //private fields
@@ -69,22 +70,23 @@ namespace Kandu
                 if (user != null)
                 {
                     //persistant cookie was valid, log in
-                    LogIn(user.userId, user.orgId, user.email, user.name, user.datecreated, "", user.photo);
+                    LogIn(user);
                 }
             }
         }
 
-        public void LogIn(int userId, int orgId, string email, string name, DateTime datecreated, string displayName = "", bool photo = false)
+        public void LogIn(Query.Models.User user)
         {
-            this.UserId = userId;
-            this.Email = email;
-            this.Photo = photo;
-            this.Name = name;
-            this.DisplayName = displayName;
-            this.DateCreated = datecreated;
+            UserId = user.userId;
+            Email = user.email;
+            Name = user.name;
+            DateCreated = user.datecreated;
+            DisplayName = user.name;
+            Photo = user.photo;
+            Theme = user.theme;
 
             //load security keys for user
-            var keys = Query.Security.AllKeysForUser(userId);
+            var keys = Query.Security.AllKeysForUser(user.userId);
             foreach(var key in keys)
             {
                 if (Keys.ContainsKey(key.orgId))
@@ -110,15 +112,15 @@ namespace Kandu
             }
 
             //load Kandu-specific properties for user from database
-            var user = Query.Users.GetInfo(userId);
+            user = Query.Users.GetInfo(user.userId);
             KeepMenuOpen = user.keepmenu;
             AllColor = user.allcolor;
 
-            Boards = Query.Boards.GetBoardsForMember(userId);
+            Boards = Query.Boards.GetBoardsForMember(user.userId);
             if (Boards == null) { Boards = new List<int>(); }
 
             //create persistant cookie
-            var auth = Query.Users.CreateAuthToken(userId);
+            var auth = Query.Users.CreateAuthToken(user.userId);
             var options = new CookieOptions()
             {
                 Expires = DateTime.Now.AddMonths(1)

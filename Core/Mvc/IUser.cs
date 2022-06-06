@@ -18,10 +18,11 @@ namespace Kandu.Core
         bool ResetPass { get; set; } 
         bool KeepMenuOpen { get; set; }
         bool AllColor { get; set; }
+        string Theme { get; set; }
         List<int> Boards { get; set; }
 
         IUser SetContext(HttpContext context);
-        void LogIn(int userId, int orgId, string email, string name, DateTime datecreated, string displayName = "", bool photo = false);
+        void LogIn(Query.Models.User user);
         void LogOut();
         void Save(bool changed = false);
 

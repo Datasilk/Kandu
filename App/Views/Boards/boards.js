@@ -45,7 +45,7 @@
                 if (id) {
                     S.ajax.post('Boards/Details', { boardId: id }, function (data) {
                         $('#boardname').val(data.board.name);
-                        $('.popup .color-input').css({ 'background-color': data.board.color });
+                        $('.popup .color-input').css({ 'background-color': 'var(--board_color' + data.board.color + ')' });
                         $('#orgId').val(data.board.orgId);
                     }, null, true);
                 }
@@ -68,7 +68,7 @@
         submit: function (orgId, id) {
             var hasid = false;
             var name = $('#boardname').val();
-            var color = S.util.color.rgbToHex($('.popup .color-input').css('background-color')).replace('#','');
+            var color = $('.popup .color-input').attr('data-color');
             var cardtype = $('#cardtype').val();
             var msg = $('.popup.show .messages');
             if (id > 0) { hasid = true;}
@@ -170,8 +170,9 @@
 
         select: function (e) {
             var elem = e.target;
-            var color = S.util.color.rgbToHex($(elem).css('background-color'));
-            $('.color-input').css({ 'background-color': color });
+            var color = $(elem).attr('data-color');
+            $('.color-input').css({ 'background-color': 'var(--board_color' + color + ')' });
+            $('.color-input').attr('data-color', color);
             S.boards.colorPicker.hide();
             if (typeof S.boards.colorPicker.callback == 'function') {
                 S.boards.colorPicker.callback(color);

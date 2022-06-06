@@ -95,6 +95,13 @@ namespace Query
             );
         }
 
+        public static void UpdateTheme(int userId, string theme)
+        {
+            Sql.ExecuteNonQuery("User_UpdateTheme",
+                new { userId, theme }
+            );
+        }
+
         public static Models.User GetInfo(int userId)
         {
             var list = Sql.Populate<Models.User>("User_GetInfo",

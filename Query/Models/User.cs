@@ -16,5 +16,6 @@ namespace Query.Models
         public string lastboardName { get; set; }
         public bool keepmenu { get; set; }
         public bool allcolor { get; set; }
+        public string theme { get; set; }
     }
 }

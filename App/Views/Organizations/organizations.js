@@ -14,6 +14,7 @@ S.orgs = {
 
     list: {
         show: function () {
+            S.head.user.submenus.hide();
             $('.orgs-list-menu').removeClass('hide');
             S.orgs.list.resize();
             S.scrollbar.update('.orgs-list-menu .scroll-container');

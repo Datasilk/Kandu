@@ -71,7 +71,7 @@ namespace Kandu.Common
                     {
                         "board", new Dictionary<string,string>(){
                             { "name", board.name },
-                            { "color", "#" + board.color },
+                            { "color", board.color },
                             {"teamId", board.teamId.ToString() }
                         }
                     }
@@ -115,7 +115,7 @@ namespace Kandu.Common
                 }
                 item["favorite"] = b.favorite ? "1" : "";
                 item["name"] = b.name;
-                item["color"] = "#" + b.color;
+                item["color"] = b.color;
                 item["extra"] = b.favorite ? "fav" : "";
                 item["id"] = b.boardId.ToString();
                 item["orgId"] = orgId.ToString();
@@ -168,7 +168,7 @@ namespace Kandu.Common
                 {
                     item["id"] = fav.boardId.ToString();
                     item["url"] = "/board/" + fav.boardId + "/" + fav.name.Replace(" ", "-").ToLower();
-                    item["color"] = "#" + fav.color;
+                    item["color"] = fav.color;
                     item["title"] = fav.name;
                     item["owner"] = fav.orgName;
                     item["star"] = fav.favorite ? "star" : "star-border";
@@ -206,7 +206,7 @@ namespace Kandu.Common
                     item["id"] = board.boardId.ToString();
                     item["orgId"] = orgId.ToString();
                     item["url"] = "/board/" + board.boardId + "/" + board.name.Replace(" ", "-").ToLower();
-                    item["color"] = "#" + board.color;
+                    item["color"] = board.color;
                     item["title"] = board.name;
                     item["owner"] = board.orgName;
                     item["star"] = board.favorite ? "star" : "star-border";

@@ -246,6 +246,7 @@
     <Build Include="dbo\Stored Procedures\Organizations\Organization_UpdateCustomJs.sql" />
     <Build Include="dbo\Stored Procedures\Organizations\Organization_UpdateCustomCss.sql" />
     <None Include="utility\reset-sequences.sql" />
+    <Build Include="dbo\Stored Procedures\Users\User_UpdateTheme.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Sql.publish.xml" />

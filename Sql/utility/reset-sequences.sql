@@ -4,6 +4,14 @@ RESTART WITH #maxid# INCREMENT BY 1', @altered nvarchar(MAX)
 
 
 SET @maxId = 0
+SELECT TOP 1 @maxid = attachmentId + 1 FROM CardAttachments ORDER BY attachmentId DESC
+IF @maxId > 0 BEGIN
+	SET @altered = REPLACE(REPLACE(@sql, '#maxid#', @maxid), '#sequence#', 'SequenceAttachments')
+	PRINT @altered
+	EXEC sp_executesql @altered
+END
+
+SET @maxId = 0
 SELECT TOP 1 @maxid = boardId + 1 FROM Boards ORDER BY boardId DESC
 IF @maxId > 0 BEGIN
 	SET @altered = REPLACE(REPLACE(@sql, '#maxid#', @maxid), '#sequence#', 'SequenceBoards')
