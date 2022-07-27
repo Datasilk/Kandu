@@ -95,13 +95,13 @@ paths.working = {
     dashboard: {
         js: [
             paths.scripts + 'utility.js',
-            paths.app + 'views/organizations/organizations.js',
-            paths.app + 'views/teams/teams.js',
-            paths.app + 'views/members/members.js',
-            paths.app + 'views/security/security.js',
-            paths.app + 'views/user/user.js',
-            paths.app + 'views/boards/boards.js',
-            paths.app + 'views/shared/header.js'
+            paths.app + 'Views/Organizations/organizations.js',
+            paths.app + 'Views/Teams/teams.js',
+            paths.app + 'Views/Members/members.js',
+            paths.app + 'Views/Security/security.js',
+            paths.app + 'Views/User/user.js',
+            paths.app + 'Views/Boards/boards.js',
+            paths.app + 'Views/Shared/header.js'
         ],
         css: [
             paths.webroot + 'css/views/organizations/organizations.css',
