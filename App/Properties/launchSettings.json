@@ -1,5 +1,4 @@
 {
-  "$schema": "http://json.schemastore.org/launchsettings.json",
   "profiles": {
     "Kandu": {
       "commandName": "Project",
@@ -7,7 +6,8 @@
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       },
-      "applicationUrl": "http://localhost:7772;https://localhost:7773"
+      "applicationUrl": "http://localhost:7772;https://localhost:7773",
+      "hotReloadEnabled": false
     },
     "Android": {
       "commandName": "Project",
@@ -17,5 +17,6 @@
       },
       "applicationUrl": "http://localhost:7772;http://192.168.1.6:7772"
     }
-  }
+  },
+  "$schema": "http://json.schemastore.org/launchsettings.json"
 }

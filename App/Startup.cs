@@ -311,9 +311,9 @@ namespace Kandu
             {
                 Routes = new Routes(),
                 IgnoreRequestBodySize = true,
-                WriteDebugInfoToConsole = false,
+                WriteDebugInfoToConsole = true,
                 LogRequests = false,
-                InvokeNext = false,
+                InvokeNext = true
             });
         }
     }

@@ -21,7 +21,10 @@ This project was an effort started by [Mark Entingh](http://www.markentingh.com)
 2. Run command ```npm install```
 3. Run command ```gulp default```
 4. In Visual Studio, build then publish the SQL project to SQL Server 2016 (or greater), to a database named `Kandu`
-5. Open `config.json` and make sure the database connection string for property `SqlServerTrusted` points to your database.
+5. Open `config.json` and make sure the database connection string for property `SqlServerTrusted` points to your database.\
+6. Disable Hot Reload in Visual Studio by clicking the arrow next to the Kandu play button in the top toolbar, 
+then choosing "Kandu Debug Properties", then uncheck the box "Apply code changes to the running application". 
+	* If Hot Reload is enabled, the page requests will return a response status 200 with an error of "Incomplete Chunked Encoding", which is an HTTP/2 error caused by Hot Reload
 6. Click Play in Visual Studio 2017
 
 That's it! Enjoy true freedom & security with your private copy of Kandu.
