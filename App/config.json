@@ -5,7 +5,7 @@
   "hostUrl": "https://localhost:7773/",
   "sql": {
     "active": "SqlServerTrusted",
-    "SqlServerTrusted": "server=.\\SQL2017; database=Kandu-Test2; Trusted_Connection=true"
+    "SqlServerTrusted": "server=.\\SQL2017; database=Kandu; Trusted_Connection=true"
   },
 
   "encryption": {
